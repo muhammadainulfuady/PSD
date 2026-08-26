@@ -1,0 +1,17 @@
+# Fix sidebar toggle button not clickable
+# The pst-scroll-pixel-helper div overlaps the toggle button
+# https://github.com/pydata/pydata-sphinx-theme/issues/1503
+
+.pst-scroll-pixel-helper {
+  pointer-events: none;
+}
+
+#pst-scroll-pixel-helper {
+  pointer-events: none;
+}
+
+/* Ensure sidebar toggle is always clickable */
+.bd-header button.sidebar-toggle {
+  z-index: 1040;
+  position: relative;
+}
