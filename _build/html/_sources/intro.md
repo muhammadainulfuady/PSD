@@ -1,19 +1,78 @@
-# Selamat Datang di Jupyter Book Saya
+# Proyek Sains Data IF 5B
 
-Halo! Saya **Muhammad Ainul Fuady**, seorang **Mahasiswa** yang memiliki ketertarikan pada **Rekayasa Perangkat Lunak**.
+```{figure} logo.jpg
+:width: 200px
+:align: center
+```
 
-Jupyter Book ini saya gunakan sebagai tempat untuk mendokumentasikan perjalanan belajar, menyimpan berbagai proyek, serta membagikan pengetahuan dan pengalaman yang saya miliki.
+---
+
+> *the journey will never stop before we achieve our dreams*
+
+---
 
 ## Tentang Saya
 
-- **Nama:** Muhammad Ainul Fuady
-- **Nim:** 240411100009
-- **Mata Kuliah:** Proyek Sains Data IF 5B
+| | |
+|:---|:---|
+| **Nama** | Muhammad Ainul Fuady |
+| **NIM** | 240411100009 |
+| **Program Studi** | Informatika - IF 5B |
+| **Mata Kuliah** | Proyek Sains Data |
+
+---
+
+## Tech Stack
+
+```{list-table}
+:header-rows: 1
+:widths: 30 40 30
+
+* - Kategori
+  - Teknologi
+  - Level
+* - **Bahasa Pemrograman**
+  - PHP, Python, JavaScript, Golang, Java
+  - Intermediate - Advanced
+* - **Framework**
+  - Laravel, Django, Flask, React.js, Spring Boot
+  - Beginner - Intermediate
+* - **Database**
+  - MySQL, PostgreSQL
+  - Intermediate
+* - **Tools**
+  - Git, Figma, Tailwind CSS
+  - Beginner - Advanced
+* - **Runtime**
+  - Node.js
+  - Intermediate
+```
+
+---
 
 ## Tentang Jupyter Book Ini
 
-Di dalam Jupyter Book ini, saya akan mendokumentasikan berbagai hal yang berkaitan dengan perjalanan saya, mulai dari pembelajaran, eksperimen, proyek, hingga catatan dan dokumentasi teknis.
+```{note}
+Jupyter Book ini saya gunakan sebagai tempat untuk mendokumentasikan perjalanan belajar, menyimpan berbagai proyek, serta membagikan pengetahuan dan pengalaman yang saya miliki di mata kuliah **Proyek Sains Data**.
+```
+
+Di dalam Jupyter Book ini, Anda akan menemukan:
+
+- **Catatan pembelajaran** terkait Data Science
+- **Eksperimen dan proyek** yang telah dikerjakan
+- **Dokumentasi teknis** dari setiap perjalanan belajar
+
+---
+
+## Motto
+
+```{admonition} Small Progress Is Still Progress
+:class: tip
+
+Tidak ada kemajuan yang terlalu kecil. Setiap langkah kecil tetaplah sebuah kemajuan.
+```
+
+---
 
 ```{tableofcontents}
-
 ```
