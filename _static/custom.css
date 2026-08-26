@@ -1,17 +1,32 @@
-# Fix sidebar toggle button not clickable
-# The pst-scroll-pixel-helper div overlaps the toggle button
-# https://github.com/pydata/pydata-sphinx-theme/issues/1503
+/* Fix sidebar toggle button not clickable */
 
+/* Disable pointer-events on overlay elements */
+#pst-scroll-pixel-helper,
 .pst-scroll-pixel-helper {
-  pointer-events: none;
+  pointer-events: none !important;
+  z-index: -1 !important;
 }
 
-#pst-scroll-pixel-helper {
-  pointer-events: none;
+/* Disable pointer-events on async banner revealer */
+.pst-async-banner-revealer {
+  pointer-events: none !important;
+  z-index: -1 !important;
 }
 
-/* Ensure sidebar toggle is always clickable */
-.bd-header button.sidebar-toggle {
-  z-index: 1040;
-  position: relative;
+/* Ensure sidebar toggle is always on top and clickable */
+header button.sidebar-toggle,
+header button.primary-toggle {
+  z-index: 1060 !important;
+  position: relative !important;
+  pointer-events: auto !important;
+}
+
+/* Fix dialog modal blocking clicks when closed */
+dialog[open]::backdrop {
+  z-index: 1050;
+}
+
+/* Ensure header stays on top */
+.bd-header {
+  z-index: 1040 !important;
 }
