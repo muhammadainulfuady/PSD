@@ -1,6 +1,6 @@
 # Proyek Sains Data IF 5B
 
-```{figure} logo.jpg
+```{figure} image.png
 :width: 200px
 :align: center
 ```
