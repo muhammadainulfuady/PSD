@@ -1,24 +1,24 @@
 # Proyek Sains Data IF 5B
 
-```{figure} logo.jpg
+```{figure} image.png
 :width: 200px
 :align: center
 ```
 
 ---
 
-> *the journey will never stop before we achieve our dreams*
+> _the journey will never stop before we achieve our dreams_
 
 ---
 
 ## Tentang Saya
 
-| | |
-|:---|:---|
-| **Nama** | Muhammad Ainul Fuady |
-| **NIM** | 240411100009 |
-| **Program Studi** | Informatika - IF 5B |
-| **Mata Kuliah** | Proyek Sains Data |
+|                   |                         |
+| :---------------- | :---------------------- |
+| **Nama**          | Muhammad Ainul Fuady    |
+| **NIM**           | 240411100009            |
+| **Program Studi** | Teknik Informatika      |
+| **Mata Kuliah**   | Proyek Sains Data IF 5B |
 
 ---
 
@@ -75,4 +75,5 @@ Tidak ada kemajuan yang terlalu kecil. Setiap langkah kecil tetaplah sebuah kema
 ---
 
 ```{tableofcontents}
+
 ```
