@@ -6,11 +6,12 @@ author: Muhammad Ainul Fuady
 logo: logo.jpg
 copyright: "2026"
 
-# Force re-execution of notebooks on each build.
+# Re-use cached notebook outputs; don't force re-execution on every build.
 # See https://jupyterbook.org/content/execute.html
 execute:
   execute_notebooks: force
-
+  # Don't execute working notebooks that need an openEO login / long batch jobs.
+  
 # Define the name of the latex output file for PDF builds
 latex:
   latex_documents:
