@@ -1,15 +1,4 @@
-# Proyek Sains Data IF 5B
-
-```{figure} image.png
-:width: 200px
-:align: center
-```
-
----
-
-> _the journey will never stop before we achieve our dreams_
-
----
+# 240411100009 - Muhammad Ainul Fuady
 
 ## Tentang Saya
 
