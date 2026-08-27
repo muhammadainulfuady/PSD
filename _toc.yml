@@ -4,5 +4,7 @@
 format: jb-book
 root: intro
 chapters:
-  - file: pertemuan-1/business-understanding
-  - file: pertemuan-1/data-understanding
+  - file: pertemuan-1/polutan-kabupaten-gresik
+    sections:
+      - file: pertemuan-1/business-understanding
+      - file: pertemuan-1/data-understanding

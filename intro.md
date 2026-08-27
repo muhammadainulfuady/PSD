@@ -1,6 +1,6 @@
-# 240411100009 - Muhammad Ainul Fuady
+# Introduction
 
-## Tentang Saya
+## About Me
 
 |                   |                         |
 | :---------------- | :---------------------- |
@@ -39,7 +39,7 @@
 
 ---
 
-## Tentang Jupyter Book Ini
+## About The Jupyter Book
 
 ```{note}
 Jupyter Book ini saya gunakan sebagai tempat untuk mendokumentasikan perjalanan belajar, menyimpan berbagai proyek, serta membagikan pengetahuan dan pengalaman yang saya miliki di mata kuliah **Proyek Sains Data**.
