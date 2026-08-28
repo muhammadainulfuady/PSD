@@ -9,9 +9,10 @@ copyright: "2026"
 # Re-use cached notebook outputs; don't force re-execution on every build.
 # See https://jupyterbook.org/content/execute.html
 execute:
-  execute_notebooks: force
+  execute_notebooks: cache
   # Don't execute working notebooks that need an openEO login / long batch jobs.
-  
+  exclude_patterns:
+    - "pertemuan-1/*.ipynb"
 # Define the name of the latex output file for PDF builds
 latex:
   latex_documents:
