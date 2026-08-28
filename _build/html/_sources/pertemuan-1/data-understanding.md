@@ -1,6 +1,42 @@
+---
+jupytext:
+  formats: md:myst
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.11.5
+kernelspec:
+  display_name: Python 3
+  language: python
+  name: python3
+---
+
 # Data Understanding
 
 Data Understanding adalah tahap untuk **mengumpulkan**, **mengeksplorasi**, dan **menilai kualitas** data yang akan digunakan dalam analisis kualitas udara di Kabupaten Gresik.
+
+---
+
+## Library Python yang Diperlukan
+
+Berikut adalah library Python beserta kegunaannya untuk mengerjakan proses data understanding ini:
+
+| Library      | Kegunaan                                                                             |
+| ------------ | ------------------------------------------------------------------------------------ |
+| `openeo`     | Menghubungkan dan memproses data satelit dari server openEO (Copernicus Data Space). |
+| `netCDF4`    | Membaca file hasil batch job openEO berformat netCDF (`.nc`).                        |
+| `pandas`     | Membaca dan mengolah data tabular (CSV), serta manipulasi deret waktu.               |
+| `numpy`      | Komputasi numerik, misalnya untuk perhitungan rata-rata dan statistik.               |
+| `xarray`     | (Alternatif) membaca & mengolah data multidimensi netCDF secara lebih praktis.       |
+| `matplotlib` | Membuat visualisasi grafik tren polutan.                                             |
+| `folium`     | Membuat visualisasi peta interaktif lokasi pengamatan.                               |
+
+Instalasi dapat dilakukan secara bersamaan:
+
+```python
+pip install openeo netCDF4 pandas numpy matplotlib folium
+```
 
 ---
 
@@ -10,19 +46,19 @@ Data Understanding adalah tahap untuk **mengumpulkan**, **mengeksplorasi**, dan 
 
 Data kualitas udara dikumpulkan dari **Copernicus Data Space** menggunakan layanan **openEO**. Berikut ringkasannya:
 
-| Item | Keterangan |
-|------|------------|
-| **Sumber** | Copernicus Data Space |
-| **Layanan** | openEO |
-| **Server** | `openeo.dataspace.copernicus.eu` |
-| **Produk / Koleksi** | Sentinel-5P L2 |
-| **Polutan** | NO2, CO, SO2, CH4 |
-| **Perioda** | 24 Agustus 2025 – 24 Agustus 2026 |
-| **Lokasi** | Kabupaten Gresik, Jawa Timur |
+| Item                 | Keterangan                        |
+| -------------------- | --------------------------------- |
+| **Sumber**           | Copernicus Data Space             |
+| **Layanan**          | openEO                            |
+| **Server**           | `openeo.dataspace.copernicus.eu`  |
+| **Produk / Koleksi** | Sentinel-5P L2                    |
+| **Polutan**          | NO2, CO, SO2, CH4                 |
+| **Perioda**          | 24 Agustus 2025 – 24 Agustus 2026 |
+| **Lokasi**           | Kabupaten Gresik, Jawa Timur      |
 
 ### 1.2 Koneksi dan Otentikasi
 
-Langkah pertama adalah menghubungkan ke server openEO dan melakukan otentikasi menggunakan akun Copernicus Data Space.
+Langkah pertama adalah menghubungkan ke server openEO dan melakukan otentikasi menggunakan akun **Copernicus Data Space**.
 
 ```python
 import openeo
@@ -30,38 +66,48 @@ import openeo
 connection = openeo.connect("openeo.dataspace.copernicus.eu").authenticate_oidc()
 ```
 
-Saat dijalankan, akan muncul tautan untuk login (menggunakan *device code flow*). Setelah berhasil, tampilan pada openEO Web Editor akan seperti gambar berikut:
+Saat dijalankan, akan muncul tautan untuk login (menggunakan _device code flow_). Setelah berhasil melakukan login, akan muncul konfirmasi seperti di bawah ini:
+
+```
+Visit (link authentikasi) 📋 to authenticate.
+✅ Authorized successfully
+Authenticated using device code flow.
+```
+
+> **Catatan:** Proses **login/autentikasi sudah berhasil** (✅ Authorized successfully). Ini menandakan koneksi ke server Copernicus Data Space berjalan benar.
+
+Pengunduhan data polutan dilakukan melalui **notebook openEO** (`code-NO2.ipynb`, `code-CO.ipynb`, `code-SO2.ipynb`, `code-CH4.ipynb`). Notebook tersebut menjalankan **batch job** di server openEO, dan hasilnya dapat **dipantau (monitoring) melalui openEO Web Editor**.
 
 ```{figure} ../assets/editor/openeo.png
 :width: 100%
 :align: center
 
-Batch job NO2 Gresik yang telah selesai (status *finished*) pada openEO Web Editor. Bisa dipantau langsung di https://editor.openeo.org/.
+Pantauan batch job NO2 Gresik yang telah selesai (status *finished*) pada openEO Web Editor. Bisa dilihat langsung di https://editor.openeo.org/.
 ```
 
 ### 1.3 Penentuan Area of Interest (AOI)
 
-**Lokasi pengamatan** dibatasi pada area di **Kabupaten Gresik**. Area ini digambar sebagai **polygon** di atas peta menggunakan alat seperti [geojson.io](https://geojson.io).
+**Lokasi pengamatan** dibatasi pada area di **Kabupaten Gresik**. Area ini digambar sebagai **polygon** di atas peta menggunakan alat seperti [geojson.io](https://geojson.io). **Data peta (koordinat lokasi) dapat dilihat langsung dari file geojson** yang dihasilkan.
 
 ```{figure} ../assets/data/geojson.png
 :width: 100%
 :align: center
 
-Polygon Area of Interest (AOI) di Kabupaten Gresik.
+Polygon Area of Interest (AOI) di Kabupaten Gresik yang digambar pada peta geojson.
 ```
 
 **Penjelasan koordinat:**
 
 Setiap titik pada polygon memiliki format `[longitude (bujur), latitude (lintang)]`. Dari polygon tersebut, kita memperoleh:
 
-| Atribut | Nilai | Keterangan |
-|---------|-------|------------|
-| `west` | 112.6193968 | Longitude terkecil (batas kiri) |
-| `east` | 112.6600158 | Longitude terbesar (batas kanan) |
-| `south` | -7.1927923 | Latitude terkecil (batas bawah) |
-| `north` | -7.1514786 | Latitude terbesar (batas atas) |
+| Atribut | Nilai       | Keterangan                       |
+| ------- | ----------- | -------------------------------- |
+| `west`  | 112.6193968 | Longitude terkecil (batas kiri)  |
+| `east`  | 112.6600158 | Longitude terbesar (batas kanan) |
+| `south` | -7.1927923  | Latitude terkecil (batas bawah)  |
+| `north` | -7.1514786  | Latitude terbesar (batas atas)   |
 
-> **Catatan:** Untuk data Sentinel-5P, `spatial_extent` pada `load_collection` menggunakan *bounding box* (kotak batas) yang dibentuk oleh `west`, `south`, `east`, `north`. Sedangkan `aoi` (polygon) digunakan pada tahap `aggregate_spatial` untuk menghitung rata-rata di dalam area tersebut.
+> **Catatan:** Untuk data Sentinel-5P, `spatial_extent` pada `load_collection` menggunakan _bounding box_ (kotak batas) yang dibentuk oleh `west`, `south`, `east`, `north`. Sedangkan `aoi` (polygon) digunakan pada tahap `aggregate_spatial` untuk menghitung rata-rata di dalam area tersebut.
 
 ### 1.4 Memuat Data (Load Collection)
 
@@ -177,15 +223,103 @@ job = s5.execute_batch(title="NO2 Gresik", outputfile="../data/nc/polutan_NO2_gr
 
 Setiap batch job membutuhkan beberapa menit (antre di server). Hasilnya disimpan pada folder **`data/nc/`**:
 
-| Polutan | File netCDF |
-|---------|-------------|
-| NO2 | `data/nc/polutan_NO2_gresik.nc` |
-| CO | `data/nc/polutan_CO_gresik.nc` |
-| SO2 | `data/nc/polutan_SO2_gresik.nc` |
-| CH4 | `data/nc/polutan_CH4_gresik.nc` |
+| Polutan | File netCDF                     |
+| ------- | ------------------------------- |
+| NO2     | `data/nc/polutan_NO2_gresik.nc` |
+| CO      | `data/nc/polutan_CO_gresik.nc`  |
+| SO2     | `data/nc/polutan_SO2_gresik.nc` |
+| CH4     | `data/nc/polutan_CH4_gresik.nc` |
 
 ---
 
-## 2. (Lanjutan)
+## 2. Menampilkan Hasil Data CSV
 
-Bagian eksplorasi data, visualisasi peta, grafik, dan identifikasi kualitas data akan dilanjutkan pada tahap berikutnya.
+Setelah data dikonversi menjadi CSV, kita dapat menampilkan isi data menggunakan **pandas** `pd.read_csv` diikuti `.head()` untuk melihat **5 baris paling atas**.
+
+### 2.1 CH4
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+# Menampilkan 5 data teratas CSV CH4
+df_ch4 = pd.read_csv("./../data/csv/CH4_gresik_timeseries.csv")
+df_ch4.head()
+```
+
+### 2.2 CO
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+# Menampilkan 5 data teratas CSV CO
+df_co = pd.read_csv("./../data/csv/CO_gresik_timeseries.csv")
+df_co.head()
+```
+
+### 2.3 NO2
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+# Menampilkan 5 data teratas CSV NO2
+df_no2 = pd.read_csv("./../data/csv/NO2_gresik_timeseries.csv")
+df_no2.head()
+```
+
+### 2.4 SO2
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+# Menampilkan 5 data teratas CSV SO2
+df_so2 = pd.read_csv("./../data/csv/SO2_gresik_timeseries.csv")
+df_so2.head()
+```
+
+### 2.5 Kenapa Ada Nilai NaN?
+
+Perhatikan pada hasil data di atas, ada beberapa baris yang menunjukkan nilai **NaN** (Not a Number). Artinya, pada tanggal tersebut **tidak ada data pengamatan** yang tercatat.
+
+Penyebab munculnya NaN pada data satelit Sentinel-5P antara lain:
+
+1. **Tidak ada lintasan satelit** — Sentinel-5P tidak melewati lokasi Kabupaten Gresik setiap hari. Satelit memiliki _revisit time_ (jadwal orbit) tertentu, sehingga ada hari-hari tertentu yang tidak terlewati.
+
+2. **Tutupan awan (cloud cover)** — Sentinel-5P menggunakan sensor yang hasilnya dipengaruhi oleh kondisi atmosfer. Jika area tertutup awan tebal, data tidak valid sehingga dianggap kosong.
+
+3. **Validasi kualitas (quality flag)** — data yang kualitasnya buruk (misal nilai ekstrem karena noise instrumen) dibuang oleh proses validasi data, sehingga menghasilkan celah (gap) pada deret waktu.
+
+Karena itu, dari total **365 hari** dalam setahun, tidak semua tanggal memiliki nilai polutan. Hari-hari yang kosong inilah yang tampil sebagai **NaN** — dan ini akan dibahas lebih lanjut pada tahap **identifikasi _missing values_** di bagian selanjutnya.
+
+## 3. Visualisasi Peta (folium)
+
+Lokasi pengamatan di Kabupaten Gresik divisualisasikan pada **peta interaktif** menggunakan library **`folium`**. Area polygon AOI ditandai pada peta.
+
+```{code-cell}
+:tags: [hide-input]
+import folium
+
+# Pusat peta di tengah area AOI
+lat_c = (-7.1927923 + -7.1514786) / 2
+lon_c = (112.6193968 + 112.6600158) / 2
+
+m = folium.Map(location=[lat_c, lon_c], zoom_start=12)
+
+# Tandai area polygon AOI Kabupaten Gresik
+folium.Rectangle(
+    bounds=[[-7.1927923, 112.6193968], [-7.1514786, 112.6600158]],
+    color="red",
+    fill=True,
+    fill_opacity=0.2,
+    tooltip="Area Kabupaten Gresik",
+).add_to(m)
+
+m
+```
+
+## 3. (Lanjutan)
+
+Bagian visualisasi peta, grafik, dan identifikasi kualitas data akan dilanjutkan pada tahap berikutnya.

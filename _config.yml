@@ -12,7 +12,7 @@ execute:
   execute_notebooks: cache
   # Don't execute working notebooks that need an openEO login / long batch jobs.
   exclude_patterns:
-    - "pertemuan-1/*.ipynb"
+    - "pertemuan-1/code-*.ipynb"
 # Define the name of the latex output file for PDF builds
 latex:
   latex_documents:
