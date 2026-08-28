@@ -498,7 +498,7 @@
 <figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="../_images/openeo.png"><img alt="../_images/openeo.png" src="../_images/openeo.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Batch job NO2 Gresik yang telah selesai (status <em>finished</em>) pada openEO Web Editor.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Batch job NO2 Gresik yang telah selesai (status <em>finished</em>) pada openEO Web Editor. Bisa dipantau langsung di <a class="reference external" href="https://editor.openeo.org/">https://editor.openeo.org/</a>.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -506,7 +506,7 @@
 <h3>1.3 Penentuan Area of Interest (AOI)<a class="headerlink" href="#penentuan-area-of-interest-aoi" title="Link to this heading">#</a></h3>
 <p><strong>Lokasi pengamatan</strong> dibatasi pada area di <strong>Kabupaten Gresik</strong>. Area ini digambar sebagai <strong>polygon</strong> di atas peta menggunakan alat seperti <a class="reference external" href="https://geojson.io">geojson.io</a>.</p>
 <figure class="align-center" id="id2">
-<a class="reference internal image-reference" href="../_images/geojson2.png"><img alt="../_images/geojson2.png" src="../_images/geojson2.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/geojson.png"><img alt="../_images/geojson.png" src="../_images/geojson.png" style="width: 100%;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 2 </span><span class="caption-text">Polygon Area of Interest (AOI) di Kabupaten Gresik.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
 </figcaption>
@@ -522,19 +522,19 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">west</span></code></p></td>
-<td><p>112.6409353</p></td>
+<td><p>112.6193968</p></td>
 <td><p>Longitude terkecil (batas kiri)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">east</span></code></p></td>
-<td><p>112.6589794</p></td>
+<td><p>112.6600158</p></td>
 <td><p>Longitude terbesar (batas kanan)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">south</span></code></p></td>
-<td><p>-7.177427</p></td>
+<td><p>-7.1927923</p></td>
 <td><p>Latitude terkecil (batas bawah)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">north</span></code></p></td>
-<td><p>-7.1491012</p></td>
+<td><p>-7.1514786</p></td>
 <td><p>Latitude terbesar (batas atas)</p></td>
 </tr>
 </tbody>
@@ -546,16 +546,18 @@
 </section>
 <section id="memuat-data-load-collection">
 <h3>1.4 Memuat Data (Load Collection)<a class="headerlink" href="#memuat-data-load-collection" title="Link to this heading">#</a></h3>
-<p>Data dimuat <strong>per polutan</strong>, karena server Sentinel-5P di openEO hanya mendukung <strong>satu band per proses</strong>.</p>
+<p>Data dimuat <strong>per polutan</strong>, karena server Sentinel-5P di openEO hanya mendukung <strong>satu band per proses</strong>. Oleh karena itu dibuat <strong>4 notebook terpisah</strong> (<code class="docutils literal notranslate"><span class="pre">code-NO2.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-CO.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-SO2.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-CH4.ipynb</span></code>), masing-masing untuk satu polutan.</p>
 <section id="a-memuat-data-no2">
 <h4>a. Memuat Data NO2<a class="headerlink" href="#a-memuat-data-no2" title="Link to this heading">#</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5_no2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
     <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
-    <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span><span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6409353</span><span class="p">,</span>
-                    <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.177427</span><span class="p">,</span>
-                    <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6589794</span><span class="p">,</span>
-                    <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1491012</span><span class="p">},</span>
+    <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6193968</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6600158</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span>
+    <span class="p">},</span>
     <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">"NO2"</span><span class="p">],</span>
 <span class="p">)</span>
 </pre></div>
@@ -563,13 +565,15 @@
 </section>
 <section id="b-memuat-data-co">
 <h4>b. Memuat Data CO<a class="headerlink" href="#b-memuat-data-co" title="Link to this heading">#</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5_co</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
     <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
-    <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span><span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6409353</span><span class="p">,</span>
-                    <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.177427</span><span class="p">,</span>
-                    <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6589794</span><span class="p">,</span>
-                    <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1491012</span><span class="p">},</span>
+    <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6193968</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6600158</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span>
+    <span class="p">},</span>
     <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">"CO"</span><span class="p">],</span>
 <span class="p">)</span>
 </pre></div>
@@ -577,13 +581,15 @@
 </section>
 <section id="c-memuat-data-so2">
 <h4>c. Memuat Data SO2<a class="headerlink" href="#c-memuat-data-so2" title="Link to this heading">#</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5_so2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
     <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
-    <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span><span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6409353</span><span class="p">,</span>
-                    <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.177427</span><span class="p">,</span>
-                    <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6589794</span><span class="p">,</span>
-                    <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1491012</span><span class="p">},</span>
+    <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6193968</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6600158</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span>
+    <span class="p">},</span>
     <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">"SO2"</span><span class="p">],</span>
 <span class="p">)</span>
 </pre></div>
@@ -591,18 +597,20 @@
 </section>
 <section id="d-memuat-data-ch4">
 <h4>d. Memuat Data CH4<a class="headerlink" href="#d-memuat-data-ch4" title="Link to this heading">#</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5_ch4</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
     <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
-    <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span><span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6409353</span><span class="p">,</span>
-                    <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.177427</span><span class="p">,</span>
-                    <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6589794</span><span class="p">,</span>
-                    <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1491012</span><span class="p">},</span>
+    <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6193968</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6600158</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span>
+    <span class="p">},</span>
     <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">"CH4"</span><span class="p">],</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Perhatikan:</strong> Kode untuk CO, SO2, dan CH4 <strong>identik</strong> dengan NO2 — hanya berbeda pada parameter <code class="docutils literal notranslate"><span class="pre">bands</span></code> (dan variabel <code class="docutils literal notranslate"><span class="pre">s5_co</span></code>, <code class="docutils literal notranslate"><span class="pre">s5_so2</span></code>, <code class="docutils literal notranslate"><span class="pre">s5_ch4</span></code>).</p>
+<p><strong>Perhatikan:</strong> Kode untuk CO, SO2, dan CH4 <strong>identik</strong> dengan NO2 — hanya berbeda pada parameter <code class="docutils literal notranslate"><span class="pre">bands</span></code>.</p>
 </section>
 </section>
 <section id="definisi-aoi-polygon">
@@ -616,11 +624,11 @@
             <span class="s2">"geometry"</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Polygon"</span><span class="p">,</span>
                 <span class="s2">"coordinates"</span><span class="p">:</span> <span class="p">[[</span>
-                    <span class="p">[</span><span class="mf">112.6411372</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1491012</span><span class="p">],</span>   <span class="c1"># kiri-atas (NW)</span>
-                    <span class="p">[</span><span class="mf">112.6589794</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1491012</span><span class="p">],</span>   <span class="c1"># kanan-atas (NE)</span>
-                    <span class="p">[</span><span class="mf">112.6589794</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.177427</span><span class="p">],</span>    <span class="c1"># kanan-bawah (SE)</span>
-                    <span class="p">[</span><span class="mf">112.6409353</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.177427</span><span class="p">],</span>    <span class="c1"># kiri-bawah (SW)</span>
-                    <span class="p">[</span><span class="mf">112.6411372</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1491012</span><span class="p">]</span>    <span class="c1"># kembali ke titik awal</span>
+                    <span class="p">[</span><span class="mf">112.6193968</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">],</span>   <span class="c1"># kiri-atas (NW)</span>
+                    <span class="p">[</span><span class="mf">112.6600158</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">],</span>   <span class="c1"># kanan-atas (NE)</span>
+                    <span class="p">[</span><span class="mf">112.6600158</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">],</span>   <span class="c1"># kanan-bawah (SE)</span>
+                    <span class="p">[</span><span class="mf">112.619805</span><span class="p">,</span>  <span class="o">-</span><span class="mf">7.1927923</span><span class="p">],</span>   <span class="c1"># kiri-bawah (SW)</span>
+                    <span class="p">[</span><span class="mf">112.6193968</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">]</span>    <span class="c1"># kembali ke titik awal</span>
                 <span class="p">]]</span>
             <span class="p">}</span>
         <span class="p">}</span>
@@ -632,35 +640,41 @@
 <section id="agregasi-data">
 <h3>1.6 Agregasi Data<a class="headerlink" href="#agregasi-data" title="Link to this heading">#</a></h3>
 <p>Setiap datacube diagregasi menjadi <strong>rata-rata harian</strong>, lalu dihitung <strong>rata-rata spasial</strong> di dalam polygon AOI untuk menghasilkan deret waktu (time series).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Agregasi untuk NO2</span>
-<span class="n">s5_no2</span> <span class="o">=</span> <span class="n">s5_no2</span><span class="o">.</span><span class="n">aggregate_temporal_period</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s2">"day"</span><span class="p">)</span>
-<span class="n">s5_no2</span> <span class="o">=</span> <span class="n">s5_no2</span><span class="o">.</span><span class="n">aggregate_spatial</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">aoi</span><span class="p">)</span>
-
-<span class="c1"># Agregasi untuk CO</span>
-<span class="n">s5_co</span> <span class="o">=</span> <span class="n">s5_co</span><span class="o">.</span><span class="n">aggregate_temporal_period</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s2">"day"</span><span class="p">)</span>
-<span class="n">s5_co</span> <span class="o">=</span> <span class="n">s5_co</span><span class="o">.</span><span class="n">aggregate_spatial</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">aoi</span><span class="p">)</span>
-
-<span class="c1"># Agregasi untuk SO2</span>
-<span class="n">s5_so2</span> <span class="o">=</span> <span class="n">s5_so2</span><span class="o">.</span><span class="n">aggregate_temporal_period</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s2">"day"</span><span class="p">)</span>
-<span class="n">s5_so2</span> <span class="o">=</span> <span class="n">s5_so2</span><span class="o">.</span><span class="n">aggregate_spatial</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">aoi</span><span class="p">)</span>
-
-<span class="c1"># Agregasi untuk CH4</span>
-<span class="n">s5_ch4</span> <span class="o">=</span> <span class="n">s5_ch4</span><span class="o">.</span><span class="n">aggregate_temporal_period</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s2">"day"</span><span class="p">)</span>
-<span class="n">s5_ch4</span> <span class="o">=</span> <span class="n">s5_ch4</span><span class="o">.</span><span class="n">aggregate_spatial</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">aoi</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rata-rata harian, lalu rata-rata di dalam polygon AOI</span>
+<span class="n">s5</span> <span class="o">=</span> <span class="n">s5</span><span class="o">.</span><span class="n">aggregate_temporal_period</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s2">"day"</span><span class="p">)</span>
+<span class="n">s5</span> <span class="o">=</span> <span class="n">s5</span><span class="o">.</span><span class="n">aggregate_spatial</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">aoi</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="menjalankan-batch-job">
 <h3>1.7 Menjalankan Batch Job<a class="headerlink" href="#menjalankan-batch-job" title="Link to this heading">#</a></h3>
 <p>Proses dijalankan sebagai <strong>batch job</strong> di server openEO. Hasilnya diunduh sebagai file netCDF (<code class="docutils literal notranslate"><span class="pre">.nc</span></code>).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Jalankan batch job dan unduh hasil</span>
-<span class="n">s5_no2</span><span class="o">.</span><span class="n">execute_batch</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"NO2 Gresik"</span><span class="p">,</span> <span class="n">outputfile</span><span class="o">=</span><span class="s2">"polutan_no2_gresik.nc"</span><span class="p">)</span>
-<span class="n">s5_co</span><span class="o">.</span><span class="n">execute_batch</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"CO Gresik"</span><span class="p">,</span> <span class="n">outputfile</span><span class="o">=</span><span class="s2">"polutan_co_gresik.nc"</span><span class="p">)</span>
-<span class="n">s5_so2</span><span class="o">.</span><span class="n">execute_batch</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"SO2 Gresik"</span><span class="p">,</span> <span class="n">outputfile</span><span class="o">=</span><span class="s2">"polutan_so2_gresik.nc"</span><span class="p">)</span>
-<span class="n">s5_ch4</span><span class="o">.</span><span class="n">execute_batch</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"CH4 Gresik"</span><span class="p">,</span> <span class="n">outputfile</span><span class="o">=</span><span class="s2">"polutan_ch4_gresik.nc"</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="n">s5</span><span class="o">.</span><span class="n">execute_batch</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"NO2 Gresik"</span><span class="p">,</span> <span class="n">outputfile</span><span class="o">=</span><span class="s2">"../data/nc/polutan_NO2_gresik.nc"</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Setiap batch job membutuhkan beberapa menit (antre di server). Setelah selesai, file <code class="docutils literal notranslate"><span class="pre">.nc</span></code> tersimpan di folder kerja.</p>
+<p>Setiap batch job membutuhkan beberapa menit (antre di server). Hasilnya disimpan pada folder <strong><code class="docutils literal notranslate"><span class="pre">data/nc/</span></code></strong>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Polutan</p></th>
+<th class="head"><p>File netCDF</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NO2</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">data/nc/polutan_NO2_gresik.nc</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>CO</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">data/nc/polutan_CO_gresik.nc</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>SO2</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">data/nc/polutan_SO2_gresik.nc</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>CH4</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">data/nc/polutan_CH4_gresik.nc</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 </section>
 <hr class="docutils" />
