@@ -36,19 +36,18 @@ Saat dijalankan, akan muncul tautan untuk login (menggunakan *device code flow*)
 :width: 100%
 :align: center
 
-Batch job NO2 Gresik yang telah selesai (status *finished*) pada openEO Web Editor.
+Batch job NO2 Gresik yang telah selesai (status *finished*) pada openEO Web Editor. Bisa dipantau langsung di https://editor.openeo.org/.
 ```
 
 ### 1.3 Penentuan Area of Interest (AOI)
 
 **Lokasi pengamatan** dibatasi pada area di **Kabupaten Gresik**. Area ini digambar sebagai **polygon** di atas peta menggunakan alat seperti [geojson.io](https://geojson.io).
 
-```{figure} ../assets/data/geojson2.png
+```{figure} ../assets/data/geojson.png
 :width: 100%
 :align: center
 
 Polygon Area of Interest (AOI) di Kabupaten Gresik.
-
 ```
 
 **Penjelasan koordinat:**
@@ -57,27 +56,29 @@ Setiap titik pada polygon memiliki format `[longitude (bujur), latitude (lintang
 
 | Atribut | Nilai | Keterangan |
 |---------|-------|------------|
-| `west` | 112.6409353 | Longitude terkecil (batas kiri) |
-| `east` | 112.6589794 | Longitude terbesar (batas kanan) |
-| `south` | -7.177427 | Latitude terkecil (batas bawah) |
-| `north` | -7.1491012 | Latitude terbesar (batas atas) |
+| `west` | 112.6193968 | Longitude terkecil (batas kiri) |
+| `east` | 112.6600158 | Longitude terbesar (batas kanan) |
+| `south` | -7.1927923 | Latitude terkecil (batas bawah) |
+| `north` | -7.1514786 | Latitude terbesar (batas atas) |
 
 > **Catatan:** Untuk data Sentinel-5P, `spatial_extent` pada `load_collection` menggunakan *bounding box* (kotak batas) yang dibentuk oleh `west`, `south`, `east`, `north`. Sedangkan `aoi` (polygon) digunakan pada tahap `aggregate_spatial` untuk menghitung rata-rata di dalam area tersebut.
 
 ### 1.4 Memuat Data (Load Collection)
 
-Data dimuat **per polutan**, karena server Sentinel-5P di openEO hanya mendukung **satu band per proses**.
+Data dimuat **per polutan**, karena server Sentinel-5P di openEO hanya mendukung **satu band per proses**. Oleh karena itu dibuat **4 notebook terpisah** (`code-NO2.ipynb`, `code-CO.ipynb`, `code-SO2.ipynb`, `code-CH4.ipynb`), masing-masing untuk satu polutan.
 
 #### a. Memuat Data NO2
 
 ```python
-s5_no2 = connection.load_collection(
+s5 = connection.load_collection(
     "SENTINEL_5P_L2",
     temporal_extent=["2025-08-24", "2026-08-24"],
-    spatial_extent={"west": 112.6409353,
-                    "south": -7.177427,
-                    "east": 112.6589794,
-                    "north": -7.1491012},
+    spatial_extent={
+        "west": 112.6193968,
+        "south": -7.1927923,
+        "east": 112.6600158,
+        "north": -7.1514786,
+    },
     bands=["NO2"],
 )
 ```
@@ -85,13 +86,15 @@ s5_no2 = connection.load_collection(
 #### b. Memuat Data CO
 
 ```python
-s5_co = connection.load_collection(
+s5 = connection.load_collection(
     "SENTINEL_5P_L2",
     temporal_extent=["2025-08-24", "2026-08-24"],
-    spatial_extent={"west": 112.6409353,
-                    "south": -7.177427,
-                    "east": 112.6589794,
-                    "north": -7.1491012},
+    spatial_extent={
+        "west": 112.6193968,
+        "south": -7.1927923,
+        "east": 112.6600158,
+        "north": -7.1514786,
+    },
     bands=["CO"],
 )
 ```
@@ -99,13 +102,15 @@ s5_co = connection.load_collection(
 #### c. Memuat Data SO2
 
 ```python
-s5_so2 = connection.load_collection(
+s5 = connection.load_collection(
     "SENTINEL_5P_L2",
     temporal_extent=["2025-08-24", "2026-08-24"],
-    spatial_extent={"west": 112.6409353,
-                    "south": -7.177427,
-                    "east": 112.6589794,
-                    "north": -7.1491012},
+    spatial_extent={
+        "west": 112.6193968,
+        "south": -7.1927923,
+        "east": 112.6600158,
+        "north": -7.1514786,
+    },
     bands=["SO2"],
 )
 ```
@@ -113,18 +118,20 @@ s5_so2 = connection.load_collection(
 #### d. Memuat Data CH4
 
 ```python
-s5_ch4 = connection.load_collection(
+s5 = connection.load_collection(
     "SENTINEL_5P_L2",
     temporal_extent=["2025-08-24", "2026-08-24"],
-    spatial_extent={"west": 112.6409353,
-                    "south": -7.177427,
-                    "east": 112.6589794,
-                    "north": -7.1491012},
+    spatial_extent={
+        "west": 112.6193968,
+        "south": -7.1927923,
+        "east": 112.6600158,
+        "north": -7.1514786,
+    },
     bands=["CH4"],
 )
 ```
 
-**Perhatikan:** Kode untuk CO, SO2, dan CH4 **identik** dengan NO2 — hanya berbeda pada parameter `bands` (dan variabel `s5_co`, `s5_so2`, `s5_ch4`).
+**Perhatikan:** Kode untuk CO, SO2, dan CH4 **identik** dengan NO2 — hanya berbeda pada parameter `bands`.
 
 ### 1.5 Definisi AOI (Polygon)
 
@@ -138,11 +145,11 @@ aoi = {
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [[
-                    [112.6411372, -7.1491012],   # kiri-atas (NW)
-                    [112.6589794, -7.1491012],   # kanan-atas (NE)
-                    [112.6589794, -7.177427],    # kanan-bawah (SE)
-                    [112.6409353, -7.177427],    # kiri-bawah (SW)
-                    [112.6411372, -7.1491012]    # kembali ke titik awal
+                    [112.6193968, -7.1514786],   # kiri-atas (NW)
+                    [112.6600158, -7.1514786],   # kanan-atas (NE)
+                    [112.6600158, -7.1927923],   # kanan-bawah (SE)
+                    [112.619805,  -7.1927923],   # kiri-bawah (SW)
+                    [112.6193968, -7.1514786]    # kembali ke titik awal
                 ]]
             }
         }
@@ -155,21 +162,9 @@ aoi = {
 Setiap datacube diagregasi menjadi **rata-rata harian**, lalu dihitung **rata-rata spasial** di dalam polygon AOI untuk menghasilkan deret waktu (time series).
 
 ```python
-# Agregasi untuk NO2
-s5_no2 = s5_no2.aggregate_temporal_period(reducer="mean", period="day")
-s5_no2 = s5_no2.aggregate_spatial(reducer="mean", geometries=aoi)
-
-# Agregasi untuk CO
-s5_co = s5_co.aggregate_temporal_period(reducer="mean", period="day")
-s5_co = s5_co.aggregate_spatial(reducer="mean", geometries=aoi)
-
-# Agregasi untuk SO2
-s5_so2 = s5_so2.aggregate_temporal_period(reducer="mean", period="day")
-s5_so2 = s5_so2.aggregate_spatial(reducer="mean", geometries=aoi)
-
-# Agregasi untuk CH4
-s5_ch4 = s5_ch4.aggregate_temporal_period(reducer="mean", period="day")
-s5_ch4 = s5_ch4.aggregate_spatial(reducer="mean", geometries=aoi)
+# Rata-rata harian, lalu rata-rata di dalam polygon AOI
+s5 = s5.aggregate_temporal_period(reducer="mean", period="day")
+s5 = s5.aggregate_spatial(reducer="mean", geometries=aoi)
 ```
 
 ### 1.7 Menjalankan Batch Job
@@ -177,14 +172,17 @@ s5_ch4 = s5_ch4.aggregate_spatial(reducer="mean", geometries=aoi)
 Proses dijalankan sebagai **batch job** di server openEO. Hasilnya diunduh sebagai file netCDF (`.nc`).
 
 ```python
-# Jalankan batch job dan unduh hasil
-s5_no2.execute_batch(title="NO2 Gresik", outputfile="polutan_no2_gresik.nc")
-s5_co.execute_batch(title="CO Gresik", outputfile="polutan_co_gresik.nc")
-s5_so2.execute_batch(title="SO2 Gresik", outputfile="polutan_so2_gresik.nc")
-s5_ch4.execute_batch(title="CH4 Gresik", outputfile="polutan_ch4_gresik.nc")
+job = s5.execute_batch(title="NO2 Gresik", outputfile="../data/nc/polutan_NO2_gresik.nc")
 ```
 
-Setiap batch job membutuhkan beberapa menit (antre di server). Setelah selesai, file `.nc` tersimpan di folder kerja.
+Setiap batch job membutuhkan beberapa menit (antre di server). Hasilnya disimpan pada folder **`data/nc/`**:
+
+| Polutan | File netCDF |
+|---------|-------------|
+| NO2 | `data/nc/polutan_NO2_gresik.nc` |
+| CO | `data/nc/polutan_CO_gresik.nc` |
+| SO2 | `data/nc/polutan_SO2_gresik.nc` |
+| CH4 | `data/nc/polutan_CH4_gresik.nc` |
 
 ---
 

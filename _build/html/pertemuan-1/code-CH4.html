@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; Proyek Sains Data IF 5B</title>
+    <title>Mengunduh Data CH4 di Kabupaten Gresik &#8212; Proyek Sains Data IF 5B</title>
   
   
   
@@ -61,7 +61,7 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'pertemuan-1/code';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pertemuan-1/code-CH4';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -302,7 +302,7 @@
       
       
       
-      <li><a href="https://github.com/muhammadainulfuady/PSD/issues/new?title=Issue%20on%20page%20%2Fpertemuan-1/code.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/muhammadainulfuady/PSD/issues/new?title=Issue%20on%20page%20%2Fpertemuan-1/code-CH4.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -332,7 +332,7 @@
       
       
       
-      <li><a href="../_sources/pertemuan-1/code.ipynb" target="_blank"
+      <li><a href="../_sources/pertemuan-1/code-CH4.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -408,7 +408,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>Mengunduh Data CH4 di Kabupaten Gresik</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -417,9 +417,12 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="simple pst-show_toc_level nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#area-of-interest-aoi">Area of Interest (AOI)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data-ch4">Load Data CH4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jalankan-batch-job">Jalankan Batch Job</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#konversi-netcdf-ke-csv">Konversi netCDF ke CSV</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -430,7 +433,10 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell docutils container">
+  <section class="tex2jax_ignore mathjax_ignore" id="mengunduh-data-ch4-di-kabupaten-gresik">
+<h1>Mengunduh Data CH4 di Kabupaten Gresik<a class="headerlink" href="#mengunduh-data-ch4-di-kabupaten-gresik" title="Link to this heading">#</a></h1>
+<p>Notebook ini mengambil data konsentrasi <strong>CH4 (Metana)</strong> dari Sentinel-5P melalui openEO, lalu menyimpannya sebagai file netCDF (<code class="docutils literal notranslate"><span class="pre">.nc</span></code>) dan CSV (<code class="docutils literal notranslate"><span class="pre">.csv</span></code>).</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openeo</span>
 </pre></div>
@@ -449,6 +455,9 @@
 </div>
 </div>
 </div>
+<section id="area-of-interest-aoi">
+<h2>Area of Interest (AOI)<a class="headerlink" href="#area-of-interest-aoi" title="Link to this heading">#</a></h2>
+<p>Polygon lokasi pengamatan di Kabupaten Gresik. Format koordinat: <code class="docutils literal notranslate"><span class="pre">[longitude,</span> <span class="pre">latitude]</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aoi</span> <span class="o">=</span> <span class="p">{</span>
@@ -459,28 +468,13 @@
       <span class="s2">"properties"</span><span class="p">:</span> <span class="p">{},</span>
       <span class="s2">"geometry"</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Polygon"</span><span class="p">,</span>
-        <span class="s2">"coordinates"</span><span class="p">:</span> <span class="p">[</span>
-          <span class="p">[</span>
-            <span class="p">[</span><span class="mf">112.6604742</span><span class="p">,</span><span class="o">-</span><span class="mf">7.1531396</span>
-            <span class="p">],</span>
-            <span class="p">[</span>
-              <span class="mf">112.621704</span><span class="p">,</span>
-              <span class="o">-</span><span class="mf">7.1531396</span>
-            <span class="p">],</span>
-            <span class="p">[</span>
-              <span class="mf">112.621704</span><span class="p">,</span>
-              <span class="o">-</span><span class="mf">7.1855558</span>
-            <span class="p">],</span>
-            <span class="p">[</span>
-              <span class="mf">112.6608208</span><span class="p">,</span>
-              <span class="o">-</span><span class="mf">7.1855558</span>
-            <span class="p">],</span>
-            <span class="p">[</span>
-              <span class="mf">112.6604742</span><span class="p">,</span>
-              <span class="o">-</span><span class="mf">7.1531396</span>
-            <span class="p">]</span>
-          <span class="p">]</span>
-        <span class="p">]</span>
+        <span class="s2">"coordinates"</span><span class="p">:</span> <span class="p">[[</span>
+          <span class="p">[</span><span class="mf">112.6193968</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">],</span>
+          <span class="p">[</span><span class="mf">112.6600158</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">],</span>
+          <span class="p">[</span><span class="mf">112.6600158</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">],</span>
+          <span class="p">[</span><span class="mf">112.619805</span><span class="p">,</span>  <span class="o">-</span><span class="mf">7.1927923</span><span class="p">],</span>
+          <span class="p">[</span><span class="mf">112.6193968</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">]</span>
+        <span class="p">]]</span>
       <span class="p">}</span>
     <span class="p">}</span>
   <span class="p">]</span>
@@ -489,93 +483,84 @@
 </div>
 </div>
 </div>
+</section>
+<section id="load-data-ch4">
+<h2>Load Data CH4<a class="headerlink" href="#load-data-ch4" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s5_no2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s5</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
     <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
-    <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span><span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.621704</span><span class="p">,</span> <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1855558</span><span class="p">,</span> <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6608208</span><span class="p">,</span> <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1531396</span><span class="p">},</span>    
-    <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">"NO2"</span><span class="p">],</span>
+    <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6193968</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6600158</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">"CH4"</span><span class="p">],</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">s5_no2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span><span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.621704</span><span class="p">,</span> <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1855558</span><span class="p">,</span> <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6608208</span><span class="p">,</span> <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1531396</span><span class="p">},</span>
-
-<span class="ne">NameError</span>: name 'connection' is not defined
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rata-rata harian, lalu rata-rata di dalam polygon AOI</span>
+<span class="n">s5</span> <span class="o">=</span> <span class="n">s5</span><span class="o">.</span><span class="n">aggregate_temporal_period</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s2">"day"</span><span class="p">)</span>
+<span class="n">s5</span> <span class="o">=</span> <span class="n">s5</span><span class="o">.</span><span class="n">aggregate_spatial</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">aoi</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+</section>
+<section id="jalankan-batch-job">
+<h2>Jalankan Batch Job<a class="headerlink" href="#jalankan-batch-job" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now aggregate by day to avoid having multiple data per day</span>
-<span class="n">s5_no2</span> <span class="o">=</span> <span class="n">s5_no2</span><span class="o">.</span><span class="n">aggregate_temporal_period</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s2">"day"</span><span class="p">)</span>
-
-<span class="c1"># let's create a spatial aggregation to generate mean timeseries data</span>
-<span class="n">s5_no2</span> <span class="o">=</span> <span class="n">s5_no2</span><span class="o">.</span><span class="n">aggregate_spatial</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">aoi</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="n">s5_no2</span><span class="o">.</span><span class="n">execute_batch</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"NO2 Gresik"</span><span class="p">,</span> <span class="n">outputfile</span><span class="o">=</span><span class="s2">"polutan_no2_gresik.nc"</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="n">s5</span><span class="o">.</span><span class="n">execute_batch</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"CH4 Gresik"</span><span class="p">,</span> <span class="n">outputfile</span><span class="o">=</span><span class="s2">"../data/nc/polutan_CH4_gresik.nc"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:00 Job 'j-2608280754224f72b1aa178f0b3870c1': send 'start'
-0:00:02 Job 'j-2608280754224f72b1aa178f0b3870c1': queued (progress 0%)
-0:00:08 Job 'j-2608280754224f72b1aa178f0b3870c1': queued (progress 0%)
-0:00:14 Job 'j-2608280754224f72b1aa178f0b3870c1': queued (progress 0%)
-0:00:22 Job 'j-2608280754224f72b1aa178f0b3870c1': queued (progress 0%)
-0:00:32 Job 'j-2608280754224f72b1aa178f0b3870c1': queued (progress 0%)
-0:00:45 Job 'j-2608280754224f72b1aa178f0b3870c1': queued (progress 0%)
-0:01:01 Job 'j-2608280754224f72b1aa178f0b3870c1': queued (progress 0%)
-0:01:20 Job 'j-2608280754224f72b1aa178f0b3870c1': queued (progress 0%)
-0:01:44 Job 'j-2608280754224f72b1aa178f0b3870c1': queued (progress 0%)
-0:02:14 Job 'j-2608280754224f72b1aa178f0b3870c1': queued (progress 0%)
-0:02:52 Job 'j-2608280754224f72b1aa178f0b3870c1': queued (progress 0%)
-0:03:38 Job 'j-2608280754224f72b1aa178f0b3870c1': running (progress N/A)
-0:04:37 Job 'j-2608280754224f72b1aa178f0b3870c1': running (progress N/A)
-0:05:37 Job 'j-2608280754224f72b1aa178f0b3870c1': running (progress N/A)
-0:06:38 Job 'j-2608280754224f72b1aa178f0b3870c1': running (progress N/A)
-0:07:38 Job 'j-2608280754224f72b1aa178f0b3870c1': running (progress N/A)
-0:08:38 Job 'j-2608280754224f72b1aa178f0b3870c1': running (progress N/A)
-0:09:39 Job 'j-2608280754224f72b1aa178f0b3870c1': finished (progress 100%)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:00 Job 'j-26082811584243d4a227cccf6350621a': send 'start'
+0:00:02 Job 'j-26082811584243d4a227cccf6350621a': queued (progress 0%)
+0:00:08 Job 'j-26082811584243d4a227cccf6350621a': queued (progress 0%)
+0:00:14 Job 'j-26082811584243d4a227cccf6350621a': queued (progress 0%)
+0:00:22 Job 'j-26082811584243d4a227cccf6350621a': queued (progress 0%)
+0:00:33 Job 'j-26082811584243d4a227cccf6350621a': queued (progress 0%)
+0:00:45 Job 'j-26082811584243d4a227cccf6350621a': queued (progress 0%)
+0:01:01 Job 'j-26082811584243d4a227cccf6350621a': queued (progress 0%)
+0:01:20 Job 'j-26082811584243d4a227cccf6350621a': queued (progress 0%)
+0:01:44 Job 'j-26082811584243d4a227cccf6350621a': running (progress N/A)
+0:02:14 Job 'j-26082811584243d4a227cccf6350621a': running (progress N/A)
+0:02:52 Job 'j-26082811584243d4a227cccf6350621a': finished (progress 100%)
 </pre></div>
 </div>
 </div>
 </div>
+</section>
+<section id="konversi-netcdf-ke-csv">
+<h2>Konversi netCDF ke CSV<a class="headerlink" href="#konversi-netcdf-ke-csv" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">netCDF4</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="n">ds</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="s2">"polutan_no2_gresik.nc"</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="s2">"../data/nc/polutan_CH4_gresik.nc"</span><span class="p">)</span>
 
-<span class="n">no2</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">"NO2"</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>          <span class="c1"># dimensi (feature, t) -&gt; feature 0, semua waktu</span>
+<span class="n">ch4</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">"CH4"</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>   <span class="c1"># feature 0, semua waktu</span>
 <span class="n">time</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">"t"</span><span class="p">][:]</span>
 <span class="n">time_units</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">"t"</span><span class="p">]</span><span class="o">.</span><span class="n">units</span>
 <span class="n">dates</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">num2date</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">time_units</span><span class="p">)</span>
 
-<span class="c1"># Deret tanggal penuh 1 tahun (24 Agst 2025 - 23 Agst 2026)</span>
+<span class="c1"># Deret tanggal penuh 1 tahun</span>
 <span class="n">full_dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">"2026-08-23"</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">"D"</span><span class="p">)</span>
+<span class="n">ch4_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">d</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">):</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">ch4</span><span class="p">)}</span>
 
-<span class="n">no2_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">d</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">):</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">no2</span><span class="p">)}</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"date"</span><span class="p">:</span> <span class="n">full_dates</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">)})</span>
-<span class="n">df</span><span class="p">[</span><span class="s2">"NO2"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">no2_map</span><span class="p">)</span>   <span class="c1"># hari tanpa data otomatis jadi NaN</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">"CH4"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">ch4_map</span><span class="p">)</span>
 
-<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"no2_gresik_timeseries.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">"CSV disimpan:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="s2">"baris"</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -586,6 +571,8 @@
 </div>
 </div>
 </div>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -634,9 +621,12 @@
     <i class="fa-solid fa-list"></i> Contents
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="simple pst-show_toc_level nav section-nav flex-column">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#area-of-interest-aoi">Area of Interest (AOI)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data-ch4">Load Data CH4</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jalankan-batch-job">Jalankan Batch Job</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#konversi-netcdf-ke-csv">Konversi netCDF ke CSV</a></li>
 </ul>
-
   </nav></div>
 
 </div></div>
