@@ -58,6 +58,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'pertemuan-1/data-understanding';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -100,8 +102,8 @@
          class="form-control"
          name="q"
          id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
+         placeholder="Search..."
+         aria-label="Search..."
          autocomplete="off"
          autocorrect="off"
          autocapitalize="off"
@@ -142,7 +144,7 @@
     
   
 
-<a class="navbar-brand logo" href="../intro.html">
+<a class="navbar-brand logo" href="../introduction.html">
   
   
   
@@ -171,14 +173,6 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        
-        <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1">
-                <a class="reference internal" href="../intro.html">
-                    Introduction
-                </a>
-            </li>
-        </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="polutan-kabupaten-gresik.html">Polutan Kabupaten Gresik</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
@@ -226,53 +220,6 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-source-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
-    <i class="fab fa-github"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://github.com/muhammadainulfuady/PSD" target="_blank"
-   class="btn btn-sm btn-source-repository-button dropdown-item"
-   title="Source repository"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="btn__text-container">Repository</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li><a href="https://github.com/muhammadainulfuady/PSD/issues/new?title=Issue%20on%20page%20%2Fpertemuan-1/data-understanding.html&body=Your%20issue%20content%20here." target="_blank"
-   class="btn btn-sm btn-source-issues-button dropdown-item"
-   title="Open an issue"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="btn__text-container">Open issue</span>
-</a>
-</li>
-      
-  </ul>
-</div>
-
 
 
 
@@ -381,7 +328,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#library-python-yang-diperlukan">Library Python yang Diperlukan</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collecting-mengumpulkan-data">1. Collecting (Mengumpulkan Data)</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collecting-mengumpulkan-data">1. Collecting (Mengumpulkan Data)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sumber-data">1.1 Sumber Data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#koneksi-dan-otentikasi">1.2 Koneksi dan Otentikasi</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penentuan-area-of-interest-aoi">1.3 Penentuan Area of Interest (AOI)</a></li>
@@ -398,7 +345,7 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-peta-folium">2. Visualisasi Peta (folium)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menampilkan-hasil-data-csv">3. Menampilkan Hasil Data CSV</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menampilkan-hasil-data-csv">3. Menampilkan Hasil Data CSV</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ch4">3.1 CH4</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co">3.2 CO</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no2">3.3 NO2</a></li>
@@ -406,8 +353,10 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">3.5 Kenapa Ada Nilai NaN?</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.1 Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.2 Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise">4.3 Noise</a></li>
 </ul>
 </li>
 </ul>
@@ -447,10 +396,7 @@ document.write(`
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code></p></td>
 <td><p>Komputasi numerik, misalnya untuk perhitungan rata-rata dan statistik.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></td>
-<td><p>Membuat visualisasi grafik tren polutan.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">folium</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">folium</span></code></p></td>
 <td><p>Membuat visualisasi peta interaktif lokasi pengamatan.</p></td>
 </tr>
 </tbody>
@@ -516,7 +462,7 @@ Authenticated using device code flow.
 <blockquote>
 <div><p><strong>Catatan:</strong> Proses <strong>login/autentikasi sudah berhasil</strong> (✅ Authorized successfully). Ini menandakan koneksi ke server Copernicus Data Space berjalan benar.</p>
 </div></blockquote>
-<p>Pengunduhan data polutan dilakukan melalui <strong>notebook openEO</strong> (<code class="docutils literal notranslate"><span class="pre">code-NO2.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-CO.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-SO2.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-CH4.ipynb</span></code>). Notebook tersebut menjalankan <strong>batch job</strong> di server openEO, dan hasilnya dapat <strong>dipantau (monitoring) melalui openEO Web Editor</strong>.</p>
+<p>Proses crawling data (<code class="docutils literal notranslate"><span class="pre">code-NO2.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-CO.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-SO2.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-CH4.ipynb</span></code>). Notebook tersebut menjalankan <strong>batch job</strong> di server openEO, dan hasilnya dapat <strong>dipantau (monitoring) melalui openEO Web Editor</strong>.</p>
 <figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="../_images/openeo.png"><img alt="../_images/openeo.png" src="../_images/openeo.png" style="width: 100%;" /></a>
 <figcaption>
@@ -752,7 +698,7 @@ Authenticated using device code flow.
             &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
             &lt;style&gt;
-                #map_93d93066e0bc22c6946ee177cf660b3a {
+                #map_db8cf7bed7d3893754eb4296a975e7d6 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -789,14 +735,14 @@ Authenticated using device code flow.
 &lt;body&gt;
     
     
-            &lt;div class=&quot;folium-map&quot; id=&quot;map_93d93066e0bc22c6946ee177cf660b3a&quot; &gt;&lt;/div&gt;
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_db8cf7bed7d3893754eb4296a975e7d6&quot; &gt;&lt;/div&gt;
         
 &lt;/body&gt;
 &lt;script&gt;
     
     
-            var map_93d93066e0bc22c6946ee177cf660b3a = L.map(
-                &quot;map_93d93066e0bc22c6946ee177cf660b3a&quot;,
+            var map_db8cf7bed7d3893754eb4296a975e7d6 = L.map(
+                &quot;map_db8cf7bed7d3893754eb4296a975e7d6&quot;,
                 {
                     center: [-7.17213545, 112.6397063],
                     crs: L.CRS.EPSG3857,
@@ -813,7 +759,7 @@ Authenticated using device code flow.
 
         
     
-            var tile_layer_18cb22e10bf07e60db53465f677b815e = L.tileLayer(
+            var tile_layer_14ec7a4938799ee4865cff72e7581c5f = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -830,16 +776,16 @@ Authenticated using device code flow.
             );
         
     
-            tile_layer_18cb22e10bf07e60db53465f677b815e.addTo(map_93d93066e0bc22c6946ee177cf660b3a);
+            tile_layer_14ec7a4938799ee4865cff72e7581c5f.addTo(map_db8cf7bed7d3893754eb4296a975e7d6);
         
     
-            var rectangle_cc2111f1c4b92b3987a56c7f2789fef3 = L.rectangle(
+            var rectangle_282676bf1fb22e57ccddc98c16d3805d = L.rectangle(
                 [[-7.1927923, 112.6193968], [-7.1514786, 112.6600158]],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 1.0, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_93d93066e0bc22c6946ee177cf660b3a);
+            ).addTo(map_db8cf7bed7d3893754eb4296a975e7d6);
         
     
-            rectangle_cc2111f1c4b92b3987a56c7f2789fef3.bindTooltip(
+            rectangle_282676bf1fb22e57ccddc98c16d3805d.bindTooltip(
                 `&lt;div&gt;
                      Area Kabupaten Gresik
                  &lt;/div&gt;`,
@@ -1177,17 +1123,23 @@ Authenticated using device code flow.
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">ch4</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"CH4"</span><span class="p">]</span>
 <span class="n">missingValueCH4</span> <span class="o">=</span> <span class="n">ch4</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">validValueCH4</span> <span class="o">=</span> <span class="n">ch4</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah missing value pada data ch4 : </span><span class="si">{</span><span class="n">missingValueCH4</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah data terisi (valid) pada data ch4 : </span><span class="si">{</span><span class="n">validValueCH4</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data ch4 : 335
+Jumlah data terisi (valid) pada data ch4 : 31
 </pre></div>
 </div>
 </div>
 </div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/ch4-msv-orange.png"><img alt="../_images/ch4-msv-orange.png" src="../_images/ch4-msv-orange.png" style="width: 100%;" /></a>
+</figure>
 <ol class="arabic simple" start="2">
 <li><p>co</p></li>
 </ol>
@@ -1201,17 +1153,23 @@ Authenticated using device code flow.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CO_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">co</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"CO"</span><span class="p">]</span>
 <span class="n">missingValueCO</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">validValueCO</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah missing value pada data co : </span><span class="si">{</span><span class="n">missingValueCO</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah data terisi (valid) pada data co : </span><span class="si">{</span><span class="n">validValueCO</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data co : 157
+Jumlah data terisi (valid) pada data co : 209
 </pre></div>
 </div>
 </div>
 </div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/co-msv-orange.png"><img alt="../_images/co-msv-orange.png" src="../_images/co-msv-orange.png" style="width: 100%;" /></a>
+</figure>
 <ol class="arabic simple" start="3">
 <li><p>no2</p></li>
 </ol>
@@ -1225,19 +1183,25 @@ Authenticated using device code flow.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">no2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"NO2"</span><span class="p">]</span>
 <span class="n">missingValueNO2</span> <span class="o">=</span> <span class="n">no2</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">validValueNO2</span> <span class="o">=</span> <span class="n">no2</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah missing value pada data no2 : </span><span class="si">{</span><span class="n">missingValueNO2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah data terisi (valid) pada data no2 : </span><span class="si">{</span><span class="n">validValueNO2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data no2 : 179
+Jumlah data terisi (valid) pada data no2 : 187
 </pre></div>
 </div>
 </div>
 </div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/no2-msv-orange.png"><img alt="../_images/no2-msv-orange.png" src="../_images/no2-msv-orange.png" style="width: 100%;" /></a>
+</figure>
 <ol class="arabic simple" start="4">
-<li><p>ch4</p></li>
+<li><p>so2</p></li>
 </ol>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
@@ -1249,17 +1213,245 @@ Authenticated using device code flow.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">so2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"SO2"</span><span class="p">]</span>
 <span class="n">missingValueSO2</span> <span class="o">=</span> <span class="n">so2</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">validValueSO2</span> <span class="o">=</span> <span class="n">so2</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah missing value pada data so2 : </span><span class="si">{</span><span class="n">missingValueSO2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah data terisi (valid) pada data so2 : </span><span class="si">{</span><span class="n">validValueSO2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data so2 : 144
+Jumlah data terisi (valid) pada data so2 : 222
 </pre></div>
 </div>
 </div>
 </div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/so2-msv-orange.png"><img alt="../_images/so2-msv-orange.png" src="../_images/so2-msv-orange.png" style="width: 100%;" /></a>
+</figure>
+</section>
+<section id="outliers">
+<h3>4.2 Outliers<a class="headerlink" href="#outliers" title="Link to this heading">#</a></h3>
+<p><strong>Outliers</strong> (pencilan) adalah nilai pengamatan yang menyimpang secara signifikan dari mayoritas data dalam suatu variabel. Pada dataset ini, deteksi outlier dilakukan menggunakan algoritma <strong>Isolation Forest</strong> dengan tingkat kontaminasi (<code class="docutils literal notranslate"><span class="pre">contamination</span></code>) sebesar <strong>0.05</strong> (5%).</p>
+<p>Sebelum deteksi outlier dilakukan, data bernilai kosong (<em>missing values</em> / <code class="docutils literal notranslate"><span class="pre">NaN</span></code>) terlebih dahulu dibuang (menggunakan <code class="docutils literal notranslate"><span class="pre">dropna()</span></code> pada Python atau widget <code class="docutils literal notranslate"><span class="pre">Impute</span></code> <span class="math notranslate nohighlight">\(\rightarrow\)</span> <em>Remove instances with unknown values</em> pada Orange Data Mining) agar populasi perhitungan pencilan selaras.</p>
+<p>Berikut adalah hasil identifikasi outlier untuk masing-masing polutan:</p>
+<ol class="arabic simple">
+<li><p>ch4</p></li>
+</ol>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[[</span><span class="s1">'CH4'</span><span class="p">]])</span>
+
+<span class="n">normal_ch4</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">outliers_ch4</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah outlier pada data ch4 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_ch4</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah tidak outlier (normal) pada data ch4 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">normal_ch4</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Visualisasi Grafik Outlier CH4</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal_ch4</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal_ch4</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers_ch4</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers_ch4</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier CH4 (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CH4'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data ch4 : 2
+Jumlah tidak outlier (normal) pada data ch4 : 29
+</pre></div>
+</div>
+<img alt="../_images/5db4bf2732890200e9ea8b715095709fc85141962da01619a1e0a6c2127db760.png" src="../_images/5db4bf2732890200e9ea8b715095709fc85141962da01619a1e0a6c2127db760.png" />
+</div>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/ch4-otlr-orange.png"><img alt="../_images/ch4-otlr-orange.png" src="../_images/ch4-otlr-orange.png" style="width: 100%;" /></a>
+</figure>
+<ol class="arabic simple" start="2">
+<li><p>co</p></li>
+</ol>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CO_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[[</span><span class="s1">'CO'</span><span class="p">]])</span>
+
+<span class="n">normal_co</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">outliers_co</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah outlier pada data co : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_co</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah tidak outlier (normal) pada data co : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">normal_co</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Visualisasi Grafik Outlier CO</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal_co</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal_co</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers_co</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers_co</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier CO (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CO'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data co : 11
+Jumlah tidak outlier (normal) pada data co : 198
+</pre></div>
+</div>
+<img alt="../_images/bd846f278f377f4e110b27d044872ae76849416edfb8d033a7e00156140cb491.png" src="../_images/bd846f278f377f4e110b27d044872ae76849416edfb8d033a7e00156140cb491.png" />
+</div>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/co-otlr-orange.png"><img alt="../_images/co-otlr-orange.png" src="../_images/co-otlr-orange.png" style="width: 100%;" /></a>
+</figure>
+<ol class="arabic simple" start="3">
+<li><p>no2</p></li>
+</ol>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[[</span><span class="s1">'NO2'</span><span class="p">]])</span>
+
+<span class="n">normal_no2</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">outliers_no2</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah outlier pada data no2 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_no2</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah tidak outlier (normal) pada data no2 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">normal_no2</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Visualisasi Grafik Outlier NO2</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal_no2</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal_no2</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers_no2</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers_no2</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier NO2 (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi NO2'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data no2 : 10
+Jumlah tidak outlier (normal) pada data no2 : 177
+</pre></div>
+</div>
+<img alt="../_images/bb85cd57881f8c8ee0a912a980dff4754b4e8330b2ae22b1cdd3d3455789eb23.png" src="../_images/bb85cd57881f8c8ee0a912a980dff4754b4e8330b2ae22b1cdd3d3455789eb23.png" />
+</div>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/no2-otlr-orange.png"><img alt="../_images/no2-otlr-orange.png" src="../_images/no2-otlr-orange.png" style="width: 100%;" /></a>
+</figure>
+<ol class="arabic simple" start="4">
+<li><p>so2</p></li>
+</ol>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[[</span><span class="s1">'SO2'</span><span class="p">]])</span>
+
+<span class="n">normal_so2</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">outliers_so2</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier'</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah outlier pada data so2 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_so2</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah tidak outlier (normal) pada data so2 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">normal_so2</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Visualisasi Grafik Outlier SO2</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal_so2</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal_so2</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers_so2</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers_so2</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier SO2 (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi SO2'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data so2 : 12
+Jumlah tidak outlier (normal) pada data so2 : 210
+</pre></div>
+</div>
+<img alt="../_images/c9f9cc4cd470d17213d5d48ef3a64ccc5c9d034b30b581c815fdb986a96b3981.png" src="../_images/c9f9cc4cd470d17213d5d48ef3a64ccc5c9d034b30b581c815fdb986a96b3981.png" />
+</div>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/so2-otlr-orange.png"><img alt="../_images/so2-otlr-orange.png" src="../_images/so2-otlr-orange.png" style="width: 100%;" /></a>
+</figure>
+</section>
+<section id="noise">
+<h3>4.3 Noise<a class="headerlink" href="#noise" title="Link to this heading">#</a></h3>
+<p>BESOK SAJA</p>
 </section>
 </section>
 </section>
@@ -1321,7 +1513,7 @@ Authenticated using device code flow.
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#library-python-yang-diperlukan">Library Python yang Diperlukan</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collecting-mengumpulkan-data">1. Collecting (Mengumpulkan Data)</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collecting-mengumpulkan-data">1. Collecting (Mengumpulkan Data)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sumber-data">1.1 Sumber Data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#koneksi-dan-otentikasi">1.2 Koneksi dan Otentikasi</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#penentuan-area-of-interest-aoi">1.3 Penentuan Area of Interest (AOI)</a></li>
@@ -1338,7 +1530,7 @@ Authenticated using device code flow.
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-peta-folium">2. Visualisasi Peta (folium)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menampilkan-hasil-data-csv">3. Menampilkan Hasil Data CSV</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menampilkan-hasil-data-csv">3. Menampilkan Hasil Data CSV</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ch4">3.1 CH4</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co">3.2 CO</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no2">3.3 NO2</a></li>
@@ -1346,8 +1538,10 @@ Authenticated using device code flow.
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">3.5 Kenapa Ada Nilai NaN?</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.1 Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.2 Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise">4.3 Noise</a></li>
 </ul>
 </li>
 </ul>

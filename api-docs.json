@@ -1,0 +1,20 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Contoh API",
+    "version": "1.0.0",
+    "description": "Dokumentasi dasar API menggunakan JSON"
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "Mengembalikan daftar pengguna",
+        "responses": {
+          "200": {
+            "description": "Sukses"
+          }
+        }
+      }
+    }
+  }
+}

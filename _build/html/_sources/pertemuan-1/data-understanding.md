@@ -28,7 +28,6 @@ Berikut adalah library Python beserta kegunaannya untuk mengerjakan proses data 
 | `netCDF4`    | Membaca file hasil batch job openEO berformat netCDF (`.nc`).                        |
 | `pandas`     | Membaca dan mengolah data tabular (CSV), serta manipulasi deret waktu.               |
 | `numpy`      | Komputasi numerik, misalnya untuk perhitungan rata-rata dan statistik.               |
-| `matplotlib` | Membuat visualisasi grafik tren polutan.                                             |
 | `folium`     | Membuat visualisasi peta interaktif lokasi pengamatan.                               |
 
 Instalasi dapat dilakukan secara bersamaan:
@@ -75,7 +74,7 @@ Authenticated using device code flow.
 
 > **Catatan:** Proses **login/autentikasi sudah berhasil** (✅ Authorized successfully). Ini menandakan koneksi ke server Copernicus Data Space berjalan benar.
 
-Pengunduhan data polutan dilakukan melalui **notebook openEO** (`code-NO2.ipynb`, `code-CO.ipynb`, `code-SO2.ipynb`, `code-CH4.ipynb`). Notebook tersebut menjalankan **batch job** di server openEO, dan hasilnya dapat **dipantau (monitoring) melalui openEO Web Editor**.
+Proses crawling data (`code-NO2.ipynb`, `code-CO.ipynb`, `code-SO2.ipynb`, `code-CH4.ipynb`). Notebook tersebut menjalankan **batch job** di server openEO, dan hasilnya dapat **dipantau (monitoring) melalui openEO Web Editor**.
 
 ```{figure} ../assets/editor/openeo.png
 :width: 100%
@@ -339,7 +338,14 @@ import pandas as pd
 df = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv")
 ch4 = df["CH4"]
 missingValueCH4 = ch4.isna().sum()
+validValueCH4 = ch4.notna().sum()
 print(f"Jumlah missing value pada data ch4 : {missingValueCH4}")
+print(f"Jumlah data terisi (valid) pada data ch4 : {validValueCH4}")
+```
+
+```{figure} ../assets/editor/orange/ch4-msv-orange.png
+:width: 100%
+:align: center
 ```
 
 2. co
@@ -349,7 +355,14 @@ print(f"Jumlah missing value pada data ch4 : {missingValueCH4}")
 df = pd.read_csv("../data/csv/CO_gresik_timeseries.csv")
 co = df["CO"]
 missingValueCO = co.isna().sum()
+validValueCO = co.notna().sum()
 print(f"Jumlah missing value pada data co : {missingValueCO}")
+print(f"Jumlah data terisi (valid) pada data co : {validValueCO}")
+```
+
+```{figure} ../assets/editor/orange/co-msv-orange.png
+:width: 100%
+:align: center
 ```
 
 3. no2
@@ -359,15 +372,198 @@ print(f"Jumlah missing value pada data co : {missingValueCO}")
 df = pd.read_csv("../data/csv/NO2_gresik_timeseries.csv")
 no2 = df["NO2"]
 missingValueNO2 = no2.isna().sum()
+validValueNO2 = no2.notna().sum()
 print(f"Jumlah missing value pada data no2 : {missingValueNO2}")
+print(f"Jumlah data terisi (valid) pada data no2 : {validValueNO2}")
 ```
 
-4. ch4
+```{figure} ../assets/editor/orange/no2-msv-orange.png
+:width: 100%
+:align: center
+```
+
+4. so2
 
 ```{code-cell}
 :tags: [hide-input]
 df = pd.read_csv("../data/csv/SO2_gresik_timeseries.csv")
 so2 = df["SO2"]
 missingValueSO2 = so2.isna().sum()
+validValueSO2 = so2.notna().sum()
 print(f"Jumlah missing value pada data so2 : {missingValueSO2}")
+print(f"Jumlah data terisi (valid) pada data so2 : {validValueSO2}")
 ```
+
+```{figure} ../assets/editor/orange/so2-msv-orange.png
+:width: 100%
+:align: center
+```
+
+### 4.2 Outliers
+
+**Outliers** (pencilan) adalah nilai pengamatan yang menyimpang secara signifikan dari mayoritas data dalam suatu variabel. Pada dataset ini, deteksi outlier dilakukan menggunakan algoritma **Isolation Forest** dengan tingkat kontaminasi (`contamination`) sebesar **0.05** (5%).
+
+Sebelum deteksi outlier dilakukan, data bernilai kosong (*missing values* / `NaN`) terlebih dahulu dibuang (menggunakan `dropna()` pada Python atau widget `Impute` $\rightarrow$ *Remove instances with unknown values* pada Orange Data Mining) agar populasi perhitungan pencilan selaras.
+
+Berikut adalah hasil identifikasi outlier untuk masing-masing polutan:
+
+1. ch4
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.ensemble import IsolationForest
+
+df = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv")
+df_clean = df.dropna(subset=['CH4']).copy()
+
+model = IsolationForest(contamination=0.05, random_state=42)
+df_clean['outlier'] = model.fit_predict(df_clean[['CH4']])
+
+normal_ch4 = df_clean[df_clean['outlier'] == 1]
+outliers_ch4 = df_clean[df_clean['outlier'] == -1]
+
+print(f"Jumlah outlier pada data ch4 : {len(outliers_ch4)}")
+print(f"Jumlah tidak outlier (normal) pada data ch4 : {len(normal_ch4)}")
+
+# Visualisasi Grafik Outlier CH4
+df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+plt.figure(figsize=(10, 4))
+plt.scatter(normal_ch4['date'], normal_ch4['CH4'], color='blue', label='Normal', s=30)
+plt.scatter(outliers_ch4['date'], outliers_ch4['CH4'], color='red', label='Outlier', s=50)
+plt.title('Deteksi Outlier CH4 (Merah = Outlier, Biru = Normal)')
+plt.xlabel('Tanggal')
+plt.ylabel('Konsentrasi CH4')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+```{figure} ../assets/editor/orange/ch4-otlr-orange.png
+:width: 100%
+:align: center
+```
+
+2. co
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.ensemble import IsolationForest
+
+df = pd.read_csv("../data/csv/CO_gresik_timeseries.csv")
+df_clean = df.dropna(subset=['CO']).copy()
+
+model = IsolationForest(contamination=0.05, random_state=42)
+df_clean['outlier'] = model.fit_predict(df_clean[['CO']])
+
+normal_co = df_clean[df_clean['outlier'] == 1]
+outliers_co = df_clean[df_clean['outlier'] == -1]
+
+print(f"Jumlah outlier pada data co : {len(outliers_co)}")
+print(f"Jumlah tidak outlier (normal) pada data co : {len(normal_co)}")
+
+# Visualisasi Grafik Outlier CO
+df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+plt.figure(figsize=(10, 4))
+plt.scatter(normal_co['date'], normal_co['CO'], color='blue', label='Normal', s=30)
+plt.scatter(outliers_co['date'], outliers_co['CO'], color='red', label='Outlier', s=50)
+plt.title('Deteksi Outlier CO (Merah = Outlier, Biru = Normal)')
+plt.xlabel('Tanggal')
+plt.ylabel('Konsentrasi CO')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+```{figure} ../assets/editor/orange/co-otlr-orange.png
+:width: 100%
+:align: center
+```
+
+3. no2
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.ensemble import IsolationForest
+
+df = pd.read_csv("../data/csv/NO2_gresik_timeseries.csv")
+df_clean = df.dropna(subset=['NO2']).copy()
+
+model = IsolationForest(contamination=0.05, random_state=42)
+df_clean['outlier'] = model.fit_predict(df_clean[['NO2']])
+
+normal_no2 = df_clean[df_clean['outlier'] == 1]
+outliers_no2 = df_clean[df_clean['outlier'] == -1]
+
+print(f"Jumlah outlier pada data no2 : {len(outliers_no2)}")
+print(f"Jumlah tidak outlier (normal) pada data no2 : {len(normal_no2)}")
+
+# Visualisasi Grafik Outlier NO2
+df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+plt.figure(figsize=(10, 4))
+plt.scatter(normal_no2['date'], normal_no2['NO2'], color='blue', label='Normal', s=30)
+plt.scatter(outliers_no2['date'], outliers_no2['NO2'], color='red', label='Outlier', s=50)
+plt.title('Deteksi Outlier NO2 (Merah = Outlier, Biru = Normal)')
+plt.xlabel('Tanggal')
+plt.ylabel('Konsentrasi NO2')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+```{figure} ../assets/editor/orange/no2-otlr-orange.png
+:width: 100%
+:align: center
+```
+
+4. so2
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.ensemble import IsolationForest
+
+df = pd.read_csv("../data/csv/SO2_gresik_timeseries.csv")
+df_clean = df.dropna(subset=['SO2']).copy()
+
+model = IsolationForest(contamination=0.05, random_state=42)
+df_clean['outlier'] = model.fit_predict(df_clean[['SO2']])
+
+normal_so2 = df_clean[df_clean['outlier'] == 1]
+outliers_so2 = df_clean[df_clean['outlier'] == -1]
+
+print(f"Jumlah outlier pada data so2 : {len(outliers_so2)}")
+print(f"Jumlah tidak outlier (normal) pada data so2 : {len(normal_so2)}")
+
+# Visualisasi Grafik Outlier SO2
+df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+plt.figure(figsize=(10, 4))
+plt.scatter(normal_so2['date'], normal_so2['SO2'], color='blue', label='Normal', s=30)
+plt.scatter(outliers_so2['date'], outliers_so2['SO2'], color='red', label='Outlier', s=50)
+plt.title('Deteksi Outlier SO2 (Merah = Outlier, Biru = Normal)')
+plt.xlabel('Tanggal')
+plt.ylabel('Konsentrasi SO2')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+```{figure} ../assets/editor/orange/so2-otlr-orange.png
+:width: 100%
+:align: center
+```
+
+### 4.3 Noise
+
+BESOK SAJA
+

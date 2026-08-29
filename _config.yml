@@ -40,3 +40,8 @@ html:
   use_repository_button: true
   extra_css:
     - _static/custom.css
+
+sphinx:
+  config:
+    html_theme_options:
+      show_toc_level: 2
