@@ -16,19 +16,17 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
@@ -39,11 +37,10 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
   
-  <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
@@ -62,36 +59,39 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'pertemuan-1/data-understanding';</script>
-    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="prev" title="Business Understanding" href="business-understanding.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="" />
-  
-    
-    <script src="../_static/searchtools.js"></script>
-    <script src="../_static/language_data.js"></script>
-    <script src="../searchindex.js"></script>
-  
   </head>
-  <body data-default-mode="">
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
-
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
   
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
   
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
   
-  
-  <dialog id="pst-search-dialog">
-    
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -99,6 +99,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -106,59 +107,15 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
   
-    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
-<div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
-    <span class="fa-solid fa-bars"></span>
-  </button>
-  
-  
-  <div class="col-lg-9 navbar-header-items">
-    
-    
-    <div class="navbar-header-items__end">
-      
-        <div class="navbar-item navbar-persistent--container">
-          
-
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
-        </div>
-      
-      
-    </div>
-    
-  </div>
-  
-  
-    <div class="navbar-persistent--mobile">
-
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button>
-    </div>
-  
-
-  
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
-      <span class="fa-solid fa-outdent"></span>
-    </button>
-  
-</div>
-
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
     </header>
   
 
@@ -167,8 +124,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -198,17 +154,21 @@
     
     
     <img src="../_static/logo.jpg" class="logo__image only-light" alt="Proyek Sains Data IF 5B - Home"/>
-    <img src="../_static/logo.jpg" class="logo__image only-dark pst-js-only" alt="Proyek Sains Data IF 5B - Home"/>
+    <script>document.write(`<img src="../_static/logo.jpg" class="logo__image only-dark" alt="Proyek Sains Data IF 5B - Home"/>`);</script>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -233,14 +193,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -384,16 +339,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -416,7 +379,7 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="pst-show_toc_level nav section-nav flex-column">
+                <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#library-python-yang-diperlukan">Library Python yang Diperlukan</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collecting-mengumpulkan-data">1. Collecting (Mengumpulkan Data)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sumber-data">1.1 Sumber Data</a></li>
@@ -434,16 +397,21 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menjalankan-batch-job">1.7 Menjalankan Batch Job</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menampilkan-hasil-data-csv">2. Menampilkan Hasil Data CSV</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ch4">2.1 CH4</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co">2.2 CO</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no2">2.3 NO2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so2">2.4 SO2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">2.5 Kenapa Ada Nilai NaN?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-peta-folium">2. Visualisasi Peta (folium)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menampilkan-hasil-data-csv">3. Menampilkan Hasil Data CSV</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ch4">3.1 CH4</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co">3.2 CO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no2">3.3 NO2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so2">3.4 SO2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">3.5 Kenapa Ada Nilai NaN?</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-peta-folium">3. Visualisasi Peta (folium)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lanjutan">3. (Lanjutan)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.1 Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.2 Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noises">4.3 Noises</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -481,13 +449,10 @@
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code></p></td>
 <td><p>Komputasi numerik, misalnya untuk perhitungan rata-rata dan statistik.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">xarray</span></code></p></td>
-<td><p>(Alternatif) membaca &amp; mengolah data multidimensi netCDF secara lebih praktis.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></td>
 <td><p>Membuat visualisasi grafik tren polutan.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">folium</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">folium</span></code></p></td>
 <td><p>Membuat visualisasi peta interaktif lokasi pengamatan.</p></td>
 </tr>
 </tbody>
@@ -737,11 +702,164 @@ Authenticated using device code flow.
 </section>
 </section>
 <hr class="docutils" />
+<section id="visualisasi-peta-folium">
+<h2>2. Visualisasi Peta (folium)<a class="headerlink" href="#visualisasi-peta-folium" title="Link to this heading">#</a></h2>
+<p>Lokasi pengamatan di Kabupaten Gresik divisualisasikan pada <strong>peta interaktif</strong> menggunakan library <strong><code class="docutils literal notranslate"><span class="pre">folium</span></code></strong>. Area polygon AOI ditandai pada peta.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">folium</span>
+
+<span class="c1"># Pusat peta di tengah area AOI</span>
+<span class="n">lat_c</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">7.1927923</span> <span class="o">+</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">lon_c</span> <span class="o">=</span> <span class="p">(</span><span class="mf">112.6193968</span> <span class="o">+</span> <span class="mf">112.6600158</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="n">lat_c</span><span class="p">,</span> <span class="n">lon_c</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="c1"># Tandai area polygon AOI Kabupaten Gresik</span>
+<span class="n">folium</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span>
+    <span class="n">bounds</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span> <span class="mf">112.6193968</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span> <span class="mf">112.6600158</span><span class="p">]],</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">fill_opacity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Area Kabupaten Gresik"</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+<span class="n">m</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+    
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_aad48fb35631b0ed6ff8dbbc01741e6c {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+
+            &lt;style&gt;html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            &lt;/style&gt;
+
+            &lt;style&gt;#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            &lt;/style&gt;
+
+            &lt;script&gt;
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            &lt;/script&gt;
+
+        
+&lt;/head&gt;
+&lt;body&gt;
+    
+    
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_aad48fb35631b0ed6ff8dbbc01741e6c&quot; &gt;&lt;/div&gt;
+        
+&lt;/body&gt;
+&lt;script&gt;
+    
+    
+            var map_aad48fb35631b0ed6ff8dbbc01741e6c = L.map(
+                &quot;map_aad48fb35631b0ed6ff8dbbc01741e6c&quot;,
+                {
+                    center: [-7.17213545, 112.6397063],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  &quot;zoom&quot;: 12,
+  &quot;zoomControl&quot;: true,
+  &quot;preferCanvas&quot;: false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_ba42962dfcba441c8117fe5b44ab45e1 = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {
+  &quot;minZoom&quot;: 0,
+  &quot;maxZoom&quot;: 19,
+  &quot;maxNativeZoom&quot;: 19,
+  &quot;noWrap&quot;: false,
+  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
+  &quot;subdomains&quot;: &quot;abc&quot;,
+  &quot;detectRetina&quot;: false,
+  &quot;tms&quot;: false,
+  &quot;opacity&quot;: 1,
+}
+
+            );
+        
+    
+            tile_layer_ba42962dfcba441c8117fe5b44ab45e1.addTo(map_aad48fb35631b0ed6ff8dbbc01741e6c);
+        
+    
+            var rectangle_d91d131a5826e59e7421222108b7fa47 = L.rectangle(
+                [[-7.1927923, 112.6193968], [-7.1514786, 112.6600158]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 1.0, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_aad48fb35631b0ed6ff8dbbc01741e6c);
+        
+    
+            rectangle_d91d131a5826e59e7421222108b7fa47.bindTooltip(
+                `&lt;div&gt;
+                     Area Kabupaten Gresik
+                 &lt;/div&gt;`,
+                {
+  &quot;sticky&quot;: true,
+}
+            );
+        
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div></div>
+</div>
+</section>
+<hr class="docutils" />
 <section id="menampilkan-hasil-data-csv">
-<h2>2. Menampilkan Hasil Data CSV<a class="headerlink" href="#menampilkan-hasil-data-csv" title="Link to this heading">#</a></h2>
+<h2>3. Menampilkan Hasil Data CSV<a class="headerlink" href="#menampilkan-hasil-data-csv" title="Link to this heading">#</a></h2>
 <p>Setelah data dikonversi menjadi CSV, kita dapat menampilkan isi data menggunakan <strong>pandas</strong> <code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code> diikuti <code class="docutils literal notranslate"><span class="pre">.head()</span></code> untuk melihat <strong>5 baris paling atas</strong>.</p>
 <section id="ch4">
-<h3>2.1 CH4<a class="headerlink" href="#ch4" title="Link to this heading">#</a></h3>
+<h3>3.1 CH4<a class="headerlink" href="#ch4" title="Link to this heading">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -813,7 +931,7 @@ Authenticated using device code flow.
 </div>
 </section>
 <section id="co">
-<h3>2.2 CO<a class="headerlink" href="#co" title="Link to this heading">#</a></h3>
+<h3>3.2 CO<a class="headerlink" href="#co" title="Link to this heading">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -885,7 +1003,7 @@ Authenticated using device code flow.
 </div>
 </section>
 <section id="no2">
-<h3>2.3 NO2<a class="headerlink" href="#no2" title="Link to this heading">#</a></h3>
+<h3>3.3 NO2<a class="headerlink" href="#no2" title="Link to this heading">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -957,7 +1075,7 @@ Authenticated using device code flow.
 </div>
 </section>
 <section id="so2">
-<h3>2.4 SO2<a class="headerlink" href="#so2" title="Link to this heading">#</a></h3>
+<h3>3.4 SO2<a class="headerlink" href="#so2" title="Link to this heading">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1029,7 +1147,7 @@ Authenticated using device code flow.
 </div>
 </section>
 <section id="kenapa-ada-nilai-nan">
-<h3>2.5 Kenapa Ada Nilai NaN?<a class="headerlink" href="#kenapa-ada-nilai-nan" title="Link to this heading">#</a></h3>
+<h3>3.5 Kenapa Ada Nilai NaN?<a class="headerlink" href="#kenapa-ada-nilai-nan" title="Link to this heading">#</a></h3>
 <p>Perhatikan pada hasil data di atas, ada beberapa baris yang menunjukkan nilai <strong>NaN</strong> (Not a Number). Artinya, pada tanggal tersebut <strong>tidak ada data pengamatan</strong> yang tercatat.</p>
 <p>Penyebab munculnya NaN pada data satelit Sentinel-5P antara lain:</p>
 <ol class="arabic simple">
@@ -1040,9 +1158,13 @@ Authenticated using device code flow.
 <p>Karena itu, dari total <strong>365 hari</strong> dalam setahun, tidak semua tanggal memiliki nilai polutan. Hari-hari yang kosong inilah yang tampil sebagai <strong>NaN</strong> — dan ini akan dibahas lebih lanjut pada tahap <strong>identifikasi <em>missing values</em></strong> di bagian selanjutnya.</p>
 </section>
 </section>
-<section id="visualisasi-peta-folium">
-<h2>3. Visualisasi Peta (folium)<a class="headerlink" href="#visualisasi-peta-folium" title="Link to this heading">#</a></h2>
-<p>Lokasi pengamatan di Kabupaten Gresik divisualisasikan pada <strong>peta interaktif</strong> menggunakan library <strong><code class="docutils literal notranslate"><span class="pre">folium</span></code></strong>. Area polygon AOI ditandai pada peta.</p>
+<hr class="docutils" />
+<section id="identifikasi-kualitas-data">
+<h2>4. Identifikasi Kualitas Data<a class="headerlink" href="#identifikasi-kualitas-data" title="Link to this heading">#</a></h2>
+<p>Pada tahap ini dilakukan <strong>identifikasi</strong> (mencatat) masalah-masalah pada data, yaitu <strong>missing values</strong>, <strong>outliers</strong>, dan <strong>noises</strong>. Sesuai prinsip CRISP-DM, tahap Data Understanding hanya <strong>menemukan dan mencatat</strong> masalah tersebut — penanganan (imputasi, menghapus, dsb.) dilakukan pada tahap berikutnya (Data Preparation).</p>
+<section id="missing-values">
+<h3>4.1 Missing Values<a class="headerlink" href="#missing-values" title="Link to this heading">#</a></h3>
+<p><strong>Missing values</strong> adalah tanggal yang tidak memiliki nilai polutan (NaN). Berikut identifikasinya:</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1050,151 +1172,414 @@ Authenticated using device code flow.
 <p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">folium</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="c1"># Pusat peta di tengah area AOI</span>
-<span class="n">lat_c</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">7.1927923</span> <span class="o">+</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-<span class="n">lon_c</span> <span class="o">=</span> <span class="p">(</span><span class="mf">112.6193968</span> <span class="o">+</span> <span class="mf">112.6600158</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">polutans</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"NO2"</span><span class="p">,</span> <span class="s2">"CO"</span><span class="p">,</span> <span class="s2">"SO2"</span><span class="p">,</span> <span class="s2">"CH4"</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="n">lat_c</span><span class="p">,</span> <span class="n">lon_c</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="n">polutans</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">"./../data/csv/</span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s2">_gresik_timeseries.csv"</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">missing</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">pol</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"Polutan"</span><span class="p">:</span> <span class="n">pol</span><span class="p">,</span> <span class="s2">"Total"</span><span class="p">:</span> <span class="n">total</span><span class="p">,</span> <span class="s2">"Ada Data"</span><span class="p">:</span> <span class="n">total</span> <span class="o">-</span> <span class="n">missing</span><span class="p">,</span>
+                 <span class="s2">"Missing (NaN)"</span><span class="p">:</span> <span class="n">missing</span><span class="p">,</span> <span class="s2">"Persentase Missing"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">missing</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%"</span><span class="p">})</span>
 
-<span class="c1"># Tandai area polygon AOI Kabupaten Gresik</span>
-<span class="n">folium</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span>
-    <span class="n">bounds</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span> <span class="mf">112.6193968</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span> <span class="mf">112.6600158</span><span class="p">]],</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span>
-    <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">fill_opacity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-    <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Area Kabupaten Gresik"</span><span class="p">,</span>
-<span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-
-<span class="n">m</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output text_html"><div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    
-    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
-    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css&quot;/&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
-    
-            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
-                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
-            &lt;style&gt;
-                #map_efd72990ac2e99645b757caba4cc477c {
-                    position: relative;
-                    width: 100.0%;
-                    height: 100.0%;
-                    left: 0.0%;
-                    top: 0.0%;
-                }
-                .leaflet-container { font-size: 1rem; }
-            &lt;/style&gt;
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-            &lt;style&gt;html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
-            &lt;/style&gt;
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-            &lt;style&gt;#map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                right:0;
-                left:0;
-                }
-            &lt;/style&gt;
-
-            &lt;script&gt;
-                L_NO_TOUCH = false;
-                L_DISABLE_3D = false;
-            &lt;/script&gt;
-
-        
-&lt;/head&gt;
-&lt;body&gt;
-    
-    
-            &lt;div class=&quot;folium-map&quot; id=&quot;map_efd72990ac2e99645b757caba4cc477c&quot; &gt;&lt;/div&gt;
-        
-&lt;/body&gt;
-&lt;script&gt;
-    
-    
-            var map_efd72990ac2e99645b757caba4cc477c = L.map(
-                &quot;map_efd72990ac2e99645b757caba4cc477c&quot;,
-                {
-                    center: [-7.17213545, 112.6397063],
-                    crs: L.CRS.EPSG3857,
-                    ...{
-  &quot;zoom&quot;: 12,
-  &quot;zoomControl&quot;: true,
-  &quot;preferCanvas&quot;: false,
-}
-
-                }
-            );
-
-            
-
-        
-    
-            var tile_layer_f8698b0530de4946654aa2e510ebb65e = L.tileLayer(
-                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
-                {
-  &quot;minZoom&quot;: 0,
-  &quot;maxZoom&quot;: 19,
-  &quot;maxNativeZoom&quot;: 19,
-  &quot;noWrap&quot;: false,
-  &quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;,
-  &quot;subdomains&quot;: &quot;abc&quot;,
-  &quot;detectRetina&quot;: false,
-  &quot;tms&quot;: false,
-  &quot;opacity&quot;: 1,
-}
-
-            );
-        
-    
-            tile_layer_f8698b0530de4946654aa2e510ebb65e.addTo(map_efd72990ac2e99645b757caba4cc477c);
-        
-    
-            var rectangle_0d7cd69b236cea5baf6398a6e26d6f6c = L.rectangle(
-                [[-7.1927923, 112.6193968], [-7.1514786, 112.6600158]],
-                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 1.0, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_efd72990ac2e99645b757caba4cc477c);
-        
-    
-            rectangle_0d7cd69b236cea5baf6398a6e26d6f6c.bindTooltip(
-                `&lt;div&gt;
-                     Area Kabupaten Gresik
-                 &lt;/div&gt;`,
-                {
-  &quot;sticky&quot;: true,
-}
-            );
-        
-&lt;/script&gt;
-&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div></div></div>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Polutan</th>
+      <th>Total</th>
+      <th>Ada Data</th>
+      <th>Missing (NaN)</th>
+      <th>Persentase Missing</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NO2</td>
+      <td>365</td>
+      <td>187</td>
+      <td>178</td>
+      <td>48.8%</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>CO</td>
+      <td>365</td>
+      <td>209</td>
+      <td>156</td>
+      <td>42.7%</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>SO2</td>
+      <td>365</td>
+      <td>222</td>
+      <td>143</td>
+      <td>39.2%</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CH4</td>
+      <td>365</td>
+      <td>31</td>
+      <td>334</td>
+      <td>91.5%</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Hasil identifikasi missing values:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Polutan</p></th>
+<th class="head text-center"><p>Total Hari</p></th>
+<th class="head text-center"><p>Ada Data</p></th>
+<th class="head text-center"><p>Missing (NaN)</p></th>
+<th class="head text-center"><p>Persentase</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NO2</p></td>
+<td class="text-center"><p>365</p></td>
+<td class="text-center"><p>187</p></td>
+<td class="text-center"><p>178</p></td>
+<td class="text-center"><p>48.8%</p></td>
+</tr>
+<tr class="row-odd"><td><p>CO</p></td>
+<td class="text-center"><p>365</p></td>
+<td class="text-center"><p>209</p></td>
+<td class="text-center"><p>156</p></td>
+<td class="text-center"><p>42.7%</p></td>
+</tr>
+<tr class="row-even"><td><p>SO2</p></td>
+<td class="text-center"><p>365</p></td>
+<td class="text-center"><p>222</p></td>
+<td class="text-center"><p>143</p></td>
+<td class="text-center"><p>39.2%</p></td>
+</tr>
+<tr class="row-odd"><td><p>CH4</p></td>
+<td class="text-center"><p>365</p></td>
+<td class="text-center"><p>31</p></td>
+<td class="text-center"><p>334</p></td>
+<td class="text-center"><p>91.5%</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
-<section id="lanjutan">
-<h2>3. (Lanjutan)<a class="headerlink" href="#lanjutan" title="Link to this heading">#</a></h2>
-<p>Bagian visualisasi peta, grafik, dan identifikasi kualitas data akan dilanjutkan pada tahap berikutnya.</p>
+<section id="outliers">
+<h3>4.2 Outliers<a class="headerlink" href="#outliers" title="Link to this heading">#</a></h3>
+<p><strong>Outlier</strong> adalah nilai yang menyimpang jauh dari pola umum data. Diidentifikasi menggunakan metode <strong>IQR</strong> (<em>Interquartile Range</em>): nilai di luar batas bawah dan batas atas dianggap outlier.</p>
+<p><strong>Cara menghitung dan mendeteksi outlier dengan metode IQR:</strong></p>
+<p>Langkah-langkahnya adalah sebagai berikut:</p>
+<ol class="arabic simple">
+<li><p><strong>Urutkan data</strong>, lalu bagi menjadi kuartil:</p>
+<ul class="simple">
+<li><p><strong>Q1</strong> = kuartil bawah (nilai yang memisahkan 25% data terendah)</p></li>
+<li><p><strong>Q3</strong> = kuartil atas (nilai yang memisahkan 75% data terendah)</p></li>
+</ul>
+</li>
+<li><p><strong>Hitung IQR</strong> (rentang antar kuartil):</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>IQR = Q3 − Q1
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p><strong>Tentukan batas normal data:</strong></p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Batas Bawah = Q1 − (1,5 × IQR)
+Batas Atas  = Q3 + (1,5 × IQR)
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p><strong>Deteksi outlier:</strong> data dianggap outlier jika nilainya berada <strong>di bawah Batas Bawah</strong> atau <strong>di atas Batas Atas</strong>.</p></li>
+</ol>
+<p>Berikut ilustrasi posisi batas-batas tersebut terhadap data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Q1           Q3
+ |────────────|
+     IQR = Q3 − Q1
+
+Batas Bawah          Batas Atas
+(Q1 − 1,5·IQR)       (Q3 + 1,5·IQR)
+     │                  │
+   [ data NORMAL berada │  → nilai di LUAR
+     di antara keduanya ]     keduanya = OUTLIER
+</pre></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">polutans</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"NO2"</span><span class="p">,</span> <span class="s2">"CO"</span><span class="p">,</span> <span class="s2">"SO2"</span><span class="p">,</span> <span class="s2">"CH4"</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="n">polutans</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">"./../data/csv/</span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s2">_gresik_timeseries.csv"</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">pol</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="n">q1</span><span class="p">,</span> <span class="n">q3</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">),</span> <span class="n">s</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">iqr</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">-</span> <span class="n">q1</span>
+    <span class="n">lo</span> <span class="o">=</span> <span class="n">q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+    <span class="n">hi</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+    <span class="n">n_out</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(((</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">lo</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">s</span> <span class="o">&gt;</span> <span class="n">hi</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"Polutan"</span><span class="p">:</span> <span class="n">pol</span><span class="p">,</span> <span class="s2">"Q1"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">q1</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="s2">"Q3"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">q3</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+                 <span class="s2">"IQR"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">iqr</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="s2">"Batas Bawah"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">lo</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+                 <span class="s2">"Batas Atas"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">hi</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="s2">"Jumlah Outlier"</span><span class="p">:</span> <span class="n">n_out</span><span class="p">})</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Polutan</th>
+      <th>Q1</th>
+      <th>Q3</th>
+      <th>IQR</th>
+      <th>Batas Bawah</th>
+      <th>Batas Atas</th>
+      <th>Jumlah Outlier</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NO2</td>
+      <td>0.000044</td>
+      <td>0.000079</td>
+      <td>0.000035</td>
+      <td>-0.000009</td>
+      <td>0.000131</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>CO</td>
+      <td>0.026579</td>
+      <td>0.031304</td>
+      <td>0.004725</td>
+      <td>0.019491</td>
+      <td>0.038392</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>SO2</td>
+      <td>-0.000075</td>
+      <td>0.000314</td>
+      <td>0.000389</td>
+      <td>-0.000659</td>
+      <td>0.000897</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CH4</td>
+      <td>1886.370789</td>
+      <td>1905.616455</td>
+      <td>19.245667</td>
+      <td>1857.502289</td>
+      <td>1934.484955</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Hasil identifikasi outlier:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Polutan</p></th>
+<th class="head"><p>Q1</p></th>
+<th class="head"><p>Q3</p></th>
+<th class="head text-center"><p>Jumlah Outlier</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NO2</p></td>
+<td><p>4.37 × 10⁻⁵</p></td>
+<td><p>7.88 × 10⁻⁵</p></td>
+<td class="text-center"><p><strong>12</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>CO</p></td>
+<td><p>0.0266</p></td>
+<td><p>0.0313</p></td>
+<td class="text-center"><p><strong>7</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>SO2</p></td>
+<td><p>-7.5 × 10⁻⁵</p></td>
+<td><p>3.1 × 10⁻⁴</p></td>
+<td class="text-center"><p><strong>3</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>CH4</p></td>
+<td><p>1886.37</p></td>
+<td><p>1905.62</p></td>
+<td class="text-center"><p><strong>1</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="noises">
+<h3>4.3 Noises<a class="headerlink" href="#noises" title="Link to this heading">#</a></h3>
+<p><strong>Noise</strong> adalah fluktuasi data yang tidak wajar antar waktu yang berurutan. Diidentifikasi dengan membandingkan selisih nilai antar hari berurutan terhadap ambang batas <strong>3 × standar deviasi</strong>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">polutans</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"NO2"</span><span class="p">,</span> <span class="s2">"CO"</span><span class="p">,</span> <span class="s2">"SO2"</span><span class="p">,</span> <span class="s2">"CH4"</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="n">polutans</span><span class="p">:</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">"./../data/csv/</span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s2">_gresik_timeseries.csv"</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">pol</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+    <span class="n">n_noise</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">diff</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"Polutan"</span><span class="p">:</span> <span class="n">pol</span><span class="p">,</span> <span class="s2">"Ambang (3×SD)"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">threshold</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+                 <span class="s2">"Jumlah Kandidat Noise"</span><span class="p">:</span> <span class="n">n_noise</span><span class="p">})</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Polutan</th>
+      <th>Ambang (3×SD)</th>
+      <th>Jumlah Kandidat Noise</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>NO2</td>
+      <td>0.000190</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>CO</td>
+      <td>0.012793</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>SO2</td>
+      <td>0.000960</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>CH4</td>
+      <td>52.090372</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p><strong>Hasil identifikasi noise:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Polutan</p></th>
+<th class="head text-center"><p>Ambang (3×SD)</p></th>
+<th class="head text-center"><p>Jumlah Kandidat Noise</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NO2</p></td>
+<td class="text-center"><p>1.56 × 10⁻⁴</p></td>
+<td class="text-center"><p><strong>6</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>CO</p></td>
+<td class="text-center"><p>0.0236</p></td>
+<td class="text-center"><p><strong>5</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>SO2</p></td>
+<td class="text-center"><p>0.0012</p></td>
+<td class="text-center"><p><strong>7</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>CH4</p></td>
+<td class="text-center"><p>115.86</p></td>
+<td class="text-center"><p><strong>0</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<div><p><strong>Catatan:</strong> Tahap ini baru <strong>mengidentifikasi</strong> masalah data (missing, outlier, noise). Penanganan seperti mengisi nilai kosong atau menghapus outlier dilakukan pada tahap <strong>Data Preparation</strong> (tahap berikutnya dalam CRISP-DM).</p>
+</div></blockquote>
+</section>
 </section>
 </section>
 
@@ -1244,8 +1629,7 @@ Authenticated using device code flow.
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item"><div
@@ -1254,7 +1638,7 @@ Authenticated using device code flow.
     <i class="fa-solid fa-list"></i> Contents
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="pst-show_toc_level nav section-nav flex-column">
+    <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#library-python-yang-diperlukan">Library Python yang Diperlukan</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collecting-mengumpulkan-data">1. Collecting (Mengumpulkan Data)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sumber-data">1.1 Sumber Data</a></li>
@@ -1272,16 +1656,21 @@ Authenticated using device code flow.
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menjalankan-batch-job">1.7 Menjalankan Batch Job</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menampilkan-hasil-data-csv">2. Menampilkan Hasil Data CSV</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ch4">2.1 CH4</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co">2.2 CO</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no2">2.3 NO2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so2">2.4 SO2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">2.5 Kenapa Ada Nilai NaN?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-peta-folium">2. Visualisasi Peta (folium)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menampilkan-hasil-data-csv">3. Menampilkan Hasil Data CSV</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ch4">3.1 CH4</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co">3.2 CO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no2">3.3 NO2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so2">3.4 SO2</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">3.5 Kenapa Ada Nilai NaN?</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-peta-folium">3. Visualisasi Peta (folium)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lanjutan">3. (Lanjutan)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.1 Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.2 Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noises">4.3 Noises</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
@@ -1330,8 +1719,8 @@ By Muhammad Ainul Fuady
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>
