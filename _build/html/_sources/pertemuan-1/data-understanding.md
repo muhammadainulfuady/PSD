@@ -28,7 +28,6 @@ Berikut adalah library Python beserta kegunaannya untuk mengerjakan proses data 
 | `netCDF4`    | Membaca file hasil batch job openEO berformat netCDF (`.nc`).                        |
 | `pandas`     | Membaca dan mengolah data tabular (CSV), serta manipulasi deret waktu.               |
 | `numpy`      | Komputasi numerik, misalnya untuk perhitungan rata-rata dan statistik.               |
-| `xarray`     | (Alternatif) membaca & mengolah data multidimensi netCDF secara lebih praktis.       |
 | `matplotlib` | Membuat visualisasi grafik tren polutan.                                             |
 | `folium`     | Membuat visualisasi peta interaktif lokasi pengamatan.                               |
 
@@ -232,69 +231,7 @@ Setiap batch job membutuhkan beberapa menit (antre di server). Hasilnya disimpan
 
 ---
 
-## 2. Menampilkan Hasil Data CSV
-
-Setelah data dikonversi menjadi CSV, kita dapat menampilkan isi data menggunakan **pandas** `pd.read_csv` diikuti `.head()` untuk melihat **5 baris paling atas**.
-
-### 2.1 CH4
-
-```{code-cell}
-:tags: [hide-input]
-import pandas as pd
-
-# Menampilkan 5 data teratas CSV CH4
-df_ch4 = pd.read_csv("./../data/csv/CH4_gresik_timeseries.csv")
-df_ch4.head()
-```
-
-### 2.2 CO
-
-```{code-cell}
-:tags: [hide-input]
-import pandas as pd
-
-# Menampilkan 5 data teratas CSV CO
-df_co = pd.read_csv("./../data/csv/CO_gresik_timeseries.csv")
-df_co.head()
-```
-
-### 2.3 NO2
-
-```{code-cell}
-:tags: [hide-input]
-import pandas as pd
-
-# Menampilkan 5 data teratas CSV NO2
-df_no2 = pd.read_csv("./../data/csv/NO2_gresik_timeseries.csv")
-df_no2.head()
-```
-
-### 2.4 SO2
-
-```{code-cell}
-:tags: [hide-input]
-import pandas as pd
-
-# Menampilkan 5 data teratas CSV SO2
-df_so2 = pd.read_csv("./../data/csv/SO2_gresik_timeseries.csv")
-df_so2.head()
-```
-
-### 2.5 Kenapa Ada Nilai NaN?
-
-Perhatikan pada hasil data di atas, ada beberapa baris yang menunjukkan nilai **NaN** (Not a Number). Artinya, pada tanggal tersebut **tidak ada data pengamatan** yang tercatat.
-
-Penyebab munculnya NaN pada data satelit Sentinel-5P antara lain:
-
-1. **Tidak ada lintasan satelit** — Sentinel-5P tidak melewati lokasi Kabupaten Gresik setiap hari. Satelit memiliki _revisit time_ (jadwal orbit) tertentu, sehingga ada hari-hari tertentu yang tidak terlewati.
-
-2. **Tutupan awan (cloud cover)** — Sentinel-5P menggunakan sensor yang hasilnya dipengaruhi oleh kondisi atmosfer. Jika area tertutup awan tebal, data tidak valid sehingga dianggap kosong.
-
-3. **Validasi kualitas (quality flag)** — data yang kualitasnya buruk (misal nilai ekstrem karena noise instrumen) dibuang oleh proses validasi data, sehingga menghasilkan celah (gap) pada deret waktu.
-
-Karena itu, dari total **365 hari** dalam setahun, tidak semua tanggal memiliki nilai polutan. Hari-hari yang kosong inilah yang tampil sebagai **NaN** — dan ini akan dibahas lebih lanjut pada tahap **identifikasi _missing values_** di bagian selanjutnya.
-
-## 3. Visualisasi Peta (folium)
+## 2. Visualisasi Peta (folium)
 
 Lokasi pengamatan di Kabupaten Gresik divisualisasikan pada **peta interaktif** menggunakan library **`folium`**. Area polygon AOI ditandai pada peta.
 
@@ -320,6 +257,208 @@ folium.Rectangle(
 m
 ```
 
-## 3. (Lanjutan)
+---
 
-Bagian visualisasi peta, grafik, dan identifikasi kualitas data akan dilanjutkan pada tahap berikutnya.
+## 3. Menampilkan Hasil Data CSV
+
+Setelah data dikonversi menjadi CSV, kita dapat menampilkan isi data menggunakan **pandas** `pd.read_csv` diikuti `.head()` untuk melihat **5 baris paling atas**.
+
+### 3.1 CH4
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+# Menampilkan 5 data teratas CSV CH4
+df_ch4 = pd.read_csv("./../data/csv/CH4_gresik_timeseries.csv")
+df_ch4.head()
+```
+
+### 3.2 CO
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+# Menampilkan 5 data teratas CSV CO
+df_co = pd.read_csv("./../data/csv/CO_gresik_timeseries.csv")
+df_co.head()
+```
+
+### 3.3 NO2
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+# Menampilkan 5 data teratas CSV NO2
+df_no2 = pd.read_csv("./../data/csv/NO2_gresik_timeseries.csv")
+df_no2.head()
+```
+
+### 3.4 SO2
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+# Menampilkan 5 data teratas CSV SO2
+df_so2 = pd.read_csv("./../data/csv/SO2_gresik_timeseries.csv")
+df_so2.head()
+```
+
+### 3.5 Kenapa Ada Nilai NaN?
+
+Perhatikan pada hasil data di atas, ada beberapa baris yang menunjukkan nilai **NaN** (Not a Number). Artinya, pada tanggal tersebut **tidak ada data pengamatan** yang tercatat.
+
+Penyebab munculnya NaN pada data satelit Sentinel-5P antara lain:
+
+1. **Tidak ada lintasan satelit** — Sentinel-5P tidak melewati lokasi Kabupaten Gresik setiap hari. Satelit memiliki _revisit time_ (jadwal orbit) tertentu, sehingga ada hari-hari tertentu yang tidak terlewati.
+
+2. **Tutupan awan (cloud cover)** — Sentinel-5P menggunakan sensor yang hasilnya dipengaruhi oleh kondisi atmosfer. Jika area tertutup awan tebal, data tidak valid sehingga dianggap kosong.
+
+3. **Validasi kualitas (quality flag)** — data yang kualitasnya buruk (misal nilai ekstrem karena noise instrumen) dibuang oleh proses validasi data, sehingga menghasilkan celah (gap) pada deret waktu.
+
+Karena itu, dari total **365 hari** dalam setahun, tidak semua tanggal memiliki nilai polutan. Hari-hari yang kosong inilah yang tampil sebagai **NaN** — dan ini akan dibahas lebih lanjut pada tahap **identifikasi _missing values_** di bagian selanjutnya.
+
+---
+
+## 4. Identifikasi Kualitas Data
+
+Pada tahap ini dilakukan **identifikasi** (mencatat) masalah-masalah pada data, yaitu **missing values**, **outliers**, dan **noises**. Sesuai prinsip CRISP-DM, tahap Data Understanding hanya **menemukan dan mencatat** masalah tersebut — penanganan (imputasi, menghapus, dsb.) dilakukan pada tahap berikutnya (Data Preparation).
+
+### 4.1 Missing Values
+
+**Missing values** adalah tanggal yang tidak memiliki nilai polutan (NaN). Berikut identifikasinya:
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+polutans = ["NO2", "CO", "SO2", "CH4"]
+data = []
+
+for pol in polutans:
+    df = pd.read_csv(f"./../data/csv/{pol}_gresik_timeseries.csv")
+    total = len(df)
+    missing = int(df[pol].isna().sum())
+    data.append({"Polutan": pol, "Total": total, "Ada Data": total - missing,
+                 "Missing (NaN)": missing, "Persentase Missing": f"{missing/total*100:.1f}%"})
+
+pd.DataFrame(data)
+```
+
+**Hasil identifikasi missing values:**
+
+| Polutan | Total Hari | Ada Data | Missing (NaN) | Persentase |
+| ------- | :--------: | :------: | :-----------: | :--------: |
+| NO2     |    365     |   187    |      178      |   48.8%    |
+| CO      |    365     |   209    |      156      |   42.7%    |
+| SO2     |    365     |   222    |      143      |   39.2%    |
+| CH4     |    365     |    31    |      334      |   91.5%    |
+
+### 4.2 Outliers
+
+**Outlier** adalah nilai yang menyimpang jauh dari pola umum data. Diidentifikasi menggunakan metode **IQR** (_Interquartile Range_): nilai di luar batas bawah dan batas atas dianggap outlier.
+
+**Cara menghitung dan mendeteksi outlier dengan metode IQR:**
+
+Langkah-langkahnya adalah sebagai berikut:
+
+1. **Urutkan data**, lalu bagi menjadi kuartil:
+   - **Q1** = kuartil bawah (nilai yang memisahkan 25% data terendah)
+   - **Q3** = kuartil atas (nilai yang memisahkan 75% data terendah)
+
+2. **Hitung IQR** (rentang antar kuartil):
+
+```
+IQR = Q3 − Q1
+```
+
+3. **Tentukan batas normal data:**
+
+```
+Batas Bawah = Q1 − (1,5 × IQR)
+Batas Atas  = Q3 + (1,5 × IQR)
+```
+
+4. **Deteksi outlier:** data dianggap outlier jika nilainya berada **di bawah Batas Bawah** atau **di atas Batas Atas**.
+
+Berikut ilustrasi posisi batas-batas tersebut terhadap data:
+
+```
+Q1           Q3
+ |────────────|
+     IQR = Q3 − Q1
+
+Batas Bawah          Batas Atas
+(Q1 − 1,5·IQR)       (Q3 + 1,5·IQR)
+     │                  │
+   [ data NORMAL berada │  → nilai di LUAR
+     di antara keduanya ]     keduanya = OUTLIER
+```
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+polutans = ["NO2", "CO", "SO2", "CH4"]
+data = []
+
+for pol in polutans:
+    df = pd.read_csv(f"./../data/csv/{pol}_gresik_timeseries.csv")
+    s = df[pol].dropna()
+    q1, q3 = s.quantile(0.25), s.quantile(0.75)
+    iqr = q3 - q1
+    lo = q1 - 1.5 * iqr
+    hi = q3 + 1.5 * iqr
+    n_out = int(((s < lo) | (s > hi)).sum())
+    data.append({"Polutan": pol, "Q1": round(q1, 6), "Q3": round(q3, 6),
+                 "IQR": round(iqr, 6), "Batas Bawah": round(lo, 6),
+                 "Batas Atas": round(hi, 6), "Jumlah Outlier": n_out})
+
+pd.DataFrame(data)
+```
+
+**Hasil identifikasi outlier:**
+
+| Polutan | Q1          | Q3          | Jumlah Outlier |
+| ------- | ----------- | ----------- | :------------: |
+| NO2     | 4.37 × 10⁻⁵ | 7.88 × 10⁻⁵ |     **12**     |
+| CO      | 0.0266      | 0.0313      |     **7**      |
+| SO2     | -7.5 × 10⁻⁵ | 3.1 × 10⁻⁴  |     **3**      |
+| CH4     | 1886.37     | 1905.62     |     **1**      |
+
+### 4.3 Noises
+
+**Noise** adalah fluktuasi data yang tidak wajar antar waktu yang berurutan. Diidentifikasi dengan membandingkan selisih nilai antar hari berurutan terhadap ambang batas **3 × standar deviasi**.
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+polutans = ["NO2", "CO", "SO2", "CH4"]
+data = []
+
+for pol in polutans:
+    df = pd.read_csv(f"./../data/csv/{pol}_gresik_timeseries.csv")
+    s = df[pol].dropna()
+    diff = s.diff().abs()
+    threshold = 3 * s.std()
+    n_noise = int((diff > threshold).sum())
+    data.append({"Polutan": pol, "Ambang (3×SD)": round(threshold, 6),
+                 "Jumlah Kandidat Noise": n_noise})
+
+pd.DataFrame(data)
+```
+
+**Hasil identifikasi noise:**
+
+| Polutan | Ambang (3×SD) | Jumlah Kandidat Noise |
+| ------- | :-----------: | :-------------------: |
+| NO2     |  1.56 × 10⁻⁴  |         **6**         |
+| CO      |    0.0236     |         **5**         |
+| SO2     |    0.0012     |         **7**         |
+| CH4     |    115.86     |         **0**         |
+
+> **Catatan:** Tahap ini baru **mengidentifikasi** masalah data (missing, outlier, noise). Penanganan seperti mengisi nilai kosong atau menghapus outlier dilakukan pada tahap **Data Preparation** (tahap berikutnya dalam CRISP-DM).
