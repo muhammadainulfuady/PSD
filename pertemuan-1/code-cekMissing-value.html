@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Mengunduh Data CH4 di Kabupaten Gresik &#8212; Proyek Sains Data IF 5B</title>
+    <title>&lt;no title&gt; &#8212; Proyek Sains Data IF 5B</title>
   
   
   
@@ -58,7 +58,7 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'pertemuan-1/code-CH4';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pertemuan-1/code-cekMissing-value';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -257,7 +257,7 @@
       
       
       
-      <li><a href="https://github.com/muhammadainulfuady/PSD/issues/new?title=Issue%20on%20page%20%2Fpertemuan-1/code-CH4.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/muhammadainulfuady/PSD/issues/new?title=Issue%20on%20page%20%2Fpertemuan-1/code-cekMissing-value.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -287,7 +287,7 @@
       
       
       
-      <li><a href="../_sources/pertemuan-1/code-CH4.ipynb" target="_blank"
+      <li><a href="../_sources/pertemuan-1/code-cekMissing-value.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -371,7 +371,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Mengunduh Data CH4 di Kabupaten Gresik</h1>
+    <h1><no title></h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -380,12 +380,9 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#area-of-interest-aoi">Area of Interest (AOI)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data-ch4">Load Data CH4</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jalankan-batch-job">Jalankan Batch Job</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#konversi-netcdf-ke-csv">Konversi netCDF ke CSV</a></li>
+                <ul class="simple visible nav section-nav flex-column">
 </ul>
+
             </nav>
         </div>
     </div>
@@ -396,176 +393,67 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="mengunduh-data-ch4-di-kabupaten-gresik">
-<h1>Mengunduh Data CH4 di Kabupaten Gresik<a class="headerlink" href="#mengunduh-data-ch4-di-kabupaten-gresik" title="Link to this heading">#</a></h1>
-<p>Notebook ini mengambil data konsentrasi <strong>CH4 (Metana)</strong> dari Sentinel-5P melalui openEO, lalu menyimpannya sebagai file netCDF (<code class="docutils literal notranslate"><span class="pre">.nc</span></code>) dan CSV (<code class="docutils literal notranslate"><span class="pre">.csv</span></code>).</p>
-<div class="cell docutils container">
+  <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openeo</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">openeo</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"openeo.dataspace.copernicus.eu"</span><span class="p">)</span><span class="o">.</span><span class="n">authenticate_oidc</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">ch4</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"CH4"</span><span class="p">]</span>
+<span class="n">missingValueCH4</span> <span class="o">=</span> <span class="n">ch4</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah missing value pada data ch4 : </span><span class="si">{</span><span class="n">missingValueCH4</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Authenticated using refresh token.
-</pre></div>
-</div>
-</div>
-</div>
-<section id="area-of-interest-aoi">
-<h2>Area of Interest (AOI)<a class="headerlink" href="#area-of-interest-aoi" title="Link to this heading">#</a></h2>
-<p>Polygon lokasi pengamatan di Kabupaten Gresik. Format koordinat: <code class="docutils literal notranslate"><span class="pre">[longitude,</span> <span class="pre">latitude]</span></code>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aoi</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"FeatureCollection"</span><span class="p">,</span>
-  <span class="s2">"features"</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Feature"</span><span class="p">,</span>
-      <span class="s2">"properties"</span><span class="p">:</span> <span class="p">{},</span>
-      <span class="s2">"geometry"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Polygon"</span><span class="p">,</span>
-        <span class="s2">"coordinates"</span><span class="p">:</span> <span class="p">[[</span>
-          <span class="p">[</span><span class="mf">112.6193968</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">],</span>
-          <span class="p">[</span><span class="mf">112.6600158</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">],</span>
-          <span class="p">[</span><span class="mf">112.6600158</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">],</span>
-          <span class="p">[</span><span class="mf">112.619805</span><span class="p">,</span>  <span class="o">-</span><span class="mf">7.1927923</span><span class="p">],</span>
-          <span class="p">[</span><span class="mf">112.6193968</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">]</span>
-        <span class="p">]]</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="load-data-ch4">
-<h2>Load Data CH4<a class="headerlink" href="#load-data-ch4" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">s5</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
-    <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
-    <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
-    <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6193968</span><span class="p">,</span>
-        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span>
-        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6600158</span><span class="p">,</span>
-        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">"CH4"</span><span class="p">],</span>
-<span class="p">)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data ch4 : 335
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rata-rata harian, lalu rata-rata di dalam polygon AOI</span>
-<span class="n">s5</span> <span class="o">=</span> <span class="n">s5</span><span class="o">.</span><span class="n">aggregate_temporal_period</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="s2">"day"</span><span class="p">)</span>
-<span class="n">s5</span> <span class="o">=</span> <span class="n">s5</span><span class="o">.</span><span class="n">aggregate_spatial</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">aoi</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="jalankan-batch-job">
-<h2>Jalankan Batch Job<a class="headerlink" href="#jalankan-batch-job" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">job</span> <span class="o">=</span> <span class="n">s5</span><span class="o">.</span><span class="n">execute_batch</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">"CH4 Gresik"</span><span class="p">,</span> <span class="n">outputfile</span><span class="o">=</span><span class="s2">"../data/nc/polutan_CH4_gresik.nc"</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CO_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">co</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"CO"</span><span class="p">]</span>
+<span class="n">missingValueCO</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah missing value pada data co : </span><span class="si">{</span><span class="n">missingValueCO</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:00 Job 'j-2608291243554d118edc332c966919db': send 'start'
-0:00:02 Job 'j-2608291243554d118edc332c966919db': queued (progress 0%)
-0:00:08 Job 'j-2608291243554d118edc332c966919db': queued (progress 0%)
-0:00:14 Job 'j-2608291243554d118edc332c966919db': running (progress N/A)
-0:00:22 Job 'j-2608291243554d118edc332c966919db': running (progress N/A)
-0:00:32 Job 'j-2608291243554d118edc332c966919db': running (progress N/A)
-0:00:45 Job 'j-2608291243554d118edc332c966919db': running (progress N/A)
-0:01:01 Job 'j-2608291243554d118edc332c966919db': running (progress N/A)
-0:01:20 Job 'j-2608291243554d118edc332c966919db': running (progress N/A)
-0:01:44 Job 'j-2608291243554d118edc332c966919db': running (progress N/A)
-0:02:14 Job 'j-2608291243554d118edc332c966919db': running (progress N/A)
-0:02:52 Job 'j-2608291243554d118edc332c966919db': running (progress N/A)
-0:03:39 Job 'j-2608291243554d118edc332c966919db': finished (progress 100%)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data co : 157
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<section id="konversi-netcdf-ke-csv">
-<h2>Konversi netCDF ke CSV<a class="headerlink" href="#konversi-netcdf-ke-csv" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">netCDF4</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-
-<span class="c1"># Buka file NetCDF</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="s2">"../data/nc/polutan_CH4_gresik.nc"</span><span class="p">)</span>
-
-<span class="c1"># Ambil data CH4</span>
-<span class="n">ch4</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">"CH4"</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
-
-<span class="c1"># Ambil waktu</span>
-<span class="n">time</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">"t"</span><span class="p">][:]</span>
-
-<span class="c1"># Ubah waktu menjadi tanggal</span>
-<span class="n">dates</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">num2date</span><span class="p">(</span>
-    <span class="n">time</span><span class="p">,</span>
-    <span class="n">units</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">"t"</span><span class="p">]</span><span class="o">.</span><span class="n">units</span>
-<span class="p">)</span>
-
-<span class="c1"># Buat tanggal lengkap selama periode penelitian</span>
-<span class="n">full_dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
-    <span class="n">start</span><span class="o">=</span><span class="s2">"2025-08-24"</span><span class="p">,</span>
-    <span class="n">end</span><span class="o">=</span><span class="s2">"2026-08-24"</span><span class="p">,</span>
-    <span class="n">freq</span><span class="o">=</span><span class="s2">"D"</span>
-<span class="p">)</span>
-
-<span class="c1"># Pasangkan tanggal dengan nilai CH4</span>
-<span class="n">ch4_data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">):</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">date</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">ch4</span><span class="p">)</span>
-<span class="p">}</span>
-
-<span class="c1"># Buat tabel dengan semua tanggal</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
-    <span class="s2">"date"</span><span class="p">:</span> <span class="n">full_dates</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span>
-<span class="p">})</span>
-
-<span class="c1"># Masukkan nilai CH4 yang tersedia</span>
-<span class="n">df</span><span class="p">[</span><span class="s2">"CH4"</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"date"</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">ch4_data</span><span class="p">)</span>
-
-<span class="c1"># Simpan ke CSV</span>
-<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
-    <span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">,</span>
-    <span class="n">index</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"CSV berhasil disimpan"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah baris:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">no2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"NO2"</span><span class="p">]</span>
+<span class="n">missingValueNO2</span> <span class="o">=</span> <span class="n">no2</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah missing value pada data no2 : </span><span class="si">{</span><span class="n">missingValueNO2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CSV berhasil disimpan
-Jumlah baris: 366
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data no2 : 179
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">so2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"SO2"</span><span class="p">]</span>
+<span class="n">missingValueSO2</span> <span class="o">=</span> <span class="n">so2</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah missing value pada data so2 : </span><span class="si">{</span><span class="n">missingValueSO2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data so2 : 144
+</pre></div>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -613,12 +501,9 @@ Jumlah baris: 366
     <i class="fa-solid fa-list"></i> Contents
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#area-of-interest-aoi">Area of Interest (AOI)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data-ch4">Load Data CH4</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jalankan-batch-job">Jalankan Batch Job</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#konversi-netcdf-ke-csv">Konversi netCDF ke CSV</a></li>
+    <ul class="simple visible nav section-nav flex-column">
 </ul>
+
   </nav></div>
 
 </div></div>
