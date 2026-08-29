@@ -6,6 +6,12 @@ author: Muhammad Ainul Fuady
 logo: logo.jpg
 copyright: "2026"
 
+# Enable MyST extensions for math support
+myst_enable_extensions:
+  - dollarmath
+  - amsmath
+  - colon_fence
+
 # Re-use cached notebook outputs; don't force re-execution on every build.
 # See https://jupyterbook.org/content/execute.html
 execute:

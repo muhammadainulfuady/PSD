@@ -331,134 +331,43 @@ Pada tahap ini dilakukan **identifikasi** (mencatat) masalah-masalah pada data, 
 
 **Missing values** adalah tanggal yang tidak memiliki nilai polutan (NaN). Berikut identifikasinya:
 
-```{code-cell}
-:tags: [hide-input]
-import pandas as pd
-
-polutans = ["NO2", "CO", "SO2", "CH4"]
-data = []
-
-for pol in polutans:
-    df = pd.read_csv(f"./../data/csv/{pol}_gresik_timeseries.csv")
-    total = len(df)
-    missing = int(df[pol].isna().sum())
-    data.append({"Polutan": pol, "Total": total, "Ada Data": total - missing,
-                 "Missing (NaN)": missing, "Persentase Missing": f"{missing/total*100:.1f}%"})
-
-pd.DataFrame(data)
-```
-
-**Hasil identifikasi missing values:**
-
-| Polutan | Total Hari | Ada Data | Missing (NaN) | Persentase |
-| ------- | :--------: | :------: | :-----------: | :--------: |
-| NO2     |    365     |   187    |      178      |   48.8%    |
-| CO      |    365     |   209    |      156      |   42.7%    |
-| SO2     |    365     |   222    |      143      |   39.2%    |
-| CH4     |    365     |    31    |      334      |   91.5%    |
-
-### 4.2 Outliers
-
-**Outlier** adalah nilai yang menyimpang jauh dari pola umum data. Diidentifikasi menggunakan metode **IQR** (_Interquartile Range_): nilai di luar batas bawah dan batas atas dianggap outlier.
-
-**Cara menghitung dan mendeteksi outlier dengan metode IQR:**
-
-Langkah-langkahnya adalah sebagai berikut:
-
-1. **Urutkan data**, lalu bagi menjadi kuartil:
-   - **Q1** = kuartil bawah (nilai yang memisahkan 25% data terendah)
-   - **Q3** = kuartil atas (nilai yang memisahkan 75% data terendah)
-
-2. **Hitung IQR** (rentang antar kuartil):
-
-```
-IQR = Q3 − Q1
-```
-
-3. **Tentukan batas normal data:**
-
-```
-Batas Bawah = Q1 − (1,5 × IQR)
-Batas Atas  = Q3 + (1,5 × IQR)
-```
-
-4. **Deteksi outlier:** data dianggap outlier jika nilainya berada **di bawah Batas Bawah** atau **di atas Batas Atas**.
-
-Berikut ilustrasi posisi batas-batas tersebut terhadap data:
-
-```
-Q1           Q3
- |────────────|
-     IQR = Q3 − Q1
-
-Batas Bawah          Batas Atas
-(Q1 − 1,5·IQR)       (Q3 + 1,5·IQR)
-     │                  │
-   [ data NORMAL berada │  → nilai di LUAR
-     di antara keduanya ]     keduanya = OUTLIER
-```
+1. ch4
 
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
-
-polutans = ["NO2", "CO", "SO2", "CH4"]
-data = []
-
-for pol in polutans:
-    df = pd.read_csv(f"./../data/csv/{pol}_gresik_timeseries.csv")
-    s = df[pol].dropna()
-    q1, q3 = s.quantile(0.25), s.quantile(0.75)
-    iqr = q3 - q1
-    lo = q1 - 1.5 * iqr
-    hi = q3 + 1.5 * iqr
-    n_out = int(((s < lo) | (s > hi)).sum())
-    data.append({"Polutan": pol, "Q1": round(q1, 6), "Q3": round(q3, 6),
-                 "IQR": round(iqr, 6), "Batas Bawah": round(lo, 6),
-                 "Batas Atas": round(hi, 6), "Jumlah Outlier": n_out})
-
-pd.DataFrame(data)
+df = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv")
+ch4 = df["CH4"]
+missingValueCH4 = ch4.isna().sum()
+print(f"Jumlah missing value pada data ch4 : {missingValueCH4}")
 ```
 
-**Hasil identifikasi outlier:**
-
-| Polutan | Q1          | Q3          | Jumlah Outlier |
-| ------- | ----------- | ----------- | :------------: |
-| NO2     | 4.37 × 10⁻⁵ | 7.88 × 10⁻⁵ |     **12**     |
-| CO      | 0.0266      | 0.0313      |     **7**      |
-| SO2     | -7.5 × 10⁻⁵ | 3.1 × 10⁻⁴  |     **3**      |
-| CH4     | 1886.37     | 1905.62     |     **1**      |
-
-### 4.3 Noises
-
-**Noise** adalah fluktuasi data yang tidak wajar antar waktu yang berurutan. Diidentifikasi dengan membandingkan selisih nilai antar hari berurutan terhadap ambang batas **3 × standar deviasi**.
+2. co
 
 ```{code-cell}
 :tags: [hide-input]
-import pandas as pd
-
-polutans = ["NO2", "CO", "SO2", "CH4"]
-data = []
-
-for pol in polutans:
-    df = pd.read_csv(f"./../data/csv/{pol}_gresik_timeseries.csv")
-    s = df[pol].dropna()
-    diff = s.diff().abs()
-    threshold = 3 * s.std()
-    n_noise = int((diff > threshold).sum())
-    data.append({"Polutan": pol, "Ambang (3×SD)": round(threshold, 6),
-                 "Jumlah Kandidat Noise": n_noise})
-
-pd.DataFrame(data)
+df = pd.read_csv("../data/csv/CO_gresik_timeseries.csv")
+co = df["CO"]
+missingValueCO = co.isna().sum()
+print(f"Jumlah missing value pada data co : {missingValueCO}")
 ```
 
-**Hasil identifikasi noise:**
+3. no2
 
-| Polutan | Ambang (3×SD) | Jumlah Kandidat Noise |
-| ------- | :-----------: | :-------------------: |
-| NO2     |  1.56 × 10⁻⁴  |         **6**         |
-| CO      |    0.0236     |         **5**         |
-| SO2     |    0.0012     |         **7**         |
-| CH4     |    115.86     |         **0**         |
+```{code-cell}
+:tags: [hide-input]
+df = pd.read_csv("../data/csv/NO2_gresik_timeseries.csv")
+no2 = df["NO2"]
+missingValueNO2 = no2.isna().sum()
+print(f"Jumlah missing value pada data no2 : {missingValueNO2}")
+```
 
-> **Catatan:** Tahap ini baru **mengidentifikasi** masalah data (missing, outlier, noise). Penanganan seperti mengisi nilai kosong atau menghapus outlier dilakukan pada tahap **Data Preparation** (tahap berikutnya dalam CRISP-DM).
+4. ch4
+
+```{code-cell}
+:tags: [hide-input]
+df = pd.read_csv("../data/csv/SO2_gresik_timeseries.csv")
+so2 = df["SO2"]
+missingValueSO2 = so2.isna().sum()
+print(f"Jumlah missing value pada data so2 : {missingValueSO2}")
+```
