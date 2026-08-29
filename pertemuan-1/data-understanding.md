@@ -371,3 +371,11 @@ so2 = df["SO2"]
 missingValueSO2 = so2.isna().sum()
 print(f"Jumlah missing value pada data so2 : {missingValueSO2}")
 ```
+
+### 4.2 Outliers
+
+BESOK SAJA
+
+### 4.3 Noise
+
+BESOK SAJA
