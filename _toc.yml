@@ -8,7 +8,3 @@ chapters:
     sections:
       - file: pertemuan-1/business-understanding
       - file: pertemuan-1/data-understanding
-      - file: pertemuan-1/code-cekMissing-value
-      - file: pertemuan-1/code-cekOutlier
-      - file: pertemuan-1/code-cekNoise
-

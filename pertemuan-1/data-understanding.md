@@ -22,18 +22,20 @@ Data Understanding adalah tahap untuk **mengumpulkan**, **mengeksplorasi**, dan 
 
 Berikut adalah library Python beserta kegunaannya untuk mengerjakan proses data understanding ini:
 
-| Library      | Kegunaan                                                                             |
-| ------------ | ------------------------------------------------------------------------------------ |
-| `openeo`     | Menghubungkan dan memproses data satelit dari server openEO (Copernicus Data Space). |
-| `netCDF4`    | Membaca file hasil batch job openEO berformat netCDF (`.nc`).                        |
-| `pandas`     | Membaca dan mengolah data tabular (CSV), serta manipulasi deret waktu.               |
-| `numpy`      | Komputasi numerik, misalnya untuk perhitungan rata-rata dan statistik.               |
-| `folium`     | Membuat visualisasi peta interaktif lokasi pengamatan.                               |
+| Library        | Kegunaan                                                                                                                |
+| :------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| `openeo`       | Menghubungkan dan memproses data satelit dari server openEO (Copernicus Data Space).                                    |
+| `netCDF4`      | Membaca file hasil batch job openEO berformat netCDF (`.nc`).                                                           |
+| `pandas`       | Membaca dan mengolah data tabular (CSV), serta manipulasi deret waktu (_time-series_).                                  |
+| `numpy`        | Komputasi numerik, misalnya perhitungan rata-rata, standar deviasi, dan statistik.                                      |
+| `matplotlib`   | Membuat visualisasi grafik scatter plot (outliers), line plot (noise $\pm 1\sigma$), dan grafik komparatif dual X-axis. |
+| `scikit-learn` | Deteksi pencilan (_outlier detection_) menggunakan algoritma _Isolation Forest_.                                        |
+| `folium`       | Membuat visualisasi peta interaktif lokasi pengamatan (AOI Kabupaten Gresik).                                           |
 
 Instalasi dapat dilakukan secara bersamaan:
 
-```python
-pip install openeo netCDF4 pandas numpy matplotlib folium
+```bash
+pip install openeo netCDF4 pandas numpy matplotlib scikit-learn folium
 ```
 
 ---
@@ -73,15 +75,6 @@ Authenticated using device code flow.
 ```
 
 > **Catatan:** Proses **login/autentikasi sudah berhasil** (✅ Authorized successfully). Ini menandakan koneksi ke server Copernicus Data Space berjalan benar.
-
-Proses crawling data (`code-NO2.ipynb`, `code-CO.ipynb`, `code-SO2.ipynb`, `code-CH4.ipynb`). Notebook tersebut menjalankan **batch job** di server openEO, dan hasilnya dapat **dipantau (monitoring) melalui openEO Web Editor**.
-
-```{figure} ../assets/editor/openeo.png
-:width: 100%
-:align: center
-
-Pantauan batch job NO2 Gresik yang telah selesai (status *finished*) pada openEO Web Editor. Bisa dilihat langsung di https://editor.openeo.org/.
-```
 
 ### 1.3 Penentuan Area of Interest (AOI)
 
@@ -227,6 +220,15 @@ Setiap batch job membutuhkan beberapa menit (antre di server). Hasilnya disimpan
 | CO      | `data/nc/polutan_CO_gresik.nc`  |
 | SO2     | `data/nc/polutan_SO2_gresik.nc` |
 | CH4     | `data/nc/polutan_CH4_gresik.nc` |
+
+Proses crawling data. Notebook tersebut menjalankan **batch job** di server openEO, dan hasilnya dapat **dipantau (monitoring) melalui openEO Web Editor**.
+
+```{figure} ../assets/editor/openeo.png
+:width: 100%
+:align: center
+
+Pantauan batch job NO2 Gresik yang telah selesai (status *finished*) pada openEO Web Editor. Bisa dilihat langsung di https://editor.openeo.org/.
+```
 
 ---
 
@@ -403,7 +405,7 @@ print(f"Jumlah data terisi (valid) pada data so2 : {validValueSO2}")
 
 **Outliers** (pencilan) adalah nilai pengamatan yang menyimpang secara signifikan dari mayoritas data dalam suatu variabel. Pada dataset ini, deteksi outlier dilakukan menggunakan algoritma **Isolation Forest** dengan tingkat kontaminasi (`contamination`) sebesar **0.05** (5%).
 
-Sebelum deteksi outlier dilakukan, data bernilai kosong (*missing values* / `NaN`) terlebih dahulu dibuang (menggunakan `dropna()` pada Python atau widget `Impute` $\rightarrow$ *Remove instances with unknown values* pada Orange Data Mining) agar populasi perhitungan pencilan selaras.
+Sebelum deteksi outlier dilakukan, data bernilai kosong (_missing values_ / `NaN`) terlebih dahulu dibuang (menggunakan `dropna()` pada Python atau widget `Impute` $\rightarrow$ _Remove instances with unknown values_ pada Orange Data Mining) agar populasi perhitungan pencilan selaras.
 
 Berikut adalah hasil identifikasi outlier untuk masing-masing polutan:
 
@@ -565,14 +567,15 @@ plt.show()
 
 ### 4.3 Noise
 
-**Noise** (derau) adalah fluktuasi acak frekuensi tinggi (*random noise*) pada data pengamatan yang disebabkan oleh kondisi dinamika atmosfer mikro, keterbatasan presisi instrumen satelit, atau interferensi cuaca lokal. Berbeda dari *outlier* yang berupa pencilan ekstrem tunggal, *noise* diukur berdasarkan tingkat fluktuasi atau variabilitas relatif data.
+**Noise** (derau) adalah fluktuasi acak frekuensi tinggi (_random noise_) pada data pengamatan yang disebabkan oleh kondisi dinamika atmosfer mikro, keterbatasan presisi instrumen satelit, atau interferensi cuaca lokal. Berbeda dari _outlier_ yang berupa pencilan ekstrem tunggal, _noise_ diukur berdasarkan tingkat fluktuasi atau variabilitas relatif data.
 
-Untuk mengukur dan mengidentifikasi *noise* pada data polutan, digunakan 3 indikator statistik utama:
+Untuk mengukur dan mengidentifikasi _noise_ pada data polutan, digunakan 3 indikator statistik utama:
+
 1. **Rata-rata ($\mu$)**: Nilai rata-rata konsentrasi polutan.
 2. **Standar Deviasi ($\sigma$)**: Ukuran sebaran atau besar fluktuasi data dari rata-rata.
-3. **Koefisien Variasi ($CV$)**: Rasio fluktuasi relatif terhadap rata-rata ($CV = \frac{\sigma}{\mu} \times 100\%$). Semakin tinggi nilai $CV$, semakin tinggi tingkat derau (*noise*) atau variabilitas relatifnya.
+3. **Koefisien Variasi ($CV$)**: Rasio fluktuasi relatif terhadap rata-rata ($CV = \frac{\sigma}{\mu} \times 100\%$). Semakin tinggi nilai $CV$, semakin tinggi tingkat derau (_noise_) atau variabilitas relatifnya.
 
-Berikut adalah hasil identifikasi dan analisis *noise* untuk masing-masing polutan:
+Berikut adalah hasil identifikasi dan analisis _noise_ untuk masing-masing polutan:
 
 1. ch4
 
@@ -789,15 +792,15 @@ plt.show()
    - Jika diplot tanpa skala bersama, garis NO2, CO, dan SO2 akan terlihat "gepeng/datar" di angka 0.
    - Dengan **Normalisasi Min-Max ($0 - 1$)**, semua garis polutan dibawa ke rentang proporsional yang sama ($0$ = konsentrasi terendah, $1$ = konsentrasi tertinggi), sehingga naik-turunnya pola tren ke-4 polutan dapat dibandingkan secara langsung.
 
-4. **Penghalusan Grafik (*30-Day Moving Average*)**:
-   - Garis grafik dihaluskan menggunakan teknik *rolling mean* 30 hari (`.rolling(window=30).mean()`) persis seperti pada kode acuan Copernicus.
-   - Hal ini berfungsi untuk meredam derau (*noise*) harian, sehingga garis grafik terlihat mulus dan pembaca dapat melihat tren kenaikan/penurunan jangka panjang di Kabupaten Gresik secara jernih.
+4. **Penghalusan Grafik (_30-Day Moving Average_)**:
+   - Garis grafik dihaluskan menggunakan teknik _rolling mean_ 30 hari (`.rolling(window=30).mean()`) persis seperti pada kode acuan Copernicus.
+   - Hal ini berfungsi untuk meredam derau (_noise_) harian, sehingga garis grafik terlihat mulus dan pembaca dapat melihat tren kenaikan/penurunan jangka panjang di Kabupaten Gresik secara jernih.
 
 5. **Cara Membaca Arah dan Gerakan Garis Grafik**:
    - 📈 **Garis Naik ke Atas**: Menandakan konsentrasi polutan di Kabupaten Gresik sedang **meningkat / tinggi** (akibat lonjakan emisi industri, volume kendaraan padat, atau musim kemarau di mana emisi terperangkap di atmosfer).
-   - 📉 **Garis Turun ke Bawah**: Menandakan kualitas udara sedang **lebih bersih / polusi rendah** (akibat pencucian polutan oleh air hujan / *rain washout*, berkurangnya aktivitas saat hari libur, atau tiupan angin kencang).
+   - 📉 **Garis Turun ke Bawah**: Menandakan kualitas udara sedang **lebih bersih / polusi rendah** (akibat pencucian polutan oleh air hujan / _rain washout_, berkurangnya aktivitas saat hari libur, atau tiupan angin kencang).
    - ➡️ **Garis di Tengah / Datar**: Menandakan konsentrasi polutan berada pada **kondisi rata-rata latar belakang yang stabil**.
-   - 〰️ **Garis Fluktuasi (Bergerigi / "Gleot-gleot")**: Menandakan adanya variasi perubahan cuaca harian yang cepat serta derau (*noise*) instrumen pengamatan satelit Sentinel-5P.
+   - 〰️ **Garis Fluktuasi (Bergerigi / "Gleot-gleot")**: Menandakan adanya variasi perubahan cuaca harian yang cepat serta derau (_noise_) instrumen pengamatan satelit Sentinel-5P.
 
 ---
 
@@ -805,12 +808,12 @@ plt.show()
 
 Berdasarkan hasil pengumpulan, eksplorasi, dan identifikasi kualitas data kualitas udara Kabupaten Gresik (Sentinel-5P L2), diperoleh ringkasan evaluasi kualitas data sebagai berikut:
 
-| Polutan | Total Baris | Missing Values (NaN) | Data Terisi (Valid) | Outliers Terdeteksi (5%) | Tingkat Noise ($CV$) | Status Kualitas Data |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **CH4** | 366 | 335 (91.5%) | 31 (8.5%) | 2 | 0.92% (Sangat Rendah) | Celah Data Cukup Besar |
-| **CO**  | 366 | 157 (42.9%) | 209 (57.1%) | 11 | 14.66% (Moderat) | Cukup Baik |
-| **NO2** | 366 | 179 (48.9%) | 187 (51.1%) | 10 | 86.60% (Tinggi) | Fluktuasi Perlu Smoothing |
-| **SO2** | 366 | 144 (39.3%) | 222 (60.7%) | 12 | 290.45% (Sangat Tinggi) | Perlu Penanganan Artefak/Sensor |
+| Polutan | Total Baris | Missing Values (NaN) | Data Terisi (Valid) | Outliers Terdeteksi (5%) | Tingkat Noise ($CV$)    | Status Kualitas Data            |
+| :------ | :---------- | :------------------- | :------------------ | :----------------------- | :---------------------- | :------------------------------ |
+| **CH4** | 366         | 335 (91.5%)          | 31 (8.5%)           | 2                        | 0.92% (Sangat Rendah)   | Celah Data Cukup Besar          |
+| **CO**  | 366         | 157 (42.9%)          | 209 (57.1%)         | 11                       | 14.66% (Moderat)        | Cukup Baik                      |
+| **NO2** | 366         | 179 (48.9%)          | 187 (51.1%)         | 10                       | 86.60% (Tinggi)         | Fluktuasi Perlu Smoothing       |
+| **SO2** | 366         | 144 (39.3%)          | 222 (60.7%)         | 12                       | 290.45% (Sangat Tinggi) | Perlu Penanganan Artefak/Sensor |
 
 ---
 
@@ -818,13 +821,11 @@ Berdasarkan hasil pengumpulan, eksplorasi, dan identifikasi kualitas data kualit
 
 Temuan kualitas data di atas menjadi dasar utama dalam menyusun strategi pemrosesan pada tahap **Data Preparation** berikutnya:
 
-1. **Imputasi Missing Values (*Time-Series Imputation*)**:
-   - Celah tanggal kosong (terutama pada CH4 dan NO2) akan diisi menggunakan teknik interpolasi linier (*linear interpolation*) atau *forward/backward fill* agar deret waktu menjadi berkesinambungan harian.
+1. **Imputasi Missing Values (_Time-Series Imputation_)**:
+   - Celah tanggal kosong (terutama pada CH4 dan NO2) akan diisi menggunakan teknik interpolasi linier (_linear interpolation_) atau _forward/backward fill_ agar deret waktu menjadi berkesinambungan harian.
 
-2. **Penanganan Outliers (*Outlier Treatment*)**:
-   - Nilai pencilan ekstrem hasil deteksi *Isolation Forest* akan ditangani menggunakan teknik *winsorization* (membatasi nilai ke rentang persentil tertentu) atau imputasi nilai batas wajar agar tidak menggangu pemodelan.
+2. **Penanganan Outliers (_Outlier Treatment_)**:
+   - Nilai pencilan ekstrem hasil deteksi _Isolation Forest_ akan ditangani menggunakan teknik _winsorization_ (membatasi nilai ke rentang persentil tertentu) atau imputasi nilai batas wajar agar tidak menggangu pemodelan.
 
-3. **Penghalusan Derau (*Noise Smoothing*)**:
-   - Menerapkan fungsi *Moving Average* (rata-rata bergerak 7 hari / 30 hari) untuk meredam fluktuasi acak frekuensi tinggi, sehingga tren perubahan pola polusi udara di Kabupaten Gresik dapat dianalisis secara akurat dan konsisten.
-
-
+3. **Penghalusan Derau (_Noise Smoothing_)**:
+   - Menerapkan fungsi _Moving Average_ (rata-rata bergerak 7 hari / 30 hari) untuk meredam fluktuasi acak frekuensi tinggi, sehingga tren perubahan pola polusi udara di Kabupaten Gresik dapat dianalisis secara akurat dan konsisten.
