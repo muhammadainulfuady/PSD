@@ -565,5 +565,266 @@ plt.show()
 
 ### 4.3 Noise
 
-BESOK SAJA
+**Noise** (derau) adalah fluktuasi acak frekuensi tinggi (*random noise*) pada data pengamatan yang disebabkan oleh kondisi dinamika atmosfer mikro, keterbatasan presisi instrumen satelit, atau interferensi cuaca lokal. Berbeda dari *outlier* yang berupa pencilan ekstrem tunggal, *noise* diukur berdasarkan tingkat fluktuasi atau variabilitas relatif data.
+
+Untuk mengukur dan mengidentifikasi *noise* pada data polutan, digunakan 3 indikator statistik utama:
+1. **Rata-rata ($\mu$)**: Nilai rata-rata konsentrasi polutan.
+2. **Standar Deviasi ($\sigma$)**: Ukuran sebaran atau besar fluktuasi data dari rata-rata.
+3. **Koefisien Variasi ($CV$)**: Rasio fluktuasi relatif terhadap rata-rata ($CV = \frac{\sigma}{\mu} \times 100\%$). Semakin tinggi nilai $CV$, semakin tinggi tingkat derau (*noise*) atau variabilitas relatifnya.
+
+Berikut adalah hasil identifikasi dan analisis *noise* untuk masing-masing polutan:
+
+1. ch4
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv")
+df_clean = df.dropna(subset=['CH4']).copy()
+df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+mean_val = df_clean['CH4'].mean()
+std_val = df_clean['CH4'].std()
+cv_val = (std_val / mean_val) * 100
+
+print(f"Rata-rata CH4 : {mean_val:.4f}")
+print(f"Standar Deviasi CH4 : {std_val:.4f}")
+print(f"Koefisien Variasi (CV) CH4 : {cv_val:.2f}%")
+
+# Visualisasi Fluktuasi / Noise Data CH4
+plt.figure(figsize=(10, 4))
+plt.plot(df_clean['date'], df_clean['CH4'], marker='o', color='purple', linewidth=1, markersize=4, label='CH4 Observasi')
+plt.axhline(mean_val, color='red', linestyle='--', label=f'Rata-rata ({mean_val:.1f})')
+plt.fill_between(df_clean['date'], mean_val - std_val, mean_val + std_val, color='purple', alpha=0.15, label=f'Rentang Noise (±1 Std)')
+plt.title('Analisis Fluktuasi (Noise) Data CH4')
+plt.xlabel('Tanggal')
+plt.ylabel('Konsentrasi CH4')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+2. co
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("../data/csv/CO_gresik_timeseries.csv")
+df_clean = df.dropna(subset=['CO']).copy()
+df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+mean_val = df_clean['CO'].mean()
+std_val = df_clean['CO'].std()
+cv_val = (std_val / mean_val) * 100
+
+print(f"Rata-rata CO : {mean_val:.6f}")
+print(f"Standar Deviasi CO : {std_val:.6f}")
+print(f"Koefisien Variasi (CV) CO : {cv_val:.2f}%")
+
+# Visualisasi Fluktuasi / Noise Data CO
+plt.figure(figsize=(10, 4))
+plt.plot(df_clean['date'], df_clean['CO'], marker='o', color='green', linewidth=1, markersize=3, label='CO Observasi')
+plt.axhline(mean_val, color='red', linestyle='--', label=f'Rata-rata ({mean_val:.4f})')
+plt.fill_between(df_clean['date'], mean_val - std_val, mean_val + std_val, color='green', alpha=0.15, label=f'Rentang Noise (±1 Std)')
+plt.title('Analisis Fluktuasi (Noise) Data CO')
+plt.xlabel('Tanggal')
+plt.ylabel('Konsentrasi CO')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+3. no2
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("../data/csv/NO2_gresik_timeseries.csv")
+df_clean = df.dropna(subset=['NO2']).copy()
+df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+mean_val = df_clean['NO2'].mean()
+std_val = df_clean['NO2'].std()
+cv_val = (std_val / mean_val) * 100
+
+print(f"Rata-rata NO2 : {mean_val:.6f}")
+print(f"Standar Deviasi NO2 : {std_val:.6f}")
+print(f"Koefisien Variasi (CV) NO2 : {cv_val:.2f}%")
+
+# Visualisasi Fluktuasi / Noise Data NO2
+plt.figure(figsize=(10, 4))
+plt.plot(df_clean['date'], df_clean['NO2'], marker='o', color='orange', linewidth=1, markersize=3, label='NO2 Observasi')
+plt.axhline(mean_val, color='red', linestyle='--', label=f'Rata-rata ({mean_val:.6f})')
+plt.fill_between(df_clean['date'], mean_val - std_val, mean_val + std_val, color='orange', alpha=0.15, label=f'Rentang Noise (±1 Std)')
+plt.title('Analisis Fluktuasi (Noise) Data NO2')
+plt.xlabel('Tanggal')
+plt.ylabel('Konsentrasi NO2')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+4. so2
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("../data/csv/SO2_gresik_timeseries.csv")
+df_clean = df.dropna(subset=['SO2']).copy()
+df_clean['date'] = pd.to_datetime(df_clean['date'])
+
+mean_val = df_clean['SO2'].mean()
+std_val = df_clean['SO2'].std()
+cv_val = (std_val / mean_val) * 100
+
+print(f"Rata-rata SO2 : {mean_val:.6f}")
+print(f"Standar Deviasi SO2 : {std_val:.6f}")
+print(f"Koefisien Variasi (CV) SO2 : {cv_val:.2f}%")
+
+# Visualisasi Fluktuasi / Noise Data SO2
+plt.figure(figsize=(10, 4))
+plt.plot(df_clean['date'], df_clean['SO2'], marker='o', color='teal', linewidth=1, markersize=3, label='SO2 Observasi')
+plt.axhline(mean_val, color='red', linestyle='--', label=f'Rata-rata ({mean_val:.6f})')
+plt.fill_between(df_clean['date'], mean_val - std_val, mean_val + std_val, color='teal', alpha=0.15, label=f'Rentang Noise (±1 Std)')
+plt.title('Analisis Fluktuasi (Noise) Data SO2')
+plt.xlabel('Tanggal')
+plt.ylabel('Konsentrasi SO2')
+plt.legend()
+plt.grid(True)
+plt.show()
+```
+
+---
+
+### 4.4 Visualisasi Komparatif 4 Polutan (Style Copernicus)
+
+Untuk membandingkan tren perubahan konsentrasi ke-4 polutan (CH4, CO, NO2, SO2) secara bersamaan sepanjang periode pengamatan di Kabupaten Gresik, dibuat visualisasi **Dual X-Axis Line Plot** dengan gaya visualisasi Copernicus Sentinel-5P.
+
+```{figure} ../assets/editor/copernicus_4polutan_dual_axis.png
+:width: 100%
+:align: center
+```
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 1. Load Data 4 Polutan
+df_no2 = pd.read_csv("../data/csv/NO2_gresik_timeseries.csv").dropna(subset=['NO2'])
+df_co  = pd.read_csv("../data/csv/CO_gresik_timeseries.csv").dropna(subset=['CO'])
+df_ch4 = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv").dropna(subset=['CH4'])
+df_so2 = pd.read_csv("../data/csv/SO2_gresik_timeseries.csv").dropna(subset=['SO2'])
+
+df_no2['date'] = pd.to_datetime(df_no2['date'])
+df_co['date']  = pd.to_datetime(df_co['date'])
+df_ch4['date'] = pd.to_datetime(df_ch4['date'])
+df_so2['date'] = pd.to_datetime(df_so2['date'])
+
+# 2. Smooth data dengan 30-day moving average (seperti Copernicus)
+df_no2['NO2_smooth'] = df_no2['NO2'].rolling(window=30, min_periods=1).mean()
+df_co['CO_smooth']   = df_co['CO'].rolling(window=30, min_periods=1).mean()
+df_ch4['CH4_smooth'] = df_ch4['CH4'].rolling(window=30, min_periods=1).mean()
+df_so2['SO2_smooth'] = df_so2['SO2'].rolling(window=30, min_periods=1).mean()
+
+# 3. Normalisasi Min-Max (0 - 1)
+for df, col in [(df_no2, 'NO2_smooth'), (df_co, 'CO_smooth'), (df_ch4, 'CH4_smooth'), (df_so2, 'SO2_smooth')]:
+    df[col + '_norm'] = (df[col] - df[col].min()) / (df[col].max() - df[col].min())
+
+# 4. Figure Dual X-Axis (Gaya Copernicus twiny())
+fig, ax1 = plt.subplots(figsize=(11, 5), dpi=100)
+
+# Sumbu Bawah: NO2 (Merah) & CO (Hijau)
+(line1,) = ax1.plot(df_no2['date'], df_no2['NO2_smooth_norm'], color="r", label="NO2 (Nitrogen Dioksida)", linewidth=1.8)
+(line2,) = ax1.plot(df_co['date'],  df_co['CO_smooth_norm'],   color="g", label="CO (Karbon Monoksida)", linewidth=1.8)
+
+ax1.set_xlabel("Periode NO2 & CO (Sumbu Bawah)", color='r', fontsize=10)
+ax1.set_ylabel("Skala Ternormalisasi (0 - 1)")
+ax1.xaxis.label.set_color("r")
+ax1.tick_params(axis="x", colors="r")
+ax1.grid(True, linestyle='--', alpha=0.5)
+
+# Sumbu Atas: CH4 (Biru) & SO2 (Oranye)
+ax2 = ax1.twiny()
+(line3,) = ax2.plot(df_ch4['date'], df_ch4['CH4_smooth_norm'], color="b", label="CH4 (Metana)", linewidth=1.8)
+(line4,) = ax2.plot(df_so2['date'], df_so2['SO2_smooth_norm'], color="orange", label="SO2 (Sulfur Dioksida)", linewidth=1.8)
+
+ax2.set_xlabel("Periode CH4 & SO2 (Sumbu Atas)", color='b', fontsize=10)
+ax2.xaxis.label.set_color("b")
+ax2.tick_params(axis="x", colors="b")
+
+# Combine Legend
+lines = [line1, line2, line3, line4]
+labels = [line.get_label() for line in lines]
+ax1.legend(lines, labels, loc="upper left")
+
+plt.title("Grafik Komparatif Tren 4 Polutan di Kabupaten Gresik", pad=20)
+plt.tight_layout()
+plt.show()
+```
+
+#### Penjelasan Rinci Komponen Grafik:
+
+1. **Struktur Dual X-Axis (Sumbu X Ganda)**:
+   - **Sumbu X Bawah (Merah)**: Digunakan sebagai penanda garis waktu tanggal untuk polutan NO2 dan CO.
+   - **Sumbu X Atas (Biru)**: Digunakan sebagai penanda garis waktu tanggal untuk polutan CH4 dan SO2.
+   - **Fungsi `twiny()`**: Memungkinkan 2 pasangan polutan menggunakan sumbu Y bersama di sebelah kiri, namun memiliki skala waktu horizontal di atas dan bawah untuk menjaga keterbacaan grafik.
+
+2. **Keterangan 4 Warna Polutan**:
+   - 🔴 **Garis Merah (NO2)**: Menunjukkan tren emisi gas Nitrogen Dioksida (berasal dari transportasi kendaraan dan pembakaran industri).
+   - 🟢 **Garis Hijau (CO)**: Menunjukkan tren emisi gas Karbon Monoksida (berasal dari pembuangan asap pembakaran).
+   - 🔵 **Garis Biru (CH4)**: Menunjukkan tren konsentrasi gas Metana (gas rumah kaca dari zona industri/limbah/tambang).
+   - 🟠 **Garis Oranye (SO2)**: Menunjukkan tren emisi gas Sulfur Dioksida (berasal dari pembakaran batu bara & pemrosesan industri).
+
+3. **Mengapa Menggunakan Skala Ternormalisasi (0 - 1) di Sumbu Y?**:
+   - Nilai asli dari masing-masing polutan memiliki rentang angka yang jauh berbeda (misalnya: CH4 bernilai tinggi sekitar ~1890, sedangkan NO2 bernilai kecil sekitar ~0.00007).
+   - Jika diplot tanpa skala bersama, garis NO2, CO, dan SO2 akan terlihat "gepeng/datar" di angka 0.
+   - Dengan **Normalisasi Min-Max ($0 - 1$)**, semua garis polutan dibawa ke rentang proporsional yang sama ($0$ = konsentrasi terendah, $1$ = konsentrasi tertinggi), sehingga naik-turunnya pola tren ke-4 polutan dapat dibandingkan secara langsung.
+
+4. **Penghalusan Grafik (*30-Day Moving Average*)**:
+   - Garis grafik dihaluskan menggunakan teknik *rolling mean* 30 hari (`.rolling(window=30).mean()`) persis seperti pada kode acuan Copernicus.
+   - Hal ini berfungsi untuk meredam derau (*noise*) harian, sehingga garis grafik terlihat mulus dan pembaca dapat melihat tren kenaikan/penurunan jangka panjang di Kabupaten Gresik secara jernih.
+
+5. **Cara Membaca Arah dan Gerakan Garis Grafik**:
+   - 📈 **Garis Naik ke Atas**: Menandakan konsentrasi polutan di Kabupaten Gresik sedang **meningkat / tinggi** (akibat lonjakan emisi industri, volume kendaraan padat, atau musim kemarau di mana emisi terperangkap di atmosfer).
+   - 📉 **Garis Turun ke Bawah**: Menandakan kualitas udara sedang **lebih bersih / polusi rendah** (akibat pencucian polutan oleh air hujan / *rain washout*, berkurangnya aktivitas saat hari libur, atau tiupan angin kencang).
+   - ➡️ **Garis di Tengah / Datar**: Menandakan konsentrasi polutan berada pada **kondisi rata-rata latar belakang yang stabil**.
+   - 〰️ **Garis Fluktuasi (Bergerigi / "Gleot-gleot")**: Menandakan adanya variasi perubahan cuaca harian yang cepat serta derau (*noise*) instrumen pengamatan satelit Sentinel-5P.
+
+---
+
+## 5. Kesimpulan dan Rencana Tahap Data Preparation
+
+Berdasarkan hasil pengumpulan, eksplorasi, dan identifikasi kualitas data kualitas udara Kabupaten Gresik (Sentinel-5P L2), diperoleh ringkasan evaluasi kualitas data sebagai berikut:
+
+| Polutan | Total Baris | Missing Values (NaN) | Data Terisi (Valid) | Outliers Terdeteksi (5%) | Tingkat Noise ($CV$) | Status Kualitas Data |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **CH4** | 366 | 335 (91.5%) | 31 (8.5%) | 2 | 0.92% (Sangat Rendah) | Celah Data Cukup Besar |
+| **CO**  | 366 | 157 (42.9%) | 209 (57.1%) | 11 | 14.66% (Moderat) | Cukup Baik |
+| **NO2** | 366 | 179 (48.9%) | 187 (51.1%) | 10 | 86.60% (Tinggi) | Fluktuasi Perlu Smoothing |
+| **SO2** | 366 | 144 (39.3%) | 222 (60.7%) | 12 | 290.45% (Sangat Tinggi) | Perlu Penanganan Artefak/Sensor |
+
+---
+
+### 5.1 Rencana Aksi Tahap Data Preparation
+
+Temuan kualitas data di atas menjadi dasar utama dalam menyusun strategi pemrosesan pada tahap **Data Preparation** berikutnya:
+
+1. **Imputasi Missing Values (*Time-Series Imputation*)**:
+   - Celah tanggal kosong (terutama pada CH4 dan NO2) akan diisi menggunakan teknik interpolasi linier (*linear interpolation*) atau *forward/backward fill* agar deret waktu menjadi berkesinambungan harian.
+
+2. **Penanganan Outliers (*Outlier Treatment*)**:
+   - Nilai pencilan ekstrem hasil deteksi *Isolation Forest* akan ditangani menggunakan teknik *winsorization* (membatasi nilai ke rentang persentil tertentu) atau imputasi nilai batas wajar agar tidak menggangu pemodelan.
+
+3. **Penghalusan Derau (*Noise Smoothing*)**:
+   - Menerapkan fungsi *Moving Average* (rata-rata bergerak 7 hari / 30 hari) untuk meredam fluktuasi acak frekuensi tinggi, sehingga tren perubahan pola polusi udara di Kabupaten Gresik dapat dianalisis secara akurat dan konsisten.
+
 
