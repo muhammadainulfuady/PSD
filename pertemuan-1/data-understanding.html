@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -350,7 +350,8 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co">3.2 CO</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no2">3.3 NO2</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so2">3.4 SO2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">3.5 Kenapa Ada Nilai NaN?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polutan-gresik-csv-gabungan-4-polutan">3.5 polutan_gresik.csv (Gabungan 4 Polutan)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">3.6 Kenapa Ada Nilai NaN?</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="visible nav section-nav flex-column">
@@ -712,7 +713,7 @@ Authenticated using device code flow.
             &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
             &lt;style&gt;
-                #map_bb6c71aba3fe2610a4a907c1652303c4 {
+                #map_378281e0ebdb9978aea70a7c89576c02 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -749,14 +750,14 @@ Authenticated using device code flow.
 &lt;body&gt;
     
     
-            &lt;div class=&quot;folium-map&quot; id=&quot;map_bb6c71aba3fe2610a4a907c1652303c4&quot; &gt;&lt;/div&gt;
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_378281e0ebdb9978aea70a7c89576c02&quot; &gt;&lt;/div&gt;
         
 &lt;/body&gt;
 &lt;script&gt;
     
     
-            var map_bb6c71aba3fe2610a4a907c1652303c4 = L.map(
-                &quot;map_bb6c71aba3fe2610a4a907c1652303c4&quot;,
+            var map_378281e0ebdb9978aea70a7c89576c02 = L.map(
+                &quot;map_378281e0ebdb9978aea70a7c89576c02&quot;,
                 {
                     center: [-7.17213545, 112.6397063],
                     crs: L.CRS.EPSG3857,
@@ -773,7 +774,7 @@ Authenticated using device code flow.
 
         
     
-            var tile_layer_aee13762ea560ee704ec838921287e70 = L.tileLayer(
+            var tile_layer_9ae8fa1ba25a4106a744bf827baa28c2 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -790,16 +791,16 @@ Authenticated using device code flow.
             );
         
     
-            tile_layer_aee13762ea560ee704ec838921287e70.addTo(map_bb6c71aba3fe2610a4a907c1652303c4);
+            tile_layer_9ae8fa1ba25a4106a744bf827baa28c2.addTo(map_378281e0ebdb9978aea70a7c89576c02);
         
     
-            var rectangle_a6af031680c0a93331b9caf03cb3818c = L.rectangle(
+            var rectangle_63e083a237b63665a8089bc782ada200 = L.rectangle(
                 [[-7.1927923, 112.6193968], [-7.1514786, 112.6600158]],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 1.0, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_bb6c71aba3fe2610a4a907c1652303c4);
+            ).addTo(map_378281e0ebdb9978aea70a7c89576c02);
         
     
-            rectangle_a6af031680c0a93331b9caf03cb3818c.bindTooltip(
+            rectangle_63e083a237b63665a8089bc782ada200.bindTooltip(
                 `&lt;div&gt;
                      Area Kabupaten Gresik
                  &lt;/div&gt;`,
@@ -1104,8 +1105,98 @@ Authenticated using device code flow.
 </div></div></div>
 </div>
 </section>
+<section id="polutan-gresik-csv-gabungan-4-polutan">
+<h3>3.5 polutan_gresik.csv (Gabungan 4 Polutan)<a class="headerlink" href="#polutan-gresik-csv-gabungan-4-polutan" title="Link to this heading">#</a></h3>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Menampilkan 5 data teratas CSV gabungan 4 polutan</span>
+<span class="n">df_polutan</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./../data/csv/polutan_gresik.csv"</span><span class="p">)</span>
+<span class="n">df_polutan</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>CH4</th>
+      <th>CO</th>
+      <th>NO2</th>
+      <th>SO2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2025-08-24</td>
+      <td>NaN</td>
+      <td>0.037918</td>
+      <td>0.000096</td>
+      <td>0.000347</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2025-08-25</td>
+      <td>1867.289429</td>
+      <td>0.028240</td>
+      <td>0.000046</td>
+      <td>0.000817</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2025-08-26</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.000068</td>
+      <td>-0.000799</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2025-08-27</td>
+      <td>NaN</td>
+      <td>0.034187</td>
+      <td>NaN</td>
+      <td>-0.000513</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2025-08-28</td>
+      <td>NaN</td>
+      <td>0.027450</td>
+      <td>0.000060</td>
+      <td>0.000327</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
 <section id="kenapa-ada-nilai-nan">
-<h3>3.5 Kenapa Ada Nilai NaN?<a class="headerlink" href="#kenapa-ada-nilai-nan" title="Link to this heading">#</a></h3>
+<h3>3.6 Kenapa Ada Nilai NaN?<a class="headerlink" href="#kenapa-ada-nilai-nan" title="Link to this heading">#</a></h3>
 <p>Perhatikan pada hasil data di atas, ada beberapa baris yang menunjukkan nilai <strong>NaN</strong> (Not a Number). Artinya, pada tanggal tersebut <strong>tidak ada data pengamatan</strong> yang tercatat.</p>
 <p>Penyebab munculnya NaN pada data satelit Sentinel-5P antara lain:</p>
 <ol class="arabic simple">
@@ -1292,13 +1383,6 @@ Jumlah data terisi (valid) pada data so2 : 222
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data ch4 : 2
-Jumlah tidak outlier (normal) pada data ch4 : 29
-</pre></div>
-</div>
-<img alt="../_images/5db4bf2732890200e9ea8b715095709fc85141962da01619a1e0a6c2127db760.png" src="../_images/5db4bf2732890200e9ea8b715095709fc85141962da01619a1e0a6c2127db760.png" />
-</div>
 </div>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../_images/ch4-otlr-orange.png"><img alt="../_images/ch4-otlr-orange.png" src="../_images/ch4-otlr-orange.png" style="width: 100%;" /></a>
@@ -1345,13 +1429,6 @@ Jumlah tidak outlier (normal) pada data ch4 : 29
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data co : 11
-Jumlah tidak outlier (normal) pada data co : 198
-</pre></div>
-</div>
-<img alt="../_images/bd846f278f377f4e110b27d044872ae76849416edfb8d033a7e00156140cb491.png" src="../_images/bd846f278f377f4e110b27d044872ae76849416edfb8d033a7e00156140cb491.png" />
-</div>
 </div>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../_images/co-otlr-orange.png"><img alt="../_images/co-otlr-orange.png" src="../_images/co-otlr-orange.png" style="width: 100%;" /></a>
@@ -1398,13 +1475,6 @@ Jumlah tidak outlier (normal) pada data co : 198
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data no2 : 10
-Jumlah tidak outlier (normal) pada data no2 : 177
-</pre></div>
-</div>
-<img alt="../_images/bb85cd57881f8c8ee0a912a980dff4754b4e8330b2ae22b1cdd3d3455789eb23.png" src="../_images/bb85cd57881f8c8ee0a912a980dff4754b4e8330b2ae22b1cdd3d3455789eb23.png" />
-</div>
 </div>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../_images/no2-otlr-orange.png"><img alt="../_images/no2-otlr-orange.png" src="../_images/no2-otlr-orange.png" style="width: 100%;" /></a>
@@ -1451,13 +1521,6 @@ Jumlah tidak outlier (normal) pada data no2 : 177
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data so2 : 12
-Jumlah tidak outlier (normal) pada data so2 : 210
-</pre></div>
-</div>
-<img alt="../_images/c9f9cc4cd470d17213d5d48ef3a64ccc5c9d034b30b581c815fdb986a96b3981.png" src="../_images/c9f9cc4cd470d17213d5d48ef3a64ccc5c9d034b30b581c815fdb986a96b3981.png" />
-</div>
 </div>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../_images/so2-otlr-orange.png"><img alt="../_images/so2-otlr-orange.png" src="../_images/so2-otlr-orange.png" style="width: 100%;" /></a>
@@ -1513,14 +1576,6 @@ Jumlah tidak outlier (normal) pada data so2 : 210
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata CH4 : 1892.8467
-Standar Deviasi CH4 : 17.3635
-Koefisien Variasi (CV) CH4 : 0.92%
-</pre></div>
-</div>
-<img alt="../_images/cc962b1bbc5b88b25dd47f8b21b918ed0821fe36611152959ac207598f62ac0e.png" src="../_images/cc962b1bbc5b88b25dd47f8b21b918ed0821fe36611152959ac207598f62ac0e.png" />
-</div>
 </div>
 <ol class="arabic simple" start="2">
 <li><p>co</p></li>
@@ -1562,14 +1617,6 @@ Koefisien Variasi (CV) CH4 : 0.92%
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata CO : 0.029098
-Standar Deviasi CO : 0.004264
-Koefisien Variasi (CV) CO : 14.66%
-</pre></div>
-</div>
-<img alt="../_images/215e24f4fd7a84c9e26bf57bfa522056e13530106c8cca743d5aac6ec263518e.png" src="../_images/215e24f4fd7a84c9e26bf57bfa522056e13530106c8cca743d5aac6ec263518e.png" />
-</div>
 </div>
 <ol class="arabic simple" start="3">
 <li><p>no2</p></li>
@@ -1611,14 +1658,6 @@ Koefisien Variasi (CV) CO : 14.66%
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata NO2 : 0.000073
-Standar Deviasi NO2 : 0.000063
-Koefisien Variasi (CV) NO2 : 86.60%
-</pre></div>
-</div>
-<img alt="../_images/80aa15453ec4d44d860a0669a969e44af6dcf94c0d3d4cbb8e52e92028178c97.png" src="../_images/80aa15453ec4d44d860a0669a969e44af6dcf94c0d3d4cbb8e52e92028178c97.png" />
-</div>
 </div>
 <ol class="arabic simple" start="4">
 <li><p>so2</p></li>
@@ -1660,14 +1699,6 @@ Koefisien Variasi (CV) NO2 : 86.60%
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata SO2 : 0.000110
-Standar Deviasi SO2 : 0.000320
-Koefisien Variasi (CV) SO2 : 290.45%
-</pre></div>
-</div>
-<img alt="../_images/aa0ed8a802e792f799cef5552e1b9df3a63b4df6fe7290de5461c9feba18a63d.png" src="../_images/aa0ed8a802e792f799cef5552e1b9df3a63b4df6fe7290de5461c9feba18a63d.png" />
-</div>
 </div>
 </section>
 <hr class="docutils" />
@@ -1742,9 +1773,6 @@ Koefisien Variasi (CV) SO2 : 290.45%
 </div>
 </div>
 </details>
-<div class="cell_output docutils container">
-<img alt="../_images/380512cb11e8dd543fb5688c101f135fa3ffed814d28275ba723d9554ac32732.png" src="../_images/380512cb11e8dd543fb5688c101f135fa3ffed814d28275ba723d9554ac32732.png" />
-</div>
 </div>
 <section id="penjelasan-rinci-komponen-grafik">
 <h4>Penjelasan Rinci Komponen Grafik:<a class="headerlink" href="#penjelasan-rinci-komponen-grafik" title="Link to this heading">#</a></h4>
@@ -1944,7 +1972,8 @@ Koefisien Variasi (CV) SO2 : 290.45%
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co">3.2 CO</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no2">3.3 NO2</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so2">3.4 SO2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">3.5 Kenapa Ada Nilai NaN?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polutan-gresik-csv-gabungan-4-polutan">3.5 polutan_gresik.csv (Gabungan 4 Polutan)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">3.6 Kenapa Ada Nilai NaN?</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="visible nav section-nav flex-column">
