@@ -37,8 +37,6 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-['import pandas as pd', 'import matplotlib.pyplot as plt', 'from sklearn.ensemble import IsolationForest', '', 'df = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv")']
-...
-["plt.xlabel('Tanggal')", "plt.ylabel('Konsentrasi CH4')", 'plt.legend()', 'plt.grid(True)', 'plt.show()']
+job = s5.execute_batch(title="CH4 Gresik", outputfile="../data/nc/polutan_CH4_gresik.nc")
 -------------------
 
