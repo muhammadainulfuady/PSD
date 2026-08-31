@@ -308,7 +308,18 @@ df_so2 = pd.read_csv("./../data/csv/SO2_gresik_timeseries.csv")
 df_so2.head()
 ```
 
-### 3.5 Kenapa Ada Nilai NaN?
+### 3.5 polutan_gresik.csv (Gabungan 4 Polutan)
+
+```{code-cell}
+:tags: [hide-input]
+import pandas as pd
+
+# Menampilkan 5 data teratas CSV gabungan 4 polutan
+df_polutan = pd.read_csv("./../data/csv/polutan_gresik.csv")
+df_polutan.head()
+```
+
+### 3.6 Kenapa Ada Nilai NaN?
 
 Perhatikan pada hasil data di atas, ada beberapa baris yang menunjukkan nilai **NaN** (Not a Number). Artinya, pada tanggal tersebut **tidak ada data pengamatan** yang tercatat.
 
