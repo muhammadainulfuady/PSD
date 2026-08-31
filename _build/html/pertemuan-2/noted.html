@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>&lt;no title&gt; &#8212; Proyek Sains Data IF 5B</title>
+    <title>Catatan Data Understanding &amp; Tipe Atribut Data &#8212; Proyek Sains Data IF 5B</title>
   
   
   
@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -58,6 +58,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'pertemuan-2/noted';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -316,7 +318,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>Catatan Data Understanding & Tipe Atribut Data</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -325,9 +327,14 @@ document.write(`
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="simple visible nav section-nav flex-column">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pemahaman-data-data-understanding">1. Pemahaman Data (<em>Data Understanding</em>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tipe-atribut-data-data-attributes">2. Tipe Atribut Data (<em>Data Attributes</em>)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-berdasarkan-skala-pengukuran">A. Berdasarkan Skala Pengukuran</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-berdasarkan-diskrit-vs-kontinu-discrete-vs-continuous">B. Berdasarkan Diskrit vs Kontinu (<em>Discrete vs Continuous</em>)</a></li>
 </ul>
-
+</li>
+</ul>
             </nav>
         </div>
     </div>
@@ -338,11 +345,83 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p>data understanding</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="catatan-data-understanding-tipe-atribut-data">
+<h1>Catatan Data Understanding &amp; Tipe Atribut Data<a class="headerlink" href="#catatan-data-understanding-tipe-atribut-data" title="Link to this heading">#</a></h1>
+<section id="pemahaman-data-data-understanding">
+<h2>1. Pemahaman Data (<em>Data Understanding</em>)<a class="headerlink" href="#pemahaman-data-data-understanding" title="Link to this heading">#</a></h2>
+<p>Dalam analisis data dan <em>data mining</em>, pemahaman terhadap bentuk dan karakteristik data merupakan langkah awal yang krusial:</p>
 <ul class="simple">
-<li><p>tipe data</p></li>
-<li><p>record data</p></li>
+<li><p><strong>Tipe Data</strong>: Pengelompokan jenis informasi (misalnya: numerik, teks, tanggal, data spasial).</p></li>
+<li><p><strong>Record Data</strong>: Jumlah entitas atau baris objek individual di dalam berkas/dataset.</p></li>
+<li><p><strong>Data Terstruktur (<em>Structured Data</em>)</strong>: Data yang tersusun rapi dalam bentuk tabel (baris dan kolom) berformat baku (contoh: berkas CSV, database SQL).</p></li>
+<li><p><strong>Data Tidak Terstruktur (<em>Unstructured Data</em>)</strong>: Data yang tidak memiliki skema tabel baku (contoh: dokumen teks bebas, gambar, rekaman suara, video).</p></li>
 </ul>
+</section>
+<hr class="docutils" />
+<section id="tipe-atribut-data-data-attributes">
+<h2>2. Tipe Atribut Data (<em>Data Attributes</em>)<a class="headerlink" href="#tipe-atribut-data-data-attributes" title="Link to this heading">#</a></h2>
+<p>Atribut (variabel/fitur) merepresentasikan sifat atau karakteristik dari suatu objek data. Atribut dibedakan berdasarkan skala pengukuran dan kriteria nilainya:</p>
+<section id="a-berdasarkan-skala-pengukuran">
+<h3>A. Berdasarkan Skala Pengukuran<a class="headerlink" href="#a-berdasarkan-skala-pengukuran" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Nominal</strong>:</p>
+<ul class="simple">
+<li><p>Kategori atau label nama tanpa memiliki urutan/tingkatan tertentu.</p></li>
+<li><p><em>Contoh</em>: Nama Polutan (<code class="docutils literal notranslate"><span class="pre">CH4</span></code>, <code class="docutils literal notranslate"><span class="pre">CO</span></code>, <code class="docutils literal notranslate"><span class="pre">NO2</span></code>, <code class="docutils literal notranslate"><span class="pre">SO2</span></code>), Nama Kota (<code class="docutils literal notranslate"><span class="pre">Gresik</span></code>, <code class="docutils literal notranslate"><span class="pre">Surabaya</span></code>).</p></li>
+</ul>
+</li>
+<li><p><strong>Biner (<em>Binary</em>)</strong>:</p>
+<ul class="simple">
+<li><p>Atribut nominal khusus yang hanya memiliki <strong>2 pilihan nilai</strong> (misalnya: <span class="math notranslate nohighlight">\(0 / 1\)</span> atau <em>True / False</em>).</p></li>
+<li><p><em>Contoh</em>: Status Outlier (<em>Outlier</em> / <em>Normal</em>), Status Validasi Data (<em>Valid</em> / <em>Missing</em>).</p></li>
+</ul>
+</li>
+<li><p><strong>Ordinal</strong>:</p>
+<ul class="simple">
+<li><p>Nilai kategori yang memiliki <strong>urutan atau tingkatan berjenjang</strong> yang jelas, namun selisih kuantitatif antar tingkatannya tidak dapat dihitung secara pasti.</p></li>
+<li><p><em>Contoh</em>: Kategori Tingkat Polusi Udara (<em>Rendah</em> <span class="math notranslate nohighlight">\(\rightarrow\)</span> <em>Sedang</em> <span class="math notranslate nohighlight">\(\rightarrow\)</span> <em>Tinggi</em> <span class="math notranslate nohighlight">\(\rightarrow\)</span> <em>Sangat Tinggi</em>).</p></li>
+</ul>
+</li>
+<li><p><strong>Numerik (<em>Numeric</em>)</strong>:</p>
+<ul class="simple">
+<li><p>Nilai kuantitatif berupa angka riil yang dapat diukur dan dihitung secara matematis.</p></li>
+<li><p><em>Contoh</em>: Konsentrasi CH4 (<span class="math notranslate nohighlight">\(1892.85\text{ ppb}\)</span>), Konsentrasi CO (<span class="math notranslate nohighlight">\(0.0291\text{ mol}/m^2\)</span>).</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="b-berdasarkan-diskrit-vs-kontinu-discrete-vs-continuous">
+<h3>B. Berdasarkan Diskrit vs Kontinu (<em>Discrete vs Continuous</em>)<a class="headerlink" href="#b-berdasarkan-diskrit-vs-kontinu-discrete-vs-continuous" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Atribut Diskrit (<em>Discrete Attributes</em>)</strong>:</p>
+<ul class="simple">
+<li><p>Memiliki jumlah nilai terbatas (<em>finite</em>) atau dapat dihitung (<em>countable</em>). Biasanya berupa bilangan bulat.</p></li>
+<li><p><em>Contoh</em>: Jumlah total baris observasi (<span class="math notranslate nohighlight">\(366\)</span>), Jumlah <em>missing values</em> (<span class="math notranslate nohighlight">\(157\)</span>).</p></li>
+</ul>
+</li>
+<li><p><strong>Atribut Kontinu (<em>Continuous Attributes</em>)</strong>:</p>
+<ul class="simple">
+<li><p>Memiliki jumlah nilai tak terbatas dalam suatu rentang interval, biasanya berupa bilangan riil/desimal.</p></li>
+<li><p><em>Contoh</em>: Nilai hasil pengukuran sensor satelit (<span class="math notranslate nohighlight">\(0.00007321\text{ mol}/m^2\)</span>).</p></li>
+</ul>
+</li>
+</ol>
+<p>nanti mungkin ada soal mengenai positive skewed dan negative skewed menghitung mean modus dan median nya</p>
+<p>variance : 1 var
+co variance : lebih dari 1 sigma
+standart devaisai sigma 1
+korelasi :</p>
+<p>praktekan menghitung korelasi, nilai korelasi dari 1 sampai -1</p>
+<p>jika data mendekati 0 itu tidak berpengaruh pada korelasi</p>
+<p>sialhkan membuaka aiven
+untuk mengetahui statistik</p>
+<p>tugas pindah data ke cloud
+tarik data ke knime
+dan tampilkan statistik viw nya</p>
+</section>
+</section>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -390,9 +469,14 @@ document.write(`
     <i class="fa-solid fa-list"></i> Contents
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="simple visible nav section-nav flex-column">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pemahaman-data-data-understanding">1. Pemahaman Data (<em>Data Understanding</em>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tipe-atribut-data-data-attributes">2. Tipe Atribut Data (<em>Data Attributes</em>)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-berdasarkan-skala-pengukuran">A. Berdasarkan Skala Pengukuran</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-berdasarkan-diskrit-vs-kontinu-discrete-vs-continuous">B. Berdasarkan Diskrit vs Kontinu (<em>Discrete vs Continuous</em>)</a></li>
 </ul>
-
+</li>
+</ul>
   </nav></div>
 
 </div></div>
