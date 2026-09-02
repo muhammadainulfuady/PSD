@@ -888,21 +888,184 @@ Alur Kerja (Workflow Pipeline) Ekstraksi Data PostgreSQL pada KNIME
 
 ---
 
-### 5.4 Hasil Eksplorasi Statistik Dasar (Statistics View)
+### 5.4 Hasil Eksplorasi Statistik Dasar (Statistics View & Histogram)
 
-Node **`Statistics View`** pada KNIME menghasilkan tabel ringkasan eksplorasi data (*Exploratory Data Analysis*) yang mencakup 16 indikator statistik dasar untuk ke-4 polutan (`CH4`, `CO`, `NO2`, `SO2`):
+Node **`Statistics View`** pada KNIME menghasilkan tabel ringkasan eksplorasi data (*Exploratory Data Analysis*) yang mencakup 16 indikator statistik dasar serta histogram distribusi frekuensi untuk ke-4 polutan (`CH4`, `CO`, `NO2`, `SO2`):
 
-```{figure} ../assets/editor/knime/knime-eda.png
+#### 1. Tabel Indikator Statistik Deskriptif (Min, Max, Mean, Std Dev, Skewness, Kurtosis, & Missing Values)
+
+```{figure} ../assets/editor/knime/eda-rowid-nomissings.png
 :width: 100%
 :align: center
 
-Tampilan Tabel Hasil Statistik Dasar (Statistics View Output) pada KNIME
+Tabel Statistik Deskriptif (Min, Max, Mean, Std Dev, Variance, Skewness, Kurtosis, & No. Missings) pada KNIME
 ```
 
-#### Ringkasan Indikator Statistik pada KNIME:
-* **`Min` & `Max`**: Rentang nilai observasi terendah dan tertinggi (misalnya `CH4`: Min 1,854.824, Max 1,923.131).
-* **`Mean` & `Std. deviation`**: Rata-rata dan tingkat sebaran data (misalnya `CH4`: Mean 1,892.847, Std Dev 17.363).
-* **`Variance`**: Ukuran variansi kuadrat sebaran data.
-* **`Skewness` & `Kurtosis`**: Kemiringan dan keruncingan bentuk distribusi data (misalnya `NO2` memiliki Skewness 5.179 yang menandakan distribusi miring ke kanan / *right-skewed*).
-* **`No. missings`**: Jumlah tanggal bernilai kosong per polutan (`CH4`: 335, `CO`: 157, `NO2`: 179, `SO2`: 144 dari total 366 baris).
-* **`Histogram`**: Grafik distribusi frekuensi nilai observasi polutan.
+```{figure} ../assets/editor/knime/no-nans-row-count.png
+:width: 100%
+:align: center
+
+Tabel Nilai Median (Aktif) dan Total Row Count (366 Baris) pada KNIME
+```
+
+---
+
+#### 2. Visualisasi Grafik Histogram Distribusi Per Polutan
+
+Berikut adalah bentuk grafik distribusi histogram yang diekstrak oleh node **`Statistics View`** di KNIME untuk masing-masing polutan:
+
+| Polutan | Grafik Histogram KNIME | Ringkasan Distribusi |
+| :--- | :---: | :--- |
+| **CH4** | ![Histogram CH4](../assets/editor/knime/histogram-ch4.png) | Simetris terpusat di sekitar rata-rata ($1,892.847\text{ ppb}$). |
+| **CO** | ![Histogram CO](../assets/editor/knime/histogram-co.png) | Berbentuk lonceng simetris (*Normal Distribution* / puncak $0.029$). |
+| **NO2** | ![Histogram NO2](../assets/editor/knime/histogram-no2.png) | Miring ke kanan (*Right-Skewed* / Skewness = $5.179$). |
+| **SO2** | ![Histogram SO2](../assets/editor/knime/histogram-so2.png) | Miring ke kanan dengan konsentrasi dominan mendekati 0. |
+
+---
+
+#### 💡 Penjelasan Rinci Karakteristik Distribusi Data Per Polutan:
+
+1. **CH4 (Metana)**:
+   * **Analisis Bentuk**: Terdistribusi relatif simetris dan terpusat di sekitar nilai rata-ratanya ($1,892.847\text{ ppb}$), dengan rentang data antara $1,854.824$ hingga $1,923.131$.
+   * **Interpretasi Data**: Konsentrasi gas Metana di Kabupaten Gresik tergolong **sangat stabil**. Gas CH4 di atmosfer tidak mengalami fluktuasi ekstrem harian, sehingga sebaran nilainya berkumpul merata di sekitar nilai rata-rata latar belakang bumi (~1890 ppb).
+
+2. **CO (Karbon Monoksida)**:
+   * **Analisis Bentuk**: Membentuk kurva simetris menyerupai lonceng (*Bell-Shaped / Normal-Like Distribution*), dengan puncak frekuensi tertinggi berada tepat di nilai rata-ratanya ($0.029\text{ mol}/m^2$).
+   * **Interpretasi Data**: Emisi Karbon Monoksida (berasal dari pembuangan asap kendaraan bermotor dan industri) mengikuti **pola distribusi normal secara alami**. Sebagian besar hari di Gresik memiliki tingkat polusi CO sedang ($0.029$), sementara hari dengan tingkat polusi sangat rendah ($0.011$) atau sangat tinggi ($0.047$) jumlahnya relatif sedikit dan seimbang.
+
+3. **NO2 (Nitrogen Dioksida)**:
+   * **Analisis Bentuk**: Menumpuk sangat tinggi di sebelah kiri (mendekati $0$) dengan ekor panjang menjulang ke kanan (**Miring ke Kanan / *Right-Skewed Distribution*** dengan nilai *Skewness* sangat tinggi = **$5.179$**).
+   * **Interpretasi Data**: Pada mayoritas hari dalam setahun, konsentrasi gas NO2 di Kabupaten Gresik tergolong **sangat rendah** (kualitas udara relatif bersih). Namun, terdapat **beberapa hari tertentu yang mengalami lonjakan pencilan ekstrem (*outliers*) sangat tinggi** akibat lonjakan emisi lalu lintas/industri atau kondisi cuaca mikro yang terperangkap di permukaan tanah.
+
+4. **SO2 (Sulfur Dioksida)**:
+   * **Analisis Bentuk**: Menumpuk dominan di angka mendekati $0$ dengan ekor tipis memanjang ke kanan (*Right-Skewed*).
+   * **Interpretasi Data**: Konsentrasi gas SO2 sebagian besar waktu berada pada tingkat yang sangat kecil/aman. Konsentrasi tinggi SO2 hanya terjadi secara sporadis pada hari-hari tertentu akibat aktivitas spesifik pembakaran bahan bakar fosil/batu bara dari sektor industri di wilayah Gresik.
+
+---
+
+### 5.5 Perhitungan Manual Statistik Deskriptif (Rumus & Langkah Kerja)
+
+Sub-bab ini menyediakan ruang kerangka dan penjelasan rumus perhitungan statistik secara manual dari nilai minimum hingga konstruksi grafik histogram untuk memverifikasi hasil pemrosesan perangkat lunak (Python & KNIME) dari data observasi valid sebanyak $N$:
+
+---
+
+#### 1. Nilai Minimum ($\text{Min}$)
+- **Konsep**: Menentukan nilai observasi terkecil dari kumpulan data terisi $X_1, X_2, \dots, X_N$:
+
+```{math}
+\text{Min} = \min(X_1, X_2, \dots, X_N)
+```
+
+---
+
+#### 2. Nilai Maksimum ($\text{Max}$)
+- **Konsep**: Menentukan nilai observasi terbesar dari kumpulan data terisi $X_1, X_2, \dots, X_N$:
+
+```{math}
+\text{Max} = \max(X_1, X_2, \dots, X_N)
+```
+
+---
+
+#### 3. Nilai Rata-Rata (*Mean* / $\bar{X}$)
+- **Rumus Matematika**:
+
+```{math}
+\bar{X} = \frac{\text{Overall sum}}{N} = \frac{\sum_{i=1}^{N} X_i}{N}
+```
+
+- **Langkah Kerja Manual**:
+  1. Hitung total penjumlahan seluruh nilai data observasi valid yang terisi ($\text{Overall sum} = \sum X_i = X_1 + X_2 + \dots + X_N$).
+  2. Bagi nilai $\text{Overall sum}$ tersebut dengan banyaknya jumlah data valid ($N$).
+
+---
+
+#### 4. Nilai Tengah (*Median* / $Me$)
+- **Langkah Kerja Manual**:
+  1. Urutkan seluruh data valid dari nilai terkecil ke nilai terbesar: $X_{(1)} \le X_{(2)} \le \dots \le X_{(N)}$.
+  2. Jika jumlah data $N$ ganjil, nilai median terletak tepat di posisi tengah:
+
+```{math}
+Me = X_{\left(\frac{N+1}{2}\right)}
+```
+
+  3. Jika jumlah data $N$ genap, nilai median adalah rata-rata dari dua nilai di posisi tengah:
+
+```{math}
+Me = \frac{X_{\left(\frac{N}{2}\right)} + X_{\left(\frac{N}{2} + 1\right)}}{2}
+```
+
+---
+
+#### 5. Variansi Sampel ($s^2$)
+- **Rumus Variansi Sampel ($s^2$)**:
+
+```{math}
+s^2 = \frac{\sum_{i=1}^{N} (X_i - \bar{X})^2}{N - 1}
+```
+
+- **Langkah Kerja Manual**:
+  1. Hitung selisih tiap nilai data dengan nilai rata-ratanya: $(X_i - \bar{X})$.
+  2. Kuadratkan masing-masing nilai selisih tersebut: $(X_i - \bar{X})^2$.
+  3. Jumlahkan seluruh hasil kuadrat selisih dan bagi dengan derajat kebebasan $(N - 1)$.
+
+---
+
+#### 6. Standar Deviasi Sampel ($s$)
+- **Rumus Standar Deviasi ($s$)**:
+
+```{math}
+s = \sqrt{s^2}
+```
+
+- **Langkah Kerja Manual**:
+  1. Hitung akar kuadrat positif dari nilai variansi sampel ($s^2$) yang telah diperoleh pada langkah sebelumnya.
+
+---
+
+#### 7. Kemiringan (*Skewness* / $S_k$)
+- **Rumus Skewness Sampel ($S_k$)** (Momen Ketiga):
+
+```{math}
+S_k = \frac{N}{(N-1)(N-2)} \sum_{i=1}^{N} \left( \frac{X_i - \bar{X}}{s} \right)^3
+```
+
+- **Langkah Kerja Manual**:
+  1. Hitung nilai terstandarisasi (*z-score*) untuk tiap data: $Z_i = \frac{X_i - \bar{X}}{s}$.
+  2. Pangkat-tigakan nilai $Z_i$ tersebut: $(Z_i)^3$.
+  3. Jumlahkan seluruh hasil pangkat tiga dan kalikan dengan faktor koreksi sampel $\frac{N}{(N-1)(N-2)}$.
+
+---
+
+#### 8. Keruncingan (*Kurtosis* / $K$)
+- **Rumus Kurtosis Sampel ($K$)** (Momen Keempat):
+
+```{math}
+K = \left[ \frac{N(N+1)}{(N-1)(N-2)(N-3)} \sum_{i=1}^{N} \left( \frac{X_i - \bar{X}}{s} \right)^4 \right] - \frac{3(N-1)^2}{(N-2)(N-3)}
+```
+
+- **Langkah Kerja Manual**:
+  1. Pangkat-empatkan nilai *z-score* tiap data: $(Z_i)^4$.
+  2. Kalikan jumlah $\sum (Z_i)^4$ dengan faktor bobot populasi sampel dan kurangi dengan faktor penyesuaian distribusi normal $3$.
+
+---
+
+#### 9. Konstruksi Tabel Distribusi Frekuensi & Grafik Histogram
+- **Penentuan Jumlah Kelas ($k$)** (Menggunakan Aturan Sturges):
+
+```{math}
+k = 1 + 3.322 \times \log_{10}(N)
+```
+
+- **Penentuan Lebar Interval Kelas ($W$)**:
+
+```{math}
+W = \frac{\text{Max} - \text{Min}}{k}
+```
+
+- **Langkah Konstruksi Histogram**:
+  1. Tentukan batas bawah dan batas atas untuk setiap rentang interval kelas $[L_j, U_j)$ sebanyak $k$ kelas.
+  2. Hitung jumlah frekuensi observasi ($f_j$) yang jatuh pada masing-masing interval kelas.
+  3. Petakan interval nilai data pada sumbu horizontal (X) dan nilai frekuensi $f_j$ pada sumbu vertikal (Y) untuk membentuk grafik batang Histogram.
+
+

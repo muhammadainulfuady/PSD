@@ -369,8 +369,22 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konfigurasi-cloud-database-aiven-postgresql">5.1 Konfigurasi Cloud Database (Aiven PostgreSQL)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengelolaan-pengujian-data-dbeaver-client">5.2 Pengelolaan &amp; Pengujian Data (DBeaver Client)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-pipeline-data-knime-analytics-platform">5.3 Workflow Pipeline Data (KNIME Analytics Platform)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-eksplorasi-statistik-dasar-statistics-view">5.4 Hasil Eksplorasi Statistik Dasar (Statistics View)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-indikator-statistik-pada-knime">Ringkasan Indikator Statistik pada KNIME:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-eksplorasi-statistik-dasar-statistics-view-histogram">5.4 Hasil Eksplorasi Statistik Dasar (Statistics View &amp; Histogram)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-indikator-statistik-deskriptif-min-max-mean-std-dev-skewness-kurtosis-missing-values">1. Tabel Indikator Statistik Deskriptif (Min, Max, Mean, Std Dev, Skewness, Kurtosis, &amp; Missing Values)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-grafik-histogram-distribusi-per-polutan">2. Visualisasi Grafik Histogram Distribusi Per Polutan</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-rinci-karakteristik-distribusi-data-per-polutan">💡 Penjelasan Rinci Karakteristik Distribusi Data Per Polutan:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual-statistik-deskriptif-rumus-langkah-kerja">5.5 Perhitungan Manual Statistik Deskriptif (Rumus &amp; Langkah Kerja)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-minimum-text-min">1. Nilai Minimum (<span class="math notranslate nohighlight">\(\text{Min}\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-maksimum-text-max">2. Nilai Maksimum (<span class="math notranslate nohighlight">\(\text{Max}\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-rata-rata-mean-bar-x">3. Nilai Rata-Rata (<em>Mean</em> / <span class="math notranslate nohighlight">\(\bar{X}\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-tengah-median-me">4. Nilai Tengah (<em>Median</em> / <span class="math notranslate nohighlight">\(Me\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variansi-sampel-s-2">5. Variansi Sampel (<span class="math notranslate nohighlight">\(s^2\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#standar-deviasi-sampel-s">6. Standar Deviasi Sampel (<span class="math notranslate nohighlight">\(s\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kemiringan-skewness-s-k">7. Kemiringan (<em>Skewness</em> / <span class="math notranslate nohighlight">\(S_k\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#keruncingan-kurtosis-k">8. Keruncingan (<em>Kurtosis</em> / <span class="math notranslate nohighlight">\(K\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#konstruksi-tabel-distribusi-frekuensi-grafik-histogram">9. Konstruksi Tabel Distribusi Frekuensi &amp; Grafik Histogram</a></li>
 </ul>
 </li>
 </ul>
@@ -1955,24 +1969,235 @@ Koefisien Variasi (CV) SO2 : 290.45%
 </figure>
 </section>
 <hr class="docutils" />
-<section id="hasil-eksplorasi-statistik-dasar-statistics-view">
-<h3>5.4 Hasil Eksplorasi Statistik Dasar (Statistics View)<a class="headerlink" href="#hasil-eksplorasi-statistik-dasar-statistics-view" title="Link to this heading">#</a></h3>
-<p>Node <strong><code class="docutils literal notranslate"><span class="pre">Statistics</span> <span class="pre">View</span></code></strong> pada KNIME menghasilkan tabel ringkasan eksplorasi data (<em>Exploratory Data Analysis</em>) yang mencakup 16 indikator statistik dasar untuk ke-4 polutan (<code class="docutils literal notranslate"><span class="pre">CH4</span></code>, <code class="docutils literal notranslate"><span class="pre">CO</span></code>, <code class="docutils literal notranslate"><span class="pre">NO2</span></code>, <code class="docutils literal notranslate"><span class="pre">SO2</span></code>):</p>
+<section id="hasil-eksplorasi-statistik-dasar-statistics-view-histogram">
+<h3>5.4 Hasil Eksplorasi Statistik Dasar (Statistics View &amp; Histogram)<a class="headerlink" href="#hasil-eksplorasi-statistik-dasar-statistics-view-histogram" title="Link to this heading">#</a></h3>
+<p>Node <strong><code class="docutils literal notranslate"><span class="pre">Statistics</span> <span class="pre">View</span></code></strong> pada KNIME menghasilkan tabel ringkasan eksplorasi data (<em>Exploratory Data Analysis</em>) yang mencakup 16 indikator statistik dasar serta histogram distribusi frekuensi untuk ke-4 polutan (<code class="docutils literal notranslate"><span class="pre">CH4</span></code>, <code class="docutils literal notranslate"><span class="pre">CO</span></code>, <code class="docutils literal notranslate"><span class="pre">NO2</span></code>, <code class="docutils literal notranslate"><span class="pre">SO2</span></code>):</p>
+<section id="tabel-indikator-statistik-deskriptif-min-max-mean-std-dev-skewness-kurtosis-missing-values">
+<h4>1. Tabel Indikator Statistik Deskriptif (Min, Max, Mean, Std Dev, Skewness, Kurtosis, &amp; Missing Values)<a class="headerlink" href="#tabel-indikator-statistik-deskriptif-min-max-mean-std-dev-skewness-kurtosis-missing-values" title="Link to this heading">#</a></h4>
 <figure class="align-center" id="id6">
-<a class="reference internal image-reference" href="../_images/knime-eda.png"><img alt="../_images/knime-eda.png" src="../_images/knime-eda.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/eda-rowid-nomissings.png"><img alt="../_images/eda-rowid-nomissings.png" src="../_images/eda-rowid-nomissings.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Tampilan Tabel Hasil Statistik Dasar (Statistics View Output) pada KNIME</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Tabel Statistik Deskriptif (Min, Max, Mean, Std Dev, Variance, Skewness, Kurtosis, &amp; No. Missings) pada KNIME</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<section id="ringkasan-indikator-statistik-pada-knime">
-<h4>Ringkasan Indikator Statistik pada KNIME:<a class="headerlink" href="#ringkasan-indikator-statistik-pada-knime" title="Link to this heading">#</a></h4>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/no-nans-row-count.png"><img alt="../_images/no-nans-row-count.png" src="../_images/no-nans-row-count.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Tabel Nilai Median (Aktif) dan Total Row Count (366 Baris) pada KNIME</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<hr class="docutils" />
+<section id="visualisasi-grafik-histogram-distribusi-per-polutan">
+<h4>2. Visualisasi Grafik Histogram Distribusi Per Polutan<a class="headerlink" href="#visualisasi-grafik-histogram-distribusi-per-polutan" title="Link to this heading">#</a></h4>
+<p>Berikut adalah bentuk grafik distribusi histogram yang diekstrak oleh node <strong><code class="docutils literal notranslate"><span class="pre">Statistics</span> <span class="pre">View</span></code></strong> di KNIME untuk masing-masing polutan:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Polutan</p></th>
+<th class="head text-center"><p>Grafik Histogram KNIME</p></th>
+<th class="head text-left"><p>Ringkasan Distribusi</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>CH4</strong></p></td>
+<td class="text-center"><p><img alt="Histogram CH4" src="../_images/histogram-ch4.png" /></p></td>
+<td class="text-left"><p>Simetris terpusat di sekitar rata-rata (<span class="math notranslate nohighlight">\(1,892.847\text{ ppb}\)</span>).</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>CO</strong></p></td>
+<td class="text-center"><p><img alt="Histogram CO" src="../_images/histogram-co.png" /></p></td>
+<td class="text-left"><p>Berbentuk lonceng simetris (<em>Normal Distribution</em> / puncak <span class="math notranslate nohighlight">\(0.029\)</span>).</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>NO2</strong></p></td>
+<td class="text-center"><p><img alt="Histogram NO2" src="../_images/histogram-no2.png" /></p></td>
+<td class="text-left"><p>Miring ke kanan (<em>Right-Skewed</em> / Skewness = <span class="math notranslate nohighlight">\(5.179\)</span>).</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>SO2</strong></p></td>
+<td class="text-center"><p><img alt="Histogram SO2" src="../_images/histogram-so2.png" /></p></td>
+<td class="text-left"><p>Miring ke kanan dengan konsentrasi dominan mendekati 0.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="penjelasan-rinci-karakteristik-distribusi-data-per-polutan">
+<h4>💡 Penjelasan Rinci Karakteristik Distribusi Data Per Polutan:<a class="headerlink" href="#penjelasan-rinci-karakteristik-distribusi-data-per-polutan" title="Link to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p><strong>CH4 (Metana)</strong>:</p>
 <ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Min</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Max</span></code></strong>: Rentang nilai observasi terendah dan tertinggi (misalnya <code class="docutils literal notranslate"><span class="pre">CH4</span></code>: Min 1,854.824, Max 1,923.131).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Mean</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Std.</span> <span class="pre">deviation</span></code></strong>: Rata-rata dan tingkat sebaran data (misalnya <code class="docutils literal notranslate"><span class="pre">CH4</span></code>: Mean 1,892.847, Std Dev 17.363).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Variance</span></code></strong>: Ukuran variansi kuadrat sebaran data.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Skewness</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Kurtosis</span></code></strong>: Kemiringan dan keruncingan bentuk distribusi data (misalnya <code class="docutils literal notranslate"><span class="pre">NO2</span></code> memiliki Skewness 5.179 yang menandakan distribusi miring ke kanan / <em>right-skewed</em>).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">No.</span> <span class="pre">missings</span></code></strong>: Jumlah tanggal bernilai kosong per polutan (<code class="docutils literal notranslate"><span class="pre">CH4</span></code>: 335, <code class="docutils literal notranslate"><span class="pre">CO</span></code>: 157, <code class="docutils literal notranslate"><span class="pre">NO2</span></code>: 179, <code class="docutils literal notranslate"><span class="pre">SO2</span></code>: 144 dari total 366 baris).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Histogram</span></code></strong>: Grafik distribusi frekuensi nilai observasi polutan.</p></li>
+<li><p><strong>Analisis Bentuk</strong>: Terdistribusi relatif simetris dan terpusat di sekitar nilai rata-ratanya (<span class="math notranslate nohighlight">\(1,892.847\text{ ppb}\)</span>), dengan rentang data antara <span class="math notranslate nohighlight">\(1,854.824\)</span> hingga <span class="math notranslate nohighlight">\(1,923.131\)</span>.</p></li>
+<li><p><strong>Interpretasi Data</strong>: Konsentrasi gas Metana di Kabupaten Gresik tergolong <strong>sangat stabil</strong>. Gas CH4 di atmosfer tidak mengalami fluktuasi ekstrem harian, sehingga sebaran nilainya berkumpul merata di sekitar nilai rata-rata latar belakang bumi (~1890 ppb).</p></li>
+</ul>
+</li>
+<li><p><strong>CO (Karbon Monoksida)</strong>:</p>
+<ul class="simple">
+<li><p><strong>Analisis Bentuk</strong>: Membentuk kurva simetris menyerupai lonceng (<em>Bell-Shaped / Normal-Like Distribution</em>), dengan puncak frekuensi tertinggi berada tepat di nilai rata-ratanya (<span class="math notranslate nohighlight">\(0.029\text{ mol}/m^2\)</span>).</p></li>
+<li><p><strong>Interpretasi Data</strong>: Emisi Karbon Monoksida (berasal dari pembuangan asap kendaraan bermotor dan industri) mengikuti <strong>pola distribusi normal secara alami</strong>. Sebagian besar hari di Gresik memiliki tingkat polusi CO sedang (<span class="math notranslate nohighlight">\(0.029\)</span>), sementara hari dengan tingkat polusi sangat rendah (<span class="math notranslate nohighlight">\(0.011\)</span>) atau sangat tinggi (<span class="math notranslate nohighlight">\(0.047\)</span>) jumlahnya relatif sedikit dan seimbang.</p></li>
+</ul>
+</li>
+<li><p><strong>NO2 (Nitrogen Dioksida)</strong>:</p>
+<ul class="simple">
+<li><p><strong>Analisis Bentuk</strong>: Menumpuk sangat tinggi di sebelah kiri (mendekati <span class="math notranslate nohighlight">\(0\)</span>) dengan ekor panjang menjulang ke kanan (<strong>Miring ke Kanan / <em>Right-Skewed Distribution</em></strong> dengan nilai <em>Skewness</em> sangat tinggi = <strong><span class="math notranslate nohighlight">\(5.179\)</span></strong>).</p></li>
+<li><p><strong>Interpretasi Data</strong>: Pada mayoritas hari dalam setahun, konsentrasi gas NO2 di Kabupaten Gresik tergolong <strong>sangat rendah</strong> (kualitas udara relatif bersih). Namun, terdapat <strong>beberapa hari tertentu yang mengalami lonjakan pencilan ekstrem (<em>outliers</em>) sangat tinggi</strong> akibat lonjakan emisi lalu lintas/industri atau kondisi cuaca mikro yang terperangkap di permukaan tanah.</p></li>
+</ul>
+</li>
+<li><p><strong>SO2 (Sulfur Dioksida)</strong>:</p>
+<ul class="simple">
+<li><p><strong>Analisis Bentuk</strong>: Menumpuk dominan di angka mendekati <span class="math notranslate nohighlight">\(0\)</span> dengan ekor tipis memanjang ke kanan (<em>Right-Skewed</em>).</p></li>
+<li><p><strong>Interpretasi Data</strong>: Konsentrasi gas SO2 sebagian besar waktu berada pada tingkat yang sangat kecil/aman. Konsentrasi tinggi SO2 hanya terjadi secara sporadis pada hari-hari tertentu akibat aktivitas spesifik pembakaran bahan bakar fosil/batu bara dari sektor industri di wilayah Gresik.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="perhitungan-manual-statistik-deskriptif-rumus-langkah-kerja">
+<h3>5.5 Perhitungan Manual Statistik Deskriptif (Rumus &amp; Langkah Kerja)<a class="headerlink" href="#perhitungan-manual-statistik-deskriptif-rumus-langkah-kerja" title="Link to this heading">#</a></h3>
+<p>Sub-bab ini menyediakan ruang kerangka dan penjelasan rumus perhitungan statistik secara manual dari nilai minimum hingga konstruksi grafik histogram untuk memverifikasi hasil pemrosesan perangkat lunak (Python &amp; KNIME) dari data observasi valid sebanyak <span class="math notranslate nohighlight">\(N\)</span>:</p>
+<hr class="docutils" />
+<section id="nilai-minimum-text-min">
+<h4>1. Nilai Minimum (<span class="math notranslate nohighlight">\(\text{Min}\)</span>)<a class="headerlink" href="#nilai-minimum-text-min" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Konsep</strong>: Menentukan nilai observasi terkecil dari kumpulan data terisi <span class="math notranslate nohighlight">\(X_1, X_2, \dots, X_N\)</span>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{Min} = \min(X_1, X_2, \dots, X_N)\]</div>
+</section>
+<hr class="docutils" />
+<section id="nilai-maksimum-text-max">
+<h4>2. Nilai Maksimum (<span class="math notranslate nohighlight">\(\text{Max}\)</span>)<a class="headerlink" href="#nilai-maksimum-text-max" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Konsep</strong>: Menentukan nilai observasi terbesar dari kumpulan data terisi <span class="math notranslate nohighlight">\(X_1, X_2, \dots, X_N\)</span>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{Max} = \max(X_1, X_2, \dots, X_N)\]</div>
+</section>
+<hr class="docutils" />
+<section id="nilai-rata-rata-mean-bar-x">
+<h4>3. Nilai Rata-Rata (<em>Mean</em> / <span class="math notranslate nohighlight">\(\bar{X}\)</span>)<a class="headerlink" href="#nilai-rata-rata-mean-bar-x" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Rumus Matematika</strong>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\bar{X} = \frac{\text{Overall sum}}{N} = \frac{\sum_{i=1}^{N} X_i}{N}\]</div>
+<ul class="simple">
+<li><p><strong>Langkah Kerja Manual</strong>:</p>
+<ol class="arabic simple">
+<li><p>Hitung total penjumlahan seluruh nilai data observasi valid yang terisi (<span class="math notranslate nohighlight">\(\text{Overall sum} = \sum X_i = X_1 + X_2 + \dots + X_N\)</span>).</p></li>
+<li><p>Bagi nilai <span class="math notranslate nohighlight">\(\text{Overall sum}\)</span> tersebut dengan banyaknya jumlah data valid (<span class="math notranslate nohighlight">\(N\)</span>).</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="nilai-tengah-median-me">
+<h4>4. Nilai Tengah (<em>Median</em> / <span class="math notranslate nohighlight">\(Me\)</span>)<a class="headerlink" href="#nilai-tengah-median-me" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Langkah Kerja Manual</strong>:</p>
+<ol class="arabic simple">
+<li><p>Urutkan seluruh data valid dari nilai terkecil ke nilai terbesar: <span class="math notranslate nohighlight">\(X_{(1)} \le X_{(2)} \le \dots \le X_{(N)}\)</span>.</p></li>
+<li><p>Jika jumlah data <span class="math notranslate nohighlight">\(N\)</span> ganjil, nilai median terletak tepat di posisi tengah:</p></li>
+</ol>
+</li>
+</ul>
+<div class="math notranslate nohighlight">
+\[Me = X_{\left(\frac{N+1}{2}\right)}\]</div>
+<ol class="arabic simple" start="3">
+<li><p>Jika jumlah data <span class="math notranslate nohighlight">\(N\)</span> genap, nilai median adalah rata-rata dari dua nilai di posisi tengah:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[Me = \frac{X_{\left(\frac{N}{2}\right)} + X_{\left(\frac{N}{2} + 1\right)}}{2}\]</div>
+</section>
+<hr class="docutils" />
+<section id="variansi-sampel-s-2">
+<h4>5. Variansi Sampel (<span class="math notranslate nohighlight">\(s^2\)</span>)<a class="headerlink" href="#variansi-sampel-s-2" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Rumus Variansi Sampel (<span class="math notranslate nohighlight">\(s^2\)</span>)</strong>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[s^2 = \frac{\sum_{i=1}^{N} (X_i - \bar{X})^2}{N - 1}\]</div>
+<ul class="simple">
+<li><p><strong>Langkah Kerja Manual</strong>:</p>
+<ol class="arabic simple">
+<li><p>Hitung selisih tiap nilai data dengan nilai rata-ratanya: <span class="math notranslate nohighlight">\((X_i - \bar{X})\)</span>.</p></li>
+<li><p>Kuadratkan masing-masing nilai selisih tersebut: <span class="math notranslate nohighlight">\((X_i - \bar{X})^2\)</span>.</p></li>
+<li><p>Jumlahkan seluruh hasil kuadrat selisih dan bagi dengan derajat kebebasan <span class="math notranslate nohighlight">\((N - 1)\)</span>.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="standar-deviasi-sampel-s">
+<h4>6. Standar Deviasi Sampel (<span class="math notranslate nohighlight">\(s\)</span>)<a class="headerlink" href="#standar-deviasi-sampel-s" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Rumus Standar Deviasi (<span class="math notranslate nohighlight">\(s\)</span>)</strong>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[s = \sqrt{s^2}\]</div>
+<ul class="simple">
+<li><p><strong>Langkah Kerja Manual</strong>:</p>
+<ol class="arabic simple">
+<li><p>Hitung akar kuadrat positif dari nilai variansi sampel (<span class="math notranslate nohighlight">\(s^2\)</span>) yang telah diperoleh pada langkah sebelumnya.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="kemiringan-skewness-s-k">
+<h4>7. Kemiringan (<em>Skewness</em> / <span class="math notranslate nohighlight">\(S_k\)</span>)<a class="headerlink" href="#kemiringan-skewness-s-k" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Rumus Skewness Sampel (<span class="math notranslate nohighlight">\(S_k\)</span>)</strong> (Momen Ketiga):</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[S_k = \frac{N}{(N-1)(N-2)} \sum_{i=1}^{N} \left( \frac{X_i - \bar{X}}{s} \right)^3\]</div>
+<ul class="simple">
+<li><p><strong>Langkah Kerja Manual</strong>:</p>
+<ol class="arabic simple">
+<li><p>Hitung nilai terstandarisasi (<em>z-score</em>) untuk tiap data: <span class="math notranslate nohighlight">\(Z_i = \frac{X_i - \bar{X}}{s}\)</span>.</p></li>
+<li><p>Pangkat-tigakan nilai <span class="math notranslate nohighlight">\(Z_i\)</span> tersebut: <span class="math notranslate nohighlight">\((Z_i)^3\)</span>.</p></li>
+<li><p>Jumlahkan seluruh hasil pangkat tiga dan kalikan dengan faktor koreksi sampel <span class="math notranslate nohighlight">\(\frac{N}{(N-1)(N-2)}\)</span>.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="keruncingan-kurtosis-k">
+<h4>8. Keruncingan (<em>Kurtosis</em> / <span class="math notranslate nohighlight">\(K\)</span>)<a class="headerlink" href="#keruncingan-kurtosis-k" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Rumus Kurtosis Sampel (<span class="math notranslate nohighlight">\(K\)</span>)</strong> (Momen Keempat):</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[K = \left[ \frac{N(N+1)}{(N-1)(N-2)(N-3)} \sum_{i=1}^{N} \left( \frac{X_i - \bar{X}}{s} \right)^4 \right] - \frac{3(N-1)^2}{(N-2)(N-3)}\]</div>
+<ul class="simple">
+<li><p><strong>Langkah Kerja Manual</strong>:</p>
+<ol class="arabic simple">
+<li><p>Pangkat-empatkan nilai <em>z-score</em> tiap data: <span class="math notranslate nohighlight">\((Z_i)^4\)</span>.</p></li>
+<li><p>Kalikan jumlah <span class="math notranslate nohighlight">\(\sum (Z_i)^4\)</span> dengan faktor bobot populasi sampel dan kurangi dengan faktor penyesuaian distribusi normal <span class="math notranslate nohighlight">\(3\)</span>.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="konstruksi-tabel-distribusi-frekuensi-grafik-histogram">
+<h4>9. Konstruksi Tabel Distribusi Frekuensi &amp; Grafik Histogram<a class="headerlink" href="#konstruksi-tabel-distribusi-frekuensi-grafik-histogram" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Penentuan Jumlah Kelas (<span class="math notranslate nohighlight">\(k\)</span>)</strong> (Menggunakan Aturan Sturges):</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[k = 1 + 3.322 \times \log_{10}(N)\]</div>
+<ul class="simple">
+<li><p><strong>Penentuan Lebar Interval Kelas (<span class="math notranslate nohighlight">\(W\)</span>)</strong>:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[W = \frac{\text{Max} - \text{Min}}{k}\]</div>
+<ul class="simple">
+<li><p><strong>Langkah Konstruksi Histogram</strong>:</p>
+<ol class="arabic simple">
+<li><p>Tentukan batas bawah dan batas atas untuk setiap rentang interval kelas <span class="math notranslate nohighlight">\([L_j, U_j)\)</span> sebanyak <span class="math notranslate nohighlight">\(k\)</span> kelas.</p></li>
+<li><p>Hitung jumlah frekuensi observasi (<span class="math notranslate nohighlight">\(f_j\)</span>) yang jatuh pada masing-masing interval kelas.</p></li>
+<li><p>Petakan interval nilai data pada sumbu horizontal (X) dan nilai frekuensi <span class="math notranslate nohighlight">\(f_j\)</span> pada sumbu vertikal (Y) untuk membentuk grafik batang Histogram.</p></li>
+</ol>
+</li>
 </ul>
 </section>
 </section>
@@ -2077,8 +2302,22 @@ Koefisien Variasi (CV) SO2 : 290.45%
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konfigurasi-cloud-database-aiven-postgresql">5.1 Konfigurasi Cloud Database (Aiven PostgreSQL)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengelolaan-pengujian-data-dbeaver-client">5.2 Pengelolaan &amp; Pengujian Data (DBeaver Client)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-pipeline-data-knime-analytics-platform">5.3 Workflow Pipeline Data (KNIME Analytics Platform)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-eksplorasi-statistik-dasar-statistics-view">5.4 Hasil Eksplorasi Statistik Dasar (Statistics View)</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-indikator-statistik-pada-knime">Ringkasan Indikator Statistik pada KNIME:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-eksplorasi-statistik-dasar-statistics-view-histogram">5.4 Hasil Eksplorasi Statistik Dasar (Statistics View &amp; Histogram)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-indikator-statistik-deskriptif-min-max-mean-std-dev-skewness-kurtosis-missing-values">1. Tabel Indikator Statistik Deskriptif (Min, Max, Mean, Std Dev, Skewness, Kurtosis, &amp; Missing Values)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-grafik-histogram-distribusi-per-polutan">2. Visualisasi Grafik Histogram Distribusi Per Polutan</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-rinci-karakteristik-distribusi-data-per-polutan">💡 Penjelasan Rinci Karakteristik Distribusi Data Per Polutan:</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perhitungan-manual-statistik-deskriptif-rumus-langkah-kerja">5.5 Perhitungan Manual Statistik Deskriptif (Rumus &amp; Langkah Kerja)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-minimum-text-min">1. Nilai Minimum (<span class="math notranslate nohighlight">\(\text{Min}\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-maksimum-text-max">2. Nilai Maksimum (<span class="math notranslate nohighlight">\(\text{Max}\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-rata-rata-mean-bar-x">3. Nilai Rata-Rata (<em>Mean</em> / <span class="math notranslate nohighlight">\(\bar{X}\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nilai-tengah-median-me">4. Nilai Tengah (<em>Median</em> / <span class="math notranslate nohighlight">\(Me\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#variansi-sampel-s-2">5. Variansi Sampel (<span class="math notranslate nohighlight">\(s^2\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#standar-deviasi-sampel-s">6. Standar Deviasi Sampel (<span class="math notranslate nohighlight">\(s\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kemiringan-skewness-s-k">7. Kemiringan (<em>Skewness</em> / <span class="math notranslate nohighlight">\(S_k\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#keruncingan-kurtosis-k">8. Keruncingan (<em>Kurtosis</em> / <span class="math notranslate nohighlight">\(K\)</span>)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#konstruksi-tabel-distribusi-frekuensi-grafik-histogram">9. Konstruksi Tabel Distribusi Frekuensi &amp; Grafik Histogram</a></li>
 </ul>
 </li>
 </ul>
