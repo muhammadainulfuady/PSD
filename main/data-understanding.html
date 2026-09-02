@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -355,17 +355,20 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.1 Missing Values</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.2 Outliers</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise">4.3 Noise</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-komparatif-4-polutan-style-copernicus">4.4 Visualisasi Komparatif 4 Polutan (Style Copernicus)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-tools-orange-data-mining">4.1 Implementasi Tools Orange Data Mining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.2 Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.3 Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise">4.4 Noise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-komparatif-4-polutan-style-copernicus">4.5 Visualisasi Komparatif 4 Polutan (Style Copernicus)</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-rinci-komponen-grafik">Penjelasan Rinci Komponen Grafik:</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-dan-rencana-tahap-data-preparation">5. Kesimpulan dan Rencana Tahap Data Preparation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rencana-aksi-tahap-data-preparation">5.1 Rencana Aksi Tahap Data Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrasi-cloud-database-analytics-workflow-aiven-dbeaver-knime">5. Integrasi Cloud Database &amp; Analytics Workflow (Aiven, DBeaver, &amp; KNIME)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konfigurasi-cloud-database-aiven-postgresql">5.1 Konfigurasi Cloud Database (Aiven PostgreSQL)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengelolaan-pengujian-data-dbeaver-client">5.2 Pengelolaan &amp; Pengujian Data (DBeaver Client)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-analisis-statistik-dasar-knime-analytics-platform">5.3 Workflow Analisis Statistik Dasar (KNIME Analytics Platform)</a></li>
 </ul>
 </li>
 </ul>
@@ -1211,8 +1214,21 @@ Authenticated using device code flow.
 <section id="identifikasi-kualitas-data">
 <h2>4. Identifikasi Kualitas Data<a class="headerlink" href="#identifikasi-kualitas-data" title="Link to this heading">#</a></h2>
 <p>Pada tahap ini dilakukan <strong>identifikasi</strong> (mencatat) masalah-masalah pada data, yaitu <strong>missing values</strong>, <strong>outliers</strong>, dan <strong>noises</strong>. Sesuai prinsip CRISP-DM, tahap Data Understanding hanya <strong>menemukan dan mencatat</strong> masalah tersebut — penanganan (imputasi, menghapus, dsb.) dilakukan pada tahap berikutnya (Data Preparation).</p>
+<section id="implementasi-tools-orange-data-mining">
+<h3>4.1 Implementasi Tools Orange Data Mining<a class="headerlink" href="#implementasi-tools-orange-data-mining" title="Link to this heading">#</a></h3>
+<p>Selain analisis statistik berbasis kode Python, identifikasi kualitas data (pemeriksaan <em>missing values</em>, pencilan <em>outliers</em>, dan statistik <em>noise</em>) juga diimplementasikan secara visual menggunakan perangkat lunak <strong>Orange Data Mining</strong>.</p>
+<p>Workflow yang dibangun pada Orange Data Mining mencakup beberapa widget utama:</p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">CSV</span> <span class="pre">File</span> <span class="pre">Import</span></code></strong>: Membaca berkas deret waktu CSV polutan (<code class="docutils literal notranslate"><span class="pre">CH4</span></code>, <code class="docutils literal notranslate"><span class="pre">CO</span></code>, <code class="docutils literal notranslate"><span class="pre">NO2</span></code>, <code class="docutils literal notranslate"><span class="pre">SO2</span></code>) dan mengonfigurasi tipe atribut data (memastikan tipe kolom polutan diset ke <strong>Numeric</strong>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Column</span> <span class="pre">Statistics</span></code></strong>: Memeriksa ringkasan statistik dasar setiap kolom secara otomatis, mencakup jumlah <em>Missing Values</em>, nilai Rata-rata (<em>Mean</em> <span class="math notranslate nohighlight">\(\mu\)</span>), Standar Deviasi (<em>Std Dev</em> <span class="math notranslate nohighlight">\(\sigma\)</span>), serta tingkat variabilitas (<em>Dispersion</em>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Impute</span></code></strong>: Mengatur penanganan data kosong. Untuk menyelaraskan populasi analisis dengan metode Python (<code class="docutils literal notranslate"><span class="pre">.dropna()</span></code>), widget <code class="docutils literal notranslate"><span class="pre">Impute</span></code> dikonfigurasi ke opsi <strong><em>Remove instances with unknown values</em></strong> (menghapus baris bernilai kosong sebelum pemrosesan outlier).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Outliers</span></code></strong>: Melakukan deteksi pencilan otomatis menggunakan algoritma <strong>Isolation Forest</strong> dengan tingkat kontaminasi <code class="docutils literal notranslate"><span class="pre">Contamination</span> <span class="pre">=</span> <span class="pre">5%</span></code> (0.05).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">Table</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Scatter</span> <span class="pre">Plot</span></code></strong>: Menampilkan tabel observasi yang terlabeli <em>Outlier</em> / <em>Inlier</em> serta memvisualisasikan sebaran titik pencilan data.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
 <section id="missing-values">
-<h3>4.1 Missing Values<a class="headerlink" href="#missing-values" title="Link to this heading">#</a></h3>
+<h3>4.2 Missing Values<a class="headerlink" href="#missing-values" title="Link to this heading">#</a></h3>
 <p><strong>Missing values</strong> adalah tanggal yang tidak memiliki nilai polutan (NaN). Berikut identifikasinya:</p>
 <ol class="arabic simple">
 <li><p>ch4</p></li>
@@ -1337,7 +1353,7 @@ Jumlah data terisi (valid) pada data so2 : 222
 </figure>
 </section>
 <section id="outliers">
-<h3>4.2 Outliers<a class="headerlink" href="#outliers" title="Link to this heading">#</a></h3>
+<h3>4.3 Outliers<a class="headerlink" href="#outliers" title="Link to this heading">#</a></h3>
 <p><strong>Outliers</strong> (pencilan) adalah nilai pengamatan yang menyimpang secara signifikan dari mayoritas data dalam suatu variabel. Pada dataset ini, deteksi outlier dilakukan menggunakan algoritma <strong>Isolation Forest</strong> dengan tingkat kontaminasi (<code class="docutils literal notranslate"><span class="pre">contamination</span></code>) sebesar <strong>0.05</strong> (5%).</p>
 <p>Sebelum deteksi outlier dilakukan, data bernilai kosong (<em>missing values</em> / <code class="docutils literal notranslate"><span class="pre">NaN</span></code>) terlebih dahulu dibuang (menggunakan <code class="docutils literal notranslate"><span class="pre">dropna()</span></code> pada Python atau widget <code class="docutils literal notranslate"><span class="pre">Impute</span></code> <span class="math notranslate nohighlight">\(\rightarrow\)</span> <em>Remove instances with unknown values</em> pada Orange Data Mining) agar populasi perhitungan pencilan selaras.</p>
 <p>Berikut adalah hasil identifikasi outlier untuk masing-masing polutan:</p>
@@ -1555,7 +1571,7 @@ Jumlah tidak outlier (normal) pada data so2 : 210
 </figure>
 </section>
 <section id="noise">
-<h3>4.3 Noise<a class="headerlink" href="#noise" title="Link to this heading">#</a></h3>
+<h3>4.4 Noise<a class="headerlink" href="#noise" title="Link to this heading">#</a></h3>
 <p><strong>Noise</strong> (derau) adalah fluktuasi acak frekuensi tinggi (<em>random noise</em>) pada data pengamatan yang disebabkan oleh kondisi dinamika atmosfer mikro, keterbatasan presisi instrumen satelit, atau interferensi cuaca lokal. Berbeda dari <em>outlier</em> yang berupa pencilan ekstrem tunggal, <em>noise</em> diukur berdasarkan tingkat fluktuasi atau variabilitas relatif data.</p>
 <p>Untuk mengukur dan mengidentifikasi <em>noise</em> pada data polutan, digunakan 3 indikator statistik utama:</p>
 <ol class="arabic simple">
@@ -1763,7 +1779,7 @@ Koefisien Variasi (CV) SO2 : 290.45%
 </section>
 <hr class="docutils" />
 <section id="visualisasi-komparatif-4-polutan-style-copernicus">
-<h3>4.4 Visualisasi Komparatif 4 Polutan (Style Copernicus)<a class="headerlink" href="#visualisasi-komparatif-4-polutan-style-copernicus" title="Link to this heading">#</a></h3>
+<h3>4.5 Visualisasi Komparatif 4 Polutan (Style Copernicus)<a class="headerlink" href="#visualisasi-komparatif-4-polutan-style-copernicus" title="Link to this heading">#</a></h3>
 <p>Untuk membandingkan tren perubahan konsentrasi ke-4 polutan (CH4, CO, NO2, SO2) secara bersamaan sepanjang periode pengamatan di Kabupaten Gresik, dibuat visualisasi <strong>Dual X-Axis Line Plot</strong> dengan gaya visualisasi Copernicus Sentinel-5P.</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../_images/copernicus_4polutan_dual_axis.png"><img alt="../_images/copernicus_4polutan_dual_axis.png" src="../_images/copernicus_4polutan_dual_axis.png" style="width: 100%;" /></a>
@@ -1881,77 +1897,56 @@ Koefisien Variasi (CV) SO2 : 290.45%
 </section>
 </section>
 <hr class="docutils" />
-<section id="kesimpulan-dan-rencana-tahap-data-preparation">
-<h2>5. Kesimpulan dan Rencana Tahap Data Preparation<a class="headerlink" href="#kesimpulan-dan-rencana-tahap-data-preparation" title="Link to this heading">#</a></h2>
-<p>Berdasarkan hasil pengumpulan, eksplorasi, dan identifikasi kualitas data kualitas udara Kabupaten Gresik (Sentinel-5P L2), diperoleh ringkasan evaluasi kualitas data sebagai berikut:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-left"><p>Polutan</p></th>
-<th class="head text-left"><p>Total Baris</p></th>
-<th class="head text-left"><p>Missing Values (NaN)</p></th>
-<th class="head text-left"><p>Data Terisi (Valid)</p></th>
-<th class="head text-left"><p>Outliers Terdeteksi (5%)</p></th>
-<th class="head text-left"><p>Tingkat Noise (<span class="math notranslate nohighlight">\(CV\)</span>)</p></th>
-<th class="head text-left"><p>Status Kualitas Data</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-left"><p><strong>CH4</strong></p></td>
-<td class="text-left"><p>366</p></td>
-<td class="text-left"><p>335 (91.5%)</p></td>
-<td class="text-left"><p>31 (8.5%)</p></td>
-<td class="text-left"><p>2</p></td>
-<td class="text-left"><p>0.92% (Sangat Rendah)</p></td>
-<td class="text-left"><p>Celah Data Cukup Besar</p></td>
-</tr>
-<tr class="row-odd"><td class="text-left"><p><strong>CO</strong></p></td>
-<td class="text-left"><p>366</p></td>
-<td class="text-left"><p>157 (42.9%)</p></td>
-<td class="text-left"><p>209 (57.1%)</p></td>
-<td class="text-left"><p>11</p></td>
-<td class="text-left"><p>14.66% (Moderat)</p></td>
-<td class="text-left"><p>Cukup Baik</p></td>
-</tr>
-<tr class="row-even"><td class="text-left"><p><strong>NO2</strong></p></td>
-<td class="text-left"><p>366</p></td>
-<td class="text-left"><p>179 (48.9%)</p></td>
-<td class="text-left"><p>187 (51.1%)</p></td>
-<td class="text-left"><p>10</p></td>
-<td class="text-left"><p>86.60% (Tinggi)</p></td>
-<td class="text-left"><p>Fluktuasi Perlu Smoothing</p></td>
-</tr>
-<tr class="row-odd"><td class="text-left"><p><strong>SO2</strong></p></td>
-<td class="text-left"><p>366</p></td>
-<td class="text-left"><p>144 (39.3%)</p></td>
-<td class="text-left"><p>222 (60.7%)</p></td>
-<td class="text-left"><p>12</p></td>
-<td class="text-left"><p>290.45% (Sangat Tinggi)</p></td>
-<td class="text-left"><p>Perlu Penanganan Artefak/Sensor</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<section id="integrasi-cloud-database-analytics-workflow-aiven-dbeaver-knime">
+<h2>5. Integrasi Cloud Database &amp; Analytics Workflow (Aiven, DBeaver, &amp; KNIME)<a class="headerlink" href="#integrasi-cloud-database-analytics-workflow-aiven-dbeaver-knime" title="Link to this heading">#</a></h2>
+<p>Selain pemrosesan secara lokal dengan Python dan Orange Data Mining, alur pemahaman data (<em>Data Understanding</em>) ini juga diimplementasikan menggunakan infrastruktur <em>cloud database</em> dan perangkat analitik visual: <strong>Aiven PostgreSQL</strong>, <strong>DBeaver</strong>, dan <strong>KNIME Analytics Platform</strong>.</p>
 <hr class="docutils" />
-<section id="rencana-aksi-tahap-data-preparation">
-<h3>5.1 Rencana Aksi Tahap Data Preparation<a class="headerlink" href="#rencana-aksi-tahap-data-preparation" title="Link to this heading">#</a></h3>
-<p>Temuan kualitas data di atas menjadi dasar utama dalam menyusun strategi pemrosesan pada tahap <strong>Data Preparation</strong> berikutnya:</p>
+<section id="konfigurasi-cloud-database-aiven-postgresql">
+<h3>5.1 Konfigurasi Cloud Database (Aiven PostgreSQL)<a class="headerlink" href="#konfigurasi-cloud-database-aiven-postgresql" title="Link to this heading">#</a></h3>
+<p><strong>Aiven</strong> digunakan sebagai penyedia layanan <em>Cloud Database</em> terkelola (<em>managed database</em>) berbasis PostgreSQL. Langkah-langkah konfigurasinya:</p>
 <ol class="arabic simple">
-<li><p><strong>Imputasi Missing Values (<em>Time-Series Imputation</em>)</strong>:</p>
-<ul class="simple">
-<li><p>Celah tanggal kosong (terutama pada CH4 dan NO2) akan diisi menggunakan teknik interpolasi linier (<em>linear interpolation</em>) atau <em>forward/backward fill</em> agar deret waktu menjadi berkesinambungan harian.</p></li>
-</ul>
-</li>
-<li><p><strong>Penanganan Outliers (<em>Outlier Treatment</em>)</strong>:</p>
-<ul class="simple">
-<li><p>Nilai pencilan ekstrem hasil deteksi <em>Isolation Forest</em> akan ditangani menggunakan teknik <em>winsorization</em> (membatasi nilai ke rentang persentil tertentu) atau imputasi nilai batas wajar agar tidak menggangu pemodelan.</p></li>
-</ul>
-</li>
-<li><p><strong>Penghalusan Derau (<em>Noise Smoothing</em>)</strong>:</p>
-<ul class="simple">
-<li><p>Menerapkan fungsi <em>Moving Average</em> (rata-rata bergerak 7 hari / 30 hari) untuk meredam fluktuasi acak frekuensi tinggi, sehingga tren perubahan pola polusi udara di Kabupaten Gresik dapat dianalisis secara akurat dan konsisten.</p></li>
-</ul>
-</li>
+<li><p>Membuat layanan (<em>service</em>) baru bertipe <strong>PostgreSQL</strong> pada konsol platform Aiven Cloud.</p></li>
+<li><p>Mengonfigurasi parameter koneksi jaringan, <em>database name</em>, <em>username</em>, <em>password</em>, serta sertifikat SSL (<code class="docutils literal notranslate"><span class="pre">CA</span> <span class="pre">Certificate</span></code>).</p></li>
+<li><p>Mencatat kredensial koneksi <em>Host</em> dan <em>Port</em> publik untuk dihubungkan dengan perangkat GUI Client dan KNIME.</p></li>
 </ol>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/create-project.png"><img alt="../_images/create-project.png" src="../_images/create-project.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Konfigurasi Service Cloud Database PostgreSQL pada Console Aiven</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<hr class="docutils" />
+<section id="pengelolaan-pengujian-data-dbeaver-client">
+<h3>5.2 Pengelolaan &amp; Pengujian Data (DBeaver Client)<a class="headerlink" href="#pengelolaan-pengujian-data-dbeaver-client" title="Link to this heading">#</a></h3>
+<p><strong>DBeaver</strong> digunakan sebagai <em>Database Management Tool (GUI Client)</em> untuk mengelola struktur tabel relasional dan menguji koneksi jaringan ke cloud Aiven:</p>
+<ol class="arabic simple">
+<li><p>Membuat koneksi baru (<em>New Database Connection</em>) berjenis PostgreSQL di DBeaver menggunakan Host, Port, dan kredensial Aiven.</p></li>
+<li><p>Mengimpor dataset <code class="docutils literal notranslate"><span class="pre">polutan_gresik.csv</span></code> ke dalam tabel relasional PostgreSQL bernama <code class="docutils literal notranslate"><span class="pre">polutan_gresik</span></code>.</p></li>
+<li><p>Menjalankan <em>SQL Query</em> <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">*</span> <span class="pre">FROM</span> <span class="pre">polutan_gresik;</span></code> untuk memastikan data terstruktur dengan benar di dalam <em>cloud database</em>.</p></li>
+</ol>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/select-tabel.png"><img alt="../_images/select-tabel.png" src="../_images/select-tabel.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Pengelolaan Tabel dan Query Data pada DBeaver Client</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<hr class="docutils" />
+<section id="workflow-analisis-statistik-dasar-knime-analytics-platform">
+<h3>5.3 Workflow Analisis Statistik Dasar (KNIME Analytics Platform)<a class="headerlink" href="#workflow-analisis-statistik-dasar-knime-analytics-platform" title="Link to this heading">#</a></h3>
+<p><strong>KNIME Analytics Platform</strong> digunakan untuk membangun alur kerja pemrosesan data (<em>Data Pipeline</em>) dan eksplorasi statistik dasar secara visual tanpa pengkodean (<em>low-code</em>):</p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">PostgreSQL</span> <span class="pre">Connector</span></code> / <code class="docutils literal notranslate"><span class="pre">DB</span> <span class="pre">Connector</span></code></strong>: Menghubungkan alur kerja KNIME ke server <em>cloud</em> Aiven PostgreSQL menggunakan driver JDBC.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">DB</span> <span class="pre">Reader</span></code></strong>: Membaca dan mengekstrak tabel <code class="docutils literal notranslate"><span class="pre">polutan_gresik</span></code> dari <em>cloud database</em> ke dalam tabel memori KNIME.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">Explorer</span></code> / <code class="docutils literal notranslate"><span class="pre">Statistics</span></code> Node</strong>: Menghitung dan menampilkan ringkasan statistik dasar (<em>Min</em>, <em>Max</em>, <em>Mean</em>, <em>Standard Deviation</em>, <em>Missing Values</em>, dan distribusi <em>Histogram</em>) untuk setiap kolom polutan (<code class="docutils literal notranslate"><span class="pre">CH4</span></code>, <code class="docutils literal notranslate"><span class="pre">CO</span></code>, <code class="docutils literal notranslate"><span class="pre">NO2</span></code>, <code class="docutils literal notranslate"><span class="pre">SO2</span></code>).</p></li>
+</ol>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/knime.png"><img alt="../_images/knime.png" src="../_images/knime.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Alur Kerja (Workflow) Ekstraksi dan Analisis Statistik Data pada KNIME</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 </section>
 </section>
@@ -2040,17 +2035,20 @@ Koefisien Variasi (CV) SO2 : 290.45%
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.1 Missing Values</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.2 Outliers</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise">4.3 Noise</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-komparatif-4-polutan-style-copernicus">4.4 Visualisasi Komparatif 4 Polutan (Style Copernicus)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-tools-orange-data-mining">4.1 Implementasi Tools Orange Data Mining</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.2 Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.3 Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise">4.4 Noise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-komparatif-4-polutan-style-copernicus">4.5 Visualisasi Komparatif 4 Polutan (Style Copernicus)</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-rinci-komponen-grafik">Penjelasan Rinci Komponen Grafik:</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-dan-rencana-tahap-data-preparation">5. Kesimpulan dan Rencana Tahap Data Preparation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rencana-aksi-tahap-data-preparation">5.1 Rencana Aksi Tahap Data Preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrasi-cloud-database-analytics-workflow-aiven-dbeaver-knime">5. Integrasi Cloud Database &amp; Analytics Workflow (Aiven, DBeaver, &amp; KNIME)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konfigurasi-cloud-database-aiven-postgresql">5.1 Konfigurasi Cloud Database (Aiven PostgreSQL)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengelolaan-pengujian-data-dbeaver-client">5.2 Pengelolaan &amp; Pengujian Data (DBeaver Client)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-analisis-statistik-dasar-knime-analytics-platform">5.3 Workflow Analisis Statistik Dasar (KNIME Analytics Platform)</a></li>
 </ul>
 </li>
 </ul>
