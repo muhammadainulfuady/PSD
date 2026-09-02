@@ -869,17 +869,40 @@ Pengelolaan Tabel dan Query Data pada DBeaver Client
 
 ---
 
-### 5.3 Workflow Analisis Statistik Dasar (KNIME Analytics Platform)
+### 5.3 Workflow Pipeline Data (KNIME Analytics Platform)
 
-**KNIME Analytics Platform** digunakan untuk membangun alur kerja pemrosesan data (*Data Pipeline*) dan eksplorasi statistik dasar secara visual tanpa pengkodean (*low-code*):
+**KNIME Analytics Platform** digunakan untuk membangun alur kerja pemrosesan data (*Data Pipeline*) secara visual tanpa pengkodean (*low-code*). Node-node yang digunakan dalam workflow ini antara lain:
 
-1. **`PostgreSQL Connector` / `DB Connector`**: Menghubungkan alur kerja KNIME ke server *cloud* Aiven PostgreSQL menggunakan driver JDBC.
-2. **`DB Reader`**: Membaca dan mengekstrak tabel `polutan_gresik` dari *cloud database* ke dalam tabel memori KNIME.
-3. **`Data Explorer` / `Statistics` Node**: Menghitung dan menampilkan ringkasan statistik dasar (*Min*, *Max*, *Mean*, *Standard Deviation*, *Missing Values*, dan distribusi *Histogram*) untuk setiap kolom polutan (`CH4`, `CO`, `NO2`, `SO2`).
+1. **`PostgreSQL Connector`**: Mengonfigurasi parameter koneksi JDBC (Host, Port, Database Name, Username, Password, dan SSL) untuk menghubungkan KNIME secara langsung ke *cloud database* Aiven PostgreSQL.
+2. **`DB Table Selector`**: Memilih tabel sasaran `polutan_gresik` dari skema database PostgreSQL di cloud.
+3. **`DB Reader`**: Mengeksekusi query ekstraksi dan membaca seluruh data dari server *cloud* Aiven ke dalam format tabel memori KNIME.
+4. **`Table View`**: Menampilkan pratinjau isi tabel data observasi secara interaktif.
+5. **`Statistics` & `Statistics View`**: Mengekstraksi ringkasan statistik deskriptif dan visualisasi distribusi histogram dari setiap atribut polutan.
 
 ```{figure} ../assets/editor/knime/knime.png
 :width: 100%
 :align: center
 
-Alur Kerja (Workflow) Ekstraksi dan Analisis Statistik Data pada KNIME
+Alur Kerja (Workflow Pipeline) Ekstraksi Data PostgreSQL pada KNIME
 ```
+
+---
+
+### 5.4 Hasil Eksplorasi Statistik Dasar (Statistics View)
+
+Node **`Statistics View`** pada KNIME menghasilkan tabel ringkasan eksplorasi data (*Exploratory Data Analysis*) yang mencakup 16 indikator statistik dasar untuk ke-4 polutan (`CH4`, `CO`, `NO2`, `SO2`):
+
+```{figure} ../assets/editor/knime/knime-eda.png
+:width: 100%
+:align: center
+
+Tampilan Tabel Hasil Statistik Dasar (Statistics View Output) pada KNIME
+```
+
+#### Ringkasan Indikator Statistik pada KNIME:
+* **`Min` & `Max`**: Rentang nilai observasi terendah dan tertinggi (misalnya `CH4`: Min 1,854.824, Max 1,923.131).
+* **`Mean` & `Std. deviation`**: Rata-rata dan tingkat sebaran data (misalnya `CH4`: Mean 1,892.847, Std Dev 17.363).
+* **`Variance`**: Ukuran variansi kuadrat sebaran data.
+* **`Skewness` & `Kurtosis`**: Kemiringan dan keruncingan bentuk distribusi data (misalnya `NO2` memiliki Skewness 5.179 yang menandakan distribusi miring ke kanan / *right-skewed*).
+* **`No. missings`**: Jumlah tanggal bernilai kosong per polutan (`CH4`: 335, `CO`: 157, `NO2`: 179, `SO2`: 144 dari total 366 baris).
+* **`Histogram`**: Grafik distribusi frekuensi nilai observasi polutan.

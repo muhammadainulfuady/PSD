@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -368,7 +368,11 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrasi-cloud-database-analytics-workflow-aiven-dbeaver-knime">5. Integrasi Cloud Database &amp; Analytics Workflow (Aiven, DBeaver, &amp; KNIME)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konfigurasi-cloud-database-aiven-postgresql">5.1 Konfigurasi Cloud Database (Aiven PostgreSQL)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengelolaan-pengujian-data-dbeaver-client">5.2 Pengelolaan &amp; Pengujian Data (DBeaver Client)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-analisis-statistik-dasar-knime-analytics-platform">5.3 Workflow Analisis Statistik Dasar (KNIME Analytics Platform)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-pipeline-data-knime-analytics-platform">5.3 Workflow Pipeline Data (KNIME Analytics Platform)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-eksplorasi-statistik-dasar-statistics-view">5.4 Hasil Eksplorasi Statistik Dasar (Statistics View)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-indikator-statistik-pada-knime">Ringkasan Indikator Statistik pada KNIME:</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1933,20 +1937,44 @@ Koefisien Variasi (CV) SO2 : 290.45%
 </figure>
 </section>
 <hr class="docutils" />
-<section id="workflow-analisis-statistik-dasar-knime-analytics-platform">
-<h3>5.3 Workflow Analisis Statistik Dasar (KNIME Analytics Platform)<a class="headerlink" href="#workflow-analisis-statistik-dasar-knime-analytics-platform" title="Link to this heading">#</a></h3>
-<p><strong>KNIME Analytics Platform</strong> digunakan untuk membangun alur kerja pemrosesan data (<em>Data Pipeline</em>) dan eksplorasi statistik dasar secara visual tanpa pengkodean (<em>low-code</em>):</p>
+<section id="workflow-pipeline-data-knime-analytics-platform">
+<h3>5.3 Workflow Pipeline Data (KNIME Analytics Platform)<a class="headerlink" href="#workflow-pipeline-data-knime-analytics-platform" title="Link to this heading">#</a></h3>
+<p><strong>KNIME Analytics Platform</strong> digunakan untuk membangun alur kerja pemrosesan data (<em>Data Pipeline</em>) secara visual tanpa pengkodean (<em>low-code</em>). Node-node yang digunakan dalam workflow ini antara lain:</p>
 <ol class="arabic simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">PostgreSQL</span> <span class="pre">Connector</span></code> / <code class="docutils literal notranslate"><span class="pre">DB</span> <span class="pre">Connector</span></code></strong>: Menghubungkan alur kerja KNIME ke server <em>cloud</em> Aiven PostgreSQL menggunakan driver JDBC.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">DB</span> <span class="pre">Reader</span></code></strong>: Membaca dan mengekstrak tabel <code class="docutils literal notranslate"><span class="pre">polutan_gresik</span></code> dari <em>cloud database</em> ke dalam tabel memori KNIME.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">Explorer</span></code> / <code class="docutils literal notranslate"><span class="pre">Statistics</span></code> Node</strong>: Menghitung dan menampilkan ringkasan statistik dasar (<em>Min</em>, <em>Max</em>, <em>Mean</em>, <em>Standard Deviation</em>, <em>Missing Values</em>, dan distribusi <em>Histogram</em>) untuk setiap kolom polutan (<code class="docutils literal notranslate"><span class="pre">CH4</span></code>, <code class="docutils literal notranslate"><span class="pre">CO</span></code>, <code class="docutils literal notranslate"><span class="pre">NO2</span></code>, <code class="docutils literal notranslate"><span class="pre">SO2</span></code>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">PostgreSQL</span> <span class="pre">Connector</span></code></strong>: Mengonfigurasi parameter koneksi JDBC (Host, Port, Database Name, Username, Password, dan SSL) untuk menghubungkan KNIME secara langsung ke <em>cloud database</em> Aiven PostgreSQL.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">DB</span> <span class="pre">Table</span> <span class="pre">Selector</span></code></strong>: Memilih tabel sasaran <code class="docutils literal notranslate"><span class="pre">polutan_gresik</span></code> dari skema database PostgreSQL di cloud.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">DB</span> <span class="pre">Reader</span></code></strong>: Mengeksekusi query ekstraksi dan membaca seluruh data dari server <em>cloud</em> Aiven ke dalam format tabel memori KNIME.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Table</span> <span class="pre">View</span></code></strong>: Menampilkan pratinjau isi tabel data observasi secara interaktif.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Statistics</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Statistics</span> <span class="pre">View</span></code></strong>: Mengekstraksi ringkasan statistik deskriptif dan visualisasi distribusi histogram dari setiap atribut polutan.</p></li>
 </ol>
 <figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../_images/knime.png"><img alt="../_images/knime.png" src="../_images/knime.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Alur Kerja (Workflow) Ekstraksi dan Analisis Statistik Data pada KNIME</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Alur Kerja (Workflow Pipeline) Ekstraksi Data PostgreSQL pada KNIME</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+</section>
+<hr class="docutils" />
+<section id="hasil-eksplorasi-statistik-dasar-statistics-view">
+<h3>5.4 Hasil Eksplorasi Statistik Dasar (Statistics View)<a class="headerlink" href="#hasil-eksplorasi-statistik-dasar-statistics-view" title="Link to this heading">#</a></h3>
+<p>Node <strong><code class="docutils literal notranslate"><span class="pre">Statistics</span> <span class="pre">View</span></code></strong> pada KNIME menghasilkan tabel ringkasan eksplorasi data (<em>Exploratory Data Analysis</em>) yang mencakup 16 indikator statistik dasar untuk ke-4 polutan (<code class="docutils literal notranslate"><span class="pre">CH4</span></code>, <code class="docutils literal notranslate"><span class="pre">CO</span></code>, <code class="docutils literal notranslate"><span class="pre">NO2</span></code>, <code class="docutils literal notranslate"><span class="pre">SO2</span></code>):</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/knime-eda.png"><img alt="../_images/knime-eda.png" src="../_images/knime-eda.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Tampilan Tabel Hasil Statistik Dasar (Statistics View Output) pada KNIME</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="ringkasan-indikator-statistik-pada-knime">
+<h4>Ringkasan Indikator Statistik pada KNIME:<a class="headerlink" href="#ringkasan-indikator-statistik-pada-knime" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Min</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Max</span></code></strong>: Rentang nilai observasi terendah dan tertinggi (misalnya <code class="docutils literal notranslate"><span class="pre">CH4</span></code>: Min 1,854.824, Max 1,923.131).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Mean</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Std.</span> <span class="pre">deviation</span></code></strong>: Rata-rata dan tingkat sebaran data (misalnya <code class="docutils literal notranslate"><span class="pre">CH4</span></code>: Mean 1,892.847, Std Dev 17.363).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Variance</span></code></strong>: Ukuran variansi kuadrat sebaran data.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Skewness</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Kurtosis</span></code></strong>: Kemiringan dan keruncingan bentuk distribusi data (misalnya <code class="docutils literal notranslate"><span class="pre">NO2</span></code> memiliki Skewness 5.179 yang menandakan distribusi miring ke kanan / <em>right-skewed</em>).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">No.</span> <span class="pre">missings</span></code></strong>: Jumlah tanggal bernilai kosong per polutan (<code class="docutils literal notranslate"><span class="pre">CH4</span></code>: 335, <code class="docutils literal notranslate"><span class="pre">CO</span></code>: 157, <code class="docutils literal notranslate"><span class="pre">NO2</span></code>: 179, <code class="docutils literal notranslate"><span class="pre">SO2</span></code>: 144 dari total 366 baris).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Histogram</span></code></strong>: Grafik distribusi frekuensi nilai observasi polutan.</p></li>
+</ul>
+</section>
 </section>
 </section>
 </section>
@@ -2048,7 +2076,11 @@ Koefisien Variasi (CV) SO2 : 290.45%
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrasi-cloud-database-analytics-workflow-aiven-dbeaver-knime">5. Integrasi Cloud Database &amp; Analytics Workflow (Aiven, DBeaver, &amp; KNIME)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konfigurasi-cloud-database-aiven-postgresql">5.1 Konfigurasi Cloud Database (Aiven PostgreSQL)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengelolaan-pengujian-data-dbeaver-client">5.2 Pengelolaan &amp; Pengujian Data (DBeaver Client)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-analisis-statistik-dasar-knime-analytics-platform">5.3 Workflow Analisis Statistik Dasar (KNIME Analytics Platform)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-pipeline-data-knime-analytics-platform">5.3 Workflow Pipeline Data (KNIME Analytics Platform)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-eksplorasi-statistik-dasar-statistics-view">5.4 Hasil Eksplorasi Statistik Dasar (Statistics View)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ringkasan-indikator-statistik-pada-knime">Ringkasan Indikator Statistik pada KNIME:</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
