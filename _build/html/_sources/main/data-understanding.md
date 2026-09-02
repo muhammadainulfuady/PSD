@@ -339,7 +339,21 @@ Karena itu, dari total **365 hari** dalam setahun, tidak semua tanggal memiliki 
 
 Pada tahap ini dilakukan **identifikasi** (mencatat) masalah-masalah pada data, yaitu **missing values**, **outliers**, dan **noises**. Sesuai prinsip CRISP-DM, tahap Data Understanding hanya **menemukan dan mencatat** masalah tersebut — penanganan (imputasi, menghapus, dsb.) dilakukan pada tahap berikutnya (Data Preparation).
 
-### 4.1 Missing Values
+### 4.1 Implementasi Tools Orange Data Mining
+
+Selain analisis statistik berbasis kode Python, identifikasi kualitas data (pemeriksaan *missing values*, pencilan *outliers*, dan statistik *noise*) juga diimplementasikan secara visual menggunakan perangkat lunak **Orange Data Mining**.
+
+Workflow yang dibangun pada Orange Data Mining mencakup beberapa widget utama:
+
+1. **`CSV File Import`**: Membaca berkas deret waktu CSV polutan (`CH4`, `CO`, `NO2`, `SO2`) dan mengonfigurasi tipe atribut data (memastikan tipe kolom polutan diset ke **Numeric**).
+2. **`Column Statistics`**: Memeriksa ringkasan statistik dasar setiap kolom secara otomatis, mencakup jumlah *Missing Values*, nilai Rata-rata (*Mean* $\mu$), Standar Deviasi (*Std Dev* $\sigma$), serta tingkat variabilitas (*Dispersion*).
+3. **`Impute`**: Mengatur penanganan data kosong. Untuk menyelaraskan populasi analisis dengan metode Python (`.dropna()`), widget `Impute` dikonfigurasi ke opsi **_Remove instances with unknown values_** (menghapus baris bernilai kosong sebelum pemrosesan outlier).
+4. **`Outliers`**: Melakukan deteksi pencilan otomatis menggunakan algoritma **Isolation Forest** dengan tingkat kontaminasi `Contamination = 5%` (0.05).
+5. **`Data Table` & `Scatter Plot`**: Menampilkan tabel observasi yang terlabeli *Outlier* / *Inlier* serta memvisualisasikan sebaran titik pencilan data.
+
+---
+
+### 4.2 Missing Values
 
 **Missing values** adalah tanggal yang tidak memiliki nilai polutan (NaN). Berikut identifikasinya:
 
@@ -412,7 +426,7 @@ print(f"Jumlah data terisi (valid) pada data so2 : {validValueSO2}")
 :align: center
 ```
 
-### 4.2 Outliers
+### 4.3 Outliers
 
 **Outliers** (pencilan) adalah nilai pengamatan yang menyimpang secara signifikan dari mayoritas data dalam suatu variabel. Pada dataset ini, deteksi outlier dilakukan menggunakan algoritma **Isolation Forest** dengan tingkat kontaminasi (`contamination`) sebesar **0.05** (5%).
 
@@ -576,7 +590,7 @@ plt.show()
 :align: center
 ```
 
-### 4.3 Noise
+### 4.4 Noise
 
 **Noise** (derau) adalah fluktuasi acak frekuensi tinggi (_random noise_) pada data pengamatan yang disebabkan oleh kondisi dinamika atmosfer mikro, keterbatasan presisi instrumen satelit, atau interferensi cuaca lokal. Berbeda dari _outlier_ yang berupa pencilan ekstrem tunggal, _noise_ diukur berdasarkan tingkat fluktuasi atau variabilitas relatif data.
 
@@ -718,7 +732,7 @@ plt.show()
 
 ---
 
-### 4.4 Visualisasi Komparatif 4 Polutan (Style Copernicus)
+### 4.5 Visualisasi Komparatif 4 Polutan (Style Copernicus)
 
 Untuk membandingkan tren perubahan konsentrasi ke-4 polutan (CH4, CO, NO2, SO2) secara bersamaan sepanjang periode pengamatan di Kabupaten Gresik, dibuat visualisasi **Dual X-Axis Line Plot** dengan gaya visualisasi Copernicus Sentinel-5P.
 
@@ -815,28 +829,57 @@ plt.show()
 
 ---
 
-## 5. Kesimpulan dan Rencana Tahap Data Preparation
+## 5. Integrasi Cloud Database & Analytics Workflow (Aiven, DBeaver, & KNIME)
 
-Berdasarkan hasil pengumpulan, eksplorasi, dan identifikasi kualitas data kualitas udara Kabupaten Gresik (Sentinel-5P L2), diperoleh ringkasan evaluasi kualitas data sebagai berikut:
-
-| Polutan | Total Baris | Missing Values (NaN) | Data Terisi (Valid) | Outliers Terdeteksi (5%) | Tingkat Noise ($CV$)    | Status Kualitas Data            |
-| :------ | :---------- | :------------------- | :------------------ | :----------------------- | :---------------------- | :------------------------------ |
-| **CH4** | 366         | 335 (91.5%)          | 31 (8.5%)           | 2                        | 0.92% (Sangat Rendah)   | Celah Data Cukup Besar          |
-| **CO**  | 366         | 157 (42.9%)          | 209 (57.1%)         | 11                       | 14.66% (Moderat)        | Cukup Baik                      |
-| **NO2** | 366         | 179 (48.9%)          | 187 (51.1%)         | 10                       | 86.60% (Tinggi)         | Fluktuasi Perlu Smoothing       |
-| **SO2** | 366         | 144 (39.3%)          | 222 (60.7%)         | 12                       | 290.45% (Sangat Tinggi) | Perlu Penanganan Artefak/Sensor |
+Selain pemrosesan secara lokal dengan Python dan Orange Data Mining, alur pemahaman data (*Data Understanding*) ini juga diimplementasikan menggunakan infrastruktur *cloud database* dan perangkat analitik visual: **Aiven PostgreSQL**, **DBeaver**, dan **KNIME Analytics Platform**.
 
 ---
 
-### 5.1 Rencana Aksi Tahap Data Preparation
+### 5.1 Konfigurasi Cloud Database (Aiven PostgreSQL)
 
-Temuan kualitas data di atas menjadi dasar utama dalam menyusun strategi pemrosesan pada tahap **Data Preparation** berikutnya:
+**Aiven** digunakan sebagai penyedia layanan *Cloud Database* terkelola (*managed database*) berbasis PostgreSQL. Langkah-langkah konfigurasinya:
 
-1. **Imputasi Missing Values (_Time-Series Imputation_)**:
-   - Celah tanggal kosong (terutama pada CH4 dan NO2) akan diisi menggunakan teknik interpolasi linier (_linear interpolation_) atau _forward/backward fill_ agar deret waktu menjadi berkesinambungan harian.
+1. Membuat layanan (*service*) baru bertipe **PostgreSQL** pada konsol platform Aiven Cloud.
+2. Mengonfigurasi parameter koneksi jaringan, *database name*, *username*, *password*, serta sertifikat SSL (`CA Certificate`).
+3. Mencatat kredensial koneksi *Host* dan *Port* publik untuk dihubungkan dengan perangkat GUI Client dan KNIME.
 
-2. **Penanganan Outliers (_Outlier Treatment_)**:
-   - Nilai pencilan ekstrem hasil deteksi _Isolation Forest_ akan ditangani menggunakan teknik _winsorization_ (membatasi nilai ke rentang persentil tertentu) atau imputasi nilai batas wajar agar tidak menggangu pemodelan.
+```{figure} ../assets/editor/aiven/create-project.png
+:width: 100%
+:align: center
 
-3. **Penghalusan Derau (_Noise Smoothing_)**:
-   - Menerapkan fungsi _Moving Average_ (rata-rata bergerak 7 hari / 30 hari) untuk meredam fluktuasi acak frekuensi tinggi, sehingga tren perubahan pola polusi udara di Kabupaten Gresik dapat dianalisis secara akurat dan konsisten.
+Konfigurasi Service Cloud Database PostgreSQL pada Console Aiven
+```
+
+---
+
+### 5.2 Pengelolaan & Pengujian Data (DBeaver Client)
+
+**DBeaver** digunakan sebagai *Database Management Tool (GUI Client)* untuk mengelola struktur tabel relasional dan menguji koneksi jaringan ke cloud Aiven:
+
+1. Membuat koneksi baru (*New Database Connection*) berjenis PostgreSQL di DBeaver menggunakan Host, Port, dan kredensial Aiven.
+2. Mengimpor dataset `polutan_gresik.csv` ke dalam tabel relasional PostgreSQL bernama `polutan_gresik`.
+3. Menjalankan *SQL Query* `SELECT * FROM polutan_gresik;` untuk memastikan data terstruktur dengan benar di dalam *cloud database*.
+
+```{figure} ../assets/editor/dbeaver/select-tabel.png
+:width: 100%
+:align: center
+
+Pengelolaan Tabel dan Query Data pada DBeaver Client
+```
+
+---
+
+### 5.3 Workflow Analisis Statistik Dasar (KNIME Analytics Platform)
+
+**KNIME Analytics Platform** digunakan untuk membangun alur kerja pemrosesan data (*Data Pipeline*) dan eksplorasi statistik dasar secara visual tanpa pengkodean (*low-code*):
+
+1. **`PostgreSQL Connector` / `DB Connector`**: Menghubungkan alur kerja KNIME ke server *cloud* Aiven PostgreSQL menggunakan driver JDBC.
+2. **`DB Reader`**: Membaca dan mengekstrak tabel `polutan_gresik` dari *cloud database* ke dalam tabel memori KNIME.
+3. **`Data Explorer` / `Statistics` Node**: Menghitung dan menampilkan ringkasan statistik dasar (*Min*, *Max*, *Mean*, *Standard Deviation*, *Missing Values*, dan distribusi *Histogram*) untuk setiap kolom polutan (`CH4`, `CO`, `NO2`, `SO2`).
+
+```{figure} ../assets/editor/knime/knime.png
+:width: 100%
+:align: center
+
+Alur Kerja (Workflow) Ekstraksi dan Analisis Statistik Data pada KNIME
+```
