@@ -3,3 +3,5 @@ matplotlib
 numpy
 sphinx-design
 pydata-sphinx-theme==0.15.4
+pandastable
+tkinter
