@@ -341,15 +341,15 @@ Pada tahap ini dilakukan **identifikasi** (mencatat) masalah-masalah pada data, 
 
 ### 4.1 Implementasi Tools Orange Data Mining
 
-Selain analisis statistik berbasis kode Python, identifikasi kualitas data (pemeriksaan *missing values*, pencilan *outliers*, dan statistik *noise*) juga diimplementasikan secara visual menggunakan perangkat lunak **Orange Data Mining**.
+Selain analisis statistik berbasis kode Python, identifikasi kualitas data (pemeriksaan _missing values_, pencilan _outliers_, dan statistik _noise_) juga diimplementasikan secara visual menggunakan perangkat lunak **Orange Data Mining**.
 
 Workflow yang dibangun pada Orange Data Mining mencakup beberapa widget utama:
 
 1. **`CSV File Import`**: Membaca berkas deret waktu CSV polutan (`CH4`, `CO`, `NO2`, `SO2`) dan mengonfigurasi tipe atribut data (memastikan tipe kolom polutan diset ke **Numeric**).
-2. **`Column Statistics`**: Memeriksa ringkasan statistik dasar setiap kolom secara otomatis, mencakup jumlah *Missing Values*, nilai Rata-rata (*Mean* $\mu$), Standar Deviasi (*Std Dev* $\sigma$), serta tingkat variabilitas (*Dispersion*).
+2. **`Column Statistics`**: Memeriksa ringkasan statistik dasar setiap kolom secara otomatis, mencakup jumlah _Missing Values_, nilai Rata-rata (_Mean_ $\mu$), Standar Deviasi (_Std Dev_ $\sigma$), serta tingkat variabilitas (_Dispersion_).
 3. **`Impute`**: Mengatur penanganan data kosong. Untuk menyelaraskan populasi analisis dengan metode Python (`.dropna()`), widget `Impute` dikonfigurasi ke opsi **_Remove instances with unknown values_** (menghapus baris bernilai kosong sebelum pemrosesan outlier).
 4. **`Outliers`**: Melakukan deteksi pencilan otomatis menggunakan algoritma **Isolation Forest** dengan tingkat kontaminasi `Contamination = 5%` (0.05).
-5. **`Data Table` & `Scatter Plot`**: Menampilkan tabel observasi yang terlabeli *Outlier* / *Inlier* serta memvisualisasikan sebaran titik pencilan data.
+5. **`Data Table` & `Scatter Plot`**: Menampilkan tabel observasi yang terlabeli _Outlier_ / _Inlier_ serta memvisualisasikan sebaran titik pencilan data.
 
 ---
 
@@ -831,17 +831,17 @@ plt.show()
 
 ## 5. Integrasi Cloud Database & Analytics Workflow (Aiven, DBeaver, & KNIME)
 
-Selain pemrosesan secara lokal dengan Python dan Orange Data Mining, alur pemahaman data (*Data Understanding*) ini juga diimplementasikan menggunakan infrastruktur *cloud database* dan perangkat analitik visual: **Aiven PostgreSQL**, **DBeaver**, dan **KNIME Analytics Platform**.
+Selain pemrosesan secara lokal dengan Python dan Orange Data Mining, alur pemahaman data (_Data Understanding_) ini juga diimplementasikan menggunakan infrastruktur _cloud database_ dan perangkat analitik visual: **Aiven PostgreSQL**, **DBeaver**, dan **KNIME Analytics Platform**.
 
 ---
 
 ### 5.1 Konfigurasi Cloud Database (Aiven PostgreSQL)
 
-**Aiven** digunakan sebagai penyedia layanan *Cloud Database* terkelola (*managed database*) berbasis PostgreSQL. Langkah-langkah konfigurasinya:
+**Aiven** digunakan sebagai penyedia layanan _Cloud Database_ terkelola (_managed database_) berbasis PostgreSQL. Langkah-langkah konfigurasinya:
 
-1. Membuat layanan (*service*) baru bertipe **PostgreSQL** pada konsol platform Aiven Cloud.
-2. Mengonfigurasi parameter koneksi jaringan, *database name*, *username*, *password*, serta sertifikat SSL (`CA Certificate`).
-3. Mencatat kredensial koneksi *Host* dan *Port* publik untuk dihubungkan dengan perangkat GUI Client dan KNIME.
+1. Membuat layanan (_service_) baru bertipe **PostgreSQL** pada konsol platform Aiven Cloud.
+2. Mengonfigurasi parameter koneksi jaringan, _database name_, _username_, _password_, serta sertifikat SSL (`CA Certificate`).
+3. Mencatat kredensial koneksi _Host_ dan _Port_ publik untuk dihubungkan dengan perangkat GUI Client dan KNIME.
 
 ```{figure} ../assets/editor/aiven/create-project.png
 :width: 100%
@@ -854,11 +854,11 @@ Konfigurasi Service Cloud Database PostgreSQL pada Console Aiven
 
 ### 5.2 Pengelolaan & Pengujian Data (DBeaver Client)
 
-**DBeaver** digunakan sebagai *Database Management Tool (GUI Client)* untuk mengelola struktur tabel relasional dan menguji koneksi jaringan ke cloud Aiven:
+**DBeaver** digunakan sebagai _Database Management Tool (GUI Client)_ untuk mengelola struktur tabel relasional dan menguji koneksi jaringan ke cloud Aiven:
 
-1. Membuat koneksi baru (*New Database Connection*) berjenis PostgreSQL di DBeaver menggunakan Host, Port, dan kredensial Aiven.
+1. Membuat koneksi baru (_New Database Connection_) berjenis PostgreSQL di DBeaver menggunakan Host, Port, dan kredensial Aiven.
 2. Mengimpor dataset `polutan_gresik.csv` ke dalam tabel relasional PostgreSQL bernama `polutan_gresik`.
-3. Menjalankan *SQL Query* `SELECT * FROM polutan_gresik;` untuk memastikan data terstruktur dengan benar di dalam *cloud database*.
+3. Menjalankan _SQL Query_ `SELECT * FROM polutan_gresik;` untuk memastikan data terstruktur dengan benar di dalam _cloud database_.
 
 ```{figure} ../assets/editor/dbeaver/select-tabel.png
 :width: 100%
@@ -871,11 +871,11 @@ Pengelolaan Tabel dan Query Data pada DBeaver Client
 
 ### 5.3 Workflow Pipeline Data (KNIME Analytics Platform)
 
-**KNIME Analytics Platform** digunakan untuk membangun alur kerja pemrosesan data (*Data Pipeline*) secara visual tanpa pengkodean (*low-code*). Node-node yang digunakan dalam workflow ini antara lain:
+**KNIME Analytics Platform** digunakan untuk membangun alur kerja pemrosesan data (_Data Pipeline_) secara visual tanpa pengkodean (_low-code_). Node-node yang digunakan dalam workflow ini antara lain:
 
-1. **`PostgreSQL Connector`**: Mengonfigurasi parameter koneksi JDBC (Host, Port, Database Name, Username, Password, dan SSL) untuk menghubungkan KNIME secara langsung ke *cloud database* Aiven PostgreSQL.
+1. **`PostgreSQL Connector`**: Mengonfigurasi parameter koneksi JDBC (Host, Port, Database Name, Username, Password, dan SSL) untuk menghubungkan KNIME secara langsung ke _cloud database_ Aiven PostgreSQL.
 2. **`DB Table Selector`**: Memilih tabel sasaran `polutan_gresik` dari skema database PostgreSQL di cloud.
-3. **`DB Reader`**: Mengeksekusi query ekstraksi dan membaca seluruh data dari server *cloud* Aiven ke dalam format tabel memori KNIME.
+3. **`DB Reader`**: Mengeksekusi query ekstraksi dan membaca seluruh data dari server _cloud_ Aiven ke dalam format tabel memori KNIME.
 4. **`Table View`**: Menampilkan pratinjau isi tabel data observasi secara interaktif.
 5. **`Statistics` & `Statistics View`**: Mengekstraksi ringkasan statistik deskriptif dan visualisasi distribusi histogram dari setiap atribut polutan.
 
@@ -888,68 +888,59 @@ Alur Kerja (Workflow Pipeline) Ekstraksi Data PostgreSQL pada KNIME
 
 ---
 
-### 5.4 Hasil Eksplorasi Statistik Dasar (Statistics View & Histogram)
+### 5.4 Perhitungan Manual Statistik Deskriptif (Rumus & Langkah Kerja)
 
-Node **`Statistics View`** pada KNIME menghasilkan tabel ringkasan eksplorasi data (*Exploratory Data Analysis*) yang mencakup 16 indikator statistik dasar serta histogram distribusi frekuensi untuk ke-4 polutan (`CH4`, `CO`, `NO2`, `SO2`):
+Sub-bab ini menyediakan penjelasan rumus perhitungan statistik secara manual dari nilai minimum hingga konstruksi grafik histogram untuk memverifikasi hasil pemrosesan perangkat lunak (Python & KNIME) dari data observasi valid sebanyak $N$. 
 
-#### 1. Tabel Indikator Statistik Deskriptif (Min, Max, Mean, Std Dev, Skewness, Kurtosis, & Missing Values)
+Untuk memverifikasi kebenaran dan ketelitian formula statistik deskriptif, dilakukan pengujian komparasi langsung antara perhitungan manual menggunakan lembar kerja **Microsoft Excel** dengan hasil ekstraksi otomatis dari node **Statistics** pada **KNIME Analytics Platform** sebagaimana ditampilkan pada gambar berikut:
 
-```{figure} ../assets/editor/knime/eda-rowid-nomissings.png
+```{figure} ../assets/editor/knime/eda-lengkap.png
 :width: 100%
 :align: center
 
-Tabel Statistik Deskriptif (Min, Max, Mean, Std Dev, Variance, Skewness, Kurtosis, & No. Missings) pada KNIME
+Ringkasan Statistik Deskriptif dan Visualisasi Histogram Seluruh Atribut Polutan pada KNIME
 ```
 
-```{figure} ../assets/editor/knime/no-nans-row-count.png
+> [!NOTE]
+> **Catatan Pembuktian & Konsistensi Perhitungan**:
+> Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi standar `MIN`, `MAX`, `AVERAGE`, `MEDIAN`, `VAR.S`, `STDEV.S`, `SKEW`, dan `KURT`) terbukti **100% konsisten dan identik secara matematis** dengan hasil ekstraksi pada perangkat lunak KNIME. 
+> 
+> Terdapat sedikit perbedaan jumlah angka di belakang koma (desimal) pada beberapa tampilan tabel antarmuka. Hal ini semata-mata disebabkan oleh **pembulatan tampilan (*cosmetic display rounding*)** otomatis pada antarmuka GUI KNIME (misalnya pembulatan 3 digit desimal pada rata-rata $\text{CH}_4$ dari `1,892.846684` menjadi `1,892.847`). Secara nilai komputasi dasar (*raw precision value*), kedua metode menghasilkan nilai presisi yang sepenuhnya sama.
+
+Berikut adalah tampilan lembar kerja perhitungan manual Excel untuk masing-masing parameter polutan ($\text{CH}_4$, $\text{CO}$, $\text{NO}_2$, dan $\text{SO}_2$):
+
+```{figure} ../assets/editor/excel/ch4_manual.png
 :width: 100%
 :align: center
 
-Tabel Nilai Median (Aktif) dan Total Row Count (366 Baris) pada KNIME
+Perhitungan Manual Statistik Deskriptif Parameter $\text{CH}_4$ pada Excel
 ```
 
----
+```{figure} ../assets/editor/excel/co_manual.png
+:width: 100%
+:align: center
 
-#### 2. Visualisasi Grafik Histogram Distribusi Per Polutan
+Perhitungan Manual Statistik Deskriptif Parameter $\text{CO}$ pada Excel
+```
 
-Berikut adalah bentuk grafik distribusi histogram yang diekstrak oleh node **`Statistics View`** di KNIME untuk masing-masing polutan:
+```{figure} ../assets/editor/excel/no2_manual.png
+:width: 100%
+:align: center
 
-| Polutan | Grafik Histogram KNIME | Ringkasan Distribusi |
-| :--- | :---: | :--- |
-| **CH4** | ![Histogram CH4](../assets/editor/knime/histogram-ch4.png) | Simetris terpusat di sekitar rata-rata ($1,892.847\text{ ppb}$). |
-| **CO** | ![Histogram CO](../assets/editor/knime/histogram-co.png) | Berbentuk lonceng simetris (*Normal Distribution* / puncak $0.029$). |
-| **NO2** | ![Histogram NO2](../assets/editor/knime/histogram-no2.png) | Miring ke kanan (*Right-Skewed* / Skewness = $5.179$). |
-| **SO2** | ![Histogram SO2](../assets/editor/knime/histogram-so2.png) | Miring ke kanan dengan konsentrasi dominan mendekati 0. |
+Perhitungan Manual Statistik Deskriptif Parameter $\text{NO}_2$ pada Excel
+```
 
----
+```{figure} ../assets/editor/excel/so2_manual.png
+:width: 100%
+:align: center
 
-#### 💡 Penjelasan Rinci Karakteristik Distribusi Data Per Polutan:
-
-1. **CH4 (Metana)**:
-   * **Analisis Bentuk**: Terdistribusi relatif simetris dan terpusat di sekitar nilai rata-ratanya ($1,892.847\text{ ppb}$), dengan rentang data antara $1,854.824$ hingga $1,923.131$.
-   * **Interpretasi Data**: Konsentrasi gas Metana di Kabupaten Gresik tergolong **sangat stabil**. Gas CH4 di atmosfer tidak mengalami fluktuasi ekstrem harian, sehingga sebaran nilainya berkumpul merata di sekitar nilai rata-rata latar belakang bumi (~1890 ppb).
-
-2. **CO (Karbon Monoksida)**:
-   * **Analisis Bentuk**: Membentuk kurva simetris menyerupai lonceng (*Bell-Shaped / Normal-Like Distribution*), dengan puncak frekuensi tertinggi berada tepat di nilai rata-ratanya ($0.029\text{ mol}/m^2$).
-   * **Interpretasi Data**: Emisi Karbon Monoksida (berasal dari pembuangan asap kendaraan bermotor dan industri) mengikuti **pola distribusi normal secara alami**. Sebagian besar hari di Gresik memiliki tingkat polusi CO sedang ($0.029$), sementara hari dengan tingkat polusi sangat rendah ($0.011$) atau sangat tinggi ($0.047$) jumlahnya relatif sedikit dan seimbang.
-
-3. **NO2 (Nitrogen Dioksida)**:
-   * **Analisis Bentuk**: Menumpuk sangat tinggi di sebelah kiri (mendekati $0$) dengan ekor panjang menjulang ke kanan (**Miring ke Kanan / *Right-Skewed Distribution*** dengan nilai *Skewness* sangat tinggi = **$5.179$**).
-   * **Interpretasi Data**: Pada mayoritas hari dalam setahun, konsentrasi gas NO2 di Kabupaten Gresik tergolong **sangat rendah** (kualitas udara relatif bersih). Namun, terdapat **beberapa hari tertentu yang mengalami lonjakan pencilan ekstrem (*outliers*) sangat tinggi** akibat lonjakan emisi lalu lintas/industri atau kondisi cuaca mikro yang terperangkap di permukaan tanah.
-
-4. **SO2 (Sulfur Dioksida)**:
-   * **Analisis Bentuk**: Menumpuk dominan di angka mendekati $0$ dengan ekor tipis memanjang ke kanan (*Right-Skewed*).
-   * **Interpretasi Data**: Konsentrasi gas SO2 sebagian besar waktu berada pada tingkat yang sangat kecil/aman. Konsentrasi tinggi SO2 hanya terjadi secara sporadis pada hari-hari tertentu akibat aktivitas spesifik pembakaran bahan bakar fosil/batu bara dari sektor industri di wilayah Gresik.
-
----
-
-### 5.5 Perhitungan Manual Statistik Deskriptif (Rumus & Langkah Kerja)
-
-Sub-bab ini menyediakan ruang kerangka dan penjelasan rumus perhitungan statistik secara manual dari nilai minimum hingga konstruksi grafik histogram untuk memverifikasi hasil pemrosesan perangkat lunak (Python & KNIME) dari data observasi valid sebanyak $N$:
+Perhitungan Manual Statistik Deskriptif Parameter $\text{SO}_2$ pada Excel
+```
 
 ---
 
 #### 1. Nilai Minimum ($\text{Min}$)
+
 - **Konsep**: Menentukan nilai observasi terkecil dari kumpulan data terisi $X_1, X_2, \dots, X_N$:
 
 ```{math}
@@ -959,6 +950,7 @@ Sub-bab ini menyediakan ruang kerangka dan penjelasan rumus perhitungan statisti
 ---
 
 #### 2. Nilai Maksimum ($\text{Max}$)
+
 - **Konsep**: Menentukan nilai observasi terbesar dari kumpulan data terisi $X_1, X_2, \dots, X_N$:
 
 ```{math}
@@ -967,7 +959,8 @@ Sub-bab ini menyediakan ruang kerangka dan penjelasan rumus perhitungan statisti
 
 ---
 
-#### 3. Nilai Rata-Rata (*Mean* / $\bar{X}$)
+#### 3. Nilai Rata-Rata (_Mean_ / $\bar{X}$)
+
 - **Rumus Matematika**:
 
 ```{math}
@@ -980,7 +973,8 @@ Sub-bab ini menyediakan ruang kerangka dan penjelasan rumus perhitungan statisti
 
 ---
 
-#### 4. Nilai Tengah (*Median* / $Me$)
+#### 4. Nilai Tengah (_Median_ / $Me$)
+
 - **Langkah Kerja Manual**:
   1. Urutkan seluruh data valid dari nilai terkecil ke nilai terbesar: $X_{(1)} \le X_{(2)} \le \dots \le X_{(N)}$.
   2. Jika jumlah data $N$ ganjil, nilai median terletak tepat di posisi tengah:
@@ -989,7 +983,7 @@ Sub-bab ini menyediakan ruang kerangka dan penjelasan rumus perhitungan statisti
 Me = X_{\left(\frac{N+1}{2}\right)}
 ```
 
-  3. Jika jumlah data $N$ genap, nilai median adalah rata-rata dari dua nilai di posisi tengah:
+3. Jika jumlah data $N$ genap, nilai median adalah rata-rata dari dua nilai di posisi tengah:
 
 ```{math}
 Me = \frac{X_{\left(\frac{N}{2}\right)} + X_{\left(\frac{N}{2} + 1\right)}}{2}
@@ -998,6 +992,7 @@ Me = \frac{X_{\left(\frac{N}{2}\right)} + X_{\left(\frac{N}{2} + 1\right)}}{2}
 ---
 
 #### 5. Variansi Sampel ($s^2$)
+
 - **Rumus Variansi Sampel ($s^2$)**:
 
 ```{math}
@@ -1012,6 +1007,7 @@ s^2 = \frac{\sum_{i=1}^{N} (X_i - \bar{X})^2}{N - 1}
 ---
 
 #### 6. Standar Deviasi Sampel ($s$)
+
 - **Rumus Standar Deviasi ($s$)**:
 
 ```{math}
@@ -1023,7 +1019,8 @@ s = \sqrt{s^2}
 
 ---
 
-#### 7. Kemiringan (*Skewness* / $S_k$)
+#### 7. Kemiringan (_Skewness_ / $S_k$)
+
 - **Rumus Skewness Sampel ($S_k$)** (Momen Ketiga):
 
 ```{math}
@@ -1031,13 +1028,14 @@ S_k = \frac{N}{(N-1)(N-2)} \sum_{i=1}^{N} \left( \frac{X_i - \bar{X}}{s} \right)
 ```
 
 - **Langkah Kerja Manual**:
-  1. Hitung nilai terstandarisasi (*z-score*) untuk tiap data: $Z_i = \frac{X_i - \bar{X}}{s}$.
+  1. Hitung nilai terstandarisasi (_z-score_) untuk tiap data: $Z_i = \frac{X_i - \bar{X}}{s}$.
   2. Pangkat-tigakan nilai $Z_i$ tersebut: $(Z_i)^3$.
   3. Jumlahkan seluruh hasil pangkat tiga dan kalikan dengan faktor koreksi sampel $\frac{N}{(N-1)(N-2)}$.
 
 ---
 
-#### 8. Keruncingan (*Kurtosis* / $K$)
+#### 8. Keruncingan (_Kurtosis_ / $K$)
+
 - **Rumus Kurtosis Sampel ($K$)** (Momen Keempat):
 
 ```{math}
@@ -1045,12 +1043,13 @@ K = \left[ \frac{N(N+1)}{(N-1)(N-2)(N-3)} \sum_{i=1}^{N} \left( \frac{X_i - \bar
 ```
 
 - **Langkah Kerja Manual**:
-  1. Pangkat-empatkan nilai *z-score* tiap data: $(Z_i)^4$.
+  1. Pangkat-empatkan nilai _z-score_ tiap data: $(Z_i)^4$.
   2. Kalikan jumlah $\sum (Z_i)^4$ dengan faktor bobot populasi sampel dan kurangi dengan faktor penyesuaian distribusi normal $3$.
 
 ---
 
 #### 9. Konstruksi Tabel Distribusi Frekuensi & Grafik Histogram
+
 - **Penentuan Jumlah Kelas ($k$)** (Menggunakan Aturan Sturges):
 
 ```{math}
@@ -1067,5 +1066,3 @@ W = \frac{\text{Max} - \text{Min}}{k}
   1. Tentukan batas bawah dan batas atas untuk setiap rentang interval kelas $[L_j, U_j)$ sebanyak $k$ kelas.
   2. Hitung jumlah frekuensi observasi ($f_j$) yang jatuh pada masing-masing interval kelas.
   3. Petakan interval nilai data pada sumbu horizontal (X) dan nilai frekuensi $f_j$ pada sumbu vertikal (Y) untuk membentuk grafik batang Histogram.
-
-
