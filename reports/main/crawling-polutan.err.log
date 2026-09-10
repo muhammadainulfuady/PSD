@@ -37,6 +37,8 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-job = s5.execute_batch(title="CH4 Gresik", outputfile="../data/nc/polutan_CH4_gresik.nc")
+['# Daftar Polutan yang akan di-crawl', 'pollutants = ["CH4", "CO", "NO2", "SO2"]', '', '# Pastikan directory data output ada', 'os.makedirs("../data/nc", exist_ok=True)']
+...
+['', '# Simpan CSV Master Gabungan Seluruh Polutan', 'master_csv_path = "../data/csv/polutan_gresik.csv"', 'master_df.to_csv(master_csv_path, index=False)', 'print(f"\\n[SUCCESS] Master CSV Terpadu (CH4, CO, NO2, SO2) Berhasil Disimpan: {master_csv_path}")']
 -------------------
 

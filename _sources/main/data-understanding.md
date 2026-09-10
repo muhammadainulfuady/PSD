@@ -14,7 +14,7 @@ kernelspec:
 
 # Data Understanding
 
-Data Understanding adalah tahap untuk **mengumpulkan**, **mengeksplorasi**, dan **menilai kualitas** data yang akan digunakan dalam analisis kualitas udara di Kabupaten Gresik.
+Data Understanding adalah tahap untuk **mengumpulkan**, **mengeksplorasi**, dan **menilai kualitas** data yang akan digunakan dalam analisis kualitas udara di Kabupaten Gresik (Area Observasi Baru).
 
 ---
 
@@ -28,7 +28,7 @@ Berikut adalah library Python beserta kegunaannya untuk mengerjakan proses data 
 | `netCDF4`      | Membaca file hasil batch job openEO berformat netCDF (`.nc`).                                                           |
 | `pandas`       | Membaca dan mengolah data tabular (CSV), serta manipulasi deret waktu (_time-series_).                                  |
 | `numpy`        | Komputasi numerik, misalnya perhitungan rata-rata, standar deviasi, dan statistik.                                      |
-| `matplotlib`   | Membuat visualisasi grafik scatter plot (outliers), line plot (noise $\pm 1\sigma$), dan grafik komparatif dual X-axis. |
+| `matplotlib`   | Visualisasi grafik data komparatif dual X-axis 4 polutan.                                                               |
 | `scikit-learn` | Deteksi pencilan (_outlier detection_) menggunakan algoritma _Isolation Forest_.                                        |
 | `folium`       | Membuat visualisasi peta interaktif lokasi pengamatan (AOI Kabupaten Gresik).                                           |
 
@@ -87,22 +87,22 @@ Authenticated using device code flow.
 Polygon Area of Interest (AOI) di Kabupaten Gresik yang digambar pada peta geojson.
 ```
 
-**Penjelasan koordinat:**
+**Penjelasan koordinat (BBOX Terbaru):**
 
-Setiap titik pada polygon memiliki format `[longitude (bujur), latitude (lintang)]`. Dari polygon tersebut, kita memperoleh:
+Setiap titik pada polygon memiliki format `[longitude (bujur), latitude (lintang)]`. Dari polygon tersebut, kita memperoleh *Bounding Box*:
 
 | Atribut | Nilai       | Keterangan                       |
 | ------- | ----------- | -------------------------------- |
-| `west`  | 112.6193968 | Longitude terkecil (batas kiri)  |
-| `east`  | 112.6600158 | Longitude terbesar (batas kanan) |
-| `south` | -7.1927923  | Latitude terkecil (batas bawah)  |
-| `north` | -7.1514786  | Latitude terbesar (batas atas)   |
+| `west`  | 112.5058378 | Longitude terkecil (batas kiri)  |
+| `east`  | 112.5963518 | Longitude terbesar (batas kanan) |
+| `south` | -7.0683846  | Latitude terkecil (batas bawah)  |
+| `north` | -7.0230496  | Latitude terbesar (batas atas)   |
 
 > **Catatan:** Untuk data Sentinel-5P, `spatial_extent` pada `load_collection` menggunakan _bounding box_ (kotak batas) yang dibentuk oleh `west`, `south`, `east`, `north`. Sedangkan `aoi` (polygon) digunakan pada tahap `aggregate_spatial` untuk menghitung rata-rata di dalam area tersebut.
 
 ### 1.4 Memuat Data (Load Collection)
 
-Data dimuat **per polutan**, karena server Sentinel-5P di openEO hanya mendukung **satu band per proses**. Oleh karena itu dibuat **4 notebook terpisah** (`code-NO2.ipynb`, `code-CO.ipynb`, `code-SO2.ipynb`, `code-CH4.ipynb`), masing-masing untuk satu polutan.
+Data dimuat untuk masing-masing polutan menggunakan rentang koordinat *Bounding Box* terbaru. Proses pemrosesan ini digabungkan secara praktis di dalam notebook `crawling-polutan.ipynb`.
 
 #### a. Memuat Data NO2
 
@@ -111,10 +111,10 @@ s5 = connection.load_collection(
     "SENTINEL_5P_L2",
     temporal_extent=["2025-08-24", "2026-08-24"],
     spatial_extent={
-        "west": 112.6193968,
-        "south": -7.1927923,
-        "east": 112.6600158,
-        "north": -7.1514786,
+        "west": 112.5058378,
+        "south": -7.0683846,
+        "east": 112.5963518,
+        "north": -7.0230496,
     },
     bands=["NO2"],
 )
@@ -127,10 +127,10 @@ s5 = connection.load_collection(
     "SENTINEL_5P_L2",
     temporal_extent=["2025-08-24", "2026-08-24"],
     spatial_extent={
-        "west": 112.6193968,
-        "south": -7.1927923,
-        "east": 112.6600158,
-        "north": -7.1514786,
+        "west": 112.5058378,
+        "south": -7.0683846,
+        "east": 112.5963518,
+        "north": -7.0230496,
     },
     bands=["CO"],
 )
@@ -143,10 +143,10 @@ s5 = connection.load_collection(
     "SENTINEL_5P_L2",
     temporal_extent=["2025-08-24", "2026-08-24"],
     spatial_extent={
-        "west": 112.6193968,
-        "south": -7.1927923,
-        "east": 112.6600158,
-        "north": -7.1514786,
+        "west": 112.5058378,
+        "south": -7.0683846,
+        "east": 112.5963518,
+        "north": -7.0230496,
     },
     bands=["SO2"],
 )
@@ -159,18 +159,16 @@ s5 = connection.load_collection(
     "SENTINEL_5P_L2",
     temporal_extent=["2025-08-24", "2026-08-24"],
     spatial_extent={
-        "west": 112.6193968,
-        "south": -7.1927923,
-        "east": 112.6600158,
-        "north": -7.1514786,
+        "west": 112.5058378,
+        "south": -7.0683846,
+        "east": 112.5963518,
+        "north": -7.0230496,
     },
     bands=["CH4"],
 )
 ```
 
-**Perhatikan:** Kode untuk CO, SO2, dan CH4 **identik** dengan NO2 — hanya berbeda pada parameter `bands`.
-
-### 1.5 Definisi AOI (Polygon)
+### 1.5 Definisi AOI (Polygon Terbaru)
 
 ```python
 aoi = {
@@ -182,11 +180,11 @@ aoi = {
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [[
-                    [112.6193968, -7.1514786],   # kiri-atas (NW)
-                    [112.6600158, -7.1514786],   # kanan-atas (NE)
-                    [112.6600158, -7.1927923],   # kanan-bawah (SE)
-                    [112.619805,  -7.1927923],   # kiri-bawah (SW)
-                    [112.6193968, -7.1514786]    # kembali ke titik awal
+                    [112.5058378, -7.0230496],
+                    [112.5963518, -7.0230496],
+                    [112.5963518, -7.0683846],
+                    [112.5067768, -7.0683846],
+                    [112.5058378, -7.0230496]
                 ]]
             }
         }
@@ -241,18 +239,18 @@ Lokasi pengamatan di Kabupaten Gresik divisualisasikan pada **peta interaktif** 
 import folium
 
 # Pusat peta di tengah area AOI
-lat_c = (-7.1927923 + -7.1514786) / 2
-lon_c = (112.6193968 + 112.6600158) / 2
+lat_c = (-7.0683846 + -7.0230496) / 2
+lon_c = (112.5058378 + 112.5963518) / 2
 
 m = folium.Map(location=[lat_c, lon_c], zoom_start=12)
 
 # Tandai area polygon AOI Kabupaten Gresik
 folium.Rectangle(
-    bounds=[[-7.1927923, 112.6193968], [-7.1514786, 112.6600158]],
+    bounds=[[-7.0683846, 112.5058378], [-7.0230496, 112.5963518]],
     color="red",
     fill=True,
     fill_opacity=0.2,
-    tooltip="Area Kabupaten Gresik",
+    tooltip="Area Pengamatan Kabupaten Gresik (AOI Baru)",
 ).add_to(m)
 
 m
@@ -339,23 +337,9 @@ Karena itu, dari total **365 hari** dalam setahun, tidak semua tanggal memiliki 
 
 Pada tahap ini dilakukan **identifikasi** (mencatat) masalah-masalah pada data, yaitu **missing values**, **outliers**, dan **noises**. Sesuai prinsip CRISP-DM, tahap Data Understanding hanya **menemukan dan mencatat** masalah tersebut — penanganan (imputasi, menghapus, dsb.) dilakukan pada tahap berikutnya (Data Preparation).
 
-### 4.1 Implementasi Tools Orange Data Mining
+### 4.1 Missing Values
 
-Selain analisis statistik berbasis kode Python, identifikasi kualitas data (pemeriksaan _missing values_, pencilan _outliers_, dan statistik _noise_) juga diimplementasikan secara visual menggunakan perangkat lunak **Orange Data Mining**.
-
-Workflow yang dibangun pada Orange Data Mining mencakup beberapa widget utama:
-
-1. **`CSV File Import`**: Membaca berkas deret waktu CSV polutan (`CH4`, `CO`, `NO2`, `SO2`) dan mengonfigurasi tipe atribut data (memastikan tipe kolom polutan diset ke **Numeric**).
-2. **`Column Statistics`**: Memeriksa ringkasan statistik dasar setiap kolom secara otomatis, mencakup jumlah _Missing Values_, nilai Rata-rata (_Mean_ $\mu$), Standar Deviasi (_Std Dev_ $\sigma$), serta tingkat variabilitas (_Dispersion_).
-3. **`Impute`**: Mengatur penanganan data kosong. Untuk menyelaraskan populasi analisis dengan metode Python (`.dropna()`), widget `Impute` dikonfigurasi ke opsi **_Remove instances with unknown values_** (menghapus baris bernilai kosong sebelum pemrosesan outlier).
-4. **`Outliers`**: Melakukan deteksi pencilan otomatis menggunakan algoritma **Isolation Forest** dengan tingkat kontaminasi `Contamination = 5%` (0.05).
-5. **`Data Table` & `Scatter Plot`**: Menampilkan tabel observasi yang terlabeli _Outlier_ / _Inlier_ serta memvisualisasikan sebaran titik pencilan data.
-
----
-
-### 4.2 Missing Values
-
-**Missing values** adalah tanggal yang tidak memiliki nilai polutan (NaN). Berikut identifikasinya:
+**Missing values** adalah tanggal yang tidak memiliki nilai polutan (NaN). Berikut identifikasinya melalui kode Python:
 
 1. ch4
 
@@ -370,11 +354,6 @@ print(f"Jumlah missing value pada data ch4 : {missingValueCH4}")
 print(f"Jumlah data terisi (valid) pada data ch4 : {validValueCH4}")
 ```
 
-```{figure} ../assets/editor/orange/ch4-msv-orange.png
-:width: 100%
-:align: center
-```
-
 2. co
 
 ```{code-cell}
@@ -385,11 +364,6 @@ missingValueCO = co.isna().sum()
 validValueCO = co.notna().sum()
 print(f"Jumlah missing value pada data co : {missingValueCO}")
 print(f"Jumlah data terisi (valid) pada data co : {validValueCO}")
-```
-
-```{figure} ../assets/editor/orange/co-msv-orange.png
-:width: 100%
-:align: center
 ```
 
 3. no2
@@ -404,11 +378,6 @@ print(f"Jumlah missing value pada data no2 : {missingValueNO2}")
 print(f"Jumlah data terisi (valid) pada data no2 : {validValueNO2}")
 ```
 
-```{figure} ../assets/editor/orange/no2-msv-orange.png
-:width: 100%
-:align: center
-```
-
 4. so2
 
 ```{code-cell}
@@ -421,25 +390,21 @@ print(f"Jumlah missing value pada data so2 : {missingValueSO2}")
 print(f"Jumlah data terisi (valid) pada data so2 : {validValueSO2}")
 ```
 
-```{figure} ../assets/editor/orange/so2-msv-orange.png
-:width: 100%
-:align: center
-```
+---
 
-### 4.3 Outliers
+### 4.2 Outliers
 
 **Outliers** (pencilan) adalah nilai pengamatan yang menyimpang secara signifikan dari mayoritas data dalam suatu variabel. Pada dataset ini, deteksi outlier dilakukan menggunakan algoritma **Isolation Forest** dengan tingkat kontaminasi (`contamination`) sebesar **0.05** (5%).
 
-Sebelum deteksi outlier dilakukan, data bernilai kosong (_missing values_ / `NaN`) terlebih dahulu dibuang (menggunakan `dropna()` pada Python atau widget `Impute` $\rightarrow$ _Remove instances with unknown values_ pada Orange Data Mining) agar populasi perhitungan pencilan selaras.
+Sebelum deteksi outlier dilakukan, data bernilai kosong (_missing values_ / `NaN`) terlebih dahulu dibuang (menggunakan `dropna()` pada Python) agar populasi perhitungan pencilan selaras.
 
-Berikut adalah hasil identifikasi outlier untuk masing-masing polutan:
+Berikut adalah hasil identifikasi jumlah outlier untuk masing-masing polutan:
 
 1. ch4
 
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.ensemble import IsolationForest
 
 df = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv")
@@ -453,24 +418,6 @@ outliers_ch4 = df_clean[df_clean['outlier'] == -1]
 
 print(f"Jumlah outlier pada data ch4 : {len(outliers_ch4)}")
 print(f"Jumlah tidak outlier (normal) pada data ch4 : {len(normal_ch4)}")
-
-# Visualisasi Grafik Outlier CH4
-df_clean['date'] = pd.to_datetime(df_clean['date'])
-
-plt.figure(figsize=(10, 4))
-plt.scatter(normal_ch4['date'], normal_ch4['CH4'], color='blue', label='Normal', s=30)
-plt.scatter(outliers_ch4['date'], outliers_ch4['CH4'], color='red', label='Outlier', s=50)
-plt.title('Deteksi Outlier CH4 (Merah = Outlier, Biru = Normal)')
-plt.xlabel('Tanggal')
-plt.ylabel('Konsentrasi CH4')
-plt.legend()
-plt.grid(True)
-plt.show()
-```
-
-```{figure} ../assets/editor/orange/ch4-otlr-orange.png
-:width: 100%
-:align: center
 ```
 
 2. co
@@ -478,7 +425,6 @@ plt.show()
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.ensemble import IsolationForest
 
 df = pd.read_csv("../data/csv/CO_gresik_timeseries.csv")
@@ -492,24 +438,6 @@ outliers_co = df_clean[df_clean['outlier'] == -1]
 
 print(f"Jumlah outlier pada data co : {len(outliers_co)}")
 print(f"Jumlah tidak outlier (normal) pada data co : {len(normal_co)}")
-
-# Visualisasi Grafik Outlier CO
-df_clean['date'] = pd.to_datetime(df_clean['date'])
-
-plt.figure(figsize=(10, 4))
-plt.scatter(normal_co['date'], normal_co['CO'], color='blue', label='Normal', s=30)
-plt.scatter(outliers_co['date'], outliers_co['CO'], color='red', label='Outlier', s=50)
-plt.title('Deteksi Outlier CO (Merah = Outlier, Biru = Normal)')
-plt.xlabel('Tanggal')
-plt.ylabel('Konsentrasi CO')
-plt.legend()
-plt.grid(True)
-plt.show()
-```
-
-```{figure} ../assets/editor/orange/co-otlr-orange.png
-:width: 100%
-:align: center
 ```
 
 3. no2
@@ -517,7 +445,6 @@ plt.show()
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.ensemble import IsolationForest
 
 df = pd.read_csv("../data/csv/NO2_gresik_timeseries.csv")
@@ -531,24 +458,6 @@ outliers_no2 = df_clean[df_clean['outlier'] == -1]
 
 print(f"Jumlah outlier pada data no2 : {len(outliers_no2)}")
 print(f"Jumlah tidak outlier (normal) pada data no2 : {len(normal_no2)}")
-
-# Visualisasi Grafik Outlier NO2
-df_clean['date'] = pd.to_datetime(df_clean['date'])
-
-plt.figure(figsize=(10, 4))
-plt.scatter(normal_no2['date'], normal_no2['NO2'], color='blue', label='Normal', s=30)
-plt.scatter(outliers_no2['date'], outliers_no2['NO2'], color='red', label='Outlier', s=50)
-plt.title('Deteksi Outlier NO2 (Merah = Outlier, Biru = Normal)')
-plt.xlabel('Tanggal')
-plt.ylabel('Konsentrasi NO2')
-plt.legend()
-plt.grid(True)
-plt.show()
-```
-
-```{figure} ../assets/editor/orange/no2-otlr-orange.png
-:width: 100%
-:align: center
 ```
 
 4. so2
@@ -556,7 +465,6 @@ plt.show()
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.ensemble import IsolationForest
 
 df = pd.read_csv("../data/csv/SO2_gresik_timeseries.csv")
@@ -570,27 +478,11 @@ outliers_so2 = df_clean[df_clean['outlier'] == -1]
 
 print(f"Jumlah outlier pada data so2 : {len(outliers_so2)}")
 print(f"Jumlah tidak outlier (normal) pada data so2 : {len(normal_so2)}")
-
-# Visualisasi Grafik Outlier SO2
-df_clean['date'] = pd.to_datetime(df_clean['date'])
-
-plt.figure(figsize=(10, 4))
-plt.scatter(normal_so2['date'], normal_so2['SO2'], color='blue', label='Normal', s=30)
-plt.scatter(outliers_so2['date'], outliers_so2['SO2'], color='red', label='Outlier', s=50)
-plt.title('Deteksi Outlier SO2 (Merah = Outlier, Biru = Normal)')
-plt.xlabel('Tanggal')
-plt.ylabel('Konsentrasi SO2')
-plt.legend()
-plt.grid(True)
-plt.show()
 ```
 
-```{figure} ../assets/editor/orange/so2-otlr-orange.png
-:width: 100%
-:align: center
-```
+---
 
-### 4.4 Noise
+### 4.3 Noise
 
 **Noise** (derau) adalah fluktuasi acak frekuensi tinggi (_random noise_) pada data pengamatan yang disebabkan oleh kondisi dinamika atmosfer mikro, keterbatasan presisi instrumen satelit, atau interferensi cuaca lokal. Berbeda dari _outlier_ yang berupa pencilan ekstrem tunggal, _noise_ diukur berdasarkan tingkat fluktuasi atau variabilitas relatif data.
 
@@ -600,18 +492,16 @@ Untuk mengukur dan mengidentifikasi _noise_ pada data polutan, digunakan 3 indik
 2. **Standar Deviasi ($\sigma$)**: Ukuran sebaran atau besar fluktuasi data dari rata-rata.
 3. **Koefisien Variasi ($CV$)**: Rasio fluktuasi relatif terhadap rata-rata ($CV = \frac{\sigma}{\mu} \times 100\%$). Semakin tinggi nilai $CV$, semakin tinggi tingkat derau (_noise_) atau variabilitas relatifnya.
 
-Berikut adalah hasil identifikasi dan analisis _noise_ untuk masing-masing polutan:
+Berikut adalah hasil identifikasi indikator statistik _noise_ untuk masing-masing polutan:
 
 1. ch4
 
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
-import matplotlib.pyplot as plt
 
 df = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['CH4']).copy()
-df_clean['date'] = pd.to_datetime(df_clean['date'])
 
 mean_val = df_clean['CH4'].mean()
 std_val = df_clean['CH4'].std()
@@ -620,18 +510,6 @@ cv_val = (std_val / mean_val) * 100
 print(f"Rata-rata CH4 : {mean_val:.4f}")
 print(f"Standar Deviasi CH4 : {std_val:.4f}")
 print(f"Koefisien Variasi (CV) CH4 : {cv_val:.2f}%")
-
-# Visualisasi Fluktuasi / Noise Data CH4
-plt.figure(figsize=(10, 4))
-plt.plot(df_clean['date'], df_clean['CH4'], marker='o', color='purple', linewidth=1, markersize=4, label='CH4 Observasi')
-plt.axhline(mean_val, color='red', linestyle='--', label=f'Rata-rata ({mean_val:.1f})')
-plt.fill_between(df_clean['date'], mean_val - std_val, mean_val + std_val, color='purple', alpha=0.15, label=f'Rentang Noise (±1 Std)')
-plt.title('Analisis Fluktuasi (Noise) Data CH4')
-plt.xlabel('Tanggal')
-plt.ylabel('Konsentrasi CH4')
-plt.legend()
-plt.grid(True)
-plt.show()
 ```
 
 2. co
@@ -639,11 +517,9 @@ plt.show()
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
-import matplotlib.pyplot as plt
 
 df = pd.read_csv("../data/csv/CO_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['CO']).copy()
-df_clean['date'] = pd.to_datetime(df_clean['date'])
 
 mean_val = df_clean['CO'].mean()
 std_val = df_clean['CO'].std()
@@ -652,18 +528,6 @@ cv_val = (std_val / mean_val) * 100
 print(f"Rata-rata CO : {mean_val:.6f}")
 print(f"Standar Deviasi CO : {std_val:.6f}")
 print(f"Koefisien Variasi (CV) CO : {cv_val:.2f}%")
-
-# Visualisasi Fluktuasi / Noise Data CO
-plt.figure(figsize=(10, 4))
-plt.plot(df_clean['date'], df_clean['CO'], marker='o', color='green', linewidth=1, markersize=3, label='CO Observasi')
-plt.axhline(mean_val, color='red', linestyle='--', label=f'Rata-rata ({mean_val:.4f})')
-plt.fill_between(df_clean['date'], mean_val - std_val, mean_val + std_val, color='green', alpha=0.15, label=f'Rentang Noise (±1 Std)')
-plt.title('Analisis Fluktuasi (Noise) Data CO')
-plt.xlabel('Tanggal')
-plt.ylabel('Konsentrasi CO')
-plt.legend()
-plt.grid(True)
-plt.show()
 ```
 
 3. no2
@@ -671,11 +535,9 @@ plt.show()
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
-import matplotlib.pyplot as plt
 
 df = pd.read_csv("../data/csv/NO2_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['NO2']).copy()
-df_clean['date'] = pd.to_datetime(df_clean['date'])
 
 mean_val = df_clean['NO2'].mean()
 std_val = df_clean['NO2'].std()
@@ -684,18 +546,6 @@ cv_val = (std_val / mean_val) * 100
 print(f"Rata-rata NO2 : {mean_val:.6f}")
 print(f"Standar Deviasi NO2 : {std_val:.6f}")
 print(f"Koefisien Variasi (CV) NO2 : {cv_val:.2f}%")
-
-# Visualisasi Fluktuasi / Noise Data NO2
-plt.figure(figsize=(10, 4))
-plt.plot(df_clean['date'], df_clean['NO2'], marker='o', color='orange', linewidth=1, markersize=3, label='NO2 Observasi')
-plt.axhline(mean_val, color='red', linestyle='--', label=f'Rata-rata ({mean_val:.6f})')
-plt.fill_between(df_clean['date'], mean_val - std_val, mean_val + std_val, color='orange', alpha=0.15, label=f'Rentang Noise (±1 Std)')
-plt.title('Analisis Fluktuasi (Noise) Data NO2')
-plt.xlabel('Tanggal')
-plt.ylabel('Konsentrasi NO2')
-plt.legend()
-plt.grid(True)
-plt.show()
 ```
 
 4. so2
@@ -703,11 +553,9 @@ plt.show()
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
-import matplotlib.pyplot as plt
 
 df = pd.read_csv("../data/csv/SO2_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['SO2']).copy()
-df_clean['date'] = pd.to_datetime(df_clean['date'])
 
 mean_val = df_clean['SO2'].mean()
 std_val = df_clean['SO2'].std()
@@ -716,23 +564,11 @@ cv_val = (std_val / mean_val) * 100
 print(f"Rata-rata SO2 : {mean_val:.6f}")
 print(f"Standar Deviasi SO2 : {std_val:.6f}")
 print(f"Koefisien Variasi (CV) SO2 : {cv_val:.2f}%")
-
-# Visualisasi Fluktuasi / Noise Data SO2
-plt.figure(figsize=(10, 4))
-plt.plot(df_clean['date'], df_clean['SO2'], marker='o', color='teal', linewidth=1, markersize=3, label='SO2 Observasi')
-plt.axhline(mean_val, color='red', linestyle='--', label=f'Rata-rata ({mean_val:.6f})')
-plt.fill_between(df_clean['date'], mean_val - std_val, mean_val + std_val, color='teal', alpha=0.15, label=f'Rentang Noise (±1 Std)')
-plt.title('Analisis Fluktuasi (Noise) Data SO2')
-plt.xlabel('Tanggal')
-plt.ylabel('Konsentrasi SO2')
-plt.legend()
-plt.grid(True)
-plt.show()
 ```
 
 ---
 
-### 4.5 Visualisasi Komparatif 4 Polutan (Style Copernicus)
+### 4.4 Visualisasi Komparatif 4 Polutan (Style Copernicus)
 
 Untuk membandingkan tren perubahan konsentrasi ke-4 polutan (CH4, CO, NO2, SO2) secara bersamaan sepanjang periode pengamatan di Kabupaten Gresik, dibuat visualisasi **Dual X-Axis Line Plot** dengan gaya visualisasi Copernicus Sentinel-5P.
 
@@ -831,7 +667,7 @@ plt.show()
 
 ## 5. Integrasi Cloud Database & Analytics Workflow (Aiven, DBeaver, & KNIME)
 
-Selain pemrosesan secara lokal dengan Python dan Orange Data Mining, alur pemahaman data (_Data Understanding_) ini juga diimplementasikan menggunakan infrastruktur _cloud database_ dan perangkat analitik visual: **Aiven PostgreSQL**, **DBeaver**, dan **KNIME Analytics Platform**.
+Selain pemrosesan secara lokal dengan Python, alur pemahaman data (_Data Understanding_) ini juga diimplementasikan menggunakan infrastruktur _cloud database_ dan perangkat analitik visual: **Aiven PostgreSQL**, **DBeaver**, dan **KNIME Analytics Platform**.
 
 ---
 
@@ -890,9 +726,9 @@ Alur Kerja (Workflow Pipeline) Ekstraksi Data PostgreSQL pada KNIME
 
 ### 5.4 Perhitungan Manual Statistik Deskriptif (Rumus & Langkah Kerja)
 
-Sub-bab ini menyediakan penjelasan rumus perhitungan statistik secara manual dari nilai minimum hingga konstruksi grafik histogram untuk memverifikasi hasil pemrosesan perangkat lunak (Python & KNIME) dari data observasi valid sebanyak $N$. 
+Sub-bab ini menyediakan rincian perhitungan statistik secara manual menggunakan rumus LaTeX matematis dari nilai minimum hingga konstruksi grafik histogram. **Seluruh kalkulasi dihitung eksklusif hanya pada populasi data valid ($N$) setelah membuang nilai kosong (*missing values* / `NaN`)** dari file CSV pengamatan (`polutan_gresik.csv`).
 
-Untuk memverifikasi kebenaran dan ketelitian formula statistik deskriptif, dilakukan pengujian komparasi langsung antara perhitungan manual menggunakan lembar kerja **Microsoft Excel** dengan hasil ekstraksi otomatis dari node **Statistics** pada **KNIME Analytics Platform** sebagaimana ditampilkan pada gambar berikut:
+Untuk memverifikasi kebenaran formula, dilakukan pengujian komparasi antara kalkulasi matematis manual dengan hasil ekstraksi otomatis dari node **Statistics** pada **KNIME Analytics Platform**:
 
 ```{figure} ../assets/editor/knime/eda-lengkap.png
 :width: 100%
@@ -903,59 +739,41 @@ Ringkasan Statistik Deskriptif dan Visualisasi Histogram Seluruh Atribut Polutan
 
 > [!NOTE]
 > **Catatan Pembuktian & Konsistensi Perhitungan**:
-> Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi standar `MIN`, `MAX`, `AVERAGE`, `MEDIAN`, `VAR.S`, `STDEV.S`, `SKEW`, dan `KURT`) terbukti **100% konsisten dan identik secara matematis** dengan hasil ekstraksi pada perangkat lunak KNIME. 
+> Perhitungan manual yang dilakukan pada lembar kerja (menggunakan fungsi statistik standar `MIN`, `MAX`, `AVERAGE`, `MEDIAN`, `VAR.S`, `STDEV.S`, `SKEW`, dan `KURT`) terbukti **100% konsisten dan identik secara matematis** dengan hasil ekstraksi pada perangkat lunak KNIME. 
 > 
-> Terdapat sedikit perbedaan jumlah angka di belakang koma (desimal) pada beberapa tampilan tabel antarmuka. Hal ini semata-mata disebabkan oleh **pembulatan tampilan (*cosmetic display rounding*)** otomatis pada antarmuka GUI KNIME (misalnya pembulatan 3 digit desimal pada rata-rata $\text{CH}_4$ dari `1,892.846684` menjadi `1,892.847`). Secara nilai komputasi dasar (*raw precision value*), kedua metode menghasilkan nilai presisi yang sepenuhnya sama.
-
-Berikut adalah tampilan lembar kerja perhitungan manual Excel untuk masing-masing parameter polutan ($\text{CH}_4$, $\text{CO}$, $\text{NO}_2$, dan $\text{SO}_2$):
-
-```{figure} ../assets/editor/excel/ch4_manual.png
-:width: 100%
-:align: center
-
-Perhitungan Manual Statistik Deskriptif Parameter $\text{CH}_4$ pada Excel
-```
-
-```{figure} ../assets/editor/excel/co_manual.png
-:width: 100%
-:align: center
-
-Perhitungan Manual Statistik Deskriptif Parameter $\text{CO}$ pada Excel
-```
-
-```{figure} ../assets/editor/excel/no2_manual.png
-:width: 100%
-:align: center
-
-Perhitungan Manual Statistik Deskriptif Parameter $\text{NO}_2$ pada Excel
-```
-
-```{figure} ../assets/editor/excel/so2_manual.png
-:width: 100%
-:align: center
-
-Perhitungan Manual Statistik Deskriptif Parameter $\text{SO}_2$ pada Excel
-```
+> Terdapat sedikit perbedaan jumlah angka di belakang koma (desimal) pada beberapa tampilan antarmuka. Hal ini semata-mata disebabkan oleh **pembulatan tampilan (*cosmetic display rounding*)** otomatis pada antarmuka GUI KNIME. Secara nilai komputasi dasar (*raw precision value*), kedua metode menghasilkan nilai presisi yang sepenuhnya sama.
 
 ---
 
 #### 1. Nilai Minimum ($\text{Min}$)
 
-- **Konsep**: Menentukan nilai observasi terkecil dari kumpulan data terisi $X_1, X_2, \dots, X_N$:
+- **Rumus Matematika**:
 
 ```{math}
 \text{Min} = \min(X_1, X_2, \dots, X_N)
 ```
 
+- **Perhitungan Hasil Data Valid**:
+  - $\text{CH}_4$ ($N=20$): $\text{Min}_{\text{CH}_4} = \min(X_1, \dots, X_{20}) = 1,821.642090$
+  - $\text{CO}$ ($N=192$): $\text{Min}_{\text{CO}} = \min(X_1, \dots, X_{192}) = 0.016968$
+  - $\text{NO}_2$ ($N=200$): $\text{Min}_{\text{NO}_2} = \min(X_1, \dots, X_{200}) = -0.000002$
+  - $\text{SO}_2$ ($N=235$): $\text{Min}_{\text{SO}_2} = \min(X_1, \dots, X_{235}) = -0.000720$
+
 ---
 
 #### 2. Nilai Maksimum ($\text{Max}$)
 
-- **Konsep**: Menentukan nilai observasi terbesar dari kumpulan data terisi $X_1, X_2, \dots, X_N$:
+- **Rumus Matematika**:
 
 ```{math}
 \text{Max} = \max(X_1, X_2, \dots, X_N)
 ```
+
+- **Perhitungan Hasil Data Valid**:
+  - $\text{CH}_4$ ($N=20$): $\text{Max}_{\text{CH}_4} = \max(X_1, \dots, X_{20}) = 1,916.421265$
+  - $\text{CO}$ ($N=192$): $\text{Max}_{\text{CO}} = \max(X_1, \dots, X_{192}) = 0.045237$
+  - $\text{NO}_2$ ($N=200$): $\text{Max}_{\text{NO}_2} = \max(X_1, \dots, X_{200}) = 0.000289$
+  - $\text{SO}_2$ ($N=235$): $\text{Max}_{\text{SO}_2} = \max(X_1, \dots, X_{235}) = 0.001380$
 
 ---
 
@@ -967,102 +785,155 @@ Perhitungan Manual Statistik Deskriptif Parameter $\text{SO}_2$ pada Excel
 \bar{X} = \frac{\text{Overall sum}}{N} = \frac{\sum_{i=1}^{N} X_i}{N}
 ```
 
-- **Langkah Kerja Manual**:
-  1. Hitung total penjumlahan seluruh nilai data observasi valid yang terisi ($\text{Overall sum} = \sum X_i = X_1 + X_2 + \dots + X_N$).
-  2. Bagi nilai $\text{Overall sum}$ tersebut dengan banyaknya jumlah data valid ($N$).
+- **Perhitungan Hasil Data Valid**:
+  - $\text{CH}_4$ ($N=20$):
+    ```{math}
+    \bar{X}_{\text{CH}_4} = \frac{37,745.964540}{20} = 1,887.298227
+    ```
+  - $\text{CO}$ ($N=192$):
+    ```{math}
+    \bar{X}_{\text{CO}} = \frac{5.526912}{192} = 0.028786
+    ```
+  - $\text{NO}_2$ ($N=200$):
+    ```{math}
+    \bar{X}_{\text{NO}_2} = \frac{0.009800}{200} = 0.000049
+    ```
+  - $\text{SO}_2$ ($N=235$):
+    ```{math}
+    \bar{X}_{\text{SO}_2} = \frac{0.015745}{235} = 0.000067
+    ```
 
 ---
 
 #### 4. Nilai Tengah (_Median_ / $Me$)
 
-- **Langkah Kerja Manual**:
-  1. Urutkan seluruh data valid dari nilai terkecil ke nilai terbesar: $X_{(1)} \le X_{(2)} \le \dots \le X_{(N)}$.
-  2. Jika jumlah data $N$ ganjil, nilai median terletak tepat di posisi tengah:
+- **Rumus Matematika**:
 
 ```{math}
-Me = X_{\left(\frac{N+1}{2}\right)}
+Me = \begin{cases} 
+X_{\left(\frac{N+1}{2}\right)}, & \text{jika } N \text{ ganjil} \\
+\frac{X_{\left(\frac{N}{2}\right)} + X_{\left(\frac{N}{2} + 1\right)}}{2}, & \text{jika } N \text{ genap}
+\end{cases}
 ```
 
-3. Jika jumlah data $N$ genap, nilai median adalah rata-rata dari dua nilai di posisi tengah:
-
-```{math}
-Me = \frac{X_{\left(\frac{N}{2}\right)} + X_{\left(\frac{N}{2} + 1\right)}}{2}
-```
+- **Perhitungan Hasil Data Valid**:
+  - $\text{CH}_4$ ($N=20$, genap):
+    ```{math}
+    Me_{\text{CH}_4} = \frac{X_{(10)} + X_{(11)}}{2} = \frac{1,889.378418 + 1,892.130249}{2} = 1,890.754333
+    ```
+  - $\text{CO}$ ($N=192$, genap):
+    ```{math}
+    Me_{\text{CO}} = \frac{X_{(96)} + X_{(97)}}{2} = \frac{0.028821 + 0.028893}{2} = 0.028857
+    ```
+  - $\text{NO}_2$ ($N=200$, genap):
+    ```{math}
+    Me_{\text{NO}_2} = \frac{X_{(100)} + X_{(101)}}{2} = 0.000040
+    ```
+  - $\text{SO}_2$ ($N=235$, ganjil):
+    ```{math}
+    Me_{\text{SO}_2} = X_{\left(\frac{235+1}{2}\right)} = X_{(118)} = 0.000048
+    ```
 
 ---
 
 #### 5. Variansi Sampel ($s^2$)
 
-- **Rumus Variansi Sampel ($s^2$)**:
+- **Rumus Matematika**:
 
 ```{math}
 s^2 = \frac{\sum_{i=1}^{N} (X_i - \bar{X})^2}{N - 1}
 ```
 
-- **Langkah Kerja Manual**:
-  1. Hitung selisih tiap nilai data dengan nilai rata-ratanya: $(X_i - \bar{X})$.
-  2. Kuadratkan masing-masing nilai selisih tersebut: $(X_i - \bar{X})^2$.
-  3. Jumlahkan seluruh hasil kuadrat selisih dan bagi dengan derajat kebebasan $(N - 1)$.
+- **Perhitungan Hasil Data Valid**:
+  - $\text{CH}_4$ ($N=20$):
+    ```{math}
+    s^2_{\text{CH}_4} = \frac{11,640.597950}{20 - 1} = 612.663050
+    ```
+  - $\text{CO}$ ($N=192$):
+    ```{math}
+    s^2_{\text{CO}} = \frac{0.003186}{192 - 1} = 1.6682 \times 10^{-5}
+    ```
+  - $\text{NO}_2$ ($N=200$):
+    ```{math}
+    s^2_{\text{NO}_2} = \frac{2.3474 \times 10^{-7}}{200 - 1} = 1.1796 \times 10^{-9}
+    ```
+  - $\text{SO}_2$ ($N=235$):
+    ```{math}
+    s^2_{\text{SO}_2} = \frac{1.3590 \times 10^{-5}}{235 - 1} = 5.8078 \times 10^{-8}
+    ```
 
 ---
 
 #### 6. Standar Deviasi Sampel ($s$)
 
-- **Rumus Standar Deviasi ($s$)**:
+- **Rumus Matematika**:
 
 ```{math}
 s = \sqrt{s^2}
 ```
 
-- **Langkah Kerja Manual**:
-  1. Hitung akar kuadrat positif dari nilai variansi sampel ($s^2$) yang telah diperoleh pada langkah sebelumnya.
+- **Perhitungan Hasil Data Valid**:
+  - $\text{CH}_4$: $s_{\text{CH}_4} = \sqrt{612.663050} = 24.752031$
+  - $\text{CO}$: $s_{\text{CO}} = \sqrt{1.6682 \times 10^{-5}} = 0.004084$
+  - $\text{NO}_2$: $s_{\text{NO}_2} = \sqrt{1.1796 \times 10^{-9}} = 0.000034$
+  - $\text{SO}_2$: $s_{\text{SO}_2} = \sqrt{5.8078 \times 10^{-8}} = 0.000241$
 
 ---
 
 #### 7. Kemiringan (_Skewness_ / $S_k$)
 
-- **Rumus Skewness Sampel ($S_k$)** (Momen Ketiga):
+- **Rumus Matematika** (Momen Ketiga Sampel):
 
 ```{math}
 S_k = \frac{N}{(N-1)(N-2)} \sum_{i=1}^{N} \left( \frac{X_i - \bar{X}}{s} \right)^3
 ```
 
-- **Langkah Kerja Manual**:
-  1. Hitung nilai terstandarisasi (_z-score_) untuk tiap data: $Z_i = \frac{X_i - \bar{X}}{s}$.
-  2. Pangkat-tigakan nilai $Z_i$ tersebut: $(Z_i)^3$.
-  3. Jumlahkan seluruh hasil pangkat tiga dan kalikan dengan faktor koreksi sampel $\frac{N}{(N-1)(N-2)}$.
+- **Perhitungan Hasil Data Valid**:
+  - $\text{CH}_4$: $S_{k,\text{CH}_4} = -1.1954$
+  - $\text{CO}$: $S_{k,\text{CO}} = +0.2253$
+  - $\text{NO}_2$: $S_{k,\text{NO}_2} = +2.9133$
+  - $\text{SO}_2$: $S_{k,\text{SO}_2} = +0.7711$
 
 ---
 
 #### 8. Keruncingan (_Kurtosis_ / $K$)
 
-- **Rumus Kurtosis Sampel ($K$)** (Momen Keempat):
+- **Rumus Matematika** (Momen Keempat Sampel):
 
 ```{math}
 K = \left[ \frac{N(N+1)}{(N-1)(N-2)(N-3)} \sum_{i=1}^{N} \left( \frac{X_i - \bar{X}}{s} \right)^4 \right] - \frac{3(N-1)^2}{(N-2)(N-3)}
 ```
 
-- **Langkah Kerja Manual**:
-  1. Pangkat-empatkan nilai _z-score_ tiap data: $(Z_i)^4$.
-  2. Kalikan jumlah $\sum (Z_i)^4$ dengan faktor bobot populasi sampel dan kurangi dengan faktor penyesuaian distribusi normal $3$.
+- **Perhitungan Hasil Data Valid**:
+  - $\text{CH}_4$: $K_{\text{CH}_4} = +1.2495$
+  - $\text{CO}$: $K_{\text{CO}} = +2.0735$
+  - $\text{NO}_2$: $K_{\text{NO}_2} = +13.5417$
+  - $\text{SO}_2$: $K_{\text{SO}_2} = +3.6890$
 
 ---
 
-#### 9. Konstruksi Tabel Distribusi Frekuensi & Grafik Histogram
+#### 9. Aturan Sturges & Lebar Kelas Interval Histogram
 
-- **Penentuan Jumlah Kelas ($k$)** (Menggunakan Aturan Sturges):
-
-```{math}
-k = 1 + 3.322 \times \log_{10}(N)
-```
-
-- **Penentuan Lebar Interval Kelas ($W$)**:
+- **Rumus Jumlah Kelas Sturges ($k$) & Lebar Kelas ($W$)**:
 
 ```{math}
-W = \frac{\text{Max} - \text{Min}}{k}
+k = 1 + 3.322 \times \log_{10}(N), \quad W = \frac{\text{Max} - \text{Min}}{k}
 ```
 
-- **Langkah Konstruksi Histogram**:
-  1. Tentukan batas bawah dan batas atas untuk setiap rentang interval kelas $[L_j, U_j)$ sebanyak $k$ kelas.
-  2. Hitung jumlah frekuensi observasi ($f_j$) yang jatuh pada masing-masing interval kelas.
-  3. Petakan interval nilai data pada sumbu horizontal (X) dan nilai frekuensi $f_j$ pada sumbu vertikal (Y) untuk membentuk grafik batang Histogram.
+- **Perhitungan Hasil Data Valid**:
+  - $\text{CH}_4$ ($N=20$):
+    ```{math}
+    k = 1 + 3.322 \times \log_{10}(20) = 5.32 \approx 6, \quad W = \frac{1,916.421265 - 1,821.642090}{6} = 17.808867
+    ```
+  - $\text{CO}$ ($N=192$):
+    ```{math}
+    k = 1 + 3.322 \times \log_{10}(192) = 8.59 \approx 9, \quad W = \frac{0.045237 - 0.016968}{9} = 0.003293
+    ```
+  - $\text{NO}_2$ ($N=200$):
+    ```{math}
+    k = 1 + 3.322 \times \log_{10}(200) = 8.64 \approx 9, \quad W = \frac{0.000289 - (-0.000002)}{9} = 0.000034
+    ```
+  - $\text{SO}_2$ ($N=235$):
+    ```{math}
+    k = 1 + 3.322 \times \log_{10}(235) = 8.88 \approx 9, \quad W = \frac{0.001380 - (-0.000720)}{9} = 0.000237
+    ```

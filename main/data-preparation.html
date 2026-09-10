@@ -1,0 +1,963 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Data Preparation (Persiapan Data CO) &#8212; Proyek Sains Data IF 5B</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'main/data-preparation';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Data Understanding" href="data-understanding.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.jpg" class="logo__image only-light" alt="Proyek Sains Data IF 5B - Home"/>
+    <script>document.write(`<img src="../_static/logo.jpg" class="logo__image only-dark" alt="Proyek Sains Data IF 5B - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="polutan-kabupaten-gresik.html">Polutan Kabupaten Gresik</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-understanding.html">Data Understanding</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Data Preparation (Persiapan Data CO)</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/main/data-preparation.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data Preparation (Persiapan Data CO)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-teknik-imputasi">1. Penanganan Missing Values (Teknik Imputasi)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang-kebutuhan-imputasi">1.1 Latar Belakang &amp; Kebutuhan Imputasi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-mekanisme-interpolasi-linear">1.2 Formula &amp; Mekanisme Interpolasi Linear</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-perbaikan-outlier-outlier-treatment">2. Deteksi &amp; Perbaikan Outlier (Outlier Treatment)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier-berbasis-interquartile-range-iqr">2.1 Deteksi Outlier Berbasis Interquartile Range (IQR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perbaikan-outlier-teknik-winsorizing-clipping">2.2 Perbaikan Outlier (Teknik Winsorizing / Clipping)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-tsfel-time-series-feature-extraction-library">3. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-rekayasa-fitur-time-series">3.1 Konsep Rekayasa Fitur Time Series</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68">4. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-20">4.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-21-hingga-f-41">4.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-42-hingga-f-68">4.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="data-preparation-persiapan-data-co">
+<h1>Data Preparation (Persiapan Data CO)<a class="headerlink" href="#data-preparation-persiapan-data-co" title="Link to this heading">#</a></h1>
+<p>Data Preparation adalah tahap ketiga dalam metodologi CRISP-DM yang bertujuan untuk <strong>membersihkan</strong>, <strong>mengimputasi nilai kosong (<em>missing values</em>)</strong>, <strong>menangani pencilan (<em>outliers</em>)</strong>, dan <strong>merekayasa fitur (<em>feature engineering</em>)</strong> dari deret waktu pengamatan kualitas udara polutan <strong>Karbon Monoksida (<span class="math notranslate nohighlight">\(\text{CO}\)</span>)</strong> pada skala geografis <strong>Tingkat Kecamatan (Kecamatan Bungah)</strong>.</p>
+<hr class="docutils" />
+<section id="penanganan-missing-values-teknik-imputasi">
+<h2>1. Penanganan Missing Values (Teknik Imputasi)<a class="headerlink" href="#penanganan-missing-values-teknik-imputasi" title="Link to this heading">#</a></h2>
+<section id="latar-belakang-kebutuhan-imputasi">
+<h3>1.1 Latar Belakang &amp; Kebutuhan Imputasi<a class="headerlink" href="#latar-belakang-kebutuhan-imputasi" title="Link to this heading">#</a></h3>
+<p>Data pengamatan satelit Sentinel-5P dari Copernicus Data Space untuk polutan <span class="math notranslate nohighlight">\(\text{CO}\)</span> harian selama 365 hari (24 Agustus 2025 – 24 Agustus 2026) memiliki celah data (<em>missing values</em> / <code class="docutils literal notranslate"><span class="pre">NaN</span></code>) yang disebabkan oleh tutupan awan tebal, kendala jadwal orbit satelit, dan penyaringan validasi kualitas (<em>quality flag</em>).</p>
+<p>Untuk keperluan analisis deret waktu (<em>time-series analysis</em>) dan ekstraksi fitur TSFEL yang membutuhkan sinyal kontinu kontigu tanpa celah, dilakukan <strong>imputasi deret waktu</strong> menggunakan metode <strong>Linear Time Interpolation</strong>.</p>
+</section>
+<section id="formula-mekanisme-interpolasi-linear">
+<h3>1.2 Formula &amp; Mekanisme Interpolasi Linear<a class="headerlink" href="#formula-mekanisme-interpolasi-linear" title="Link to this heading">#</a></h3>
+<p>Interpolasi linear mengisi nilai sel kosong <span class="math notranslate nohighlight">\(X(t)\)</span> pada tanggal <span class="math notranslate nohighlight">\(t\)</span> yang berada di antara dua titik observasi valid terdekat <span class="math notranslate nohighlight">\(X(t_1)\)</span> dan <span class="math notranslate nohighlight">\(X(t_2)\)</span> dengan <span class="math notranslate nohighlight">\(t_1 &lt; t &lt; t_2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[X(t) = X(t_1) + \frac{t - t_1}{t_2 - t_1} \cdot \left[ X(t_2) - X(t_1) \right]\]</div>
+<p><strong>Langkah Kerja Imputasi:</strong></p>
+<ol class="arabic simple">
+<li><p>Mengurutkan data observasi secara kronologis berdasarkan kolom tanggal <code class="docutils literal notranslate"><span class="pre">date</span></code>.</p></li>
+<li><p>Mengidentifikasi seluruh tanggal yang bernilai <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.</p></li>
+<li><p>Menghitung kemiringan gradien linier antara nilai sebelum dan sesudah celah data.</p></li>
+<li><p>Mengisi seluruh nilai celah deret waktu sehingga diperoleh 365 data kontinu tanpa <em>missing value</em>.</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="deteksi-perbaikan-outlier-outlier-treatment">
+<h2>2. Deteksi &amp; Perbaikan Outlier (Outlier Treatment)<a class="headerlink" href="#deteksi-perbaikan-outlier-outlier-treatment" title="Link to this heading">#</a></h2>
+<section id="deteksi-outlier-berbasis-interquartile-range-iqr">
+<h3>2.1 Deteksi Outlier Berbasis Interquartile Range (IQR)<a class="headerlink" href="#deteksi-outlier-berbasis-interquartile-range-iqr" title="Link to this heading">#</a></h3>
+<p>Setelah seluruh baris data terisi melalui imputasi, dilakukan pemeriksaan titik pencilan (<em>outliers</em>) untuk memastikan fluktuasi ekstrem tidak merusak representasi statistik sinyal. Metode <strong>Interquartile Range (IQR)</strong> digunakan untuk menentukan batas wajar observasi:</p>
+<ol class="arabic simple">
+<li><p><strong>Kuartil Pertama (<span class="math notranslate nohighlight">\(Q_1\)</span>)</strong>: Persentil ke-25 data terurut.</p></li>
+<li><p><strong>Kuartil Ketiga (<span class="math notranslate nohighlight">\(Q_3\)</span>)</strong>: Persentil ke-75 data terurut.</p></li>
+<li><p><strong>Rentang Antarkuartil (<span class="math notranslate nohighlight">\(\text{IQR}\)</span>)</strong>:</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\text{IQR} = Q_3 - Q_1\]</div>
+<p>Batas bawah (<em>Lower Bound</em>) dan batas atas (<em>Upper Bound</em>) ditentukan melalui formula:</p>
+<div class="math notranslate nohighlight">
+\[\text{Batas Bawah} = Q_1 - 1.5 \times \text{IQR}\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Batas Atas} = Q_3 + 1.5 \times \text{IQR}\]</div>
+<p>Titik data <span class="math notranslate nohighlight">\(X_i\)</span> dikategorikan sebagai <strong>Outlier</strong> jika:</p>
+<div class="math notranslate nohighlight">
+\[X_i &lt; \text{Batas Bawah} \quad \text{atau} \quad X_i &gt; \text{Batas Atas}\]</div>
+</section>
+<section id="perbaikan-outlier-teknik-winsorizing-clipping">
+<h3>2.2 Perbaikan Outlier (Teknik Winsorizing / Clipping)<a class="headerlink" href="#perbaikan-outlier-teknik-winsorizing-clipping" title="Link to this heading">#</a></h3>
+<p>Outlier yang terdeteksi tidak dibuang (untuk mempertahankan kontinuitas 365 hari), melainkan diperbaiki menggunakan teknik <strong>IQR Clipping (Winsorizing)</strong>. Nilai di luar batas wajar disesuaikan secara proporsional:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}X_{\text{clean}, i} = \begin{cases}
+\text{Batas Bawah}, &amp; \text{jika } X_i &lt; \text{Batas Bawah} \\
+\text{Batas Atas}, &amp; \text{jika } X_i &gt; \text{Batas Atas} \\
+X_i, &amp; \text{jika } \text{Batas Bawah} \le X_i \le \text{Batas Atas}
+\end{cases}\end{split}\]</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="ekstraksi-fitur-tsfel-time-series-feature-extraction-library">
+<h2>3. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)<a class="headerlink" href="#ekstraksi-fitur-tsfel-time-series-feature-extraction-library" title="Link to this heading">#</a></h2>
+<section id="konsep-rekayasa-fitur-time-series">
+<h3>3.1 Konsep Rekayasa Fitur Time Series<a class="headerlink" href="#konsep-rekayasa-fitur-time-series" title="Link to this heading">#</a></h3>
+<p>Untuk merepresentasikan karakteristik dinamika sinyal konsentrasi <span class="math notranslate nohighlight">\(\text{CO}\)</span> selama 365 hari dalam bentuk vektor numerik yang siap diproses oleh algoritma <em>Machine Learning</em>, digunakan pustaka <strong>TSFEL (Time Series Feature Extraction Library)</strong> mengacu pada dokumentasi resmi <a class="reference external" href="https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html">TSFEL Feature List Documentation</a>.</p>
+<p>TSFEL mengekstrak <strong>68 fitur perwakilan</strong> (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>) yang terbagi ke dalam 3 domain utama:</p>
+<ol class="arabic simple">
+<li><p><strong>Domain Statistik (<span class="math notranslate nohighlight">\(f_1 \dots f_{20}\)</span>)</strong>: Mengukur karakteristik pemusatan, sebaran, kemiringan, dan distribusi probabilitas sinyal.</p></li>
+<li><p><strong>Domain Temporal (<span class="math notranslate nohighlight">\(f_{21} \dots f_{41}\)</span>)</strong>: Mengukur sifat linier, autokorelasi, frekuensi perlintasan nol, dan durasi fluktuasi dalam domain waktu.</p></li>
+<li><p><strong>Domain Spektral (<span class="math notranslate nohighlight">\(f_{42} \dots f_{68}\)</span>)</strong>: Mengukur distribusi energi frekuensi sinyal menggunakan transformasi Fourier (<em>Fast Fourier Transform</em> / FFT) dan Wavelet CWT.</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68">
+<h2>4. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68" title="Link to this heading">#</a></h2>
+<p>Berikut adalah penomoran urut fitur <span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span> beserta fungsi resmi TSFEL, definisi, dan formula matematikalnya:</p>
+<section id="domain-statistik-f-1-hingga-f-20">
+<h3>4.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)<a class="headerlink" href="#domain-statistik-f-1-hingga-f-20" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
+<th class="head text-left"><p>Nama Fungsi TSFEL</p></th>
+<th class="head text-left"><p>Definisi Resmi &amp; Cara Kerja</p></th>
+<th class="head text-left"><p>Cara Menghitung &amp; Rumus Matematika</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_1\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">abs_energy</span></code></p></td>
+<td class="text-left"><p>Menghitung energi mutlak dari keseluruhan sinyal deret waktu.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(E = \sum_{t=1}^{N} \vert X(t) \vert^2\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_2\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">average_power</span></code></p></td>
+<td class="text-left"><p>Menghitung rata-rata daya sinyal per satuan waktu sampling harian.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(P = \frac{1}{N} \sum_{t=1}^{N} \vert X(t) \vert^2\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_3\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_max</span></code></p></td>
+<td class="text-left"><p>Menghitung nilai puncak maksimum dari sinyal deret waktu <span class="math notranslate nohighlight">\(\text{CO}\)</span>.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Max} = \max(X_t)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_4\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_mean</span></code></p></td>
+<td class="text-left"><p>Menghitung nilai rata-rata aritmatika dari sinyal <span class="math notranslate nohighlight">\(\text{CO}\)</span>.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\bar{X} = \frac{1}{N} \sum_{t=1}^{N} X_t\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_5\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_median</span></code></p></td>
+<td class="text-left"><p>Menghitung nilai median (persentil ke-50) dari sinyal <span class="math notranslate nohighlight">\(\text{CO}\)</span>.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(Me = X_{((N+1)/2)}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_6\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_min</span></code></p></td>
+<td class="text-left"><p>Menghitung nilai minimum terendah dari sinyal <span class="math notranslate nohighlight">\(\text{CO}\)</span>.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Min} = \min(X_t)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_7\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_std</span></code></p></td>
+<td class="text-left"><p>Menghitung nilai standar deviasi (simpangan baku) populasi sinyal.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(s = \sqrt{\frac{1}{N}\sum_{t=1}^{N}(X_t - \bar{X})^2}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_8\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_var</span></code></p></td>
+<td class="text-left"><p>Menghitung nilai variansi sebaran data sinyal dari rata-ratanya.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(s^2 = \frac{1}{N}\sum_{t=1}^{N}(X_t - \bar{X})^2\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_9\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ecdf</span></code></p></td>
+<td class="text-left"><p>Menghitung fungsi distribusi kumulatif empiris sepanjang sumbu waktu.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(F_N(x) = \frac{1}{N} \sum_{i=1}^{N} \mathbf{1}_{X_i \le x}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{10}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ecdf_percentile</span></code></p></td>
+<td class="text-left"><p>Menghitung nilai persentil ECDF dari distribusi kumulatif.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(Q(p) = \inf \{x : F_N(x) \ge p\}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{11}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count</span></code></p></td>
+<td class="text-left"><p>Menghitung jumlah sampel kumulatif yang nilainya lebih kecil dari persentil.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(C(p) = \sum_{i=1}^{N} \mathbf{1}_{X_i \le Q(p)}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{12}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ecdf_slope</span></code></p></td>
+<td class="text-left"><p>Menghitung kemiringan (gradien) ECDF di antara dua persentil (<span class="math notranslate nohighlight">\(p_{\text{init}}, p_{\text{end}}\)</span>).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Slope}_{\text{ECDF}} = \frac{p_{\text{end}} - p_{\text{init}}}{Q(p_{\text{end}}) - Q(p_{\text{init}})}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{13}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">entropy</span></code></p></td>
+<td class="text-left"><p>Menghitung tingkat keacakan/ketidakpastian sinyal (Shannon Entropy).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(H(X) = -\sum p(x_i) \log_2 p(x_i)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{14}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hist_mode</span></code></p></td>
+<td class="text-left"><p>Menghitung modus histogram dari pembagian interval bin teratur.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Mode}_{\text{hist}} = \arg\max_{b} (\text{bin}_b)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{15}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">interq_range</span></code></p></td>
+<td class="text-left"><p>Menghitung rentang antarkuartil (<span class="math notranslate nohighlight">\(\text{IQR} = Q_3 - Q_1\)</span>) dari sinyal.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{IQR} = Q_3 - Q_1\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{16}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">kurtosis</span></code></p></td>
+<td class="text-left"><p>Menghitung keruncingan puncak distribusi sinyal dibanding distribusi normal.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(K = \frac{\frac{1}{N}\sum(X_t - \bar{X})^4}{s^4} - 3\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{17}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mean_abs_deviation</span></code></p></td>
+<td class="text-left"><p>Menghitung rata-rata simpangan mutlak observasi dari rata-ratanya.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MAD} = \frac{1}{N} \sum_{t=1}^{N} \vert X_t - \bar{X} \vert\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{18}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">median_abs_deviation</span></code></p></td>
+<td class="text-left"><p>Menghitung median dari selisih mutlak observasi terhadap median sinyal.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MedAD} = \text{median}(\vert X_t - Me \vert)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{19}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">rms</span></code></p></td>
+<td class="text-left"><p>Menghitung <em>Root Mean Square</em> (akar rata-rata kuadrat) amplitudo sinyal.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{RMS} = \sqrt{\frac{1}{N}\sum_{t=1}^{N} X_t^2}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{20}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">skewness</span></code></p></td>
+<td class="text-left"><p>Menghitung kemiringan (asimetri) distribusi data terhadap rata-rata.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(S_k = \frac{\frac{1}{N}\sum(X_t - \bar{X})^3}{s^3}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="domain-temporal-f-21-hingga-f-41">
+<h3>4.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)<a class="headerlink" href="#domain-temporal-f-21-hingga-f-41" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
+<th class="head text-left"><p>Nama Fungsi TSFEL</p></th>
+<th class="head text-left"><p>Definisi Resmi &amp; Cara Kerja</p></th>
+<th class="head text-left"><p>Cara Menghitung &amp; Rumus Matematika</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{21}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">autocorr</span></code></p></td>
+<td class="text-left"><p>Menghitung titik perlintasan <span class="math notranslate nohighlight">\(1/e\)</span> pertama pada fungsi autokorelasi (ACF).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(R(k) = \frac{\sum (X_t - \bar{X})(X_{t+k} - \bar{X})}{\sum (X_t - \bar{X})^2} \to \text{Cari } k \text{ saat } R(k)=1/e\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{22}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_centroid</span></code></p></td>
+<td class="text-left"><p>Menghitung titik pusat massa (<em>barycenter</em>) sinyal sepanjang sumbu waktu.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(C_{\text{temp}} = \frac{\sum_{t=1}^{N} t \cdot X_t}{\sum_{t=1}^{N} X_t}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{23}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">dfa</span></code></p></td>
+<td class="text-left"><p><em>Detrended Fluctuation Analysis</em> untuk mengukur ketergantungan jangka panjang.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(F(n) = \sqrt{\frac{1}{N}\sum_{y}(Y(k) - Y_n(k))^2} \sim n^\alpha\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{24}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">distance</span></code></p></td>
+<td class="text-left"><p>Menghitung total jarak lintasan akumulatif yang ditempuh oleh sinyal.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(D = \sum_{t=1}^{N-1} \sqrt{1 + (X_{t+1} - X_t)^2}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{25}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">higuchi_fractal_dimension</span></code></p></td>
+<td class="text-left"><p>Menghitung dimensi fraktal sinyal menggunakan metode Higuchi (HFD).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(L(m, k) \propto k^{-D_H}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{26}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hurst_exponent</span></code></p></td>
+<td class="text-left"><p>Menghitung eksponen Hurst melalui analisis <em>Rescaled Range</em> (<span class="math notranslate nohighlight">\(R/S\)</span>).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\((R/S)_n \propto n^H\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{27}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">lempel_ziv</span></code></p></td>
+<td class="text-left"><p>Menghitung indeks kompleksitas Lempel-Ziv (LZ) yang diternormalisasi.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(C_{\text{LZ}} = \frac{c(N)}{N / \log_2(N)}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{28}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">maximum_fractal_length</span></code></p></td>
+<td class="text-left"><p>Menghitung panjang fraktal maksimum (MFL) pada skala terkecil.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MFL} = \text{mean}(L(m, k_{\min}))\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{29}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mean_abs_diff</span></code></p></td>
+<td class="text-left"><p>Menghitung rata-rata selisih mutlak antara sampel harian berurutan.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MAD}_{\text{diff}} = \frac{1}{N-1}\sum_{t=1}^{N-1} \vert X_{t+1} - X_t \vert\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{30}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mean_diff</span></code></p></td>
+<td class="text-left"><p>Menghitung rata-rata selisih linier harian antara sampel berurutan.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{M}_{\text{diff}} = \frac{1}{N-1}\sum_{t=1}^{N-1} (X_{t+1} - X_t)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{31}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">median_abs_diff</span></code></p></td>
+<td class="text-left"><p>Menghitung median dari selisih mutlak observasi berurutan.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MedAD}_{\text{diff}} = \text{median}(\vert X_{t+1} - X_t \vert)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{32}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">median_diff</span></code></p></td>
+<td class="text-left"><p>Menghitung median dari selisih linier harian observasi berurutan.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Med}_{\text{diff}} = \text{median}(X_{t+1} - X_t)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{33}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mse</span></code></p></td>
+<td class="text-left"><p><em>Multiscale Entropy</em> yang mengukur kompleksitas pada berbagai skala waktu.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MSE}(m, r, \tau) = \text{SampleEntropy}(X^\tau, m, r)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{34}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">negative_turning</span></code></p></td>
+<td class="text-left"><p>Menghitung jumlah titik balik negatif (lembah lokal sinyal).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(N_{TP-} = \sum \mathbf{1}_{(X_t &lt; X_{t-1} \land X_t &lt; X_{t+1})}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{35}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">neighbourhood_peaks</span></code></p></td>
+<td class="text-left"><p>Menghitung jumlah puncak lokal dalam tetangga area dekat <span class="math notranslate nohighlight">\(n\)</span>.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(N_{\text{peaks}} = \sum \mathbf{1}_{(X_t &gt; \max(X_{t-n..t+n}))}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{36}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">petrosian_fractal_dimension</span></code></p></td>
+<td class="text-left"><p>Menghitung dimensi fraktal Petrosian (PFD) dari turunan biner sinyal.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(D_P = \frac{\log_{10} N}{\log_{10} N + \log_{10}\left(\frac{N}{N + 0.4 N_{\Delta}}\right)}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{37}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">pk_pk_distance</span></code></p></td>
+<td class="text-left"><p>Menghitung jarak selisih amplitudo dari puncak maksimum ke minimum.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(P_{2P} = \max(X_t) - \min(X_t)\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{38}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">positive_turning</span></code></p></td>
+<td class="text-left"><p>Menghitung jumlah titik balik positif (puncak lokal sinyal).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(N_{TP+} = \sum \mathbf{1}_{(X_t &gt; X_{t-1} \land X_t &gt; X_{t+1})}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{39}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">slope</span></code></p></td>
+<td class="text-left"><p>Menghitung gradien kemiringan regresi linier garis tren sinyal.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\beta = \frac{\sum (t - \bar{t})(X_t - \bar{X})}{\sum (t - \bar{t})^2}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{40}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">sum_abs_diff</span></code></p></td>
+<td class="text-left"><p>Menghitung total akumulasi penjumlahan selisih mutlak harian.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(S_{\text{abs}} = \sum_{t=1}^{N-1} \vert X_{t+1} - X_t \vert\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{41}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">zero_cross</span></code></p></td>
+<td class="text-left"><p>Menghitung laju perlintasan sinyal melewati angka nol (atau rata-rata).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{ZCR} = \frac{1}{N-1}\sum \mathbf{1}_{(X_t \cdot X_{t+1} &lt; 0)}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="domain-spektral-f-42-hingga-f-68">
+<h3>4.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#domain-spektral-f-42-hingga-f-68" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
+<th class="head text-left"><p>Nama Fungsi TSFEL</p></th>
+<th class="head text-left"><p>Definisi Resmi &amp; Cara Kerja</p></th>
+<th class="head text-left"><p>Cara Menghitung &amp; Rumus Matematika</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{42}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">auc</span></code></p></td>
+<td class="text-left"><p>Menghitung luas di bawah kurva spektrum menggunakan aturan trapesium.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{AUC} = \int X(t) dt \approx \sum \frac{X_t + X_{t+1}}{2} \Delta t\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{43}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">fundamental_frequency</span></code></p></td>
+<td class="text-left"><p>Menghitung frekuensi fundamental dasar utama dari spektrum sinyal.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(f_0 = \arg\max_f \vert S(f) \vert\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{44}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">human_range_energy</span></code></p></td>
+<td class="text-left"><p>Menghitung rasio energi spektral pada pita rentang aktivitas harian.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(E_{\text{human}} = \frac{\sum_{f \in \text{human}} \vert S(f) \vert^2}{\sum \vert S(f) \vert^2}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{45}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">lpcc</span></code></p></td>
+<td class="text-left"><p>Menghitung koefisien <em>Linear Prediction Cepstral</em> (LPCC).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(c_n = a_n + \sum_{k=1}^{n-1} \frac{k}{n} c_k a_{n-k}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{46}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">max_frequency</span></code></p></td>
+<td class="text-left"><p>Menghitung frekuensi tertinggi yang memiliki respon energi spektral.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(f_{\max} = \max \{f : \vert S(f) \vert &gt; 0\}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{47}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">max_power_spectrum</span></code></p></td>
+<td class="text-left"><p>Menghitung nilai puncak kerapatan spektrum daya (<em>Power Spectrum Density</em>).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{PSD}_{\max} = \max \vert S(f) \vert^2\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{48}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">median_frequency</span></code></p></td>
+<td class="text-left"><p>Menghitung frekuensi yang membagi dua total energi spektrogram.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\sum_{f=0}^{f_{\text{med}}} \vert S(f) \vert^2 = \frac{1}{2} \sum \vert S(f) \vert^2\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{49}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mfcc</span></code></p></td>
+<td class="text-left"><p>Menghitung koefisien spektral <em>Mel-Frequency Cepstral Coefficients</em> (MFCC).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MFCC}_m = \sum_{k=1}^{K} \log(S_k) \cos\left[ m \left(k - \frac{1}{2}\right) \frac{\pi}{K}\right]\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{50}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">power_bandwidth</span></code></p></td>
+<td class="text-left"><p>Menghitung lebar pita frekuensi (<em>bandwidth</em>) dari spektrum daya.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{BW} = f_{\text{high}} - f_{\text{low}}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{51}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_centroid</span></code></p></td>
+<td class="text-left"><p>Menghitung titik pusat massa (<em>barycenter</em>) dari spektrum frekuensi Fourier.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(C_{\text{spec}} = \frac{\sum f \cdot \vert S(f) \vert}{\sum \vert S(f) \vert}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{52}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_decrease</span></code></p></td>
+<td class="text-left"><p>Menghitung tingkat penurunan amplitudo spektrum frekuensi.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(S_{\text{dec}} = \frac{1}{\sum_{k=2}^{K} S(k)} \sum_{k=2}^{K} \frac{S(k) - S(1)}{k - 1}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{53}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_distance</span></code></p></td>
+<td class="text-left"><p>Menghitung jarak deviasi spektral energi relatif terhadap frekuensi.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(D_{\text{spec}} = \sqrt{\sum (S(f_k) - \bar{S})^2}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{54}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_entropy</span></code></p></td>
+<td class="text-left"><p>Menghitung entropi spektral berbasis transformasi Fourier.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(H_{\text{spec}} = -\sum p_k \log_2 p_k, \quad p_k = \frac{\vert S(f_k) \vert^2}{\sum \vert S(f_k) \vert^2}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{55}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_kurtosis</span></code></p></td>
+<td class="text-left"><p>Menghitung keruncingan sebaran bentuk spektrum frekuensi di sekitar rata-rata.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(K_{\text{spec}} = \frac{\sum (f_k - C_{\text{spec}})^4 S(f_k)}{\sigma_{\text{spec}}^4 \sum S(f_k)}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{56}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_positive_turning</span></code></p></td>
+<td class="text-left"><p>Menghitung jumlah titik balik positif dari magnitudo sinyal FFT.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(N_{TP+,\text{fft}} = \sum \mathbf{1}_{(\vert S_k \vert &gt; \vert S_{k-1} \vert \land \vert S_k \vert &gt; \vert S_{k+1} \vert)}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{57}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_roll_off</span></code></p></td>
+<td class="text-left"><p>Menghitung frekuensi di mana 95% energi spektral terkonsentrasi.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\sum_{f=0}^{f_{\text{roll}}} \vert S(f) \vert^2 = 0.95 \sum \vert S(f) \vert^2\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{58}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_roll_on</span></code></p></td>
+<td class="text-left"><p>Menghitung frekuensi di mana 5% awal energi spektral mulai terkonsentrasi.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\sum_{f=0}^{f_{\text{roll-on}}} \vert S(f) \vert^2 = 0.05 \sum \vert S(f) \vert^2\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{59}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_skewness</span></code></p></td>
+<td class="text-left"><p>Menghitung asimetri distribusi spektrum daya frekuensi.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(S_{k,\text{spec}} = \frac{\sum (f_k - C_{\text{spec}})^3 S(f_k)}{\sigma_{\text{spec}}^3 \sum S(f_k)}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{60}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_slope</span></code></p></td>
+<td class="text-left"><p>Menghitung gradien kemiringan garis regresi pada spektrum frekuensi.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Slope}_{\text{spec}} = \frac{K \sum f_k S(f_k) - \sum f_k \sum S(f_k)}{K \sum f_k^2 - (\sum f_k)^2}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{61}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_spread</span></code></p></td>
+<td class="text-left"><p>Menghitung simpangan sebaran spektrum di sekitar titik centroid spektral.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\sigma_{\text{spec}}^2 = \frac{\sum (f_k - C_{\text{spec}})^2 S(f_k)}{\sum S(f_k)}\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{62}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_variation</span></code></p></td>
+<td class="text-left"><p>Menghitung tingkat variasi perubahan pola spektrum sepanjang waktu.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(V_{\text{spec}} = 1 - \frac{\sum S_t(f) S_{t-1}(f)}{\sqrt{\sum S_t^2(f) \sum S_{t-1}^2(f)}}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{63}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectrogram_mean_coeff</span></code></p></td>
+<td class="text-left"><p>Menghitung rata-rata kerapatan spektral daya (PSD) dari spektrogram.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\bar{P}(f) = \frac{1}{T}\sum_{t=1}^{T} \text{PSD}(f, t)\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{64}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">wavelet_abs_mean</span></code></p></td>
+<td class="text-left"><p>Menghitung rata-rata mutlak koefisien <em>Continuous Wavelet Transform</em> (CWT).</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{CWT}_{\text{abs}} = \frac{1}{N}\sum \vert W(a, b) \vert\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{65}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">wavelet_energy</span></code></p></td>
+<td class="text-left"><p>Menghitung total energi koefisien wavelet pada setiap skala <em>wavelet</em>.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(E_{\text{wavelet}}(a) = \sum_{b} \vert W(a, b) \vert^2\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{66}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">wavelet_entropy</span></code></p></td>
+<td class="text-left"><p>Menghitung entropi spektral energi dari hasil dekode <em>wavelet</em>.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(H_{\text{wavelet}} = -\sum p_a \log_2 p_a\)</span></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{67}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">wavelet_std</span></code></p></td>
+<td class="text-left"><p>Menghitung standar deviasi dari koefisien skala <em>wavelet</em> CWT.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(s_{\text{wavelet}}(a) = \text{std}(W(a, b))\)</span></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{68}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">wavelet_var</span></code></p></td>
+<td class="text-left"><p>Menghitung variansi dari koefisien skala <em>wavelet</em> CWT.</p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(s^2_{\text{wavelet}}(a) = \text{var}(W(a, b))\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<blockquote>
+<div><p>[!NOTE]
+Penomoran urut kode <span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span> di atas memetakan seluruh modul fitur bawaan TSFEL secara presisi untuk memudahkan identifikasi kolom saat hasil matriks fitur diekstrak ke dalam format tabel CSV.</p>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./main"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="data-understanding.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Data Understanding</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-teknik-imputasi">1. Penanganan Missing Values (Teknik Imputasi)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang-kebutuhan-imputasi">1.1 Latar Belakang &amp; Kebutuhan Imputasi</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-mekanisme-interpolasi-linear">1.2 Formula &amp; Mekanisme Interpolasi Linear</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-perbaikan-outlier-outlier-treatment">2. Deteksi &amp; Perbaikan Outlier (Outlier Treatment)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier-berbasis-interquartile-range-iqr">2.1 Deteksi Outlier Berbasis Interquartile Range (IQR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perbaikan-outlier-teknik-winsorizing-clipping">2.2 Perbaikan Outlier (Teknik Winsorizing / Clipping)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-tsfel-time-series-feature-extraction-library">3. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-rekayasa-fitur-time-series">3.1 Konsep Rekayasa Fitur Time Series</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68">4. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-20">4.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-21-hingga-f-41">4.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-42-hingga-f-68">4.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Muhammad Ainul Fuady
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
