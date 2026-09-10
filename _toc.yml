@@ -8,3 +8,4 @@ chapters:
     sections:
       - file: main/business-understanding
       - file: main/data-understanding
+      - file: main/data-preparation

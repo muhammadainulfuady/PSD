@@ -63,6 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'main/data-understanding';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data Preparation (Persiapan Data CO)" href="data-preparation.html" />
     <link rel="prev" title="Business Understanding" href="business-understanding.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -177,6 +178,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="polutan-kabupaten-gresik.html">Polutan Kabupaten Gresik</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Data Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-preparation.html">Data Preparation (Persiapan Data CO)</a></li>
 </ul>
 </details></li>
 </ul>
@@ -339,7 +341,7 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#d-memuat-data-ch4">d. Memuat Data CH4</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definisi-aoi-polygon">1.5 Definisi AOI (Polygon)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definisi-aoi-polygon-terbaru">1.5 Definisi AOI (Polygon Terbaru)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agregasi-data">1.6 Agregasi Data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menjalankan-batch-job">1.7 Menjalankan Batch Job</a></li>
 </ul>
@@ -355,11 +357,10 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-tools-orange-data-mining">4.1 Implementasi Tools Orange Data Mining</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.2 Missing Values</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.3 Outliers</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise">4.4 Noise</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-komparatif-4-polutan-style-copernicus">4.5 Visualisasi Komparatif 4 Polutan (Style Copernicus)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.1 Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.2 Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise">4.3 Noise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-komparatif-4-polutan-style-copernicus">4.4 Visualisasi Komparatif 4 Polutan (Style Copernicus)</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-rinci-komponen-grafik">Penjelasan Rinci Komponen Grafik:</a></li>
 </ul>
 </li>
@@ -378,7 +379,7 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#standar-deviasi-sampel-s">6. Standar Deviasi Sampel (<span class="math notranslate nohighlight">\(s\)</span>)</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kemiringan-skewness-s-k">7. Kemiringan (<em>Skewness</em> / <span class="math notranslate nohighlight">\(S_k\)</span>)</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#keruncingan-kurtosis-k">8. Keruncingan (<em>Kurtosis</em> / <span class="math notranslate nohighlight">\(K\)</span>)</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#konstruksi-tabel-distribusi-frekuensi-grafik-histogram">9. Konstruksi Tabel Distribusi Frekuensi &amp; Grafik Histogram</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aturan-sturges-lebar-kelas-interval-histogram">9. Aturan Sturges &amp; Lebar Kelas Interval Histogram</a></li>
 </ul>
 </li>
 </ul>
@@ -396,7 +397,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="data-understanding">
 <h1>Data Understanding<a class="headerlink" href="#data-understanding" title="Link to this heading">#</a></h1>
-<p>Data Understanding adalah tahap untuk <strong>mengumpulkan</strong>, <strong>mengeksplorasi</strong>, dan <strong>menilai kualitas</strong> data yang akan digunakan dalam analisis kualitas udara di Kabupaten Gresik.</p>
+<p>Data Understanding adalah tahap untuk <strong>mengumpulkan</strong>, <strong>mengeksplorasi</strong>, dan <strong>menilai kualitas</strong> data yang akan digunakan dalam analisis kualitas udara di Kabupaten Gresik (Area Observasi Baru).</p>
 <hr class="docutils" />
 <section id="library-python-yang-diperlukan">
 <h2>Library Python yang Diperlukan<a class="headerlink" href="#library-python-yang-diperlukan" title="Link to this heading">#</a></h2>
@@ -421,7 +422,7 @@ document.write(`
 <td class="text-left"><p>Komputasi numerik, misalnya perhitungan rata-rata, standar deviasi, dan statistik.</p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></p></td>
-<td class="text-left"><p>Membuat visualisasi grafik scatter plot (outliers), line plot (noise <span class="math notranslate nohighlight">\(\pm 1\sigma\)</span>), dan grafik komparatif dual X-axis.</p></td>
+<td class="text-left"><p>Visualisasi grafik data komparatif dual X-axis 4 polutan.</p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code></p></td>
 <td class="text-left"><p>Deteksi pencilan (<em>outlier detection</em>) menggunakan algoritma <em>Isolation Forest</em>.</p></td>
@@ -502,8 +503,8 @@ Authenticated using device code flow.
 <p><span class="caption-number">Fig. 1 </span><span class="caption-text">Polygon Area of Interest (AOI) di Kabupaten Gresik yang digambar pada peta geojson.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p><strong>Penjelasan koordinat:</strong></p>
-<p>Setiap titik pada polygon memiliki format <code class="docutils literal notranslate"><span class="pre">[longitude</span> <span class="pre">(bujur),</span> <span class="pre">latitude</span> <span class="pre">(lintang)]</span></code>. Dari polygon tersebut, kita memperoleh:</p>
+<p><strong>Penjelasan koordinat (BBOX Terbaru):</strong></p>
+<p>Setiap titik pada polygon memiliki format <code class="docutils literal notranslate"><span class="pre">[longitude</span> <span class="pre">(bujur),</span> <span class="pre">latitude</span> <span class="pre">(lintang)]</span></code>. Dari polygon tersebut, kita memperoleh <em>Bounding Box</em>:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Atribut</p></th>
@@ -513,19 +514,19 @@ Authenticated using device code flow.
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">west</span></code></p></td>
-<td><p>112.6193968</p></td>
+<td><p>112.5058378</p></td>
 <td><p>Longitude terkecil (batas kiri)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">east</span></code></p></td>
-<td><p>112.6600158</p></td>
+<td><p>112.5963518</p></td>
 <td><p>Longitude terbesar (batas kanan)</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">south</span></code></p></td>
-<td><p>-7.1927923</p></td>
+<td><p>-7.0683846</p></td>
 <td><p>Latitude terkecil (batas bawah)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">north</span></code></p></td>
-<td><p>-7.1514786</p></td>
+<td><p>-7.0230496</p></td>
 <td><p>Latitude terbesar (batas atas)</p></td>
 </tr>
 </tbody>
@@ -537,17 +538,17 @@ Authenticated using device code flow.
 </section>
 <section id="memuat-data-load-collection">
 <h3>1.4 Memuat Data (Load Collection)<a class="headerlink" href="#memuat-data-load-collection" title="Link to this heading">#</a></h3>
-<p>Data dimuat <strong>per polutan</strong>, karena server Sentinel-5P di openEO hanya mendukung <strong>satu band per proses</strong>. Oleh karena itu dibuat <strong>4 notebook terpisah</strong> (<code class="docutils literal notranslate"><span class="pre">code-NO2.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-CO.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-SO2.ipynb</span></code>, <code class="docutils literal notranslate"><span class="pre">code-CH4.ipynb</span></code>), masing-masing untuk satu polutan.</p>
+<p>Data dimuat untuk masing-masing polutan menggunakan rentang koordinat <em>Bounding Box</em> terbaru. Proses pemrosesan ini digabungkan secara praktis di dalam notebook <code class="docutils literal notranslate"><span class="pre">crawling-polutan.ipynb</span></code>.</p>
 <section id="a-memuat-data-no2">
 <h4>a. Memuat Data NO2<a class="headerlink" href="#a-memuat-data-no2" title="Link to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
     <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
     <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6193968</span><span class="p">,</span>
-        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span>
-        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6600158</span><span class="p">,</span>
-        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.5058378</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0683846</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.5963518</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0230496</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">"NO2"</span><span class="p">],</span>
 <span class="p">)</span>
@@ -560,10 +561,10 @@ Authenticated using device code flow.
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
     <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
     <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6193968</span><span class="p">,</span>
-        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span>
-        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6600158</span><span class="p">,</span>
-        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.5058378</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0683846</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.5963518</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0230496</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">"CO"</span><span class="p">],</span>
 <span class="p">)</span>
@@ -576,10 +577,10 @@ Authenticated using device code flow.
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
     <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
     <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6193968</span><span class="p">,</span>
-        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span>
-        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6600158</span><span class="p">,</span>
-        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.5058378</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0683846</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.5963518</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0230496</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">"SO2"</span><span class="p">],</span>
 <span class="p">)</span>
@@ -592,20 +593,19 @@ Authenticated using device code flow.
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
     <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
     <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.6193968</span><span class="p">,</span>
-        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span>
-        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.6600158</span><span class="p">,</span>
-        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span>
+        <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.5058378</span><span class="p">,</span>
+        <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0683846</span><span class="p">,</span>
+        <span class="s2">"east"</span><span class="p">:</span> <span class="mf">112.5963518</span><span class="p">,</span>
+        <span class="s2">"north"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0230496</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="s2">"CH4"</span><span class="p">],</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Perhatikan:</strong> Kode untuk CO, SO2, dan CH4 <strong>identik</strong> dengan NO2 — hanya berbeda pada parameter <code class="docutils literal notranslate"><span class="pre">bands</span></code>.</p>
 </section>
 </section>
-<section id="definisi-aoi-polygon">
-<h3>1.5 Definisi AOI (Polygon)<a class="headerlink" href="#definisi-aoi-polygon" title="Link to this heading">#</a></h3>
+<section id="definisi-aoi-polygon-terbaru">
+<h3>1.5 Definisi AOI (Polygon Terbaru)<a class="headerlink" href="#definisi-aoi-polygon-terbaru" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">aoi</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"FeatureCollection"</span><span class="p">,</span>
     <span class="s2">"features"</span><span class="p">:</span> <span class="p">[</span>
@@ -615,11 +615,11 @@ Authenticated using device code flow.
             <span class="s2">"geometry"</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Polygon"</span><span class="p">,</span>
                 <span class="s2">"coordinates"</span><span class="p">:</span> <span class="p">[[</span>
-                    <span class="p">[</span><span class="mf">112.6193968</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">],</span>   <span class="c1"># kiri-atas (NW)</span>
-                    <span class="p">[</span><span class="mf">112.6600158</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">],</span>   <span class="c1"># kanan-atas (NE)</span>
-                    <span class="p">[</span><span class="mf">112.6600158</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1927923</span><span class="p">],</span>   <span class="c1"># kanan-bawah (SE)</span>
-                    <span class="p">[</span><span class="mf">112.619805</span><span class="p">,</span>  <span class="o">-</span><span class="mf">7.1927923</span><span class="p">],</span>   <span class="c1"># kiri-bawah (SW)</span>
-                    <span class="p">[</span><span class="mf">112.6193968</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">]</span>    <span class="c1"># kembali ke titik awal</span>
+                    <span class="p">[</span><span class="mf">112.5058378</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.0230496</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mf">112.5963518</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.0230496</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mf">112.5963518</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.0683846</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mf">112.5067768</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.0683846</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mf">112.5058378</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.0230496</span><span class="p">]</span>
                 <span class="p">]]</span>
             <span class="p">}</span>
         <span class="p">}</span>
@@ -689,18 +689,18 @@ Authenticated using device code flow.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">folium</span>
 
 <span class="c1"># Pusat peta di tengah area AOI</span>
-<span class="n">lat_c</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">7.1927923</span> <span class="o">+</span> <span class="o">-</span><span class="mf">7.1514786</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-<span class="n">lon_c</span> <span class="o">=</span> <span class="p">(</span><span class="mf">112.6193968</span> <span class="o">+</span> <span class="mf">112.6600158</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">lat_c</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">7.0683846</span> <span class="o">+</span> <span class="o">-</span><span class="mf">7.0230496</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">lon_c</span> <span class="o">=</span> <span class="p">(</span><span class="mf">112.5058378</span> <span class="o">+</span> <span class="mf">112.5963518</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="n">lat_c</span><span class="p">,</span> <span class="n">lon_c</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 
 <span class="c1"># Tandai area polygon AOI Kabupaten Gresik</span>
 <span class="n">folium</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span>
-    <span class="n">bounds</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="mf">7.1927923</span><span class="p">,</span> <span class="mf">112.6193968</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">7.1514786</span><span class="p">,</span> <span class="mf">112.6600158</span><span class="p">]],</span>
+    <span class="n">bounds</span><span class="o">=</span><span class="p">[[</span><span class="o">-</span><span class="mf">7.0683846</span><span class="p">,</span> <span class="mf">112.5058378</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">7.0230496</span><span class="p">,</span> <span class="mf">112.5963518</span><span class="p">]],</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span>
     <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">fill_opacity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-    <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Area Kabupaten Gresik"</span><span class="p">,</span>
+    <span class="n">tooltip</span><span class="o">=</span><span class="s2">"Area Pengamatan Kabupaten Gresik (AOI Baru)"</span><span class="p">,</span>
 <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
 <span class="n">m</span>
@@ -728,7 +728,7 @@ Authenticated using device code flow.
             &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
             &lt;style&gt;
-                #map_e064d851ebb6627cba7c545ade1f9afc {
+                #map_964bb898f6fa442135d5baa6dd2864d9 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -765,16 +765,16 @@ Authenticated using device code flow.
 &lt;body&gt;
     
     
-            &lt;div class=&quot;folium-map&quot; id=&quot;map_e064d851ebb6627cba7c545ade1f9afc&quot; &gt;&lt;/div&gt;
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_964bb898f6fa442135d5baa6dd2864d9&quot; &gt;&lt;/div&gt;
         
 &lt;/body&gt;
 &lt;script&gt;
     
     
-            var map_e064d851ebb6627cba7c545ade1f9afc = L.map(
-                &quot;map_e064d851ebb6627cba7c545ade1f9afc&quot;,
+            var map_964bb898f6fa442135d5baa6dd2864d9 = L.map(
+                &quot;map_964bb898f6fa442135d5baa6dd2864d9&quot;,
                 {
-                    center: [-7.17213545, 112.6397063],
+                    center: [-7.0457171, 112.55109479999999],
                     crs: L.CRS.EPSG3857,
                     ...{
   &quot;zoom&quot;: 12,
@@ -789,7 +789,7 @@ Authenticated using device code flow.
 
         
     
-            var tile_layer_30c88c0b50637567a3f6828578f7bf9a = L.tileLayer(
+            var tile_layer_cf62ecfd5b0e20af66eff1e6c875b420 = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -806,18 +806,18 @@ Authenticated using device code flow.
             );
         
     
-            tile_layer_30c88c0b50637567a3f6828578f7bf9a.addTo(map_e064d851ebb6627cba7c545ade1f9afc);
+            tile_layer_cf62ecfd5b0e20af66eff1e6c875b420.addTo(map_964bb898f6fa442135d5baa6dd2864d9);
         
     
-            var rectangle_81d4c20501b92b4fc960dfef3f08052a = L.rectangle(
-                [[-7.1927923, 112.6193968], [-7.1514786, 112.6600158]],
+            var rectangle_555eeb375963993230d1b3420fd498c1 = L.rectangle(
+                [[-7.0683846, 112.5058378], [-7.0230496, 112.5963518]],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 1.0, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_e064d851ebb6627cba7c545ade1f9afc);
+            ).addTo(map_964bb898f6fa442135d5baa6dd2864d9);
         
     
-            rectangle_81d4c20501b92b4fc960dfef3f08052a.bindTooltip(
+            rectangle_555eeb375963993230d1b3420fd498c1.bindTooltip(
                 `&lt;div&gt;
-                     Area Kabupaten Gresik
+                     Area Pengamatan Kabupaten Gresik (AOI Baru)
                  &lt;/div&gt;`,
                 {
   &quot;sticky&quot;: true,
@@ -882,7 +882,7 @@ Authenticated using device code flow.
     <tr>
       <th>1</th>
       <td>2025-08-25</td>
-      <td>1867.289429</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>2</th>
@@ -949,12 +949,12 @@ Authenticated using device code flow.
     <tr>
       <th>0</th>
       <td>2025-08-24</td>
-      <td>0.037918</td>
+      <td>0.031251</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2025-08-25</td>
-      <td>0.028240</td>
+      <td>0.034601</td>
     </tr>
     <tr>
       <th>2</th>
@@ -964,12 +964,12 @@ Authenticated using device code flow.
     <tr>
       <th>3</th>
       <td>2025-08-27</td>
-      <td>0.034187</td>
+      <td>0.028711</td>
     </tr>
     <tr>
       <th>4</th>
       <td>2025-08-28</td>
-      <td>0.027450</td>
+      <td>0.028990</td>
     </tr>
   </tbody>
 </table>
@@ -1021,27 +1021,27 @@ Authenticated using device code flow.
     <tr>
       <th>0</th>
       <td>2025-08-24</td>
-      <td>0.000096</td>
+      <td>0.000081</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2025-08-25</td>
-      <td>0.000046</td>
+      <td>0.000134</td>
     </tr>
     <tr>
       <th>2</th>
       <td>2025-08-26</td>
-      <td>0.000068</td>
+      <td>0.000069</td>
     </tr>
     <tr>
       <th>3</th>
       <td>2025-08-27</td>
-      <td>NaN</td>
+      <td>0.000056</td>
     </tr>
     <tr>
       <th>4</th>
       <td>2025-08-28</td>
-      <td>0.000060</td>
+      <td>0.000080</td>
     </tr>
   </tbody>
 </table>
@@ -1093,27 +1093,27 @@ Authenticated using device code flow.
     <tr>
       <th>0</th>
       <td>2025-08-24</td>
-      <td>0.000347</td>
+      <td>0.000271</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2025-08-25</td>
-      <td>0.000817</td>
+      <td>0.000586</td>
     </tr>
     <tr>
       <th>2</th>
       <td>2025-08-26</td>
-      <td>-0.000799</td>
+      <td>0.001380</td>
     </tr>
     <tr>
       <th>3</th>
       <td>2025-08-27</td>
-      <td>-0.000513</td>
+      <td>0.000094</td>
     </tr>
     <tr>
       <th>4</th>
       <td>2025-08-28</td>
-      <td>0.000327</td>
+      <td>-0.000080</td>
     </tr>
   </tbody>
 </table>
@@ -1169,41 +1169,41 @@ Authenticated using device code flow.
       <th>0</th>
       <td>2025-08-24</td>
       <td>NaN</td>
-      <td>0.037918</td>
-      <td>0.000096</td>
-      <td>0.000347</td>
+      <td>0.031251</td>
+      <td>0.000081</td>
+      <td>0.000271</td>
     </tr>
     <tr>
       <th>1</th>
       <td>2025-08-25</td>
-      <td>1867.289429</td>
-      <td>0.028240</td>
-      <td>0.000046</td>
-      <td>0.000817</td>
+      <td>NaN</td>
+      <td>0.034601</td>
+      <td>0.000134</td>
+      <td>0.000586</td>
     </tr>
     <tr>
       <th>2</th>
       <td>2025-08-26</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0.000068</td>
-      <td>-0.000799</td>
+      <td>0.000069</td>
+      <td>0.001380</td>
     </tr>
     <tr>
       <th>3</th>
       <td>2025-08-27</td>
       <td>NaN</td>
-      <td>0.034187</td>
-      <td>NaN</td>
-      <td>-0.000513</td>
+      <td>0.028711</td>
+      <td>0.000056</td>
+      <td>0.000094</td>
     </tr>
     <tr>
       <th>4</th>
       <td>2025-08-28</td>
       <td>NaN</td>
-      <td>0.027450</td>
-      <td>0.000060</td>
-      <td>0.000327</td>
+      <td>0.028990</td>
+      <td>0.000080</td>
+      <td>-0.000080</td>
     </tr>
   </tbody>
 </table>
@@ -1226,22 +1226,9 @@ Authenticated using device code flow.
 <section id="identifikasi-kualitas-data">
 <h2>4. Identifikasi Kualitas Data<a class="headerlink" href="#identifikasi-kualitas-data" title="Link to this heading">#</a></h2>
 <p>Pada tahap ini dilakukan <strong>identifikasi</strong> (mencatat) masalah-masalah pada data, yaitu <strong>missing values</strong>, <strong>outliers</strong>, dan <strong>noises</strong>. Sesuai prinsip CRISP-DM, tahap Data Understanding hanya <strong>menemukan dan mencatat</strong> masalah tersebut — penanganan (imputasi, menghapus, dsb.) dilakukan pada tahap berikutnya (Data Preparation).</p>
-<section id="implementasi-tools-orange-data-mining">
-<h3>4.1 Implementasi Tools Orange Data Mining<a class="headerlink" href="#implementasi-tools-orange-data-mining" title="Link to this heading">#</a></h3>
-<p>Selain analisis statistik berbasis kode Python, identifikasi kualitas data (pemeriksaan <em>missing values</em>, pencilan <em>outliers</em>, dan statistik <em>noise</em>) juga diimplementasikan secara visual menggunakan perangkat lunak <strong>Orange Data Mining</strong>.</p>
-<p>Workflow yang dibangun pada Orange Data Mining mencakup beberapa widget utama:</p>
-<ol class="arabic simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">CSV</span> <span class="pre">File</span> <span class="pre">Import</span></code></strong>: Membaca berkas deret waktu CSV polutan (<code class="docutils literal notranslate"><span class="pre">CH4</span></code>, <code class="docutils literal notranslate"><span class="pre">CO</span></code>, <code class="docutils literal notranslate"><span class="pre">NO2</span></code>, <code class="docutils literal notranslate"><span class="pre">SO2</span></code>) dan mengonfigurasi tipe atribut data (memastikan tipe kolom polutan diset ke <strong>Numeric</strong>).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Column</span> <span class="pre">Statistics</span></code></strong>: Memeriksa ringkasan statistik dasar setiap kolom secara otomatis, mencakup jumlah <em>Missing Values</em>, nilai Rata-rata (<em>Mean</em> <span class="math notranslate nohighlight">\(\mu\)</span>), Standar Deviasi (<em>Std Dev</em> <span class="math notranslate nohighlight">\(\sigma\)</span>), serta tingkat variabilitas (<em>Dispersion</em>).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Impute</span></code></strong>: Mengatur penanganan data kosong. Untuk menyelaraskan populasi analisis dengan metode Python (<code class="docutils literal notranslate"><span class="pre">.dropna()</span></code>), widget <code class="docutils literal notranslate"><span class="pre">Impute</span></code> dikonfigurasi ke opsi <strong><em>Remove instances with unknown values</em></strong> (menghapus baris bernilai kosong sebelum pemrosesan outlier).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Outliers</span></code></strong>: Melakukan deteksi pencilan otomatis menggunakan algoritma <strong>Isolation Forest</strong> dengan tingkat kontaminasi <code class="docutils literal notranslate"><span class="pre">Contamination</span> <span class="pre">=</span> <span class="pre">5%</span></code> (0.05).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">Data</span> <span class="pre">Table</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Scatter</span> <span class="pre">Plot</span></code></strong>: Menampilkan tabel observasi yang terlabeli <em>Outlier</em> / <em>Inlier</em> serta memvisualisasikan sebaran titik pencilan data.</p></li>
-</ol>
-</section>
-<hr class="docutils" />
 <section id="missing-values">
-<h3>4.2 Missing Values<a class="headerlink" href="#missing-values" title="Link to this heading">#</a></h3>
-<p><strong>Missing values</strong> adalah tanggal yang tidak memiliki nilai polutan (NaN). Berikut identifikasinya:</p>
+<h3>4.1 Missing Values<a class="headerlink" href="#missing-values" title="Link to this heading">#</a></h3>
+<p><strong>Missing values</strong> adalah tanggal yang tidak memiliki nilai polutan (NaN). Berikut identifikasinya melalui kode Python:</p>
 <ol class="arabic simple">
 <li><p>ch4</p></li>
 </ol>
@@ -1264,15 +1251,12 @@ Authenticated using device code flow.
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data ch4 : 335
-Jumlah data terisi (valid) pada data ch4 : 31
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data ch4 : 346
+Jumlah data terisi (valid) pada data ch4 : 20
 </pre></div>
 </div>
 </div>
 </div>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../_images/ch4-msv-orange.png"><img alt="../_images/ch4-msv-orange.png" src="../_images/ch4-msv-orange.png" style="width: 100%;" /></a>
-</figure>
 <ol class="arabic simple" start="2">
 <li><p>co</p></li>
 </ol>
@@ -1294,15 +1278,12 @@ Jumlah data terisi (valid) pada data ch4 : 31
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data co : 157
-Jumlah data terisi (valid) pada data co : 209
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data co : 174
+Jumlah data terisi (valid) pada data co : 192
 </pre></div>
 </div>
 </div>
 </div>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../_images/co-msv-orange.png"><img alt="../_images/co-msv-orange.png" src="../_images/co-msv-orange.png" style="width: 100%;" /></a>
-</figure>
 <ol class="arabic simple" start="3">
 <li><p>no2</p></li>
 </ol>
@@ -1324,15 +1305,12 @@ Jumlah data terisi (valid) pada data co : 209
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data no2 : 179
-Jumlah data terisi (valid) pada data no2 : 187
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data no2 : 166
+Jumlah data terisi (valid) pada data no2 : 200
 </pre></div>
 </div>
 </div>
 </div>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../_images/no2-msv-orange.png"><img alt="../_images/no2-msv-orange.png" src="../_images/no2-msv-orange.png" style="width: 100%;" /></a>
-</figure>
 <ol class="arabic simple" start="4">
 <li><p>so2</p></li>
 </ol>
@@ -1354,21 +1332,19 @@ Jumlah data terisi (valid) pada data no2 : 187
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data so2 : 144
-Jumlah data terisi (valid) pada data so2 : 222
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data so2 : 131
+Jumlah data terisi (valid) pada data so2 : 235
 </pre></div>
 </div>
 </div>
 </div>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../_images/so2-msv-orange.png"><img alt="../_images/so2-msv-orange.png" src="../_images/so2-msv-orange.png" style="width: 100%;" /></a>
-</figure>
 </section>
+<hr class="docutils" />
 <section id="outliers">
-<h3>4.3 Outliers<a class="headerlink" href="#outliers" title="Link to this heading">#</a></h3>
+<h3>4.2 Outliers<a class="headerlink" href="#outliers" title="Link to this heading">#</a></h3>
 <p><strong>Outliers</strong> (pencilan) adalah nilai pengamatan yang menyimpang secara signifikan dari mayoritas data dalam suatu variabel. Pada dataset ini, deteksi outlier dilakukan menggunakan algoritma <strong>Isolation Forest</strong> dengan tingkat kontaminasi (<code class="docutils literal notranslate"><span class="pre">contamination</span></code>) sebesar <strong>0.05</strong> (5%).</p>
-<p>Sebelum deteksi outlier dilakukan, data bernilai kosong (<em>missing values</em> / <code class="docutils literal notranslate"><span class="pre">NaN</span></code>) terlebih dahulu dibuang (menggunakan <code class="docutils literal notranslate"><span class="pre">dropna()</span></code> pada Python atau widget <code class="docutils literal notranslate"><span class="pre">Impute</span></code> <span class="math notranslate nohighlight">\(\rightarrow\)</span> <em>Remove instances with unknown values</em> pada Orange Data Mining) agar populasi perhitungan pencilan selaras.</p>
-<p>Berikut adalah hasil identifikasi outlier untuk masing-masing polutan:</p>
+<p>Sebelum deteksi outlier dilakukan, data bernilai kosong (<em>missing values</em> / <code class="docutils literal notranslate"><span class="pre">NaN</span></code>) terlebih dahulu dibuang (menggunakan <code class="docutils literal notranslate"><span class="pre">dropna()</span></code> pada Python) agar populasi perhitungan pencilan selaras.</p>
+<p>Berikut adalah hasil identifikasi jumlah outlier untuk masing-masing polutan:</p>
 <ol class="arabic simple">
 <li><p>ch4</p></li>
 </ol>
@@ -1380,7 +1356,6 @@ Jumlah data terisi (valid) pada data so2 : 222
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
@@ -1394,34 +1369,17 @@ Jumlah data terisi (valid) pada data so2 : 222
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah outlier pada data ch4 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_ch4</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah tidak outlier (normal) pada data ch4 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">normal_ch4</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Visualisasi Grafik Outlier CH4</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal_ch4</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal_ch4</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers_ch4</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers_ch4</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier CH4 (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CH4'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data ch4 : 2
-Jumlah tidak outlier (normal) pada data ch4 : 29
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data ch4 : 1
+Jumlah tidak outlier (normal) pada data ch4 : 19
 </pre></div>
 </div>
-<img alt="../_images/5db4bf2732890200e9ea8b715095709fc85141962da01619a1e0a6c2127db760.png" src="../_images/5db4bf2732890200e9ea8b715095709fc85141962da01619a1e0a6c2127db760.png" />
 </div>
 </div>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../_images/ch4-otlr-orange.png"><img alt="../_images/ch4-otlr-orange.png" src="../_images/ch4-otlr-orange.png" style="width: 100%;" /></a>
-</figure>
 <ol class="arabic simple" start="2">
 <li><p>co</p></li>
 </ol>
@@ -1433,7 +1391,6 @@ Jumlah tidak outlier (normal) pada data ch4 : 29
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CO_gresik_timeseries.csv"</span><span class="p">)</span>
@@ -1447,34 +1404,17 @@ Jumlah tidak outlier (normal) pada data ch4 : 29
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah outlier pada data co : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_co</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah tidak outlier (normal) pada data co : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">normal_co</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Visualisasi Grafik Outlier CO</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal_co</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal_co</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers_co</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers_co</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier CO (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CO'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data co : 11
-Jumlah tidak outlier (normal) pada data co : 198
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data co : 10
+Jumlah tidak outlier (normal) pada data co : 182
 </pre></div>
 </div>
-<img alt="../_images/bd846f278f377f4e110b27d044872ae76849416edfb8d033a7e00156140cb491.png" src="../_images/bd846f278f377f4e110b27d044872ae76849416edfb8d033a7e00156140cb491.png" />
 </div>
 </div>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../_images/co-otlr-orange.png"><img alt="../_images/co-otlr-orange.png" src="../_images/co-otlr-orange.png" style="width: 100%;" /></a>
-</figure>
 <ol class="arabic simple" start="3">
 <li><p>no2</p></li>
 </ol>
@@ -1486,7 +1426,6 @@ Jumlah tidak outlier (normal) pada data co : 198
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
@@ -1500,34 +1439,17 @@ Jumlah tidak outlier (normal) pada data co : 198
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah outlier pada data no2 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_no2</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah tidak outlier (normal) pada data no2 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">normal_no2</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Visualisasi Grafik Outlier NO2</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal_no2</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal_no2</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers_no2</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers_no2</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier NO2 (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi NO2'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data no2 : 10
-Jumlah tidak outlier (normal) pada data no2 : 177
+Jumlah tidak outlier (normal) pada data no2 : 190
 </pre></div>
 </div>
-<img alt="../_images/bb85cd57881f8c8ee0a912a980dff4754b4e8330b2ae22b1cdd3d3455789eb23.png" src="../_images/bb85cd57881f8c8ee0a912a980dff4754b4e8330b2ae22b1cdd3d3455789eb23.png" />
 </div>
 </div>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../_images/no2-otlr-orange.png"><img alt="../_images/no2-otlr-orange.png" src="../_images/no2-otlr-orange.png" style="width: 100%;" /></a>
-</figure>
 <ol class="arabic simple" start="4">
 <li><p>so2</p></li>
 </ol>
@@ -1539,7 +1461,6 @@ Jumlah tidak outlier (normal) pada data no2 : 177
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
@@ -1553,37 +1474,21 @@ Jumlah tidak outlier (normal) pada data no2 : 177
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah outlier pada data so2 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_so2</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah tidak outlier (normal) pada data so2 : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">normal_so2</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Visualisasi Grafik Outlier SO2</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal_so2</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal_so2</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers_so2</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers_so2</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier SO2 (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi SO2'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data so2 : 12
-Jumlah tidak outlier (normal) pada data so2 : 210
+Jumlah tidak outlier (normal) pada data so2 : 223
 </pre></div>
 </div>
-<img alt="../_images/c9f9cc4cd470d17213d5d48ef3a64ccc5c9d034b30b581c815fdb986a96b3981.png" src="../_images/c9f9cc4cd470d17213d5d48ef3a64ccc5c9d034b30b581c815fdb986a96b3981.png" />
 </div>
 </div>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../_images/so2-otlr-orange.png"><img alt="../_images/so2-otlr-orange.png" src="../_images/so2-otlr-orange.png" style="width: 100%;" /></a>
-</figure>
 </section>
+<hr class="docutils" />
 <section id="noise">
-<h3>4.4 Noise<a class="headerlink" href="#noise" title="Link to this heading">#</a></h3>
+<h3>4.3 Noise<a class="headerlink" href="#noise" title="Link to this heading">#</a></h3>
 <p><strong>Noise</strong> (derau) adalah fluktuasi acak frekuensi tinggi (<em>random noise</em>) pada data pengamatan yang disebabkan oleh kondisi dinamika atmosfer mikro, keterbatasan presisi instrumen satelit, atau interferensi cuaca lokal. Berbeda dari <em>outlier</em> yang berupa pencilan ekstrem tunggal, <em>noise</em> diukur berdasarkan tingkat fluktuasi atau variabilitas relatif data.</p>
 <p>Untuk mengukur dan mengidentifikasi <em>noise</em> pada data polutan, digunakan 3 indikator statistik utama:</p>
 <ol class="arabic simple">
@@ -1591,7 +1496,7 @@ Jumlah tidak outlier (normal) pada data so2 : 210
 <li><p><strong>Standar Deviasi (<span class="math notranslate nohighlight">\(\sigma\)</span>)</strong>: Ukuran sebaran atau besar fluktuasi data dari rata-rata.</p></li>
 <li><p><strong>Koefisien Variasi (<span class="math notranslate nohighlight">\(CV\)</span>)</strong>: Rasio fluktuasi relatif terhadap rata-rata (<span class="math notranslate nohighlight">\(CV = \frac{\sigma}{\mu} \times 100\%\)</span>). Semakin tinggi nilai <span class="math notranslate nohighlight">\(CV\)</span>, semakin tinggi tingkat derau (<em>noise</em>) atau variabilitas relatifnya.</p></li>
 </ol>
-<p>Berikut adalah hasil identifikasi dan analisis <em>noise</em> untuk masing-masing polutan:</p>
+<p>Berikut adalah hasil identifikasi indikator statistik <em>noise</em> untuk masing-masing polutan:</p>
 <ol class="arabic simple">
 <li><p>ch4</p></li>
 </ol>
@@ -1603,11 +1508,9 @@ Jumlah tidak outlier (normal) pada data so2 : 210
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
 
 <span class="n">mean_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">std_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
@@ -1616,29 +1519,16 @@ Jumlah tidak outlier (normal) pada data so2 : 210
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rata-rata CH4 : </span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Standar Deviasi CH4 : </span><span class="si">{</span><span class="n">std_val</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Koefisien Variasi (CV) CH4 : </span><span class="si">{</span><span class="n">cv_val</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
-
-<span class="c1"># Visualisasi Fluktuasi / Noise Data CH4</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'purple'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'CH4 Observasi'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">mean_val</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Rata-rata (</span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">mean_val</span> <span class="o">-</span> <span class="n">std_val</span><span class="p">,</span> <span class="n">mean_val</span> <span class="o">+</span> <span class="n">std_val</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'purple'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Rentang Noise (±1 Std)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Analisis Fluktuasi (Noise) Data CH4'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CH4'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata CH4 : 1892.8467
-Standar Deviasi CH4 : 17.3635
-Koefisien Variasi (CV) CH4 : 0.92%
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata CH4 : 1887.2982
+Standar Deviasi CH4 : 24.7520
+Koefisien Variasi (CV) CH4 : 1.31%
 </pre></div>
 </div>
-<img alt="../_images/cc962b1bbc5b88b25dd47f8b21b918ed0821fe36611152959ac207598f62ac0e.png" src="../_images/cc962b1bbc5b88b25dd47f8b21b918ed0821fe36611152959ac207598f62ac0e.png" />
 </div>
 </div>
 <ol class="arabic simple" start="2">
@@ -1652,11 +1542,9 @@ Koefisien Variasi (CV) CH4 : 0.92%
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CO_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
 
 <span class="n">mean_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">std_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
@@ -1665,29 +1553,16 @@ Koefisien Variasi (CV) CH4 : 0.92%
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rata-rata CO : </span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Standar Deviasi CO : </span><span class="si">{</span><span class="n">std_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Koefisien Variasi (CV) CO : </span><span class="si">{</span><span class="n">cv_val</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
-
-<span class="c1"># Visualisasi Fluktuasi / Noise Data CO</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'CO Observasi'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">mean_val</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Rata-rata (</span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">mean_val</span> <span class="o">-</span> <span class="n">std_val</span><span class="p">,</span> <span class="n">mean_val</span> <span class="o">+</span> <span class="n">std_val</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Rentang Noise (±1 Std)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Analisis Fluktuasi (Noise) Data CO'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CO'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata CO : 0.029098
-Standar Deviasi CO : 0.004264
-Koefisien Variasi (CV) CO : 14.66%
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata CO : 0.028786
+Standar Deviasi CO : 0.004084
+Koefisien Variasi (CV) CO : 14.19%
 </pre></div>
 </div>
-<img alt="../_images/215e24f4fd7a84c9e26bf57bfa522056e13530106c8cca743d5aac6ec263518e.png" src="../_images/215e24f4fd7a84c9e26bf57bfa522056e13530106c8cca743d5aac6ec263518e.png" />
 </div>
 </div>
 <ol class="arabic simple" start="3">
@@ -1701,11 +1576,9 @@ Koefisien Variasi (CV) CO : 14.66%
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
 
 <span class="n">mean_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">std_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
@@ -1714,29 +1587,16 @@ Koefisien Variasi (CV) CO : 14.66%
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rata-rata NO2 : </span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Standar Deviasi NO2 : </span><span class="si">{</span><span class="n">std_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Koefisien Variasi (CV) NO2 : </span><span class="si">{</span><span class="n">cv_val</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
-
-<span class="c1"># Visualisasi Fluktuasi / Noise Data NO2</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'orange'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'NO2 Observasi'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">mean_val</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Rata-rata (</span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">mean_val</span> <span class="o">-</span> <span class="n">std_val</span><span class="p">,</span> <span class="n">mean_val</span> <span class="o">+</span> <span class="n">std_val</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'orange'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Rentang Noise (±1 Std)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Analisis Fluktuasi (Noise) Data NO2'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi NO2'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata NO2 : 0.000073
-Standar Deviasi NO2 : 0.000063
-Koefisien Variasi (CV) NO2 : 86.60%
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata NO2 : 0.000049
+Standar Deviasi NO2 : 0.000034
+Koefisien Variasi (CV) NO2 : 70.51%
 </pre></div>
 </div>
-<img alt="../_images/80aa15453ec4d44d860a0669a969e44af6dcf94c0d3d4cbb8e52e92028178c97.png" src="../_images/80aa15453ec4d44d860a0669a969e44af6dcf94c0d3d4cbb8e52e92028178c97.png" />
 </div>
 </div>
 <ol class="arabic simple" start="4">
@@ -1750,11 +1610,9 @@ Koefisien Variasi (CV) NO2 : 86.60%
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
 
 <span class="n">mean_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">std_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
@@ -1763,35 +1621,22 @@ Koefisien Variasi (CV) NO2 : 86.60%
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Rata-rata SO2 : </span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Standar Deviasi SO2 : </span><span class="si">{</span><span class="n">std_val</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Koefisien Variasi (CV) SO2 : </span><span class="si">{</span><span class="n">cv_val</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
-
-<span class="c1"># Visualisasi Fluktuasi / Noise Data SO2</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'teal'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'SO2 Observasi'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">mean_val</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Rata-rata (</span><span class="si">{</span><span class="n">mean_val</span><span class="si">:</span><span class="s1">.6f</span><span class="si">}</span><span class="s1">)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">mean_val</span> <span class="o">-</span> <span class="n">std_val</span><span class="p">,</span> <span class="n">mean_val</span> <span class="o">+</span> <span class="n">std_val</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'teal'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Rentang Noise (±1 Std)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Analisis Fluktuasi (Noise) Data SO2'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi SO2'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata SO2 : 0.000110
-Standar Deviasi SO2 : 0.000320
-Koefisien Variasi (CV) SO2 : 290.45%
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rata-rata SO2 : 0.000067
+Standar Deviasi SO2 : 0.000241
+Koefisien Variasi (CV) SO2 : 361.62%
 </pre></div>
 </div>
-<img alt="../_images/aa0ed8a802e792f799cef5552e1b9df3a63b4df6fe7290de5461c9feba18a63d.png" src="../_images/aa0ed8a802e792f799cef5552e1b9df3a63b4df6fe7290de5461c9feba18a63d.png" />
 </div>
 </div>
 </section>
 <hr class="docutils" />
 <section id="visualisasi-komparatif-4-polutan-style-copernicus">
-<h3>4.5 Visualisasi Komparatif 4 Polutan (Style Copernicus)<a class="headerlink" href="#visualisasi-komparatif-4-polutan-style-copernicus" title="Link to this heading">#</a></h3>
+<h3>4.4 Visualisasi Komparatif 4 Polutan (Style Copernicus)<a class="headerlink" href="#visualisasi-komparatif-4-polutan-style-copernicus" title="Link to this heading">#</a></h3>
 <p>Untuk membandingkan tren perubahan konsentrasi ke-4 polutan (CH4, CO, NO2, SO2) secara bersamaan sepanjang periode pengamatan di Kabupaten Gresik, dibuat visualisasi <strong>Dual X-Axis Line Plot</strong> dengan gaya visualisasi Copernicus Sentinel-5P.</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../_images/copernicus_4polutan_dual_axis.png"><img alt="../_images/copernicus_4polutan_dual_axis.png" src="../_images/copernicus_4polutan_dual_axis.png" style="width: 100%;" /></a>
@@ -1862,7 +1707,7 @@ Koefisien Variasi (CV) SO2 : 290.45%
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../_images/380512cb11e8dd543fb5688c101f135fa3ffed814d28275ba723d9554ac32732.png" src="../_images/380512cb11e8dd543fb5688c101f135fa3ffed814d28275ba723d9554ac32732.png" />
+<img alt="../_images/eace25b88168437d2527016b5828abaf1518c9ddcdfd05d54e592ede8b615b99.png" src="../_images/eace25b88168437d2527016b5828abaf1518c9ddcdfd05d54e592ede8b615b99.png" />
 </div>
 </div>
 <section id="penjelasan-rinci-komponen-grafik">
@@ -1911,7 +1756,7 @@ Koefisien Variasi (CV) SO2 : 290.45%
 <hr class="docutils" />
 <section id="integrasi-cloud-database-analytics-workflow-aiven-dbeaver-knime">
 <h2>5. Integrasi Cloud Database &amp; Analytics Workflow (Aiven, DBeaver, &amp; KNIME)<a class="headerlink" href="#integrasi-cloud-database-analytics-workflow-aiven-dbeaver-knime" title="Link to this heading">#</a></h2>
-<p>Selain pemrosesan secara lokal dengan Python dan Orange Data Mining, alur pemahaman data (<em>Data Understanding</em>) ini juga diimplementasikan menggunakan infrastruktur <em>cloud database</em> dan perangkat analitik visual: <strong>Aiven PostgreSQL</strong>, <strong>DBeaver</strong>, dan <strong>KNIME Analytics Platform</strong>.</p>
+<p>Selain pemrosesan secara lokal dengan Python, alur pemahaman data (<em>Data Understanding</em>) ini juga diimplementasikan menggunakan infrastruktur <em>cloud database</em> dan perangkat analitik visual: <strong>Aiven PostgreSQL</strong>, <strong>DBeaver</strong>, dan <strong>KNIME Analytics Platform</strong>.</p>
 <hr class="docutils" />
 <section id="konfigurasi-cloud-database-aiven-postgresql">
 <h3>5.1 Konfigurasi Cloud Database (Aiven PostgreSQL)<a class="headerlink" href="#konfigurasi-cloud-database-aiven-postgresql" title="Link to this heading">#</a></h3>
@@ -1965,8 +1810,8 @@ Koefisien Variasi (CV) SO2 : 290.45%
 <hr class="docutils" />
 <section id="perhitungan-manual-statistik-deskriptif-rumus-langkah-kerja">
 <h3>5.4 Perhitungan Manual Statistik Deskriptif (Rumus &amp; Langkah Kerja)<a class="headerlink" href="#perhitungan-manual-statistik-deskriptif-rumus-langkah-kerja" title="Link to this heading">#</a></h3>
-<p>Sub-bab ini menyediakan penjelasan rumus perhitungan statistik secara manual dari nilai minimum hingga konstruksi grafik histogram untuk memverifikasi hasil pemrosesan perangkat lunak (Python &amp; KNIME) dari data observasi valid sebanyak <span class="math notranslate nohighlight">\(N\)</span>.</p>
-<p>Untuk memverifikasi kebenaran dan ketelitian formula statistik deskriptif, dilakukan pengujian komparasi langsung antara perhitungan manual menggunakan lembar kerja <strong>Microsoft Excel</strong> dengan hasil ekstraksi otomatis dari node <strong>Statistics</strong> pada <strong>KNIME Analytics Platform</strong> sebagaimana ditampilkan pada gambar berikut:</p>
+<p>Sub-bab ini menyediakan rincian perhitungan statistik secara manual menggunakan rumus LaTeX matematis dari nilai minimum hingga konstruksi grafik histogram. <strong>Seluruh kalkulasi dihitung eksklusif hanya pada populasi data valid (<span class="math notranslate nohighlight">\(N\)</span>) setelah membuang nilai kosong (<em>missing values</em> / <code class="docutils literal notranslate"><span class="pre">NaN</span></code>)</strong> dari file CSV pengamatan (<code class="docutils literal notranslate"><span class="pre">polutan_gresik.csv</span></code>).</p>
+<p>Untuk memverifikasi kebenaran formula, dilakukan pengujian komparasi antara kalkulasi matematis manual dengan hasil ekstraksi otomatis dari node <strong>Statistics</strong> pada <strong>KNIME Analytics Platform</strong>:</p>
 <figure class="align-center" id="id6">
 <a class="reference internal image-reference" href="../_images/eda-lengkap.png"><img alt="../_images/eda-lengkap.png" src="../_images/eda-lengkap.png" style="width: 100%;" /></a>
 <figcaption>
@@ -1976,51 +1821,46 @@ Koefisien Variasi (CV) SO2 : 290.45%
 <blockquote>
 <div><p>[!NOTE]
 <strong>Catatan Pembuktian &amp; Konsistensi Perhitungan</strong>:
-Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi standar <code class="docutils literal notranslate"><span class="pre">MIN</span></code>, <code class="docutils literal notranslate"><span class="pre">MAX</span></code>, <code class="docutils literal notranslate"><span class="pre">AVERAGE</span></code>, <code class="docutils literal notranslate"><span class="pre">MEDIAN</span></code>, <code class="docutils literal notranslate"><span class="pre">VAR.S</span></code>, <code class="docutils literal notranslate"><span class="pre">STDEV.S</span></code>, <code class="docutils literal notranslate"><span class="pre">SKEW</span></code>, dan <code class="docutils literal notranslate"><span class="pre">KURT</span></code>) terbukti <strong>100% konsisten dan identik secara matematis</strong> dengan hasil ekstraksi pada perangkat lunak KNIME.</p>
-<p>Terdapat sedikit perbedaan jumlah angka di belakang koma (desimal) pada beberapa tampilan tabel antarmuka. Hal ini semata-mata disebabkan oleh <strong>pembulatan tampilan (<em>cosmetic display rounding</em>)</strong> otomatis pada antarmuka GUI KNIME (misalnya pembulatan 3 digit desimal pada rata-rata <span class="math notranslate nohighlight">\(\text{CH}_4\)</span> dari <code class="docutils literal notranslate"><span class="pre">1,892.846684</span></code> menjadi <code class="docutils literal notranslate"><span class="pre">1,892.847</span></code>). Secara nilai komputasi dasar (<em>raw precision value</em>), kedua metode menghasilkan nilai presisi yang sepenuhnya sama.</p>
+Perhitungan manual yang dilakukan pada lembar kerja (menggunakan fungsi statistik standar <code class="docutils literal notranslate"><span class="pre">MIN</span></code>, <code class="docutils literal notranslate"><span class="pre">MAX</span></code>, <code class="docutils literal notranslate"><span class="pre">AVERAGE</span></code>, <code class="docutils literal notranslate"><span class="pre">MEDIAN</span></code>, <code class="docutils literal notranslate"><span class="pre">VAR.S</span></code>, <code class="docutils literal notranslate"><span class="pre">STDEV.S</span></code>, <code class="docutils literal notranslate"><span class="pre">SKEW</span></code>, dan <code class="docutils literal notranslate"><span class="pre">KURT</span></code>) terbukti <strong>100% konsisten dan identik secara matematis</strong> dengan hasil ekstraksi pada perangkat lunak KNIME.</p>
+<p>Terdapat sedikit perbedaan jumlah angka di belakang koma (desimal) pada beberapa tampilan antarmuka. Hal ini semata-mata disebabkan oleh <strong>pembulatan tampilan (<em>cosmetic display rounding</em>)</strong> otomatis pada antarmuka GUI KNIME. Secara nilai komputasi dasar (<em>raw precision value</em>), kedua metode menghasilkan nilai presisi yang sepenuhnya sama.</p>
 </div></blockquote>
-<p>Berikut adalah tampilan lembar kerja perhitungan manual Excel untuk masing-masing parameter polutan (<span class="math notranslate nohighlight">\(\text{CH}_4\)</span>, <span class="math notranslate nohighlight">\(\text{CO}\)</span>, <span class="math notranslate nohighlight">\(\text{NO}_2\)</span>, dan <span class="math notranslate nohighlight">\(\text{SO}_2\)</span>):</p>
-<figure class="align-center" id="id7">
-<a class="reference internal image-reference" href="../_images/ch4_manual.png"><img alt="../_images/ch4_manual.png" src="../_images/ch4_manual.png" style="width: 100%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Perhitungan Manual Statistik Deskriptif Parameter <span class="math notranslate nohighlight">\(\text{CH}_4\)</span> pada Excel</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<figure class="align-center" id="id8">
-<a class="reference internal image-reference" href="../_images/co_manual.png"><img alt="../_images/co_manual.png" src="../_images/co_manual.png" style="width: 100%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Perhitungan Manual Statistik Deskriptif Parameter <span class="math notranslate nohighlight">\(\text{CO}\)</span> pada Excel</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<figure class="align-center" id="id9">
-<a class="reference internal image-reference" href="../_images/no2_manual.png"><img alt="../_images/no2_manual.png" src="../_images/no2_manual.png" style="width: 100%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Perhitungan Manual Statistik Deskriptif Parameter <span class="math notranslate nohighlight">\(\text{NO}_2\)</span> pada Excel</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<figure class="align-center" id="id10">
-<a class="reference internal image-reference" href="../_images/so2_manual.png"><img alt="../_images/so2_manual.png" src="../_images/so2_manual.png" style="width: 100%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Perhitungan Manual Statistik Deskriptif Parameter <span class="math notranslate nohighlight">\(\text{SO}_2\)</span> pada Excel</span><a class="headerlink" href="#id10" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 <hr class="docutils" />
 <section id="nilai-minimum-text-min">
 <h4>1. Nilai Minimum (<span class="math notranslate nohighlight">\(\text{Min}\)</span>)<a class="headerlink" href="#nilai-minimum-text-min" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Konsep</strong>: Menentukan nilai observasi terkecil dari kumpulan data terisi <span class="math notranslate nohighlight">\(X_1, X_2, \dots, X_N\)</span>:</p></li>
+<li><p><strong>Rumus Matematika</strong>:</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[\text{Min} = \min(X_1, X_2, \dots, X_N)\]</div>
+<ul class="simple">
+<li><p><strong>Perhitungan Hasil Data Valid</strong>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\text{CH}_4\)</span> (<span class="math notranslate nohighlight">\(N=20\)</span>): <span class="math notranslate nohighlight">\(\text{Min}_{\text{CH}_4} = \min(X_1, \dots, X_{20}) = 1,821.642090\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{CO}\)</span> (<span class="math notranslate nohighlight">\(N=192\)</span>): <span class="math notranslate nohighlight">\(\text{Min}_{\text{CO}} = \min(X_1, \dots, X_{192}) = 0.016968\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{NO}_2\)</span> (<span class="math notranslate nohighlight">\(N=200\)</span>): <span class="math notranslate nohighlight">\(\text{Min}_{\text{NO}_2} = \min(X_1, \dots, X_{200}) = -0.000002\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{SO}_2\)</span> (<span class="math notranslate nohighlight">\(N=235\)</span>): <span class="math notranslate nohighlight">\(\text{Min}_{\text{SO}_2} = \min(X_1, \dots, X_{235}) = -0.000720\)</span></p></li>
+</ul>
+</li>
+</ul>
 </section>
 <hr class="docutils" />
 <section id="nilai-maksimum-text-max">
 <h4>2. Nilai Maksimum (<span class="math notranslate nohighlight">\(\text{Max}\)</span>)<a class="headerlink" href="#nilai-maksimum-text-max" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Konsep</strong>: Menentukan nilai observasi terbesar dari kumpulan data terisi <span class="math notranslate nohighlight">\(X_1, X_2, \dots, X_N\)</span>:</p></li>
+<li><p><strong>Rumus Matematika</strong>:</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[\text{Max} = \max(X_1, X_2, \dots, X_N)\]</div>
+<ul class="simple">
+<li><p><strong>Perhitungan Hasil Data Valid</strong>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\text{CH}_4\)</span> (<span class="math notranslate nohighlight">\(N=20\)</span>): <span class="math notranslate nohighlight">\(\text{Max}_{\text{CH}_4} = \max(X_1, \dots, X_{20}) = 1,916.421265\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{CO}\)</span> (<span class="math notranslate nohighlight">\(N=192\)</span>): <span class="math notranslate nohighlight">\(\text{Max}_{\text{CO}} = \max(X_1, \dots, X_{192}) = 0.045237\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{NO}_2\)</span> (<span class="math notranslate nohighlight">\(N=200\)</span>): <span class="math notranslate nohighlight">\(\text{Max}_{\text{NO}_2} = \max(X_1, \dots, X_{200}) = 0.000289\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{SO}_2\)</span> (<span class="math notranslate nohighlight">\(N=235\)</span>): <span class="math notranslate nohighlight">\(\text{Max}_{\text{SO}_2} = \max(X_1, \dots, X_{235}) = 0.001380\)</span></p></li>
+</ul>
+</li>
+</ul>
 </section>
 <hr class="docutils" />
 <section id="nilai-rata-rata-mean-bar-x">
@@ -2030,12 +1870,26 @@ Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi st
 </ul>
 <div class="math notranslate nohighlight">
 \[\bar{X} = \frac{\text{Overall sum}}{N} = \frac{\sum_{i=1}^{N} X_i}{N}\]</div>
-<ul class="simple">
-<li><p><strong>Langkah Kerja Manual</strong>:</p>
-<ol class="arabic simple">
-<li><p>Hitung total penjumlahan seluruh nilai data observasi valid yang terisi (<span class="math notranslate nohighlight">\(\text{Overall sum} = \sum X_i = X_1 + X_2 + \dots + X_N\)</span>).</p></li>
-<li><p>Bagi nilai <span class="math notranslate nohighlight">\(\text{Overall sum}\)</span> tersebut dengan banyaknya jumlah data valid (<span class="math notranslate nohighlight">\(N\)</span>).</p></li>
-</ol>
+<ul>
+<li><p><strong>Perhitungan Hasil Data Valid</strong>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\text{CH}_4\)</span> (<span class="math notranslate nohighlight">\(N=20\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\bar{X}_{\text{CH}_4} = \frac{37,745.964540}{20} = 1,887.298227\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{CO}\)</span> (<span class="math notranslate nohighlight">\(N=192\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\bar{X}_{\text{CO}} = \frac{5.526912}{192} = 0.028786\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{NO}_2\)</span> (<span class="math notranslate nohighlight">\(N=200\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\bar{X}_{\text{NO}_2} = \frac{0.009800}{200} = 0.000049\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{SO}_2\)</span> (<span class="math notranslate nohighlight">\(N=235\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\bar{X}_{\text{SO}_2} = \frac{0.015745}{235} = 0.000067\]</div>
+</li>
+</ul>
 </li>
 </ul>
 </section>
@@ -2043,36 +1897,64 @@ Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi st
 <section id="nilai-tengah-median-me">
 <h4>4. Nilai Tengah (<em>Median</em> / <span class="math notranslate nohighlight">\(Me\)</span>)<a class="headerlink" href="#nilai-tengah-median-me" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Langkah Kerja Manual</strong>:</p>
-<ol class="arabic simple">
-<li><p>Urutkan seluruh data valid dari nilai terkecil ke nilai terbesar: <span class="math notranslate nohighlight">\(X_{(1)} \le X_{(2)} \le \dots \le X_{(N)}\)</span>.</p></li>
-<li><p>Jika jumlah data <span class="math notranslate nohighlight">\(N\)</span> ganjil, nilai median terletak tepat di posisi tengah:</p></li>
-</ol>
-</li>
+<li><p><strong>Rumus Matematika</strong>:</p></li>
 </ul>
 <div class="math notranslate nohighlight">
-\[Me = X_{\left(\frac{N+1}{2}\right)}\]</div>
-<ol class="arabic simple" start="3">
-<li><p>Jika jumlah data <span class="math notranslate nohighlight">\(N\)</span> genap, nilai median adalah rata-rata dari dua nilai di posisi tengah:</p></li>
-</ol>
+\[\begin{split}Me = \begin{cases} 
+X_{\left(\frac{N+1}{2}\right)}, &amp; \text{jika } N \text{ ganjil} \\
+\frac{X_{\left(\frac{N}{2}\right)} + X_{\left(\frac{N}{2} + 1\right)}}{2}, &amp; \text{jika } N \text{ genap}
+\end{cases}\end{split}\]</div>
+<ul>
+<li><p><strong>Perhitungan Hasil Data Valid</strong>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\text{CH}_4\)</span> (<span class="math notranslate nohighlight">\(N=20\)</span>, genap):</p>
 <div class="math notranslate nohighlight">
-\[Me = \frac{X_{\left(\frac{N}{2}\right)} + X_{\left(\frac{N}{2} + 1\right)}}{2}\]</div>
+\[Me_{\text{CH}_4} = \frac{X_{(10)} + X_{(11)}}{2} = \frac{1,889.378418 + 1,892.130249}{2} = 1,890.754333\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{CO}\)</span> (<span class="math notranslate nohighlight">\(N=192\)</span>, genap):</p>
+<div class="math notranslate nohighlight">
+\[Me_{\text{CO}} = \frac{X_{(96)} + X_{(97)}}{2} = \frac{0.028821 + 0.028893}{2} = 0.028857\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{NO}_2\)</span> (<span class="math notranslate nohighlight">\(N=200\)</span>, genap):</p>
+<div class="math notranslate nohighlight">
+\[Me_{\text{NO}_2} = \frac{X_{(100)} + X_{(101)}}{2} = 0.000040\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{SO}_2\)</span> (<span class="math notranslate nohighlight">\(N=235\)</span>, ganjil):</p>
+<div class="math notranslate nohighlight">
+\[Me_{\text{SO}_2} = X_{\left(\frac{235+1}{2}\right)} = X_{(118)} = 0.000048\]</div>
+</li>
+</ul>
+</li>
+</ul>
 </section>
 <hr class="docutils" />
 <section id="variansi-sampel-s-2">
 <h4>5. Variansi Sampel (<span class="math notranslate nohighlight">\(s^2\)</span>)<a class="headerlink" href="#variansi-sampel-s-2" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Rumus Variansi Sampel (<span class="math notranslate nohighlight">\(s^2\)</span>)</strong>:</p></li>
+<li><p><strong>Rumus Matematika</strong>:</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[s^2 = \frac{\sum_{i=1}^{N} (X_i - \bar{X})^2}{N - 1}\]</div>
-<ul class="simple">
-<li><p><strong>Langkah Kerja Manual</strong>:</p>
-<ol class="arabic simple">
-<li><p>Hitung selisih tiap nilai data dengan nilai rata-ratanya: <span class="math notranslate nohighlight">\((X_i - \bar{X})\)</span>.</p></li>
-<li><p>Kuadratkan masing-masing nilai selisih tersebut: <span class="math notranslate nohighlight">\((X_i - \bar{X})^2\)</span>.</p></li>
-<li><p>Jumlahkan seluruh hasil kuadrat selisih dan bagi dengan derajat kebebasan <span class="math notranslate nohighlight">\((N - 1)\)</span>.</p></li>
-</ol>
+<ul>
+<li><p><strong>Perhitungan Hasil Data Valid</strong>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\text{CH}_4\)</span> (<span class="math notranslate nohighlight">\(N=20\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[s^2_{\text{CH}_4} = \frac{11,640.597950}{20 - 1} = 612.663050\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{CO}\)</span> (<span class="math notranslate nohighlight">\(N=192\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[s^2_{\text{CO}} = \frac{0.003186}{192 - 1} = 1.6682 \times 10^{-5}\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{NO}_2\)</span> (<span class="math notranslate nohighlight">\(N=200\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[s^2_{\text{NO}_2} = \frac{2.3474 \times 10^{-7}}{200 - 1} = 1.1796 \times 10^{-9}\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{SO}_2\)</span> (<span class="math notranslate nohighlight">\(N=235\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[s^2_{\text{SO}_2} = \frac{1.3590 \times 10^{-5}}{235 - 1} = 5.8078 \times 10^{-8}\]</div>
+</li>
+</ul>
 </li>
 </ul>
 </section>
@@ -2080,15 +1962,18 @@ Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi st
 <section id="standar-deviasi-sampel-s">
 <h4>6. Standar Deviasi Sampel (<span class="math notranslate nohighlight">\(s\)</span>)<a class="headerlink" href="#standar-deviasi-sampel-s" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Rumus Standar Deviasi (<span class="math notranslate nohighlight">\(s\)</span>)</strong>:</p></li>
+<li><p><strong>Rumus Matematika</strong>:</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[s = \sqrt{s^2}\]</div>
 <ul class="simple">
-<li><p><strong>Langkah Kerja Manual</strong>:</p>
-<ol class="arabic simple">
-<li><p>Hitung akar kuadrat positif dari nilai variansi sampel (<span class="math notranslate nohighlight">\(s^2\)</span>) yang telah diperoleh pada langkah sebelumnya.</p></li>
-</ol>
+<li><p><strong>Perhitungan Hasil Data Valid</strong>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\text{CH}_4\)</span>: <span class="math notranslate nohighlight">\(s_{\text{CH}_4} = \sqrt{612.663050} = 24.752031\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{CO}\)</span>: <span class="math notranslate nohighlight">\(s_{\text{CO}} = \sqrt{1.6682 \times 10^{-5}} = 0.004084\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{NO}_2\)</span>: <span class="math notranslate nohighlight">\(s_{\text{NO}_2} = \sqrt{1.1796 \times 10^{-9}} = 0.000034\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{SO}_2\)</span>: <span class="math notranslate nohighlight">\(s_{\text{SO}_2} = \sqrt{5.8078 \times 10^{-8}} = 0.000241\)</span></p></li>
+</ul>
 </li>
 </ul>
 </section>
@@ -2096,17 +1981,18 @@ Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi st
 <section id="kemiringan-skewness-s-k">
 <h4>7. Kemiringan (<em>Skewness</em> / <span class="math notranslate nohighlight">\(S_k\)</span>)<a class="headerlink" href="#kemiringan-skewness-s-k" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Rumus Skewness Sampel (<span class="math notranslate nohighlight">\(S_k\)</span>)</strong> (Momen Ketiga):</p></li>
+<li><p><strong>Rumus Matematika</strong> (Momen Ketiga Sampel):</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[S_k = \frac{N}{(N-1)(N-2)} \sum_{i=1}^{N} \left( \frac{X_i - \bar{X}}{s} \right)^3\]</div>
 <ul class="simple">
-<li><p><strong>Langkah Kerja Manual</strong>:</p>
-<ol class="arabic simple">
-<li><p>Hitung nilai terstandarisasi (<em>z-score</em>) untuk tiap data: <span class="math notranslate nohighlight">\(Z_i = \frac{X_i - \bar{X}}{s}\)</span>.</p></li>
-<li><p>Pangkat-tigakan nilai <span class="math notranslate nohighlight">\(Z_i\)</span> tersebut: <span class="math notranslate nohighlight">\((Z_i)^3\)</span>.</p></li>
-<li><p>Jumlahkan seluruh hasil pangkat tiga dan kalikan dengan faktor koreksi sampel <span class="math notranslate nohighlight">\(\frac{N}{(N-1)(N-2)}\)</span>.</p></li>
-</ol>
+<li><p><strong>Perhitungan Hasil Data Valid</strong>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\text{CH}_4\)</span>: <span class="math notranslate nohighlight">\(S_{k,\text{CH}_4} = -1.1954\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{CO}\)</span>: <span class="math notranslate nohighlight">\(S_{k,\text{CO}} = +0.2253\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{NO}_2\)</span>: <span class="math notranslate nohighlight">\(S_{k,\text{NO}_2} = +2.9133\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{SO}_2\)</span>: <span class="math notranslate nohighlight">\(S_{k,\text{SO}_2} = +0.7711\)</span></p></li>
+</ul>
 </li>
 </ul>
 </section>
@@ -2114,39 +2000,49 @@ Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi st
 <section id="keruncingan-kurtosis-k">
 <h4>8. Keruncingan (<em>Kurtosis</em> / <span class="math notranslate nohighlight">\(K\)</span>)<a class="headerlink" href="#keruncingan-kurtosis-k" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Rumus Kurtosis Sampel (<span class="math notranslate nohighlight">\(K\)</span>)</strong> (Momen Keempat):</p></li>
+<li><p><strong>Rumus Matematika</strong> (Momen Keempat Sampel):</p></li>
 </ul>
 <div class="math notranslate nohighlight">
 \[K = \left[ \frac{N(N+1)}{(N-1)(N-2)(N-3)} \sum_{i=1}^{N} \left( \frac{X_i - \bar{X}}{s} \right)^4 \right] - \frac{3(N-1)^2}{(N-2)(N-3)}\]</div>
 <ul class="simple">
-<li><p><strong>Langkah Kerja Manual</strong>:</p>
-<ol class="arabic simple">
-<li><p>Pangkat-empatkan nilai <em>z-score</em> tiap data: <span class="math notranslate nohighlight">\((Z_i)^4\)</span>.</p></li>
-<li><p>Kalikan jumlah <span class="math notranslate nohighlight">\(\sum (Z_i)^4\)</span> dengan faktor bobot populasi sampel dan kurangi dengan faktor penyesuaian distribusi normal <span class="math notranslate nohighlight">\(3\)</span>.</p></li>
-</ol>
+<li><p><strong>Perhitungan Hasil Data Valid</strong>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\text{CH}_4\)</span>: <span class="math notranslate nohighlight">\(K_{\text{CH}_4} = +1.2495\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{CO}\)</span>: <span class="math notranslate nohighlight">\(K_{\text{CO}} = +2.0735\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{NO}_2\)</span>: <span class="math notranslate nohighlight">\(K_{\text{NO}_2} = +13.5417\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{SO}_2\)</span>: <span class="math notranslate nohighlight">\(K_{\text{SO}_2} = +3.6890\)</span></p></li>
+</ul>
 </li>
 </ul>
 </section>
 <hr class="docutils" />
-<section id="konstruksi-tabel-distribusi-frekuensi-grafik-histogram">
-<h4>9. Konstruksi Tabel Distribusi Frekuensi &amp; Grafik Histogram<a class="headerlink" href="#konstruksi-tabel-distribusi-frekuensi-grafik-histogram" title="Link to this heading">#</a></h4>
+<section id="aturan-sturges-lebar-kelas-interval-histogram">
+<h4>9. Aturan Sturges &amp; Lebar Kelas Interval Histogram<a class="headerlink" href="#aturan-sturges-lebar-kelas-interval-histogram" title="Link to this heading">#</a></h4>
 <ul class="simple">
-<li><p><strong>Penentuan Jumlah Kelas (<span class="math notranslate nohighlight">\(k\)</span>)</strong> (Menggunakan Aturan Sturges):</p></li>
+<li><p><strong>Rumus Jumlah Kelas Sturges (<span class="math notranslate nohighlight">\(k\)</span>) &amp; Lebar Kelas (<span class="math notranslate nohighlight">\(W\)</span>)</strong>:</p></li>
 </ul>
 <div class="math notranslate nohighlight">
-\[k = 1 + 3.322 \times \log_{10}(N)\]</div>
-<ul class="simple">
-<li><p><strong>Penentuan Lebar Interval Kelas (<span class="math notranslate nohighlight">\(W\)</span>)</strong>:</p></li>
-</ul>
+\[k = 1 + 3.322 \times \log_{10}(N), \quad W = \frac{\text{Max} - \text{Min}}{k}\]</div>
+<ul>
+<li><p><strong>Perhitungan Hasil Data Valid</strong>:</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(\text{CH}_4\)</span> (<span class="math notranslate nohighlight">\(N=20\)</span>):</p>
 <div class="math notranslate nohighlight">
-\[W = \frac{\text{Max} - \text{Min}}{k}\]</div>
-<ul class="simple">
-<li><p><strong>Langkah Konstruksi Histogram</strong>:</p>
-<ol class="arabic simple">
-<li><p>Tentukan batas bawah dan batas atas untuk setiap rentang interval kelas <span class="math notranslate nohighlight">\([L_j, U_j)\)</span> sebanyak <span class="math notranslate nohighlight">\(k\)</span> kelas.</p></li>
-<li><p>Hitung jumlah frekuensi observasi (<span class="math notranslate nohighlight">\(f_j\)</span>) yang jatuh pada masing-masing interval kelas.</p></li>
-<li><p>Petakan interval nilai data pada sumbu horizontal (X) dan nilai frekuensi <span class="math notranslate nohighlight">\(f_j\)</span> pada sumbu vertikal (Y) untuk membentuk grafik batang Histogram.</p></li>
-</ol>
+\[k = 1 + 3.322 \times \log_{10}(20) = 5.32 \approx 6, \quad W = \frac{1,916.421265 - 1,821.642090}{6} = 17.808867\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{CO}\)</span> (<span class="math notranslate nohighlight">\(N=192\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[k = 1 + 3.322 \times \log_{10}(192) = 8.59 \approx 9, \quad W = \frac{0.045237 - 0.016968}{9} = 0.003293\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{NO}_2\)</span> (<span class="math notranslate nohighlight">\(N=200\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[k = 1 + 3.322 \times \log_{10}(200) = 8.64 \approx 9, \quad W = \frac{0.000289 - (-0.000002)}{9} = 0.000034\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(\text{SO}_2\)</span> (<span class="math notranslate nohighlight">\(N=235\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[k = 1 + 3.322 \times \log_{10}(235) = 8.88 \approx 9, \quad W = \frac{0.001380 - (-0.000720)}{9} = 0.000237\]</div>
+</li>
+</ul>
 </li>
 </ul>
 </section>
@@ -2193,6 +2089,15 @@ Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi st
         <p class="prev-next-title">Business Understanding</p>
       </div>
     </a>
+    <a class="right-next"
+       href="data-preparation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data Preparation (Persiapan Data CO)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -2222,7 +2127,7 @@ Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi st
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#d-memuat-data-ch4">d. Memuat Data CH4</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definisi-aoi-polygon">1.5 Definisi AOI (Polygon)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definisi-aoi-polygon-terbaru">1.5 Definisi AOI (Polygon Terbaru)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agregasi-data">1.6 Agregasi Data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#menjalankan-batch-job">1.7 Menjalankan Batch Job</a></li>
 </ul>
@@ -2238,11 +2143,10 @@ Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi st
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identifikasi-kualitas-data">4. Identifikasi Kualitas Data</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-tools-orange-data-mining">4.1 Implementasi Tools Orange Data Mining</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.2 Missing Values</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.3 Outliers</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise">4.4 Noise</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-komparatif-4-polutan-style-copernicus">4.5 Visualisasi Komparatif 4 Polutan (Style Copernicus)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-values">4.1 Missing Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers">4.2 Outliers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise">4.3 Noise</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-komparatif-4-polutan-style-copernicus">4.4 Visualisasi Komparatif 4 Polutan (Style Copernicus)</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penjelasan-rinci-komponen-grafik">Penjelasan Rinci Komponen Grafik:</a></li>
 </ul>
 </li>
@@ -2261,7 +2165,7 @@ Perhitungan manual yang dilakukan pada lembar kerja Excel (menggunakan fungsi st
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#standar-deviasi-sampel-s">6. Standar Deviasi Sampel (<span class="math notranslate nohighlight">\(s\)</span>)</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#kemiringan-skewness-s-k">7. Kemiringan (<em>Skewness</em> / <span class="math notranslate nohighlight">\(S_k\)</span>)</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#keruncingan-kurtosis-k">8. Keruncingan (<em>Kurtosis</em> / <span class="math notranslate nohighlight">\(K\)</span>)</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#konstruksi-tabel-distribusi-frekuensi-grafik-histogram">9. Konstruksi Tabel Distribusi Frekuensi &amp; Grafik Histogram</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aturan-sturges-lebar-kelas-interval-histogram">9. Aturan Sturges &amp; Lebar Kelas Interval Histogram</a></li>
 </ul>
 </li>
 </ul>
