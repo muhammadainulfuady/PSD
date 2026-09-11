@@ -22,15 +22,15 @@ Data Understanding adalah tahap untuk **mengumpulkan**, **mengeksplorasi**, dan 
 
 Berikut adalah library Python beserta kegunaannya untuk mengerjakan proses data understanding ini:
 
-| Library        | Kegunaan                                                                                                                |
-| :------------- | :---------------------------------------------------------------------------------------------------------------------- |
-| `openeo`       | Menghubungkan dan memproses data satelit dari server openEO (Copernicus Data Space).                                    |
-| `netCDF4`      | Membaca file hasil batch job openEO berformat netCDF (`.nc`).                                                           |
-| `pandas`       | Membaca dan mengolah data tabular (CSV), serta manipulasi deret waktu (_time-series_).                                  |
-| `numpy`        | Komputasi numerik, misalnya perhitungan rata-rata, standar deviasi, dan statistik.                                      |
-| `matplotlib`   | Visualisasi grafik data komparatif dual X-axis 4 polutan.                                                               |
-| `scikit-learn` | Deteksi pencilan (_outlier detection_) menggunakan algoritma _Isolation Forest_.                                        |
-| `folium`       | Membuat visualisasi peta interaktif lokasi pengamatan (AOI Kabupaten Gresik).                                           |
+| Library        | Kegunaan                                                                               |
+| :------------- | :------------------------------------------------------------------------------------- |
+| `openeo`       | Menghubungkan dan memproses data satelit dari server openEO (Copernicus Data Space).   |
+| `netCDF4`      | Membaca file hasil batch job openEO berformat netCDF (`.nc`).                          |
+| `pandas`       | Membaca dan mengolah data tabular (CSV), serta manipulasi deret waktu (_time-series_). |
+| `numpy`        | Komputasi numerik, misalnya perhitungan rata-rata, standar deviasi, dan statistik.     |
+| `matplotlib`   | Visualisasi grafik data komparatif dual X-axis 4 polutan.                              |
+| `scikit-learn` | Deteksi pencilan (_outlier detection_) menggunakan algoritma _Isolation Forest_.       |
+| `folium`       | Membuat visualisasi peta interaktif lokasi pengamatan (AOI Kabupaten Gresik).          |
 
 Instalasi dapat dilakukan secara bersamaan:
 
@@ -89,7 +89,7 @@ Polygon Area of Interest (AOI) di Kabupaten Gresik yang digambar pada peta geojs
 
 **Penjelasan koordinat (BBOX Terbaru):**
 
-Setiap titik pada polygon memiliki format `[longitude (bujur), latitude (lintang)]`. Dari polygon tersebut, kita memperoleh *Bounding Box*:
+Setiap titik pada polygon memiliki format `[longitude (bujur), latitude (lintang)]`. Dari polygon tersebut, kita memperoleh _Bounding Box_:
 
 | Atribut | Nilai       | Keterangan                       |
 | ------- | ----------- | -------------------------------- |
@@ -102,7 +102,7 @@ Setiap titik pada polygon memiliki format `[longitude (bujur), latitude (lintang
 
 ### 1.4 Memuat Data (Load Collection)
 
-Data dimuat untuk masing-masing polutan menggunakan rentang koordinat *Bounding Box* terbaru. Proses pemrosesan ini digabungkan secara praktis di dalam notebook `crawling-polutan.ipynb`.
+Data dimuat untuk masing-masing polutan menggunakan rentang koordinat _Bounding Box_ terbaru. Proses pemrosesan ini digabungkan secara praktis di dalam notebook `crawling-polutan.ipynb`.
 
 #### a. Memuat Data NO2
 
@@ -572,11 +572,6 @@ print(f"Koefisien Variasi (CV) SO2 : {cv_val:.2f}%")
 
 Untuk membandingkan tren perubahan konsentrasi ke-4 polutan (CH4, CO, NO2, SO2) secara bersamaan sepanjang periode pengamatan di Kabupaten Gresik, dibuat visualisasi **Dual X-Axis Line Plot** dengan gaya visualisasi Copernicus Sentinel-5P.
 
-```{figure} ../assets/editor/copernicus_4polutan_dual_axis.png
-:width: 100%
-:align: center
-```
-
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
@@ -693,8 +688,8 @@ Konfigurasi Service Cloud Database PostgreSQL pada Console Aiven
 **DBeaver** digunakan sebagai _Database Management Tool (GUI Client)_ untuk mengelola struktur tabel relasional dan menguji koneksi jaringan ke cloud Aiven:
 
 1. Membuat koneksi baru (_New Database Connection_) berjenis PostgreSQL di DBeaver menggunakan Host, Port, dan kredensial Aiven.
-2. Mengimpor dataset `polutan_gresik.csv` ke dalam tabel relasional PostgreSQL bernama `polutan_gresik`.
-3. Menjalankan _SQL Query_ `SELECT * FROM polutan_gresik;` untuk memastikan data terstruktur dengan benar di dalam _cloud database_.
+2. Mengimpor dataset `csv` 4 polutan ke dalam tabel relasional PostgreSQL bernama `polutan_gresik`.
+3. Menjalankan _SQL Query_ `SELECT * FROM table_polutan_gresik;` untuk memastikan data terstruktur dengan benar di dalam _cloud database_.
 
 ```{figure} ../assets/editor/dbeaver/select-tabel.png
 :width: 100%
@@ -726,7 +721,7 @@ Alur Kerja (Workflow Pipeline) Ekstraksi Data PostgreSQL pada KNIME
 
 ### 5.4 Perhitungan Manual Statistik Deskriptif (Rumus & Langkah Kerja)
 
-Sub-bab ini menyediakan rincian perhitungan statistik secara manual menggunakan rumus LaTeX matematis dari nilai minimum hingga konstruksi grafik histogram. **Seluruh kalkulasi dihitung eksklusif hanya pada populasi data valid ($N$) setelah membuang nilai kosong (*missing values* / `NaN`)** dari file CSV pengamatan (`polutan_gresik.csv`).
+Sub-bab ini menyediakan rincian perhitungan statistik secara manual menggunakan rumus LaTeX matematis dari nilai minimum hingga konstruksi grafik histogram. **Seluruh kalkulasi dihitung eksklusif hanya pada populasi data valid ($N$) setelah membuang nilai kosong (_missing values_ / `NaN`)** dari file CSV pengamatan (`polutan_gresik.csv`).
 
 Untuk memverifikasi kebenaran formula, dilakukan pengujian komparasi antara kalkulasi matematis manual dengan hasil ekstraksi otomatis dari node **Statistics** pada **KNIME Analytics Platform**:
 
@@ -739,9 +734,9 @@ Ringkasan Statistik Deskriptif dan Visualisasi Histogram Seluruh Atribut Polutan
 
 > [!NOTE]
 > **Catatan Pembuktian & Konsistensi Perhitungan**:
-> Perhitungan manual yang dilakukan pada lembar kerja (menggunakan fungsi statistik standar `MIN`, `MAX`, `AVERAGE`, `MEDIAN`, `VAR.S`, `STDEV.S`, `SKEW`, dan `KURT`) terbukti **100% konsisten dan identik secara matematis** dengan hasil ekstraksi pada perangkat lunak KNIME. 
-> 
-> Terdapat sedikit perbedaan jumlah angka di belakang koma (desimal) pada beberapa tampilan antarmuka. Hal ini semata-mata disebabkan oleh **pembulatan tampilan (*cosmetic display rounding*)** otomatis pada antarmuka GUI KNIME. Secara nilai komputasi dasar (*raw precision value*), kedua metode menghasilkan nilai presisi yang sepenuhnya sama.
+> Perhitungan manual yang dilakukan pada lembar kerja (menggunakan fungsi statistik standar `MIN`, `MAX`, `AVERAGE`, `MEDIAN`, `VAR.S`, `STDEV.S`, `SKEW`, dan `KURT`) terbukti **100% konsisten dan identik secara matematis** dengan hasil ekstraksi pada perangkat lunak KNIME.
+>
+> Terdapat sedikit perbedaan jumlah angka di belakang koma (desimal) pada beberapa tampilan antarmuka. Hal ini semata-mata disebabkan oleh **pembulatan tampilan (_cosmetic display rounding_)** otomatis pada antarmuka GUI KNIME. Secara nilai komputasi dasar (_raw precision value_), kedua metode menghasilkan nilai presisi yang sepenuhnya sama.
 
 ---
 
@@ -810,7 +805,7 @@ Ringkasan Statistik Deskriptif dan Visualisasi Histogram Seluruh Atribut Polutan
 - **Rumus Matematika**:
 
 ```{math}
-Me = \begin{cases} 
+Me = \begin{cases}
 X_{\left(\frac{N+1}{2}\right)}, & \text{jika } N \text{ ganjil} \\
 \frac{X_{\left(\frac{N}{2}\right)} + X_{\left(\frac{N}{2} + 1\right)}}{2}, & \text{jika } N \text{ genap}
 \end{cases}
