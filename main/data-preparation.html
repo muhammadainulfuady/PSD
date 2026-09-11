@@ -328,24 +328,20 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-teknik-imputasi">1. Penanganan Missing Values (Teknik Imputasi)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang-kebutuhan-imputasi">1.1 Latar Belakang &amp; Kebutuhan Imputasi</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-mekanisme-interpolasi-linear">1.2 Formula &amp; Mekanisme Interpolasi Linear</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-outliers">1. Penanganan Missing Values &amp; Outliers</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang-pendekatan-data-cleaning">1.1 Latar Belakang &amp; Pendekatan Data Cleaning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier-berbasis-interquartile-range-iqr">1.2 Deteksi Outlier Berbasis Interquartile Range (IQR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-mekanisme-interpolasi-linear">1.3 Formula &amp; Mekanisme Interpolasi Linear</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-perbaikan-outlier-outlier-treatment">2. Deteksi &amp; Perbaikan Outlier (Outlier Treatment)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier-berbasis-interquartile-range-iqr">2.1 Deteksi Outlier Berbasis Interquartile Range (IQR)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perbaikan-outlier-teknik-winsorizing-clipping">2.2 Perbaikan Outlier (Teknik Winsorizing / Clipping)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-tsfel-time-series-feature-extraction-library">2. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-rekayasa-fitur-time-series">2.1 Konsep Rekayasa Fitur Time Series</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-tsfel-time-series-feature-extraction-library">3. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-rekayasa-fitur-time-series">3.1 Konsep Rekayasa Fitur Time Series</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68">4. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-20">4.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-21-hingga-f-41">4.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-42-hingga-f-68">4.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68">3. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-20">3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-21-hingga-f-41">3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-42-hingga-f-68">3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
 </ul>
 </li>
 </ul>
@@ -361,35 +357,25 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="data-preparation">
 <h1>Data Preparation<a class="headerlink" href="#data-preparation" title="Link to this heading">#</a></h1>
-<p>Data Preparation adalah tahap ketiga dalam metodologi CRISP-DM yang bertujuan untuk <strong>membersihkan</strong>, <strong>mengimputasi nilai kosong (<em>missing values</em>)</strong>, <strong>menangani pencilan (<em>outliers</em>)</strong>, dan <strong>merekayasa fitur (<em>feature engineering</em>)</strong> dari deret waktu pengamatan kualitas udara polutan <strong>Karbon Monoksida (<span class="math notranslate nohighlight">\(\text{CO}\)</span>)</strong> pada skala geografis <strong>Tingkat Kecamatan (Kecamatan Bungah)</strong>.</p>
+<p>Data Preparation adalah tahap ketiga dalam metodologi CRISP-DM yang bertujuan untuk <strong>membersihkan</strong>, <strong>mengimputasi nilai kosong (<em>missing values</em>)</strong>, <strong>menangani pencilan (<em>outliers</em>)</strong>, dan <strong>merekayasa fitur (<em>feature engineering</em>)</strong> dari deret waktu pengamatan kualitas udara polutan <strong>Karbon Monoksida (<span class="math notranslate nohighlight">\(\text{CO}\)</span>)</strong> pada skala geografis <strong>Tingkat Kecamatan (Kecamatan Bungah)</strong> selama 365 hari (24 Agustus 2025 – 23 Agustus 2026).</p>
 <hr class="docutils" />
-<section id="penanganan-missing-values-teknik-imputasi">
-<h2>1. Penanganan Missing Values (Teknik Imputasi)<a class="headerlink" href="#penanganan-missing-values-teknik-imputasi" title="Link to this heading">#</a></h2>
-<section id="latar-belakang-kebutuhan-imputasi">
-<h3>1.1 Latar Belakang &amp; Kebutuhan Imputasi<a class="headerlink" href="#latar-belakang-kebutuhan-imputasi" title="Link to this heading">#</a></h3>
-<p>Data pengamatan satelit Sentinel-5P dari Copernicus Data Space untuk polutan <span class="math notranslate nohighlight">\(\text{CO}\)</span> harian selama 365 hari (24 Agustus 2025 – 24 Agustus 2026) memiliki celah data (<em>missing values</em> / <code class="docutils literal notranslate"><span class="pre">NaN</span></code>) yang disebabkan oleh tutupan awan tebal, kendala jadwal orbit satelit, dan penyaringan validasi kualitas (<em>quality flag</em>).</p>
-<p>Untuk keperluan analisis deret waktu (<em>time-series analysis</em>) dan ekstraksi fitur TSFEL yang membutuhkan sinyal kontinu kontigu tanpa celah, dilakukan <strong>imputasi deret waktu</strong> menggunakan metode <strong>Linear Time Interpolation</strong>.</p>
-</section>
-<section id="formula-mekanisme-interpolasi-linear">
-<h3>1.2 Formula &amp; Mekanisme Interpolasi Linear<a class="headerlink" href="#formula-mekanisme-interpolasi-linear" title="Link to this heading">#</a></h3>
-<p>Interpolasi linear mengisi nilai sel kosong <span class="math notranslate nohighlight">\(X(t)\)</span> pada tanggal <span class="math notranslate nohighlight">\(t\)</span> yang berada di antara dua titik observasi valid terdekat <span class="math notranslate nohighlight">\(X(t_1)\)</span> dan <span class="math notranslate nohighlight">\(X(t_2)\)</span> dengan <span class="math notranslate nohighlight">\(t_1 &lt; t &lt; t_2\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[X(t) = X(t_1) + \frac{t - t_1}{t_2 - t_1} \cdot \left[ X(t_2) - X(t_1) \right]\]</div>
-<p><strong>Langkah Kerja Imputasi:</strong></p>
+<section id="penanganan-missing-values-outliers">
+<h2>1. Penanganan Missing Values &amp; Outliers<a class="headerlink" href="#penanganan-missing-values-outliers" title="Link to this heading">#</a></h2>
+<section id="latar-belakang-pendekatan-data-cleaning">
+<h3>1.1 Latar Belakang &amp; Pendekatan Data Cleaning<a class="headerlink" href="#latar-belakang-pendekatan-data-cleaning" title="Link to this heading">#</a></h3>
+<p>Data pengamatan satelit Sentinel-5P dari Copernicus Data Space untuk polutan <span class="math notranslate nohighlight">\(\text{CO}\)</span> harian memiliki celah data (<em>missing values</em> / <code class="docutils literal notranslate"><span class="pre">NaN</span></code>) akibat tutupan awan tebal dan penyaringan validasi kualitas (<em>quality flag</em>). Selain itu, terdapat pula beberapa titik data pengamatan yang nilainya melonjak ekstrem (<em>outlier</em>) di luar batas wajar akibat interferensi cuaca lokal.</p>
+<p>Untuk menghasilkan sinyal deret waktu yang mulus, mulus, dan kontinu 365 hari tanpa pencilan ekstrem maupun celah kosong, digunakan alur <strong>Data Cleaning Terpadu</strong>:</p>
 <ol class="arabic simple">
-<li><p>Mengurutkan data observasi secara kronologis berdasarkan kolom tanggal <code class="docutils literal notranslate"><span class="pre">date</span></code>.</p></li>
-<li><p>Mengidentifikasi seluruh tanggal yang bernilai <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.</p></li>
-<li><p>Menghitung kemiringan gradien linier antara nilai sebelum dan sesudah celah data.</p></li>
-<li><p>Mengisi seluruh nilai celah deret waktu sehingga diperoleh 365 data kontinu tanpa <em>missing value</em>.</p></li>
+<li><p><strong>Pemeriksaan Data Mentah</strong>: Mengidentifikasi 173 hari data kosong (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>) awal.</p></li>
+<li><p><strong>Deteksi Outlier</strong>: Menghitung batas Interquartile Range (IQR) pada data valid untuk mendeteksi 11 titik pencilan ekstrem.</p></li>
+<li><p><strong>Pengosongan Outlier</strong>: Menghapus/mengosongkan nilai 11 tanggal pencilan tersebut menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (total missing values menjadi 184 hari).</p></li>
+<li><p><strong>Imputasi Linear Sekaligus</strong>: Melakukan <strong>Linear Time Interpolation</strong> secara bersamaan untuk 184 titik <code class="docutils literal notranslate"><span class="pre">NaN</span></code> sehingga diperoleh sinyal kontinu mulus 365 hari tanpa celah.</p></li>
 </ol>
 </section>
-</section>
 <hr class="docutils" />
-<section id="deteksi-perbaikan-outlier-outlier-treatment">
-<h2>2. Deteksi &amp; Perbaikan Outlier (Outlier Treatment)<a class="headerlink" href="#deteksi-perbaikan-outlier-outlier-treatment" title="Link to this heading">#</a></h2>
 <section id="deteksi-outlier-berbasis-interquartile-range-iqr">
-<h3>2.1 Deteksi Outlier Berbasis Interquartile Range (IQR)<a class="headerlink" href="#deteksi-outlier-berbasis-interquartile-range-iqr" title="Link to this heading">#</a></h3>
-<p>Setelah seluruh baris data terisi melalui imputasi, dilakukan pemeriksaan titik pencilan (<em>outliers</em>) untuk memastikan fluktuasi ekstrem tidak merusak representasi statistik sinyal. Metode <strong>Interquartile Range (IQR)</strong> digunakan untuk menentukan batas wajar observasi:</p>
+<h3>1.2 Deteksi Outlier Berbasis Interquartile Range (IQR)<a class="headerlink" href="#deteksi-outlier-berbasis-interquartile-range-iqr" title="Link to this heading">#</a></h3>
+<p>Metode <strong>Interquartile Range (IQR)</strong> digunakan untuk menentukan batas wajar observasi:</p>
 <ol class="arabic simple">
 <li><p><strong>Kuartil Pertama (<span class="math notranslate nohighlight">\(Q_1\)</span>)</strong>: Persentil ke-25 data terurut.</p></li>
 <li><p><strong>Kuartil Ketiga (<span class="math notranslate nohighlight">\(Q_3\)</span>)</strong>: Persentil ke-75 data terurut.</p></li>
@@ -405,24 +391,34 @@ document.write(`
 <p>Titik data <span class="math notranslate nohighlight">\(X_i\)</span> dikategorikan sebagai <strong>Outlier</strong> jika:</p>
 <div class="math notranslate nohighlight">
 \[X_i &lt; \text{Batas Bawah} \quad \text{atau} \quad X_i &gt; \text{Batas Atas}\]</div>
-</section>
-<section id="perbaikan-outlier-teknik-winsorizing-clipping">
-<h3>2.2 Perbaikan Outlier (Teknik Winsorizing / Clipping)<a class="headerlink" href="#perbaikan-outlier-teknik-winsorizing-clipping" title="Link to this heading">#</a></h3>
-<p>Outlier yang terdeteksi tidak dibuang (untuk mempertahankan kontinuitas 365 hari), melainkan diperbaiki menggunakan teknik <strong>IQR Clipping (Winsorizing)</strong>. Nilai di luar batas wajar disesuaikan secara proporsional:</p>
+<p>Nilai <span class="math notranslate nohighlight">\(X_i\)</span> yang terdeteksi sebagai outlier dihapus/dikosongkan menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code>:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}X_{\text{clean}, i} = \begin{cases}
-\text{Batas Bawah}, &amp; \text{jika } X_i &lt; \text{Batas Bawah} \\
-\text{Batas Atas}, &amp; \text{jika } X_i &gt; \text{Batas Atas} \\
-X_i, &amp; \text{jika } \text{Batas Bawah} \le X_i \le \text{Batas Atas}
+\[\begin{split}X_{\text{temp}, i} = \begin{cases}
+\text{NaN}, &amp; \text{jika } X_i &lt; \text{Batas Bawah} \text{ atau } X_i &gt; \text{Batas Atas} \\
+X_i, &amp; \text{lainnya}
 \end{cases}\end{split}\]</div>
+</section>
+<hr class="docutils" />
+<section id="formula-mekanisme-interpolasi-linear">
+<h3>1.3 Formula &amp; Mekanisme Interpolasi Linear<a class="headerlink" href="#formula-mekanisme-interpolasi-linear" title="Link to this heading">#</a></h3>
+<p>Setelah titik pencilan dikosongkan menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> bersama celah data mentah, dilakukan <strong>Linear Time Interpolation</strong>.</p>
+<p>Interpolasi linear mengestimasi nilai sel kosong <span class="math notranslate nohighlight">\(X(t)\)</span> pada tanggal <span class="math notranslate nohighlight">\(t\)</span> yang berada di antara dua titik observasi valid terdekat <span class="math notranslate nohighlight">\(X(t_1)\)</span> dan <span class="math notranslate nohighlight">\(X(t_2)\)</span> dengan <span class="math notranslate nohighlight">\(t_1 &lt; t &lt; t_2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[X(t) = X(t_1) + \frac{t - t_1}{t_2 - t_1} \cdot \left[ X(t_2) - X(t_1) \right]\]</div>
+<p><strong>Langkah Kerja Imputasi:</strong></p>
+<ol class="arabic simple">
+<li><p>Mengurutkan data observasi secara kronologis berdasarkan kolom tanggal <code class="docutils literal notranslate"><span class="pre">date</span></code>.</p></li>
+<li><p>Mengisi seluruh nilai celah deret waktu (184 hari <code class="docutils literal notranslate"><span class="pre">NaN</span></code>) sehingga diperoleh 365 data kontinu tanpa <em>missing value</em>.</p></li>
+<li><p>Menyimpan hasil sinyal bersih ke file CSV baru <strong><code class="docutils literal notranslate"><span class="pre">data/csv/CO_clean.csv</span></code></strong>.</p></li>
+</ol>
 </section>
 </section>
 <hr class="docutils" />
 <section id="ekstraksi-fitur-tsfel-time-series-feature-extraction-library">
-<h2>3. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)<a class="headerlink" href="#ekstraksi-fitur-tsfel-time-series-feature-extraction-library" title="Link to this heading">#</a></h2>
+<h2>2. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)<a class="headerlink" href="#ekstraksi-fitur-tsfel-time-series-feature-extraction-library" title="Link to this heading">#</a></h2>
 <section id="konsep-rekayasa-fitur-time-series">
-<h3>3.1 Konsep Rekayasa Fitur Time Series<a class="headerlink" href="#konsep-rekayasa-fitur-time-series" title="Link to this heading">#</a></h3>
-<p>Untuk merepresentasikan karakteristik dinamika sinyal konsentrasi <span class="math notranslate nohighlight">\(\text{CO}\)</span> selama 365 hari dalam bentuk vektor numerik yang siap diproses oleh algoritma <em>Machine Learning</em>, digunakan pustaka <strong>TSFEL (Time Series Feature Extraction Library)</strong> mengacu pada dokumentasi resmi <a class="reference external" href="https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html">TSFEL Feature List Documentation</a>.</p>
+<h3>2.1 Konsep Rekayasa Fitur Time Series<a class="headerlink" href="#konsep-rekayasa-fitur-time-series" title="Link to this heading">#</a></h3>
+<p>Untuk merepresentasikan karakteristik dinamika sinyal konsentrasi <span class="math notranslate nohighlight">\(\text{CO}\)</span> selama 365 hari dalam bentuk vektor numerik yang siap diproses oleh algoritma <em>Machine Learning</em> dan analisis kemiripan (<em>similarity analysis</em>), digunakan pustaka <strong>TSFEL (Time Series Feature Extraction Library)</strong> mengacu pada dokumentasi resmi <a class="reference external" href="https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html">TSFEL Feature List Documentation</a>.</p>
 <p>TSFEL mengekstrak <strong>68 fitur perwakilan</strong> (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>) yang terbagi ke dalam 3 domain utama:</p>
 <ol class="arabic simple">
 <li><p><strong>Domain Statistik (<span class="math notranslate nohighlight">\(f_1 \dots f_{20}\)</span>)</strong>: Mengukur karakteristik pemusatan, sebaran, kemiringan, dan distribusi probabilitas sinyal.</p></li>
@@ -433,10 +429,10 @@ X_i, &amp; \text{jika } \text{Batas Bawah} \le X_i \le \text{Batas Atas}
 </section>
 <hr class="docutils" />
 <section id="katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68">
-<h2>4. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68" title="Link to this heading">#</a></h2>
+<h2>3. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68" title="Link to this heading">#</a></h2>
 <p>Berikut adalah penomoran urut fitur <span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span> beserta fungsi resmi TSFEL, definisi, dan formula matematikalnya:</p>
 <section id="domain-statistik-f-1-hingga-f-20">
-<h3>4.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)<a class="headerlink" href="#domain-statistik-f-1-hingga-f-20" title="Link to this heading">#</a></h3>
+<h3>3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)<a class="headerlink" href="#domain-statistik-f-1-hingga-f-20" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
@@ -552,7 +548,7 @@ X_i, &amp; \text{jika } \text{Batas Bawah} \le X_i \le \text{Batas Atas}
 </section>
 <hr class="docutils" />
 <section id="domain-temporal-f-21-hingga-f-41">
-<h3>4.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)<a class="headerlink" href="#domain-temporal-f-21-hingga-f-41" title="Link to this heading">#</a></h3>
+<h3>3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)<a class="headerlink" href="#domain-temporal-f-21-hingga-f-41" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
@@ -673,7 +669,7 @@ X_i, &amp; \text{jika } \text{Batas Bawah} \le X_i \le \text{Batas Atas}
 </section>
 <hr class="docutils" />
 <section id="domain-spektral-f-42-hingga-f-68">
-<h3>4.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#domain-spektral-f-42-hingga-f-68" title="Link to this heading">#</a></h3>
+<h3>3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#domain-spektral-f-42-hingga-f-68" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
@@ -886,24 +882,20 @@ Penomoran urut kode <span class="math notranslate nohighlight">\(f_1\)</span> hi
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-teknik-imputasi">1. Penanganan Missing Values (Teknik Imputasi)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang-kebutuhan-imputasi">1.1 Latar Belakang &amp; Kebutuhan Imputasi</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-mekanisme-interpolasi-linear">1.2 Formula &amp; Mekanisme Interpolasi Linear</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-outliers">1. Penanganan Missing Values &amp; Outliers</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang-pendekatan-data-cleaning">1.1 Latar Belakang &amp; Pendekatan Data Cleaning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier-berbasis-interquartile-range-iqr">1.2 Deteksi Outlier Berbasis Interquartile Range (IQR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-mekanisme-interpolasi-linear">1.3 Formula &amp; Mekanisme Interpolasi Linear</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-perbaikan-outlier-outlier-treatment">2. Deteksi &amp; Perbaikan Outlier (Outlier Treatment)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier-berbasis-interquartile-range-iqr">2.1 Deteksi Outlier Berbasis Interquartile Range (IQR)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perbaikan-outlier-teknik-winsorizing-clipping">2.2 Perbaikan Outlier (Teknik Winsorizing / Clipping)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-tsfel-time-series-feature-extraction-library">2. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-rekayasa-fitur-time-series">2.1 Konsep Rekayasa Fitur Time Series</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-tsfel-time-series-feature-extraction-library">3. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-rekayasa-fitur-time-series">3.1 Konsep Rekayasa Fitur Time Series</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68">4. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-20">4.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-21-hingga-f-41">4.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-42-hingga-f-68">4.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68">3. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-20">3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-21-hingga-f-41">3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-42-hingga-f-68">3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
 </ul>
 </li>
 </ul>
