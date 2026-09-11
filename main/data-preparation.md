@@ -14,39 +14,26 @@ kernelspec:
 
 # Data Preparation
 
-Data Preparation adalah tahap ketiga dalam metodologi CRISP-DM yang bertujuan untuk **membersihkan**, **mengimputasi nilai kosong (*missing values*)**, **menangani pencilan (*outliers*)**, dan **merekayasa fitur (*feature engineering*)** dari deret waktu pengamatan kualitas udara polutan **Karbon Monoksida ($\text{CO}$)** pada skala geografis **Tingkat Kecamatan (Kecamatan Bungah)**.
+Data Preparation adalah tahap ketiga dalam metodologi CRISP-DM yang bertujuan untuk **membersihkan**, **mengimputasi nilai kosong (*missing values*)**, **menangani pencilan (*outliers*)**, dan **merekayasa fitur (*feature engineering*)** dari deret waktu pengamatan kualitas udara polutan **Karbon Monoksida ($\text{CO}$)** pada skala geografis **Tingkat Kecamatan (Kecamatan Bungah)** selama 365 hari (24 Agustus 2025 – 23 Agustus 2026).
 
 ---
 
-## 1. Penanganan Missing Values (Teknik Imputasi)
+## 1. Penanganan Missing Values & Outliers
 
-### 1.1 Latar Belakang & Kebutuhan Imputasi
+### 1.1 Latar Belakang & Pendekatan Data Cleaning
+Data pengamatan satelit Sentinel-5P dari Copernicus Data Space untuk polutan $\text{CO}$ harian memiliki celah data (*missing values* / `NaN`) akibat tutupan awan tebal dan penyaringan validasi kualitas (*quality flag*). Selain itu, terdapat pula beberapa titik data pengamatan yang nilainya melonjak ekstrem (*outlier*) di luar batas wajar akibat interferensi cuaca lokal.
 
-Data pengamatan satelit Sentinel-5P dari Copernicus Data Space untuk polutan $\text{CO}$ harian selama 365 hari (24 Agustus 2025 – 24 Agustus 2026) memiliki celah data (*missing values* / `NaN`) yang disebabkan oleh tutupan awan tebal, kendala jadwal orbit satelit, dan penyaringan validasi kualitas (*quality flag*).
-
-Untuk keperluan analisis deret waktu (*time-series analysis*) dan ekstraksi fitur TSFEL yang membutuhkan sinyal kontinu kontigu tanpa celah, dilakukan **imputasi deret waktu** menggunakan metode **Linear Time Interpolation**.
-
-### 1.2 Formula & Mekanisme Interpolasi Linear
-
-Interpolasi linear mengisi nilai sel kosong $X(t)$ pada tanggal $t$ yang berada di antara dua titik observasi valid terdekat $X(t_1)$ dan $X(t_2)$ dengan $t_1 < t < t_2$:
-
-```{math}
-X(t) = X(t_1) + \frac{t - t_1}{t_2 - t_1} \cdot \left[ X(t_2) - X(t_1) \right]
-```
-
-**Langkah Kerja Imputasi:**
-1. Mengurutkan data observasi secara kronologis berdasarkan kolom tanggal `date`.
-2. Mengidentifikasi seluruh tanggal yang bernilai `NaN`.
-3. Menghitung kemiringan gradien linier antara nilai sebelum dan sesudah celah data.
-4. Mengisi seluruh nilai celah deret waktu sehingga diperoleh 365 data kontinu tanpa *missing value*.
+Untuk menghasilkan sinyal deret waktu yang mulus, mulus, dan kontinu 365 hari tanpa pencilan ekstrem maupun celah kosong, digunakan alur **Data Cleaning Terpadu**:
+1. **Pemeriksaan Data Mentah**: Mengidentifikasi 173 hari data kosong (`NaN`) awal.
+2. **Deteksi Outlier**: Menghitung batas Interquartile Range (IQR) pada data valid untuk mendeteksi 11 titik pencilan ekstrem.
+3. **Pengosongan Outlier**: Menghapus/mengosongkan nilai 11 tanggal pencilan tersebut menjadi `NaN` (total missing values menjadi 184 hari).
+4. **Imputasi Linear Sekaligus**: Melakukan **Linear Time Interpolation** secara bersamaan untuk 184 titik `NaN` sehingga diperoleh sinyal kontinu mulus 365 hari tanpa celah.
 
 ---
 
-## 2. Deteksi & Perbaikan Outlier (Outlier Treatment)
+### 1.2 Deteksi Outlier Berbasis Interquartile Range (IQR)
 
-### 2.1 Deteksi Outlier Berbasis Interquartile Range (IQR)
-
-Setelah seluruh baris data terisi melalui imputasi, dilakukan pemeriksaan titik pencilan (*outliers*) untuk memastikan fluktuasi ekstrem tidak merusak representasi statistik sinyal. Metode **Interquartile Range (IQR)** digunakan untuk menentukan batas wajar observasi:
+Metode **Interquartile Range (IQR)** digunakan untuk menentukan batas wajar observasi:
 
 1. **Kuartil Pertama ($Q_1$)**: Persentil ke-25 data terurut.
 2. **Kuartil Ketiga ($Q_3$)**: Persentil ke-75 data terurut.
@@ -72,25 +59,39 @@ Titik data $X_i$ dikategorikan sebagai **Outlier** jika:
 X_i < \text{Batas Bawah} \quad \text{atau} \quad X_i > \text{Batas Atas}
 ```
 
-### 2.2 Perbaikan Outlier (Teknik Winsorizing / Clipping)
-
-Outlier yang terdeteksi tidak dibuang (untuk mempertahankan kontinuitas 365 hari), melainkan diperbaiki menggunakan teknik **IQR Clipping (Winsorizing)**. Nilai di luar batas wajar disesuaikan secara proporsional:
+Nilai $X_i$ yang terdeteksi sebagai outlier dihapus/dikosongkan menjadi `NaN`:
 
 ```{math}
-X_{\text{clean}, i} = \begin{cases}
-\text{Batas Bawah}, & \text{jika } X_i < \text{Batas Bawah} \\
-\text{Batas Atas}, & \text{jika } X_i > \text{Batas Atas} \\
-X_i, & \text{jika } \text{Batas Bawah} \le X_i \le \text{Batas Atas}
+X_{\text{temp}, i} = \begin{cases}
+\text{NaN}, & \text{jika } X_i < \text{Batas Bawah} \text{ atau } X_i > \text{Batas Atas} \\
+X_i, & \text{lainnya}
 \end{cases}
 ```
 
 ---
 
-## 3. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)
+### 1.3 Formula & Mekanisme Interpolasi Linear
 
-### 3.1 Konsep Rekayasa Fitur Time Series
+Setelah titik pencilan dikosongkan menjadi `NaN` bersama celah data mentah, dilakukan **Linear Time Interpolation**.
 
-Untuk merepresentasikan karakteristik dinamika sinyal konsentrasi $\text{CO}$ selama 365 hari dalam bentuk vektor numerik yang siap diproses oleh algoritma *Machine Learning*, digunakan pustaka **TSFEL (Time Series Feature Extraction Library)** mengacu pada dokumentasi resmi [TSFEL Feature List Documentation](https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html).
+Interpolasi linear mengestimasi nilai sel kosong $X(t)$ pada tanggal $t$ yang berada di antara dua titik observasi valid terdekat $X(t_1)$ dan $X(t_2)$ dengan $t_1 < t < t_2$:
+
+```{math}
+X(t) = X(t_1) + \frac{t - t_1}{t_2 - t_1} \cdot \left[ X(t_2) - X(t_1) \right]
+```
+
+**Langkah Kerja Imputasi:**
+1. Mengurutkan data observasi secara kronologis berdasarkan kolom tanggal `date`.
+2. Mengisi seluruh nilai celah deret waktu (184 hari `NaN`) sehingga diperoleh 365 data kontinu tanpa *missing value*.
+3. Menyimpan hasil sinyal bersih ke file CSV baru **`data/csv/CO_clean.csv`**.
+
+---
+
+## 2. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)
+
+### 2.1 Konsep Rekayasa Fitur Time Series
+
+Untuk merepresentasikan karakteristik dinamika sinyal konsentrasi $\text{CO}$ selama 365 hari dalam bentuk vektor numerik yang siap diproses oleh algoritma *Machine Learning* dan analisis kemiripan (*similarity analysis*), digunakan pustaka **TSFEL (Time Series Feature Extraction Library)** mengacu pada dokumentasi resmi [TSFEL Feature List Documentation](https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html).
 
 TSFEL mengekstrak **68 fitur perwakilan** ($f_1$ hingga $f_{68}$) yang terbagi ke dalam 3 domain utama:
 1. **Domain Statistik ($f_1 \dots f_{20}$)**: Mengukur karakteristik pemusatan, sebaran, kemiringan, dan distribusi probabilitas sinyal.
@@ -99,11 +100,11 @@ TSFEL mengekstrak **68 fitur perwakilan** ($f_1$ hingga $f_{68}$) yang terbagi k
 
 ---
 
-## 4. Katalog & Penomoran Lengkap 68 Fitur TSFEL ($f_1$ hingga $f_{68}$)
+## 3. Katalog & Penomoran Lengkap 68 Fitur TSFEL ($f_1$ hingga $f_{68}$)
 
 Berikut adalah penomoran urut fitur $f_1$ hingga $f_{68}$ beserta fungsi resmi TSFEL, definisi, dan formula matematikalnya:
 
-### 4.1 Domain Statistik ($f_1$ hingga $f_{20}$)
+### 3.1 Domain Statistik ($f_1$ hingga $f_{20}$)
 
 | Kode Fitur | Nama Fungsi TSFEL | Definisi Resmi & Cara Kerja | Cara Menghitung & Rumus Matematika |
 | :---: | :--- | :--- | :--- |
@@ -130,7 +131,7 @@ Berikut adalah penomoran urut fitur $f_1$ hingga $f_{68}$ beserta fungsi resmi T
 
 ---
 
-### 4.2 Domain Temporal ($f_{21}$ hingga $f_{41}$)
+### 3.2 Domain Temporal ($f_{21}$ hingga $f_{41}$)
 
 | Kode Fitur | Nama Fungsi TSFEL | Definisi Resmi & Cara Kerja | Cara Menghitung & Rumus Matematika |
 | :---: | :--- | :--- | :--- |
@@ -158,7 +159,7 @@ Berikut adalah penomoran urut fitur $f_1$ hingga $f_{68}$ beserta fungsi resmi T
 
 ---
 
-### 4.3 Domain Spektral ($f_{42}$ hingga $f_{68}$)
+### 3.3 Domain Spektral ($f_{42}$ hingga $f_{68}$)
 
 | Kode Fitur | Nama Fungsi TSFEL | Definisi Resmi & Cara Kerja | Cara Menghitung & Rumus Matematika |
 | :---: | :--- | :--- | :--- |

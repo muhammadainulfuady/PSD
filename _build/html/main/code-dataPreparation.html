@@ -1,0 +1,676 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Data Preparation (Polutan CO - Kecamatan Bungah) &#8212; Proyek Sains Data IF 5B</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'main/code-dataPreparation';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.jpg" class="logo__image only-light" alt="Proyek Sains Data IF 5B - Home"/>
+    <script>document.write(`<img src="../_static/logo.jpg" class="logo__image only-dark" alt="Proyek Sains Data IF 5B - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="polutan-kabupaten-gresik.html">Polutan Kabupaten Gresik</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-understanding.html">Data Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-preparation.html">Data Preparation</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/main/code-dataPreparation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data Preparation (Polutan CO - Kecamatan Bungah)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-outliers">1. Penanganan Missing Values &amp; Outliers</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-mekanisme-interpolasi-linear">1.1 Formula &amp; Mekanisme Interpolasi Linear</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alur-pemrosesan-berurutan">1.2 Alur Pemrosesan Berurutan:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menyimpan-dataset-hasil-pembersihan-co-clean-csv">2. Menyimpan Dataset Hasil Pembersihan (<code class="docutils literal notranslate"><span class="pre">CO_clean.csv</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-68-fitur-time-series-tsfel-library">3. Ekstraksi 68 Fitur Time-Series (TSFEL Library)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="data-preparation-polutan-co-kecamatan-bungah">
+<h1>Data Preparation (Polutan CO - Kecamatan Bungah)<a class="headerlink" href="#data-preparation-polutan-co-kecamatan-bungah" title="Link to this heading">#</a></h1>
+<p>Notebook ini mengeksekusi tahapan <strong>Data Preparation</strong> metodologi CRISP-DM untuk polutan Karbon Monoksida (<span class="math notranslate nohighlight">\(	ext{CO}\)</span>) pada skala geografis <strong>Kecamatan Bungah, Kabupaten Gresik</strong> selama 365 hari (24 Agustus 2025 – 23 Agustus 2026):</p>
+<p><strong>Alur Pemrosesan Data:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Penanganan Missing Values &amp; Outliers</strong> (Deteksi Outlier <span class="math notranslate nohighlight">\(\rightarrow\)</span> Pengosongan Outlier <span class="math notranslate nohighlight">\(\rightarrow\)</span> Linear Time Interpolation Sekaligus)</p></li>
+<li><p><strong>Penyimpanan Dataset Clean</strong> (<code class="docutils literal notranslate"><span class="pre">CO_clean.csv</span></code>)</p></li>
+<li><p><strong>Ekstraksi 68 Fitur Time-Series TSFEL</strong> (<span class="math notranslate nohighlight">\(f_1 \dots f_{68}\)</span>)</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tsfel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="c1"># Set style visualisasi plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'seaborn-v0_8-whitegrid'</span> <span class="k">if</span> <span class="s1">'seaborn-v0_8-whitegrid'</span> <span class="ow">in</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">available</span> <span class="k">else</span> <span class="s1">'default'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="penanganan-missing-values-outliers">
+<h2>1. Penanganan Missing Values &amp; Outliers<a class="headerlink" href="#penanganan-missing-values-outliers" title="Link to this heading">#</a></h2>
+<section id="formula-mekanisme-interpolasi-linear">
+<h3>1.1 Formula &amp; Mekanisme Interpolasi Linear<a class="headerlink" href="#formula-mekanisme-interpolasi-linear" title="Link to this heading">#</a></h3>
+<p>Interpolasi linear mengestimasi nilai sel kosong <span class="math notranslate nohighlight">\(X(t)\)</span> pada tanggal <span class="math notranslate nohighlight">\(t\)</span> yang berada di antara dua titik observasi valid terdekat <span class="math notranslate nohighlight">\(X(t_1)\)</span> dan <span class="math notranslate nohighlight">\(X(t_2)\)</span> dengan <span class="math notranslate nohighlight">\(t_1 &lt; t &lt; t_2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[X(t) = X(t_1) + \left( \frac{t - t_1}{t_2 - t_1} \right) \cdot \left[ X(t_2) - X(t_1) \right]\]</div>
+</section>
+<section id="alur-pemrosesan-berurutan">
+<h3>1.2 Alur Pemrosesan Berurutan:<a class="headerlink" href="#alur-pemrosesan-berurutan" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Menghitung jumlah data kosong (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>) awal pada data mentah <span class="math notranslate nohighlight">\(\text{CO}\)</span>.</p></li>
+<li><p>Mengidentifikasi data pencilan (<em>outliers</em>) menggunakan metode Interquartile Range (IQR):
+$<span class="math notranslate nohighlight">\(\text{IQR} = Q_3 - Q_1\)</span><span class="math notranslate nohighlight">\(
+\)</span><span class="math notranslate nohighlight">\(\text{Batas Bawah} = Q_1 - 1.5 \times \text{IQR}, \quad \text{Batas Atas} = Q_3 + 1.5 \times \text{IQR}\)</span>$</p></li>
+<li><p>Mengosongkan nilai tanggal <em>outlier</em> tersebut menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code>.</p></li>
+<li><p>Melakukan <strong>Linear Time Interpolation</strong> secara bersamaan untuk seluruh titik <code class="docutils literal notranslate"><span class="pre">NaN</span></code> agar diperoleh sinyal kontinu mulus 365 hari tanpa pencilan ekstrem.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Membaca Dataset Mentah CO (365 Hari)</span>
+<span class="n">raw_path</span> <span class="o">=</span> <span class="s1">'../data/csv/CO_gresik_timeseries.csv'</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">raw_path</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">nan_awal</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah NaN Awal                    : </span><span class="si">{</span><span class="n">nan_awal</span><span class="si">}</span><span class="s2"> hari (</span><span class="si">{</span><span class="n">nan_awal</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)"</span><span class="p">)</span>
+
+<span class="c1"># 2. Deteksi Outlier pada Data Valid Menggunakan Metode IQR</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">iqr</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">-</span> <span class="n">q1</span>
+<span class="n">lower_bound</span> <span class="o">=</span> <span class="n">q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+<span class="n">upper_bound</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+
+<span class="n">is_outlier</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">)</span>
+<span class="n">jumlah_outlier</span> <span class="o">=</span> <span class="n">is_outlier</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kuartil 1 (Q1)                     : </span><span class="si">{</span><span class="n">q1</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kuartil 3 (Q3)                     : </span><span class="si">{</span><span class="n">q3</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"IQR (Q3 - Q1)                      : </span><span class="si">{</span><span class="n">iqr</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Batas Bawah (Lower)                : </span><span class="si">{</span><span class="n">lower_bound</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Batas Atas (Upper)                 : </span><span class="si">{</span><span class="n">upper_bound</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Outlier Terdeteksi                 : </span><span class="si">{</span><span class="n">jumlah_outlier</span><span class="si">}</span><span class="s2"> hari"</span><span class="p">)</span>
+
+<span class="c1"># 3. Mengosongkan Nilai Outlier Menjadi NaN (Sesuai Strategi Data Cleaning)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">is_outlier</span><span class="p">,</span> <span class="s1">'CO'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">nan_setelah_outlier</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah NaN Setelah Outlier Dikosongkan: </span><span class="si">{</span><span class="n">nan_setelah_outlier</span><span class="si">}</span><span class="s2"> hari"</span><span class="p">)</span>
+
+<span class="c1"># 4. Imputasi Linear Time Interpolation Sekaligus!</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'CO_clean'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s1">'both'</span><span class="p">)</span>
+<span class="n">nan_akhir</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'CO_clean'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah NaN Setelah Imputasi Akhir   : </span><span class="si">{</span><span class="n">nan_akhir</span><span class="si">}</span><span class="s2"> hari (100% Clean!)"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah NaN Awal                    : 173 hari (47.40%)
+Kuartil 1 (Q1)                     : 0.026530
+Kuartil 3 (Q3)                     : 0.030774
+IQR (Q3 - Q1)                      : 0.004244
+Batas Bawah (Lower)                : 0.020164
+Batas Atas (Upper)                 : 0.037140
+Outlier Terdeteksi                 : 11 hari
+Jumlah NaN Setelah Outlier Dikosongkan: 184 hari
+Jumlah NaN Setelah Imputasi Akhir   : 0 hari (100% Clean!)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="menyimpan-dataset-hasil-pembersihan-co-clean-csv">
+<h2>2. Menyimpan Dataset Hasil Pembersihan (<code class="docutils literal notranslate"><span class="pre">CO_clean.csv</span></code>)<a class="headerlink" href="#menyimpan-dataset-hasil-pembersihan-co-clean-csv" title="Link to this heading">#</a></h2>
+<p>Data yang telah bersih dari <em>missing values</em> dan <em>outliers</em> disimpan ke dalam file CSV baru <code class="docutils literal notranslate"><span class="pre">data/csv/CO_clean.csv</span></code> untuk menjaga keaslian data mentah.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simpan Data Super Clean ke File CSV yang Simpel &amp; Mudah Diingat</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'CO_clean'</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'CO_clean'</span><span class="p">:</span> <span class="s1">'CO'</span><span class="p">})</span>
+<span class="n">clean_path</span> <span class="o">=</span> <span class="s1">'../data/csv/CO_clean.csv'</span>
+<span class="n">df_clean</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">clean_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SUCCESS: Dataset bersih disimpan ke '</span><span class="si">{</span><span class="n">clean_path</span><span class="si">}</span><span class="s2">' (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_clean</span><span class="p">)</span><span class="si">}</span><span class="s2"> baris data)"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SUCCESS: Dataset bersih disimpan ke '../data/csv/CO_clean.csv' (365 baris data)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ekstraksi-68-fitur-time-series-tsfel-library">
+<h2>3. Ekstraksi 68 Fitur Time-Series (TSFEL Library)<a class="headerlink" href="#ekstraksi-68-fitur-time-series-tsfel-library" title="Link to this heading">#</a></h2>
+<p>Pustaka <strong>TSFEL (Time Series Feature Extraction Library)</strong> digunakan untuk merepresentasikan sinyal <span class="math notranslate nohighlight">\(\text{CO}\)</span> selama 365 hari ke dalam <strong>68 fitur perwakilan</strong> (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>) yang terbagi ke dalam 3 domain utama:</p>
+<ol class="arabic simple">
+<li><p><strong>Domain Statistik (<span class="math notranslate nohighlight">\(f_1 \dots f_{20}\)</span>)</strong>: Mengukur karakteristik pemusatan, sebaran, kemiringan, dan distribusi probabilitas sinyal.</p></li>
+<li><p><strong>Domain Temporal (<span class="math notranslate nohighlight">\(f_{21} \dots f_{41}\)</span>)</strong>: Mengukur sifat linier, autokorelasi, frekuensi perlintasan nol, dan durasi fluktuasi dalam domain waktu.</p></li>
+<li><p><strong>Domain Spektral (<span class="math notranslate nohighlight">\(f_{42} \dots f_{68}\)</span>)</strong>: Mengukur distribusi energi frekuensi sinyal menggunakan transformasi Fourier (<em>Fast Fourier Transform</em> / FFT) dan Wavelet CWT.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Memuat Katalog Konfigurasi Fitur TSFEL</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">get_features_by_domain</span><span class="p">()</span>
+
+<span class="c1"># Penyesuaian max_width=1 pada 4 fitur wavelet untuk menghasilkan 68 fitur unik yang terurut rapi</span>
+<span class="n">wavelet_feats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Wavelet absolute mean'</span><span class="p">,</span> <span class="s1">'Wavelet energy'</span><span class="p">,</span> <span class="s1">'Wavelet standard deviation'</span><span class="p">,</span> <span class="s1">'Wavelet variance'</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">wavelet_feats</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'spectral'</span><span class="p">,</span> <span class="p">{}):</span>
+        <span class="n">cfg</span><span class="p">[</span><span class="s1">'spectral'</span><span class="p">][</span><span class="n">feat</span><span class="p">][</span><span class="s1">'parameters'</span><span class="p">][</span><span class="s1">'max_width'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Katalog fitur TSFEL berhasil dimuat dan disesuaikan!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Katalog fitur TSFEL berhasil dimuat dan disesuaikan!
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. Mengekstrak 68 Fitur dari Sinyal CO Clean (365 Hari)</span>
+<span class="n">features_df</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># 3. Format Tabel f1 hingga f68 Sesuai Penomoran Tugas</span>
+<span class="n">tabel_fitur</span> <span class="o">=</span> <span class="n">features_df</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">tabel_fitur</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Nama Fitur TSFEL'</span><span class="p">,</span> <span class="s1">'Nilai Fitur'</span><span class="p">]</span>
+<span class="n">tabel_fitur</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">'f</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">'</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tabel_fitur</span><span class="p">))]</span>
+
+<span class="c1"># 4. Simpan Matriks Fitur ke File CSV</span>
+<span class="n">features_path</span> <span class="o">=</span> <span class="s1">'../data/csv/CO_tsfel_features.csv'</span>
+<span class="n">features_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">features_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SUCCESS: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tabel_fitur</span><span class="p">)</span><span class="si">}</span><span class="s2"> Fitur TSFEL berhasil diekstrak dan disimpan ke '</span><span class="si">{</span><span class="n">features_path</span><span class="si">}</span><span class="s2">'!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ASUS\AppData\Local\Programs\Python\Python312\Lib\site-packages\tsfel\feature_extraction\calc_features.py:195: SyntaxWarning: invalid escape sequence '\*'
+  \**kwargs:
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">IndexError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># 2. Mengekstrak 68 Fitur dari Sinyal CO Clean (365 Hari)</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">features_df</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># 3. Format Tabel f1 hingga f68 Sesuai Penomoran Tugas</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">tabel_fitur</span> <span class="o">=</span> <span class="n">features_df</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="nn">File ~\AppData\Local\Programs\Python\Python312\Lib\site-packages\tsfel\feature_extraction\calc_features.py:379,</span> in <span class="ni">time_series_features_extractor</span><span class="nt">(config, timeseries, fs, window_size, overlap, verbose, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">374</span>         <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">375</span>             <span class="s2">"n_jobs value is not valid. "</span> <span class="s2">"Choose an integer value or None for no multiprocessing."</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">376</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">377</span> <span class="c1"># single window</span>
+<span class="g g-Whitespace">    </span><span class="mi">378</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">379</span>     <span class="n">features_final</span> <span class="o">=</span> <span class="n">calc_window_features</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">380</span>         <span class="n">config</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">381</span>         <span class="n">timeseries</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">382</span>         <span class="n">fs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">383</span>         <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">384</span>         <span class="n">features_path</span><span class="o">=</span><span class="n">features_path</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">385</span>         <span class="n">header_names</span><span class="o">=</span><span class="n">names</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">386</span>         <span class="n">single_window</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">387</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">389</span> <span class="c1"># Assuring the same feature extraction order</span>
+<span class="g g-Whitespace">    </span><span class="mi">390</span> <span class="n">features_final</span> <span class="o">=</span> <span class="n">features_final</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">features_final</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nn">File ~\AppData\Local\Programs\Python\Python312\Lib\site-packages\tsfel\feature_extraction\calc_features.py:530,</span> in <span class="ni">calc_window_features</span><span class="nt">(config, window, fs, verbose, single_window, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">528</span> <span class="n">names</span> <span class="o">=</span> <span class="n">eval_result_ax</span><span class="p">[</span><span class="s2">"names"</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">529</span> <span class="n">values</span> <span class="o">=</span> <span class="n">eval_result_ax</span><span class="p">[</span><span class="s2">"values"</span><span class="p">]</span>
+<span class="ne">--&gt; </span><span class="mi">530</span> <span class="n">eval_result_ax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">))</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">else</span> <span class="n">eval_result_ax</span>
+<span class="g g-Whitespace">    </span><span class="mi">531</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">532</span>     <span class="n">feature_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="ne">IndexError</span>: index 0 is out of bounds for axis 0 with size 0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 5. Tampilkan Tabel Ringkasan Fitur (f1 hingga f68)</span>
+<span class="n">tabel_fitur</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./main"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-outliers">1. Penanganan Missing Values &amp; Outliers</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-mekanisme-interpolasi-linear">1.1 Formula &amp; Mekanisme Interpolasi Linear</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alur-pemrosesan-berurutan">1.2 Alur Pemrosesan Berurutan:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#menyimpan-dataset-hasil-pembersihan-co-clean-csv">2. Menyimpan Dataset Hasil Pembersihan (<code class="docutils literal notranslate"><span class="pre">CO_clean.csv</span></code>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-68-fitur-time-series-tsfel-library">3. Ekstraksi 68 Fitur Time-Series (TSFEL Library)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Muhammad Ainul Fuady
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
