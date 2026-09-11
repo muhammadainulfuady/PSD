@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-# Data Preparation (Persiapan Data CO)
+# Data Preparation
 
 Data Preparation adalah tahap ketiga dalam metodologi CRISP-DM yang bertujuan untuk **membersihkan**, **mengimputasi nilai kosong (*missing values*)**, **menangani pencilan (*outliers*)**, dan **merekayasa fitur (*feature engineering*)** dari deret waktu pengamatan kualitas udara polutan **Karbon Monoksida ($\text{CO}$)** pada skala geografis **Tingkat Kecamatan (Kecamatan Bungah)**.
 

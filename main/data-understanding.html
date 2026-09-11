@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'main/data-understanding';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Data Preparation (Persiapan Data CO)" href="data-preparation.html" />
+    <link rel="next" title="Data Preparation" href="data-preparation.html" />
     <link rel="prev" title="Business Understanding" href="business-understanding.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -178,7 +178,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="polutan-kabupaten-gresik.html">Polutan Kabupaten Gresik</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Data Understanding</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-preparation.html">Data Preparation (Persiapan Data CO)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-preparation.html">Data Preparation</a></li>
 </ul>
 </details></li>
 </ul>
@@ -1638,9 +1638,6 @@ Koefisien Variasi (CV) SO2 : 361.62%
 <section id="visualisasi-komparatif-4-polutan-style-copernicus">
 <h3>4.4 Visualisasi Komparatif 4 Polutan (Style Copernicus)<a class="headerlink" href="#visualisasi-komparatif-4-polutan-style-copernicus" title="Link to this heading">#</a></h3>
 <p>Untuk membandingkan tren perubahan konsentrasi ke-4 polutan (CH4, CO, NO2, SO2) secara bersamaan sepanjang periode pengamatan di Kabupaten Gresik, dibuat visualisasi <strong>Dual X-Axis Line Plot</strong> dengan gaya visualisasi Copernicus Sentinel-5P.</p>
-<figure class="align-center">
-<a class="reference internal image-reference" href="../_images/copernicus_4polutan_dual_axis.png"><img alt="../_images/copernicus_4polutan_dual_axis.png" src="../_images/copernicus_4polutan_dual_axis.png" style="width: 100%;" /></a>
-</figure>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1779,8 +1776,8 @@ Koefisien Variasi (CV) SO2 : 361.62%
 <p><strong>DBeaver</strong> digunakan sebagai <em>Database Management Tool (GUI Client)</em> untuk mengelola struktur tabel relasional dan menguji koneksi jaringan ke cloud Aiven:</p>
 <ol class="arabic simple">
 <li><p>Membuat koneksi baru (<em>New Database Connection</em>) berjenis PostgreSQL di DBeaver menggunakan Host, Port, dan kredensial Aiven.</p></li>
-<li><p>Mengimpor dataset <code class="docutils literal notranslate"><span class="pre">polutan_gresik.csv</span></code> ke dalam tabel relasional PostgreSQL bernama <code class="docutils literal notranslate"><span class="pre">polutan_gresik</span></code>.</p></li>
-<li><p>Menjalankan <em>SQL Query</em> <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">*</span> <span class="pre">FROM</span> <span class="pre">polutan_gresik;</span></code> untuk memastikan data terstruktur dengan benar di dalam <em>cloud database</em>.</p></li>
+<li><p>Mengimpor dataset <code class="docutils literal notranslate"><span class="pre">csv</span></code> 4 polutan ke dalam tabel relasional PostgreSQL bernama <code class="docutils literal notranslate"><span class="pre">polutan_gresik</span></code>.</p></li>
+<li><p>Menjalankan <em>SQL Query</em> <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">*</span> <span class="pre">FROM</span> <span class="pre">table_polutan_gresik;</span></code> untuk memastikan data terstruktur dengan benar di dalam <em>cloud database</em>.</p></li>
 </ol>
 <figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="../_images/select-tabel.png"><img alt="../_images/select-tabel.png" src="../_images/select-tabel.png" style="width: 100%;" /></a>
@@ -1900,7 +1897,7 @@ Perhitungan manual yang dilakukan pada lembar kerja (menggunakan fungsi statisti
 <li><p><strong>Rumus Matematika</strong>:</p></li>
 </ul>
 <div class="math notranslate nohighlight">
-\[\begin{split}Me = \begin{cases} 
+\[\begin{split}Me = \begin{cases}
 X_{\left(\frac{N+1}{2}\right)}, &amp; \text{jika } N \text{ ganjil} \\
 \frac{X_{\left(\frac{N}{2}\right)} + X_{\left(\frac{N}{2} + 1\right)}}{2}, &amp; \text{jika } N \text{ genap}
 \end{cases}\end{split}\]</div>
@@ -2094,7 +2091,7 @@ X_{\left(\frac{N+1}{2}\right)}, &amp; \text{jika } N \text{ ganjil} \\
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Data Preparation (Persiapan Data CO)</p>
+        <p class="prev-next-title">Data Preparation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
