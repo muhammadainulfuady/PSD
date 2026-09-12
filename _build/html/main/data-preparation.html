@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Data Preparation &#8212; Proyek Sains Data IF 5B</title>
+    <title>Data Preparation (Persiapan Data CO) &#8212; Proyek Sains Data IF 5B</title>
   
   
   
@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -177,7 +177,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="polutan-kabupaten-gresik.html">Polutan Kabupaten Gresik</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data-understanding.html">Data Understanding</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Data Preparation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Data Preparation (Persiapan Data CO)</a></li>
 </ul>
 </details></li>
 </ul>
@@ -318,7 +318,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Data Preparation</h1>
+    <h1>Data Preparation (Persiapan Data CO)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -328,20 +328,22 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-outliers">1. Penanganan Missing Values &amp; Outliers</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang-pendekatan-data-cleaning">1.1 Latar Belakang &amp; Pendekatan Data Cleaning</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier-berbasis-interquartile-range-iqr">1.2 Deteksi Outlier Berbasis Interquartile Range (IQR)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-mekanisme-interpolasi-linear">1.3 Formula &amp; Mekanisme Interpolasi Linear</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-outliers-data-cleaning-terpadu">1. Penanganan Missing Values &amp; Outliers (Data Cleaning Terpadu)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-missing-values-celah-data-mentah">1.1 Evaluasi Missing Values (Celah Data Mentah)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-pengosongan-outlier-metode-iqr-dinamis-berbasis-kode">1.2 Deteksi &amp; Pengosongan Outlier (Metode IQR Dinamis Berbasis Kode)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengosongan-outlier-imputasi-linear-time-interpolation">1.3 Pengosongan Outlier &amp; Imputasi Linear Time Interpolation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-4-grafik-terpisah-ringkasan-perubahan-status-sinyal">1.4 Visualisasi 4 Grafik Terpisah &amp; Ringkasan Perubahan Status Sinyal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-ringkasan-perubahan-status-sinyal">Tabel Ringkasan Perubahan Status Sinyal</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-tsfel-time-series-feature-extraction-library">2. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-rekayasa-fitur-time-series">2.1 Konsep Rekayasa Fitur Time Series</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68">3. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-20">3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-21-hingga-f-41">3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-42-hingga-f-68">3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-presisi-68-fitur-tsfel-f-1-hingga-f-68">3. Katalog &amp; Penomoran Presisi 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-31">3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{31}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-32-hingga-f-45">3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{32}\)</span> hingga <span class="math notranslate nohighlight">\(f_{45}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-46-hingga-f-68">3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{46}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
 </ul>
 </li>
 </ul>
@@ -355,62 +357,298 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="data-preparation">
-<h1>Data Preparation<a class="headerlink" href="#data-preparation" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="data-preparation-persiapan-data-co">
+<h1>Data Preparation (Persiapan Data CO)<a class="headerlink" href="#data-preparation-persiapan-data-co" title="Link to this heading">#</a></h1>
 <p>Data Preparation adalah tahap ketiga dalam metodologi CRISP-DM yang bertujuan untuk <strong>membersihkan</strong>, <strong>mengimputasi nilai kosong (<em>missing values</em>)</strong>, <strong>menangani pencilan (<em>outliers</em>)</strong>, dan <strong>merekayasa fitur (<em>feature engineering</em>)</strong> dari deret waktu pengamatan kualitas udara polutan <strong>Karbon Monoksida (<span class="math notranslate nohighlight">\(\text{CO}\)</span>)</strong> pada skala geografis <strong>Tingkat Kecamatan (Kecamatan Bungah)</strong> selama 365 hari (24 Agustus 2025 – 23 Agustus 2026).</p>
 <hr class="docutils" />
-<section id="penanganan-missing-values-outliers">
-<h2>1. Penanganan Missing Values &amp; Outliers<a class="headerlink" href="#penanganan-missing-values-outliers" title="Link to this heading">#</a></h2>
-<section id="latar-belakang-pendekatan-data-cleaning">
-<h3>1.1 Latar Belakang &amp; Pendekatan Data Cleaning<a class="headerlink" href="#latar-belakang-pendekatan-data-cleaning" title="Link to this heading">#</a></h3>
-<p>Data pengamatan satelit Sentinel-5P dari Copernicus Data Space untuk polutan <span class="math notranslate nohighlight">\(\text{CO}\)</span> harian memiliki celah data (<em>missing values</em> / <code class="docutils literal notranslate"><span class="pre">NaN</span></code>) akibat tutupan awan tebal dan penyaringan validasi kualitas (<em>quality flag</em>). Selain itu, terdapat pula beberapa titik data pengamatan yang nilainya melonjak ekstrem (<em>outlier</em>) di luar batas wajar akibat interferensi cuaca lokal.</p>
-<p>Untuk menghasilkan sinyal deret waktu yang mulus, mulus, dan kontinu 365 hari tanpa pencilan ekstrem maupun celah kosong, digunakan alur <strong>Data Cleaning Terpadu</strong>:</p>
-<ol class="arabic simple">
-<li><p><strong>Pemeriksaan Data Mentah</strong>: Mengidentifikasi 173 hari data kosong (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>) awal.</p></li>
-<li><p><strong>Deteksi Outlier</strong>: Menghitung batas Interquartile Range (IQR) pada data valid untuk mendeteksi 11 titik pencilan ekstrem.</p></li>
-<li><p><strong>Pengosongan Outlier</strong>: Menghapus/mengosongkan nilai 11 tanggal pencilan tersebut menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> (total missing values menjadi 184 hari).</p></li>
-<li><p><strong>Imputasi Linear Sekaligus</strong>: Melakukan <strong>Linear Time Interpolation</strong> secara bersamaan untuk 184 titik <code class="docutils literal notranslate"><span class="pre">NaN</span></code> sehingga diperoleh sinyal kontinu mulus 365 hari tanpa celah.</p></li>
-</ol>
+<section id="penanganan-missing-values-outliers-data-cleaning-terpadu">
+<h2>1. Penanganan Missing Values &amp; Outliers (Data Cleaning Terpadu)<a class="headerlink" href="#penanganan-missing-values-outliers-data-cleaning-terpadu" title="Link to this heading">#</a></h2>
+<section id="evaluasi-missing-values-celah-data-mentah">
+<h3>1.1 Evaluasi Missing Values (Celah Data Mentah)<a class="headerlink" href="#evaluasi-missing-values-celah-data-mentah" title="Link to this heading">#</a></h3>
+<p>Data pengamatan satelit Sentinel-5P dari Copernicus Data Space untuk polutan <span class="math notranslate nohighlight">\(\text{CO}\)</span> harian selama 365 hari memiliki celah data (<em>missing values</em> / <code class="docutils literal notranslate"><span class="pre">NaN</span></code>) yang disebabkan oleh tutupan awan tebal, kendala jadwal orbit satelit, dan penyaringan validasi kualitas (<em>quality flag</em>).</p>
+<p>Evaluasi celah data dihitung secara <strong>dinamis menggunakan kode Python</strong> berikut:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># 1. Membaca Dataset Mentah CO (365 Hari)</span>
+<span class="n">raw_path</span> <span class="o">=</span> <span class="s1">'../data/csv/CO_gresik_timeseries.csv'</span>
+<span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">raw_path</span><span class="p">)</span>
+<span class="n">df_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+<span class="n">df_raw</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Hitung statistik celah data awal</span>
+<span class="n">total_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_raw</span><span class="p">)</span>
+<span class="n">nan_awal</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">valid_awal</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Baris Observasi   : </span><span class="si">{</span><span class="n">total_rows</span><span class="si">}</span><span class="s2"> hari"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah Data Valid Awal  : </span><span class="si">{</span><span class="n">valid_awal</span><span class="si">}</span><span class="s2"> hari (</span><span class="si">{</span><span class="n">valid_awal</span><span class="o">/</span><span class="n">total_rows</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah Missing (NaN)    : </span><span class="si">{</span><span class="n">nan_awal</span><span class="si">}</span><span class="s2"> hari (</span><span class="si">{</span><span class="n">nan_awal</span><span class="o">/</span><span class="n">total_rows</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total Baris Observasi   : 365 hari
+Jumlah Data Valid Awal  : 192 hari (52.60%)
+Jumlah Missing (NaN)    : 173 hari (47.40%)
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <hr class="docutils" />
-<section id="deteksi-outlier-berbasis-interquartile-range-iqr">
-<h3>1.2 Deteksi Outlier Berbasis Interquartile Range (IQR)<a class="headerlink" href="#deteksi-outlier-berbasis-interquartile-range-iqr" title="Link to this heading">#</a></h3>
-<p>Metode <strong>Interquartile Range (IQR)</strong> digunakan untuk menentukan batas wajar observasi:</p>
-<ol class="arabic simple">
-<li><p><strong>Kuartil Pertama (<span class="math notranslate nohighlight">\(Q_1\)</span>)</strong>: Persentil ke-25 data terurut.</p></li>
-<li><p><strong>Kuartil Ketiga (<span class="math notranslate nohighlight">\(Q_3\)</span>)</strong>: Persentil ke-75 data terurut.</p></li>
-<li><p><strong>Rentang Antarkuartil (<span class="math notranslate nohighlight">\(\text{IQR}\)</span>)</strong>:</p></li>
-</ol>
+<section id="deteksi-pengosongan-outlier-metode-iqr-dinamis-berbasis-kode">
+<h3>1.2 Deteksi &amp; Pengosongan Outlier (Metode IQR Dinamis Berbasis Kode)<a class="headerlink" href="#deteksi-pengosongan-outlier-metode-iqr-dinamis-berbasis-kode" title="Link to this heading">#</a></h3>
+<p>Sebelum dilakukan imputasi deret waktu, titik pencilan (<em>outliers</em>) dievaluasi terlebih dahulu pada populasi data valid agar lonjakan ekstrem tidak merusak kemiringan (<em>slope</em>) garis interpolasi.</p>
+<p>Metode <strong>Interquartile Range (IQR)</strong> dihitung secara presisi dengan pustaka Pandas/NumPy:</p>
 <div class="math notranslate nohighlight">
 \[\text{IQR} = Q_3 - Q_1\]</div>
-<p>Batas bawah (<em>Lower Bound</em>) dan batas atas (<em>Upper Bound</em>) ditentukan melalui formula:</p>
 <div class="math notranslate nohighlight">
-\[\text{Batas Bawah} = Q_1 - 1.5 \times \text{IQR}\]</div>
-<div class="math notranslate nohighlight">
-\[\text{Batas Atas} = Q_3 + 1.5 \times \text{IQR}\]</div>
-<p>Titik data <span class="math notranslate nohighlight">\(X_i\)</span> dikategorikan sebagai <strong>Outlier</strong> jika:</p>
-<div class="math notranslate nohighlight">
-\[X_i &lt; \text{Batas Bawah} \quad \text{atau} \quad X_i &gt; \text{Batas Atas}\]</div>
-<p>Nilai <span class="math notranslate nohighlight">\(X_i\)</span> yang terdeteksi sebagai outlier dihapus/dikosongkan menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code>:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}X_{\text{temp}, i} = \begin{cases}
-\text{NaN}, &amp; \text{jika } X_i &lt; \text{Batas Bawah} \text{ atau } X_i &gt; \text{Batas Atas} \\
-X_i, &amp; \text{lainnya}
-\end{cases}\end{split}\]</div>
+\[\text{Batas Bawah} = Q_1 - 1.5 \times \text{IQR}, \quad \text{Batas Atas} = Q_3 + 1.5 \times \text{IQR}\]</div>
+<p>Eksekusi kode Python untuk menghitung ambang batas IQR dan mengidentifikasi seluruh tanggal pencilan:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. Deteksi Outlier dengan Metode IQR pada Data Valid</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">iqr</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">-</span> <span class="n">q1</span>
+<span class="n">lower_bound</span> <span class="o">=</span> <span class="n">q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+<span class="n">upper_bound</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+
+<span class="c1"># Masking Outlier</span>
+<span class="n">is_outlier</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">)</span>
+<span class="n">jumlah_outlier</span> <span class="o">=</span> <span class="n">is_outlier</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kuartil 1 (Q1)           : </span><span class="si">{</span><span class="n">q1</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> mol/m²"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kuartil 3 (Q3)           : </span><span class="si">{</span><span class="n">q3</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> mol/m²"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"IQR (Q3 - Q1)            : </span><span class="si">{</span><span class="n">iqr</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> mol/m²"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Batas Bawah (Lower Bound): </span><span class="si">{</span><span class="n">lower_bound</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> mol/m²"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Batas Atas (Upper Bound) : </span><span class="si">{</span><span class="n">upper_bound</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> mol/m²"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah Outlier Terdeteksi: </span><span class="si">{</span><span class="n">jumlah_outlier</span><span class="si">}</span><span class="s2"> hari"</span><span class="p">)</span>
+
+<span class="c1"># Tabel Detail Tanggal &amp; Nilai Outlier Terdeteksi</span>
+<span class="n">df_outliers</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="n">is_outlier</span><span class="p">][[</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'CO'</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_outliers</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_outliers</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Daftar Tanggal &amp; Nilai Outlier Terdeteksi secara Akurat:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_outliers</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Kuartil 1 (Q1)           : 0.026530 mol/m²
+Kuartil 3 (Q3)           : 0.030774 mol/m²
+IQR (Q3 - Q1)            : 0.004244 mol/m²
+Batas Bawah (Lower Bound): 0.020164 mol/m²
+Batas Atas (Upper Bound) : 0.037140 mol/m²
+Jumlah Outlier Terdeteksi: 11 hari
+
+Daftar Tanggal &amp; Nilai Outlier Terdeteksi secara Akurat:
+      date       CO
+2025-09-14 0.017361
+2025-09-24 0.041642
+2025-10-08 0.039112
+2025-10-09 0.045237
+2026-04-05 0.017621
+2026-05-05 0.017592
+2026-05-12 0.016968
+2026-06-13 0.018679
+2026-07-15 0.019071
+2026-08-10 0.038350
+2026-08-14 0.039100
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <hr class="docutils" />
-<section id="formula-mekanisme-interpolasi-linear">
-<h3>1.3 Formula &amp; Mekanisme Interpolasi Linear<a class="headerlink" href="#formula-mekanisme-interpolasi-linear" title="Link to this heading">#</a></h3>
-<p>Setelah titik pencilan dikosongkan menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> bersama celah data mentah, dilakukan <strong>Linear Time Interpolation</strong>.</p>
-<p>Interpolasi linear mengestimasi nilai sel kosong <span class="math notranslate nohighlight">\(X(t)\)</span> pada tanggal <span class="math notranslate nohighlight">\(t\)</span> yang berada di antara dua titik observasi valid terdekat <span class="math notranslate nohighlight">\(X(t_1)\)</span> dan <span class="math notranslate nohighlight">\(X(t_2)\)</span> dengan <span class="math notranslate nohighlight">\(t_1 &lt; t &lt; t_2\)</span>:</p>
+<section id="pengosongan-outlier-imputasi-linear-time-interpolation">
+<h3>1.3 Pengosongan Outlier &amp; Imputasi Linear Time Interpolation<a class="headerlink" href="#pengosongan-outlier-imputasi-linear-time-interpolation" title="Link to this heading">#</a></h3>
+<p>Titik data pencilan diubah menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> lalu diimputasi bersama dengan celah data mentah menggunakan <strong>Linear Time Interpolation</strong>:</p>
 <div class="math notranslate nohighlight">
 \[X(t) = X(t_1) + \frac{t - t_1}{t_2 - t_1} \cdot \left[ X(t_2) - X(t_1) \right]\]</div>
-<p><strong>Langkah Kerja Imputasi:</strong></p>
-<ol class="arabic simple">
-<li><p>Mengurutkan data observasi secara kronologis berdasarkan kolom tanggal <code class="docutils literal notranslate"><span class="pre">date</span></code>.</p></li>
-<li><p>Mengisi seluruh nilai celah deret waktu (184 hari <code class="docutils literal notranslate"><span class="pre">NaN</span></code>) sehingga diperoleh 365 data kontinu tanpa <em>missing value</em>.</p></li>
-<li><p>Menyimpan hasil sinyal bersih ke file CSV baru <strong><code class="docutils literal notranslate"><span class="pre">data/csv/CO_clean.csv</span></code></strong>.</p></li>
-</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 3. Pengosongan Nilai Outlier menjadi NaN</span>
+<span class="n">df_prep</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_prep</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">is_outlier</span><span class="p">,</span> <span class="s1">'CO'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">nan_setelah_outlier</span> <span class="o">=</span> <span class="n">df_prep</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="c1"># 4. Imputasi Linear Time Interpolation Sekaligus</span>
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df_prep</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO_clean'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s1">'both'</span><span class="p">)</span>
+<span class="n">nan_akhir</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO_clean'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah NaN Setelah Outlier Dikosongkan : </span><span class="si">{</span><span class="n">nan_setelah_outlier</span><span class="si">}</span><span class="s2"> hari (</span><span class="si">{</span><span class="n">nan_setelah_outlier</span><span class="o">/</span><span class="n">total_rows</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah NaN Setelah Imputasi Akhir      : </span><span class="si">{</span><span class="n">nan_akhir</span><span class="si">}</span><span class="s2"> hari (100% Terisi &amp; Clean)"</span><span class="p">)</span>
+
+<span class="c1"># Simpan dataset bersih ke file CSV</span>
+<span class="n">df_save</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[[</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'CO_clean'</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'CO_clean'</span><span class="p">:</span> <span class="s1">'CO'</span><span class="p">})</span>
+<span class="n">df_save</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'../data/csv/CO_clean.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Dataset bersih disimpan ke '../data/csv/CO_clean.csv'"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah NaN Setelah Outlier Dikosongkan : 184 hari (50.41%)
+Jumlah NaN Setelah Imputasi Akhir      : 0 hari (100% Terisi &amp; Clean)
+Dataset bersih disimpan ke '../data/csv/CO_clean.csv'
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="visualisasi-4-grafik-terpisah-ringkasan-perubahan-status-sinyal">
+<h3>1.4 Visualisasi 4 Grafik Terpisah &amp; Ringkasan Perubahan Status Sinyal<a class="headerlink" href="#visualisasi-4-grafik-terpisah-ringkasan-perubahan-status-sinyal" title="Link to this heading">#</a></h3>
+<p>Untuk menjaga kejelasan visual tanpa menumpuk warna dalam satu grafik, alur pembersihan sinyal disajikan dalam <strong>4 grafik terpisah</strong>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set Visual Style</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'seaborn-v0_8-whitegrid'</span> <span class="k">if</span> <span class="s1">'seaborn-v0_8-whitegrid'</span> <span class="ow">in</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">available</span> <span class="k">else</span> <span class="s1">'default'</span><span class="p">)</span>
+
+<span class="c1"># Grafik 1: Missing Values (Data Mentah dengan Celah Kosong / NaN)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#2c3e50'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Sinyal Valid Mentah (192 Hari)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'1. Sinyal CO Mentah dengan Celah Missing Values (173 Hari Kosong / NaN)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CO (mol/m²)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/89f006bdc9aa19412822b59578610a30e1954031404668cd8e7cfab99f9e984b.png" src="../_images/89f006bdc9aa19412822b59578610a30e1954031404668cd8e7cfab99f9e984b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grafik 2: Sinyal Setelah Missing Values Diimputasi (Sebelum Cleaning Outlier)</span>
+<span class="n">df_raw_imputed</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'CO_imputed'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s1">'both'</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'CO_imputed'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#2980b9'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Sinyal Terisi Utuh (365 Hari)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'2. Sinyal CO Setelah Imputasi Missing Values (Linear Time Interpolation)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CO (mol/m²)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/312245d43e34b4bf85b85c047f0b078dcc18965bf2e4bad3a34b83d5ad4ed1f3.png" src="../_images/312245d43e34b4bf85b85c047f0b078dcc18965bf2e4bad3a34b83d5ad4ed1f3.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grafik 3: Deteksi Outlier Menggunakan Metode IQR</span>
+<span class="n">outliers_plot</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="n">is_outlier</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#7f8c8d'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Sinyal Valid Mentah'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers_plot</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers_plot</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#e74c3c'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Outlier Terdeteksi (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_plot</span><span class="p">)</span><span class="si">}</span><span class="s1"> Hari)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#c0392b'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Batas Atas / Upper Bound (</span><span class="si">{</span><span class="n">upper_bound</span><span class="si">:</span><span class="s1">.5f</span><span class="si">}</span><span class="s1">)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#2980b9'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Batas Bawah / Lower Bound (</span><span class="si">{</span><span class="n">lower_bound</span><span class="si">:</span><span class="s1">.5f</span><span class="si">}</span><span class="s1">)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'3. Deteksi 11 Outlier CO Menggunakan Metode Interquartile Range (IQR)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CO (mol/m²)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/28e2ad6f7a9d97e44a41060eedc81a9b535627cf54fcffb26d042a81d5811384.png" src="../_images/28e2ad6f7a9d97e44a41060eedc81a9b535627cf54fcffb26d042a81d5811384.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grafik 4: Sinyal CO Final Setelah Outlier Dibersihkan &amp; Diimputasi</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO_clean'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#27ae60'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Sinyal Mulus Super Clean (365 Hari)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'4. Sinyal CO Final Setelah Penanganan Outlier &amp; Imputasi Linear (Clean Dataset)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CO (mol/m²)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/57d2fb843ca9399eae5308d8469f251ac85e3085c70551f611b3dfdab408b2f8.png" src="../_images/57d2fb843ca9399eae5308d8469f251ac85e3085c70551f611b3dfdab408b2f8.png" />
+</div>
+</div>
+</section>
+<section id="tabel-ringkasan-perubahan-status-sinyal">
+<h3>Tabel Ringkasan Perubahan Status Sinyal<a class="headerlink" href="#tabel-ringkasan-perubahan-status-sinyal" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Tahapan Data Preparation</p></th>
+<th class="head text-center"><p>Jumlah Data Valid</p></th>
+<th class="head text-center"><p>Jumlah Missing Values (<code class="docutils literal notranslate"><span class="pre">NaN</span></code>)</p></th>
+<th class="head text-center"><p>Jumlah Outliers</p></th>
+<th class="head text-left"><p>Keterangan Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>1. Data Mentah (Raw)</strong></p></td>
+<td class="text-center"><p>192 hari</p></td>
+<td class="text-center"><p>173 hari (47.40%)</p></td>
+<td class="text-center"><p>11 hari</p></td>
+<td class="text-left"><p>Ada celah <code class="docutils literal notranslate"><span class="pre">NaN</span></code> &amp; pencilan</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>2. Pengosongan Outlier</strong></p></td>
+<td class="text-center"><p>181 hari</p></td>
+<td class="text-center"><p>184 hari (50.41%)</p></td>
+<td class="text-center"><p>0 hari</p></td>
+<td class="text-left"><p>Outlier diubah menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>3. Imputasi Akhir (Clean)</strong></p></td>
+<td class="text-center"><p><strong>365 hari</strong></p></td>
+<td class="text-center"><p><strong>0 hari (0.00%)</strong></p></td>
+<td class="text-center"><p><strong>0 hari</strong></p></td>
+<td class="text-left"><p><strong>Sinyal mulus 100% utuh</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/1_co_raw_missing.png"><img alt="../_images/1_co_raw_missing.png" src="../_images/1_co_raw_missing.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">Grafik 1: Sinyal CO Mentah dengan Celah Missing Values (173 Hari Kosong / NaN)</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/2_co_imputed_missing.png"><img alt="../_images/2_co_imputed_missing.png" src="../_images/2_co_imputed_missing.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">Grafik 2: Sinyal CO Setelah Imputasi Missing Values (Linear Time Interpolation)</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/3_co_outlier_detection.png"><img alt="../_images/3_co_outlier_detection.png" src="../_images/3_co_outlier_detection.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Grafik 3: Deteksi 11 Outlier CO Menggunakan Metode Interquartile Range (IQR)</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/4_co_final_clean.png"><img alt="../_images/4_co_final_clean.png" src="../_images/4_co_final_clean.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Grafik 4: Sinyal CO Final Setelah Penanganan Outlier &amp; Imputasi Linear (Clean Dataset)</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 </section>
 </section>
 <hr class="docutils" />
@@ -421,398 +659,401 @@ X_i, &amp; \text{lainnya}
 <p>Untuk merepresentasikan karakteristik dinamika sinyal konsentrasi <span class="math notranslate nohighlight">\(\text{CO}\)</span> selama 365 hari dalam bentuk vektor numerik yang siap diproses oleh algoritma <em>Machine Learning</em> dan analisis kemiripan (<em>similarity analysis</em>), digunakan pustaka <strong>TSFEL (Time Series Feature Extraction Library)</strong> mengacu pada dokumentasi resmi <a class="reference external" href="https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html">TSFEL Feature List Documentation</a>.</p>
 <p>TSFEL mengekstrak <strong>68 fitur perwakilan</strong> (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>) yang terbagi ke dalam 3 domain utama:</p>
 <ol class="arabic simple">
-<li><p><strong>Domain Statistik (<span class="math notranslate nohighlight">\(f_1 \dots f_{20}\)</span>)</strong>: Mengukur karakteristik pemusatan, sebaran, kemiringan, dan distribusi probabilitas sinyal.</p></li>
-<li><p><strong>Domain Temporal (<span class="math notranslate nohighlight">\(f_{21} \dots f_{41}\)</span>)</strong>: Mengukur sifat linier, autokorelasi, frekuensi perlintasan nol, dan durasi fluktuasi dalam domain waktu.</p></li>
-<li><p><strong>Domain Spektral (<span class="math notranslate nohighlight">\(f_{42} \dots f_{68}\)</span>)</strong>: Mengukur distribusi energi frekuensi sinyal menggunakan transformasi Fourier (<em>Fast Fourier Transform</em> / FFT) dan Wavelet CWT.</p></li>
+<li><p><strong>Domain Statistik (<span class="math notranslate nohighlight">\(f_1 \dots f_{31}\)</span>)</strong>: Mengukur karakteristik pemusatan, sebaran, kemiringan, ECDF, dan distribusi probabilitas sinyal (31 Fitur).</p></li>
+<li><p><strong>Domain Temporal (<span class="math notranslate nohighlight">\(f_{32} \dots f_{45}\)</span>)</strong>: Mengukur sifat linier, autokorelasi, perlintasan nol, dan durasi fluktuasi dalam domain waktu (14 Fitur).</p></li>
+<li><p><strong>Domain Spektral (<span class="math notranslate nohighlight">\(f_{46} \dots f_{68}\)</span>)</strong>: Mengukur distribusi energi spektrogram frekuensi sinyal menggunakan transformasi Fourier (<em>Fast Fourier Transform</em> / FFT) (23 Fitur).</p></li>
 </ol>
+<ul class="simple">
+<li><p><strong>Output File CSV</strong>: Matriks 68 fitur TSFEL disimpan ke <strong><code class="docutils literal notranslate"><span class="pre">data/csv/CO_tsfel_features.csv</span></code></strong> dengan format nama header <code class="docutils literal notranslate"><span class="pre">f1_Absolute</span> <span class="pre">energy</span></code>, <code class="docutils literal notranslate"><span class="pre">f2_Average</span> <span class="pre">power</span></code>, …, hingga <code class="docutils literal notranslate"><span class="pre">f68_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.35Hz</span></code>.</p></li>
+</ul>
 </section>
 </section>
 <hr class="docutils" />
-<section id="katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68">
-<h2>3. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68" title="Link to this heading">#</a></h2>
-<p>Berikut adalah penomoran urut fitur <span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span> beserta fungsi resmi TSFEL, definisi, dan formula matematikalnya:</p>
-<section id="domain-statistik-f-1-hingga-f-20">
-<h3>3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)<a class="headerlink" href="#domain-statistik-f-1-hingga-f-20" title="Link to this heading">#</a></h3>
+<section id="katalog-penomoran-presisi-68-fitur-tsfel-f-1-hingga-f-68">
+<h2>3. Katalog &amp; Penomoran Presisi 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#katalog-penomoran-presisi-68-fitur-tsfel-f-1-hingga-f-68" title="Link to this heading">#</a></h2>
+<p>Berikut adalah pemetaan resmi penomoran urut kode <span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span> beserta nama fitur TSFEL, domain, dan deskripsi fungsinya:</p>
+<section id="domain-statistik-f-1-hingga-f-31">
+<h3>3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{31}\)</span>)<a class="headerlink" href="#domain-statistik-f-1-hingga-f-31" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
-<th class="head text-left"><p>Nama Fungsi TSFEL</p></th>
-<th class="head text-left"><p>Definisi Resmi &amp; Cara Kerja</p></th>
-<th class="head text-left"><p>Cara Menghitung &amp; Rumus Matematika</p></th>
+<th class="head text-left"><p>Header Kolom CSV (<code class="docutils literal notranslate"><span class="pre">f{i}_NamaFitur</span></code>)</p></th>
+<th class="head text-center"><p>Domain</p></th>
+<th class="head text-left"><p>Deskripsi Fitur</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_1\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">abs_energy</span></code></p></td>
-<td class="text-left"><p>Menghitung energi mutlak dari keseluruhan sinyal deret waktu.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(E = \sum_{t=1}^{N} \vert X(t) \vert^2\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f1_Absolute</span> <span class="pre">energy</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_2\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">average_power</span></code></p></td>
-<td class="text-left"><p>Menghitung rata-rata daya sinyal per satuan waktu sampling harian.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(P = \frac{1}{N} \sum_{t=1}^{N} \vert X(t) \vert^2\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f2_Average</span> <span class="pre">power</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_3\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_max</span></code></p></td>
-<td class="text-left"><p>Menghitung nilai puncak maksimum dari sinyal deret waktu <span class="math notranslate nohighlight">\(\text{CO}\)</span>.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Max} = \max(X_t)\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f3_ECDF</span> <span class="pre">Percentile</span> <span class="pre">Count_0</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_4\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_mean</span></code></p></td>
-<td class="text-left"><p>Menghitung nilai rata-rata aritmatika dari sinyal <span class="math notranslate nohighlight">\(\text{CO}\)</span>.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\bar{X} = \frac{1}{N} \sum_{t=1}^{N} X_t\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f4_ECDF</span> <span class="pre">Percentile</span> <span class="pre">Count_1</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_5\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_median</span></code></p></td>
-<td class="text-left"><p>Menghitung nilai median (persentil ke-50) dari sinyal <span class="math notranslate nohighlight">\(\text{CO}\)</span>.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(Me = X_{((N+1)/2)}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f5_ECDF</span> <span class="pre">Percentile_0</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_6\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_min</span></code></p></td>
-<td class="text-left"><p>Menghitung nilai minimum terendah dari sinyal <span class="math notranslate nohighlight">\(\text{CO}\)</span>.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Min} = \min(X_t)\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f6_ECDF</span> <span class="pre">Percentile_1</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_7\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_std</span></code></p></td>
-<td class="text-left"><p>Menghitung nilai standar deviasi (simpangan baku) populasi sinyal.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(s = \sqrt{\frac{1}{N}\sum_{t=1}^{N}(X_t - \bar{X})^2}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f7_ECDF_0</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_8\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_var</span></code></p></td>
-<td class="text-left"><p>Menghitung nilai variansi sebaran data sinyal dari rata-ratanya.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(s^2 = \frac{1}{N}\sum_{t=1}^{N}(X_t - \bar{X})^2\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f8_ECDF_1</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_9\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ecdf</span></code></p></td>
-<td class="text-left"><p>Menghitung fungsi distribusi kumulatif empiris sepanjang sumbu waktu.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(F_N(x) = \frac{1}{N} \sum_{i=1}^{N} \mathbf{1}_{X_i \le x}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f9_ECDF_2</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{10}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ecdf_percentile</span></code></p></td>
-<td class="text-left"><p>Menghitung nilai persentil ECDF dari distribusi kumulatif.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(Q(p) = \inf \{x : F_N(x) \ge p\}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f10_ECDF_3</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{11}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ecdf_percentile_count</span></code></p></td>
-<td class="text-left"><p>Menghitung jumlah sampel kumulatif yang nilainya lebih kecil dari persentil.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(C(p) = \sum_{i=1}^{N} \mathbf{1}_{X_i \le Q(p)}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f11_ECDF_4</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{12}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">ecdf_slope</span></code></p></td>
-<td class="text-left"><p>Menghitung kemiringan (gradien) ECDF di antara dua persentil (<span class="math notranslate nohighlight">\(p_{\text{init}}, p_{\text{end}}\)</span>).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Slope}_{\text{ECDF}} = \frac{p_{\text{end}} - p_{\text{init}}}{Q(p_{\text{end}}) - Q(p_{\text{init}})}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f12_ECDF_5</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{13}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">entropy</span></code></p></td>
-<td class="text-left"><p>Menghitung tingkat keacakan/ketidakpastian sinyal (Shannon Entropy).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(H(X) = -\sum p(x_i) \log_2 p(x_i)\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f13_ECDF_6</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{14}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hist_mode</span></code></p></td>
-<td class="text-left"><p>Menghitung modus histogram dari pembagian interval bin teratur.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Mode}_{\text{hist}} = \arg\max_{b} (\text{bin}_b)\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f14_ECDF_7</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{15}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">interq_range</span></code></p></td>
-<td class="text-left"><p>Menghitung rentang antarkuartil (<span class="math notranslate nohighlight">\(\text{IQR} = Q_3 - Q_1\)</span>) dari sinyal.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{IQR} = Q_3 - Q_1\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f15_ECDF_8</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{16}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">kurtosis</span></code></p></td>
-<td class="text-left"><p>Menghitung keruncingan puncak distribusi sinyal dibanding distribusi normal.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(K = \frac{\frac{1}{N}\sum(X_t - \bar{X})^4}{s^4} - 3\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f16_ECDF_9</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{17}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mean_abs_deviation</span></code></p></td>
-<td class="text-left"><p>Menghitung rata-rata simpangan mutlak observasi dari rata-ratanya.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MAD} = \frac{1}{N} \sum_{t=1}^{N} \vert X_t - \bar{X} \vert\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f17_Entropy</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{18}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">median_abs_deviation</span></code></p></td>
-<td class="text-left"><p>Menghitung median dari selisih mutlak observasi terhadap median sinyal.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MedAD} = \text{median}(\vert X_t - Me \vert)\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f18_Histogram</span> <span class="pre">mode</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{19}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">rms</span></code></p></td>
-<td class="text-left"><p>Menghitung <em>Root Mean Square</em> (akar rata-rata kuadrat) amplitudo sinyal.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{RMS} = \sqrt{\frac{1}{N}\sum_{t=1}^{N} X_t^2}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f19_Interquartile</span> <span class="pre">range</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{20}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">skewness</span></code></p></td>
-<td class="text-left"><p>Menghitung kemiringan (asimetri) distribusi data terhadap rata-rata.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(S_k = \frac{\frac{1}{N}\sum(X_t - \bar{X})^3}{s^3}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f20_Kurtosis</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
-</tbody>
-</table>
-</div>
-</section>
-<hr class="docutils" />
-<section id="domain-temporal-f-21-hingga-f-41">
-<h3>3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)<a class="headerlink" href="#domain-temporal-f-21-hingga-f-41" title="Link to this heading">#</a></h3>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
-<th class="head text-left"><p>Nama Fungsi TSFEL</p></th>
-<th class="head text-left"><p>Definisi Resmi &amp; Cara Kerja</p></th>
-<th class="head text-left"><p>Cara Menghitung &amp; Rumus Matematika</p></th>
-</tr>
-</thead>
-<tbody>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{21}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">autocorr</span></code></p></td>
-<td class="text-left"><p>Menghitung titik perlintasan <span class="math notranslate nohighlight">\(1/e\)</span> pertama pada fungsi autokorelasi (ACF).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(R(k) = \frac{\sum (X_t - \bar{X})(X_{t+k} - \bar{X})}{\sum (X_t - \bar{X})^2} \to \text{Cari } k \text{ saat } R(k)=1/e\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f21_Max</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{22}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">calc_centroid</span></code></p></td>
-<td class="text-left"><p>Menghitung titik pusat massa (<em>barycenter</em>) sinyal sepanjang sumbu waktu.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(C_{\text{temp}} = \frac{\sum_{t=1}^{N} t \cdot X_t}{\sum_{t=1}^{N} X_t}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f22_Mean</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{23}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">dfa</span></code></p></td>
-<td class="text-left"><p><em>Detrended Fluctuation Analysis</em> untuk mengukur ketergantungan jangka panjang.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(F(n) = \sqrt{\frac{1}{N}\sum_{y}(Y(k) - Y_n(k))^2} \sim n^\alpha\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f23_Mean</span> <span class="pre">absolute</span> <span class="pre">deviation</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{24}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">distance</span></code></p></td>
-<td class="text-left"><p>Menghitung total jarak lintasan akumulatif yang ditempuh oleh sinyal.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(D = \sum_{t=1}^{N-1} \sqrt{1 + (X_{t+1} - X_t)^2}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f24_Median</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{25}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">higuchi_fractal_dimension</span></code></p></td>
-<td class="text-left"><p>Menghitung dimensi fraktal sinyal menggunakan metode Higuchi (HFD).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(L(m, k) \propto k^{-D_H}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f25_Median</span> <span class="pre">absolute</span> <span class="pre">deviation</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{26}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">hurst_exponent</span></code></p></td>
-<td class="text-left"><p>Menghitung eksponen Hurst melalui analisis <em>Rescaled Range</em> (<span class="math notranslate nohighlight">\(R/S\)</span>).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\((R/S)_n \propto n^H\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f26_Min</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{27}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">lempel_ziv</span></code></p></td>
-<td class="text-left"><p>Menghitung indeks kompleksitas Lempel-Ziv (LZ) yang diternormalisasi.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(C_{\text{LZ}} = \frac{c(N)}{N / \log_2(N)}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f27_Peak</span> <span class="pre">to</span> <span class="pre">peak</span> <span class="pre">distance</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{28}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">maximum_fractal_length</span></code></p></td>
-<td class="text-left"><p>Menghitung panjang fraktal maksimum (MFL) pada skala terkecil.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MFL} = \text{mean}(L(m, k_{\min}))\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f28_Root</span> <span class="pre">mean</span> <span class="pre">square</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{29}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mean_abs_diff</span></code></p></td>
-<td class="text-left"><p>Menghitung rata-rata selisih mutlak antara sampel harian berurutan.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MAD}_{\text{diff}} = \frac{1}{N-1}\sum_{t=1}^{N-1} \vert X_{t+1} - X_t \vert\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f29_Skewness</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{30}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mean_diff</span></code></p></td>
-<td class="text-left"><p>Menghitung rata-rata selisih linier harian antara sampel berurutan.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{M}_{\text{diff}} = \frac{1}{N-1}\sum_{t=1}^{N-1} (X_{t+1} - X_t)\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f30_Standard</span> <span class="pre">deviation</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{31}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">median_abs_diff</span></code></p></td>
-<td class="text-left"><p>Menghitung median dari selisih mutlak observasi berurutan.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MedAD}_{\text{diff}} = \text{median}(\vert X_{t+1} - X_t \vert)\)</span></p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{32}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">median_diff</span></code></p></td>
-<td class="text-left"><p>Menghitung median dari selisih linier harian observasi berurutan.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Med}_{\text{diff}} = \text{median}(X_{t+1} - X_t)\)</span></p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{33}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mse</span></code></p></td>
-<td class="text-left"><p><em>Multiscale Entropy</em> yang mengukur kompleksitas pada berbagai skala waktu.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MSE}(m, r, \tau) = \text{SampleEntropy}(X^\tau, m, r)\)</span></p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{34}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">negative_turning</span></code></p></td>
-<td class="text-left"><p>Menghitung jumlah titik balik negatif (lembah lokal sinyal).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(N_{TP-} = \sum \mathbf{1}_{(X_t &lt; X_{t-1} \land X_t &lt; X_{t+1})}\)</span></p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{35}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">neighbourhood_peaks</span></code></p></td>
-<td class="text-left"><p>Menghitung jumlah puncak lokal dalam tetangga area dekat <span class="math notranslate nohighlight">\(n\)</span>.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(N_{\text{peaks}} = \sum \mathbf{1}_{(X_t &gt; \max(X_{t-n..t+n}))}\)</span></p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{36}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">petrosian_fractal_dimension</span></code></p></td>
-<td class="text-left"><p>Menghitung dimensi fraktal Petrosian (PFD) dari turunan biner sinyal.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(D_P = \frac{\log_{10} N}{\log_{10} N + \log_{10}\left(\frac{N}{N + 0.4 N_{\Delta}}\right)}\)</span></p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{37}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">pk_pk_distance</span></code></p></td>
-<td class="text-left"><p>Menghitung jarak selisih amplitudo dari puncak maksimum ke minimum.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(P_{2P} = \max(X_t) - \min(X_t)\)</span></p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{38}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">positive_turning</span></code></p></td>
-<td class="text-left"><p>Menghitung jumlah titik balik positif (puncak lokal sinyal).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(N_{TP+} = \sum \mathbf{1}_{(X_t &gt; X_{t-1} \land X_t &gt; X_{t+1})}\)</span></p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{39}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">slope</span></code></p></td>
-<td class="text-left"><p>Menghitung gradien kemiringan regresi linier garis tren sinyal.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\beta = \frac{\sum (t - \bar{t})(X_t - \bar{X})}{\sum (t - \bar{t})^2}\)</span></p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{40}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">sum_abs_diff</span></code></p></td>
-<td class="text-left"><p>Menghitung total akumulasi penjumlahan selisih mutlak harian.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(S_{\text{abs}} = \sum_{t=1}^{N-1} \vert X_{t+1} - X_t \vert\)</span></p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{41}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">zero_cross</span></code></p></td>
-<td class="text-left"><p>Menghitung laju perlintasan sinyal melewati angka nol (atau rata-rata).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{ZCR} = \frac{1}{N-1}\sum \mathbf{1}_{(X_t \cdot X_{t+1} &lt; 0)}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f31_Variance</span></code></p></td>
+<td class="text-center"><p>Statistical</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
 <hr class="docutils" />
-<section id="domain-spektral-f-42-hingga-f-68">
-<h3>3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#domain-spektral-f-42-hingga-f-68" title="Link to this heading">#</a></h3>
+<section id="domain-temporal-f-32-hingga-f-45">
+<h3>3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{32}\)</span> hingga <span class="math notranslate nohighlight">\(f_{45}\)</span>)<a class="headerlink" href="#domain-temporal-f-32-hingga-f-45" title="Link to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
-<th class="head text-left"><p>Nama Fungsi TSFEL</p></th>
-<th class="head text-left"><p>Definisi Resmi &amp; Cara Kerja</p></th>
-<th class="head text-left"><p>Cara Menghitung &amp; Rumus Matematika</p></th>
+<th class="head text-left"><p>Header Kolom CSV (<code class="docutils literal notranslate"><span class="pre">f{i}_NamaFitur</span></code>)</p></th>
+<th class="head text-center"><p>Domain</p></th>
+<th class="head text-left"><p>Deskripsi Fitur</p></th>
 </tr>
 </thead>
 <tbody>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{32}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f32_Area</span> <span class="pre">under</span> <span class="pre">the</span> <span class="pre">curve</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{33}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f33_Autocorrelation</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{34}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f34_Centroid</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{35}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f35_Mean</span> <span class="pre">absolute</span> <span class="pre">diff</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{36}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f36_Mean</span> <span class="pre">diff</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{37}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f37_Median</span> <span class="pre">absolute</span> <span class="pre">diff</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{38}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f38_Median</span> <span class="pre">diff</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{39}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f39_Negative</span> <span class="pre">turning</span> <span class="pre">points</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{40}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f40_Neighbourhood</span> <span class="pre">peaks</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{41}\)</span></strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f41_Positive</span> <span class="pre">turning</span> <span class="pre">points</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
+</tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{42}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">auc</span></code></p></td>
-<td class="text-left"><p>Menghitung luas di bawah kurva spektrum menggunakan aturan trapesium.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{AUC} = \int X(t) dt \approx \sum \frac{X_t + X_{t+1}}{2} \Delta t\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f42_Signal</span> <span class="pre">distance</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{43}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">fundamental_frequency</span></code></p></td>
-<td class="text-left"><p>Menghitung frekuensi fundamental dasar utama dari spektrum sinyal.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(f_0 = \arg\max_f \vert S(f) \vert\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f43_Slope</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{44}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">human_range_energy</span></code></p></td>
-<td class="text-left"><p>Menghitung rasio energi spektral pada pita rentang aktivitas harian.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(E_{\text{human}} = \frac{\sum_{f \in \text{human}} \vert S(f) \vert^2}{\sum \vert S(f) \vert^2}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f44_Sum</span> <span class="pre">absolute</span> <span class="pre">diff</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{45}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">lpcc</span></code></p></td>
-<td class="text-left"><p>Menghitung koefisien <em>Linear Prediction Cepstral</em> (LPCC).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(c_n = a_n + \sum_{k=1}^{n-1} \frac{k}{n} c_k a_{n-k}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f45_Zero</span> <span class="pre">crossing</span> <span class="pre">rate</span></code></p></td>
+<td class="text-center"><p>Temporal</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
 </tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="domain-spektral-f-46-hingga-f-68">
+<h3>3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{46}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#domain-spektral-f-46-hingga-f-68" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
+<th class="head text-left"><p>Header Kolom CSV (<code class="docutils literal notranslate"><span class="pre">f{i}_NamaFitur</span></code>)</p></th>
+<th class="head text-center"><p>Domain</p></th>
+<th class="head text-left"><p>Deskripsi Fitur</p></th>
+</tr>
+</thead>
+<tbody>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{46}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">max_frequency</span></code></p></td>
-<td class="text-left"><p>Menghitung frekuensi tertinggi yang memiliki respon energi spektral.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(f_{\max} = \max \{f : \vert S(f) \vert &gt; 0\}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f46_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.02Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{47}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">max_power_spectrum</span></code></p></td>
-<td class="text-left"><p>Menghitung nilai puncak kerapatan spektrum daya (<em>Power Spectrum Density</em>).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{PSD}_{\max} = \max \vert S(f) \vert^2\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f47_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.03Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{48}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">median_frequency</span></code></p></td>
-<td class="text-left"><p>Menghitung frekuensi yang membagi dua total energi spektrogram.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\sum_{f=0}^{f_{\text{med}}} \vert S(f) \vert^2 = \frac{1}{2} \sum \vert S(f) \vert^2\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f48_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.05Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{49}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">mfcc</span></code></p></td>
-<td class="text-left"><p>Menghitung koefisien spektral <em>Mel-Frequency Cepstral Coefficients</em> (MFCC).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{MFCC}_m = \sum_{k=1}^{K} \log(S_k) \cos\left[ m \left(k - \frac{1}{2}\right) \frac{\pi}{K}\right]\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f49_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.06Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{50}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">power_bandwidth</span></code></p></td>
-<td class="text-left"><p>Menghitung lebar pita frekuensi (<em>bandwidth</em>) dari spektrum daya.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{BW} = f_{\text{high}} - f_{\text{low}}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f50_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.08Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{51}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_centroid</span></code></p></td>
-<td class="text-left"><p>Menghitung titik pusat massa (<em>barycenter</em>) dari spektrum frekuensi Fourier.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(C_{\text{spec}} = \frac{\sum f \cdot \vert S(f) \vert}{\sum \vert S(f) \vert}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f51_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.0Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{52}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_decrease</span></code></p></td>
-<td class="text-left"><p>Menghitung tingkat penurunan amplitudo spektrum frekuensi.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(S_{\text{dec}} = \frac{1}{\sum_{k=2}^{K} S(k)} \sum_{k=2}^{K} \frac{S(k) - S(1)}{k - 1}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f52_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.11Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{53}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_distance</span></code></p></td>
-<td class="text-left"><p>Menghitung jarak deviasi spektral energi relatif terhadap frekuensi.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(D_{\text{spec}} = \sqrt{\sum (S(f_k) - \bar{S})^2}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f53_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.13Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{54}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_entropy</span></code></p></td>
-<td class="text-left"><p>Menghitung entropi spektral berbasis transformasi Fourier.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(H_{\text{spec}} = -\sum p_k \log_2 p_k, \quad p_k = \frac{\vert S(f_k) \vert^2}{\sum \vert S(f_k) \vert^2}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f54_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.15Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{55}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_kurtosis</span></code></p></td>
-<td class="text-left"><p>Menghitung keruncingan sebaran bentuk spektrum frekuensi di sekitar rata-rata.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(K_{\text{spec}} = \frac{\sum (f_k - C_{\text{spec}})^4 S(f_k)}{\sigma_{\text{spec}}^4 \sum S(f_k)}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f55_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.16Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{56}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_positive_turning</span></code></p></td>
-<td class="text-left"><p>Menghitung jumlah titik balik positif dari magnitudo sinyal FFT.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(N_{TP+,\text{fft}} = \sum \mathbf{1}_{(\vert S_k \vert &gt; \vert S_{k-1} \vert \land \vert S_k \vert &gt; \vert S_{k+1} \vert)}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f56_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.18Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{57}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_roll_off</span></code></p></td>
-<td class="text-left"><p>Menghitung frekuensi di mana 95% energi spektral terkonsentrasi.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\sum_{f=0}^{f_{\text{roll}}} \vert S(f) \vert^2 = 0.95 \sum \vert S(f) \vert^2\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f57_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.19Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{58}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_roll_on</span></code></p></td>
-<td class="text-left"><p>Menghitung frekuensi di mana 5% awal energi spektral mulai terkonsentrasi.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\sum_{f=0}^{f_{\text{roll-on}}} \vert S(f) \vert^2 = 0.05 \sum \vert S(f) \vert^2\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f58_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.1Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{59}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_skewness</span></code></p></td>
-<td class="text-left"><p>Menghitung asimetri distribusi spektrum daya frekuensi.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(S_{k,\text{spec}} = \frac{\sum (f_k - C_{\text{spec}})^3 S(f_k)}{\sigma_{\text{spec}}^3 \sum S(f_k)}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f59_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.21Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{60}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_slope</span></code></p></td>
-<td class="text-left"><p>Menghitung gradien kemiringan garis regresi pada spektrum frekuensi.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{Slope}_{\text{spec}} = \frac{K \sum f_k S(f_k) - \sum f_k \sum S(f_k)}{K \sum f_k^2 - (\sum f_k)^2}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f60_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.23Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{61}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_spread</span></code></p></td>
-<td class="text-left"><p>Menghitung simpangan sebaran spektrum di sekitar titik centroid spektral.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\sigma_{\text{spec}}^2 = \frac{\sum (f_k - C_{\text{spec}})^2 S(f_k)}{\sum S(f_k)}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f61_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.24Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{62}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectral_variation</span></code></p></td>
-<td class="text-left"><p>Menghitung tingkat variasi perubahan pola spektrum sepanjang waktu.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(V_{\text{spec}} = 1 - \frac{\sum S_t(f) S_{t-1}(f)}{\sqrt{\sum S_t^2(f) \sum S_{t-1}^2(f)}}\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f62_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.26Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{63}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">spectrogram_mean_coeff</span></code></p></td>
-<td class="text-left"><p>Menghitung rata-rata kerapatan spektral daya (PSD) dari spektrogram.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\bar{P}(f) = \frac{1}{T}\sum_{t=1}^{T} \text{PSD}(f, t)\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f63_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.27Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{64}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">wavelet_abs_mean</span></code></p></td>
-<td class="text-left"><p>Menghitung rata-rata mutlak koefisien <em>Continuous Wavelet Transform</em> (CWT).</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(\text{CWT}_{\text{abs}} = \frac{1}{N}\sum \vert W(a, b) \vert\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f64_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.29Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{65}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">wavelet_energy</span></code></p></td>
-<td class="text-left"><p>Menghitung total energi koefisien wavelet pada setiap skala <em>wavelet</em>.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(E_{\text{wavelet}}(a) = \sum_{b} \vert W(a, b) \vert^2\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f65_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.31Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{66}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">wavelet_entropy</span></code></p></td>
-<td class="text-left"><p>Menghitung entropi spektral energi dari hasil dekode <em>wavelet</em>.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(H_{\text{wavelet}} = -\sum p_a \log_2 p_a\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f66_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.32Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{67}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">wavelet_std</span></code></p></td>
-<td class="text-left"><p>Menghitung standar deviasi dari koefisien skala <em>wavelet</em> CWT.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(s_{\text{wavelet}}(a) = \text{std}(W(a, b))\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f67_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.34Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{68}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">wavelet_var</span></code></p></td>
-<td class="text-left"><p>Menghitung variansi dari koefisien skala <em>wavelet</em> CWT.</p></td>
-<td class="text-left"><p><span class="math notranslate nohighlight">\(s^2_{\text{wavelet}}(a) = \text{var}(W(a, b))\)</span></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f68_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.35Hz</span></code></p></td>
+<td class="text-center"><p>Spectral</p></td>
+<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
 </tr>
 </tbody>
 </table>
@@ -820,7 +1061,7 @@ X_i, &amp; \text{lainnya}
 <hr class="docutils" />
 <blockquote>
 <div><p>[!NOTE]
-Penomoran urut kode <span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span> di atas memetakan seluruh modul fitur bawaan TSFEL secara presisi untuk memudahkan identifikasi kolom saat hasil matriks fitur diekstrak ke dalam format tabel CSV.</p>
+Penomoran urut kode <code class="docutils literal notranslate"><span class="pre">f1_Absolute</span> <span class="pre">energy</span></code> hingga <code class="docutils literal notranslate"><span class="pre">f68_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.35Hz</span></code> memetakan 68 fitur utama TSFEL secara presisi dan terstruktur sempurna pada header file <code class="docutils literal notranslate"><span class="pre">data/csv/CO_tsfel_features.csv</span></code>.</p>
 </div></blockquote>
 </section>
 </section>
@@ -882,20 +1123,22 @@ Penomoran urut kode <span class="math notranslate nohighlight">\(f_1\)</span> hi
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-outliers">1. Penanganan Missing Values &amp; Outliers</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang-pendekatan-data-cleaning">1.1 Latar Belakang &amp; Pendekatan Data Cleaning</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-outlier-berbasis-interquartile-range-iqr">1.2 Deteksi Outlier Berbasis Interquartile Range (IQR)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#formula-mekanisme-interpolasi-linear">1.3 Formula &amp; Mekanisme Interpolasi Linear</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-outliers-data-cleaning-terpadu">1. Penanganan Missing Values &amp; Outliers (Data Cleaning Terpadu)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-missing-values-celah-data-mentah">1.1 Evaluasi Missing Values (Celah Data Mentah)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-pengosongan-outlier-metode-iqr-dinamis-berbasis-kode">1.2 Deteksi &amp; Pengosongan Outlier (Metode IQR Dinamis Berbasis Kode)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengosongan-outlier-imputasi-linear-time-interpolation">1.3 Pengosongan Outlier &amp; Imputasi Linear Time Interpolation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-4-grafik-terpisah-ringkasan-perubahan-status-sinyal">1.4 Visualisasi 4 Grafik Terpisah &amp; Ringkasan Perubahan Status Sinyal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-ringkasan-perubahan-status-sinyal">Tabel Ringkasan Perubahan Status Sinyal</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-tsfel-time-series-feature-extraction-library">2. Ekstraksi Fitur TSFEL (Time Series Feature Extraction Library)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-rekayasa-fitur-time-series">2.1 Konsep Rekayasa Fitur Time Series</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-lengkap-68-fitur-tsfel-f-1-hingga-f-68">3. Katalog &amp; Penomoran Lengkap 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-20">3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{20}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-21-hingga-f-41">3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{21}\)</span> hingga <span class="math notranslate nohighlight">\(f_{41}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-42-hingga-f-68">3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{42}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-presisi-68-fitur-tsfel-f-1-hingga-f-68">3. Katalog &amp; Penomoran Presisi 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-31">3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{31}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-32-hingga-f-45">3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{32}\)</span> hingga <span class="math notranslate nohighlight">\(f_{45}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-46-hingga-f-68">3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{46}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
 </ul>
 </li>
 </ul>
