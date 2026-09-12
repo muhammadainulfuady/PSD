@@ -12,78 +12,219 @@ kernelspec:
   name: python3
 ---
 
-# Data Preparation
+# Data Preparation (Persiapan Data CO)
 
 Data Preparation adalah tahap ketiga dalam metodologi CRISP-DM yang bertujuan untuk **membersihkan**, **mengimputasi nilai kosong (*missing values*)**, **menangani pencilan (*outliers*)**, dan **merekayasa fitur (*feature engineering*)** dari deret waktu pengamatan kualitas udara polutan **Karbon Monoksida ($\text{CO}$)** pada skala geografis **Tingkat Kecamatan (Kecamatan Bungah)** selama 365 hari (24 Agustus 2025 – 23 Agustus 2026).
 
 ---
 
-## 1. Penanganan Missing Values & Outliers
+## 1. Penanganan Missing Values & Outliers (Data Cleaning Terpadu)
 
-### 1.1 Latar Belakang & Pendekatan Data Cleaning
-Data pengamatan satelit Sentinel-5P dari Copernicus Data Space untuk polutan $\text{CO}$ harian memiliki celah data (*missing values* / `NaN`) akibat tutupan awan tebal dan penyaringan validasi kualitas (*quality flag*). Selain itu, terdapat pula beberapa titik data pengamatan yang nilainya melonjak ekstrem (*outlier*) di luar batas wajar akibat interferensi cuaca lokal.
+### 1.1 Evaluasi Missing Values (Celah Data Mentah)
 
-Untuk menghasilkan sinyal deret waktu yang mulus, mulus, dan kontinu 365 hari tanpa pencilan ekstrem maupun celah kosong, digunakan alur **Data Cleaning Terpadu**:
-1. **Pemeriksaan Data Mentah**: Mengidentifikasi 173 hari data kosong (`NaN`) awal.
-2. **Deteksi Outlier**: Menghitung batas Interquartile Range (IQR) pada data valid untuk mendeteksi 11 titik pencilan ekstrem.
-3. **Pengosongan Outlier**: Menghapus/mengosongkan nilai 11 tanggal pencilan tersebut menjadi `NaN` (total missing values menjadi 184 hari).
-4. **Imputasi Linear Sekaligus**: Melakukan **Linear Time Interpolation** secara bersamaan untuk 184 titik `NaN` sehingga diperoleh sinyal kontinu mulus 365 hari tanpa celah.
+Data pengamatan satelit Sentinel-5P dari Copernicus Data Space untuk polutan $\text{CO}$ harian selama 365 hari memiliki celah data (*missing values* / `NaN`) yang disebabkan oleh tutupan awan tebal, kendala jadwal orbit satelit, dan penyaringan validasi kualitas (*quality flag*).
+
+Evaluasi celah data dihitung secara **dinamis menggunakan kode Python** berikut:
+
+```{code-cell} ipython3
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. Membaca Dataset Mentah CO (365 Hari)
+raw_path = '../data/csv/CO_gresik_timeseries.csv'
+df_raw = pd.read_csv(raw_path)
+df_raw['date'] = pd.to_datetime(df_raw['date'])
+df_raw = df_raw.sort_values('date').reset_index(drop=True)
+
+# Hitung statistik celah data awal
+total_rows = len(df_raw)
+nan_awal = df_raw['CO'].isna().sum()
+valid_awal = df_raw['CO'].notna().sum()
+
+print(f"Total Baris Observasi   : {total_rows} hari")
+print(f"Jumlah Data Valid Awal  : {valid_awal} hari ({valid_awal/total_rows*100:.2f}%)")
+print(f"Jumlah Missing (NaN)    : {nan_awal} hari ({nan_awal/total_rows*100:.2f}%)")
+```
 
 ---
 
-### 1.2 Deteksi Outlier Berbasis Interquartile Range (IQR)
+### 1.2 Deteksi & Pengosongan Outlier (Metode IQR Dinamis Berbasis Kode)
 
-Metode **Interquartile Range (IQR)** digunakan untuk menentukan batas wajar observasi:
+Sebelum dilakukan imputasi deret waktu, titik pencilan (*outliers*) dievaluasi terlebih dahulu pada populasi data valid agar lonjakan ekstrem tidak merusak kemiringan (*slope*) garis interpolasi.
 
-1. **Kuartil Pertama ($Q_1$)**: Persentil ke-25 data terurut.
-2. **Kuartil Ketiga ($Q_3$)**: Persentil ke-75 data terurut.
-3. **Rentang Antarkuartil ($\text{IQR}$)**:
+Metode **Interquartile Range (IQR)** dihitung secara presisi dengan pustaka Pandas/NumPy:
 
 ```{math}
 \text{IQR} = Q_3 - Q_1
 ```
 
-Batas bawah (*Lower Bound*) dan batas atas (*Upper Bound*) ditentukan melalui formula:
-
 ```{math}
-\text{Batas Bawah} = Q_1 - 1.5 \times \text{IQR}
+\text{Batas Bawah} = Q_1 - 1.5 \times \text{IQR}, \quad \text{Batas Atas} = Q_3 + 1.5 \times \text{IQR}
 ```
 
-```{math}
-\text{Batas Atas} = Q_3 + 1.5 \times \text{IQR}
-```
+Eksekusi kode Python untuk menghitung ambang batas IQR dan mengidentifikasi seluruh tanggal pencilan:
 
-Titik data $X_i$ dikategorikan sebagai **Outlier** jika:
+```{code-cell} ipython3
+# 2. Deteksi Outlier dengan Metode IQR pada Data Valid
+q1 = df_raw['CO'].quantile(0.25)
+q3 = df_raw['CO'].quantile(0.75)
+iqr = q3 - q1
+lower_bound = q1 - 1.5 * iqr
+upper_bound = q3 + 1.5 * iqr
 
-```{math}
-X_i < \text{Batas Bawah} \quad \text{atau} \quad X_i > \text{Batas Atas}
-```
+# Masking Outlier
+is_outlier = (df_raw['CO'] < lower_bound) | (df_raw['CO'] > upper_bound)
+jumlah_outlier = is_outlier.sum()
 
-Nilai $X_i$ yang terdeteksi sebagai outlier dihapus/dikosongkan menjadi `NaN`:
+print(f"Kuartil 1 (Q1)           : {q1:.6f} mol/m²")
+print(f"Kuartil 3 (Q3)           : {q3:.6f} mol/m²")
+print(f"IQR (Q3 - Q1)            : {iqr:.6f} mol/m²")
+print(f"Batas Bawah (Lower Bound): {lower_bound:.6f} mol/m²")
+print(f"Batas Atas (Upper Bound) : {upper_bound:.6f} mol/m²")
+print(f"Jumlah Outlier Terdeteksi: {jumlah_outlier} hari")
 
-```{math}
-X_{\text{temp}, i} = \begin{cases}
-\text{NaN}, & \text{jika } X_i < \text{Batas Bawah} \text{ atau } X_i > \text{Batas Atas} \\
-X_i, & \text{lainnya}
-\end{cases}
+# Tabel Detail Tanggal & Nilai Outlier Terdeteksi
+df_outliers = df_raw[is_outlier][['date', 'CO']].copy()
+df_outliers['date'] = df_outliers['date'].dt.strftime('%Y-%m-%d')
+print("\nDaftar Tanggal & Nilai Outlier Terdeteksi secara Akurat:")
+print(df_outliers.to_string(index=False))
 ```
 
 ---
 
-### 1.3 Formula & Mekanisme Interpolasi Linear
+### 1.3 Pengosongan Outlier & Imputasi Linear Time Interpolation
 
-Setelah titik pencilan dikosongkan menjadi `NaN` bersama celah data mentah, dilakukan **Linear Time Interpolation**.
-
-Interpolasi linear mengestimasi nilai sel kosong $X(t)$ pada tanggal $t$ yang berada di antara dua titik observasi valid terdekat $X(t_1)$ dan $X(t_2)$ dengan $t_1 < t < t_2$:
+Titik data pencilan diubah menjadi `NaN` lalu diimputasi bersama dengan celah data mentah menggunakan **Linear Time Interpolation**:
 
 ```{math}
 X(t) = X(t_1) + \frac{t - t_1}{t_2 - t_1} \cdot \left[ X(t_2) - X(t_1) \right]
 ```
 
-**Langkah Kerja Imputasi:**
-1. Mengurutkan data observasi secara kronologis berdasarkan kolom tanggal `date`.
-2. Mengisi seluruh nilai celah deret waktu (184 hari `NaN`) sehingga diperoleh 365 data kontinu tanpa *missing value*.
-3. Menyimpan hasil sinyal bersih ke file CSV baru **`data/csv/CO_clean.csv`**.
+```{code-cell} ipython3
+# 3. Pengosongan Nilai Outlier menjadi NaN
+df_prep = df_raw.copy()
+df_prep.loc[is_outlier, 'CO'] = np.nan
+nan_setelah_outlier = df_prep['CO'].isna().sum()
+
+# 4. Imputasi Linear Time Interpolation Sekaligus
+df_clean = df_prep.copy()
+df_clean['CO_clean'] = df_clean['CO'].interpolate(method='linear', limit_direction='both')
+nan_akhir = df_clean['CO_clean'].isna().sum()
+
+print(f"Jumlah NaN Setelah Outlier Dikosongkan : {nan_setelah_outlier} hari ({nan_setelah_outlier/total_rows*100:.2f}%)")
+print(f"Jumlah NaN Setelah Imputasi Akhir      : {nan_akhir} hari (100% Terisi & Clean)")
+
+# Simpan dataset bersih ke file CSV
+df_save = df_clean[['date', 'CO_clean']].rename(columns={'CO_clean': 'CO'})
+df_save.to_csv('../data/csv/CO_clean.csv', index=False)
+print("Dataset bersih disimpan ke '../data/csv/CO_clean.csv'")
+```
+
+---
+
+### 1.4 Visualisasi 4 Grafik Terpisah & Ringkasan Perubahan Status Sinyal
+
+Untuk menjaga kejelasan visual tanpa menumpuk warna dalam satu grafik, alur pembersihan sinyal disajikan dalam **4 grafik terpisah**:
+
+```{code-cell} ipython3
+# Set Visual Style
+plt.style.use('seaborn-v0_8-whitegrid' if 'seaborn-v0_8-whitegrid' in plt.style.available else 'default')
+
+# Grafik 1: Missing Values (Data Mentah dengan Celah Kosong / NaN)
+fig, ax = plt.subplots(figsize=(12, 4), dpi=150)
+ax.plot(df_raw['date'], df_raw['CO'], color='#2c3e50', linewidth=1.2, label='Sinyal Valid Mentah (192 Hari)')
+ax.set_title('1. Sinyal CO Mentah dengan Celah Missing Values (173 Hari Kosong / NaN)', fontsize=11, fontweight='bold', pad=10)
+ax.set_xlabel('Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)', fontsize=10)
+ax.set_ylabel('Konsentrasi CO (mol/m²)', fontsize=10)
+ax.legend(loc='upper right', frameon=True)
+ax.grid(True, linestyle=':', alpha=0.6)
+plt.tight_layout()
+plt.show()
+```
+
+```{code-cell} ipython3
+# Grafik 2: Sinyal Setelah Missing Values Diimputasi (Sebelum Cleaning Outlier)
+df_raw_imputed = df_raw.copy()
+df_raw_imputed['CO_imputed'] = df_raw_imputed['CO'].interpolate(method='linear', limit_direction='both')
+
+fig, ax = plt.subplots(figsize=(12, 4), dpi=150)
+ax.plot(df_raw_imputed['date'], df_raw_imputed['CO_imputed'], color='#2980b9', linewidth=1.2, label='Sinyal Terisi Utuh (365 Hari)')
+ax.set_title('2. Sinyal CO Setelah Imputasi Missing Values (Linear Time Interpolation)', fontsize=11, fontweight='bold', pad=10)
+ax.set_xlabel('Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)', fontsize=10)
+ax.set_ylabel('Konsentrasi CO (mol/m²)', fontsize=10)
+ax.legend(loc='upper right', frameon=True)
+ax.grid(True, linestyle=':', alpha=0.6)
+plt.tight_layout()
+plt.show()
+```
+
+```{code-cell} ipython3
+# Grafik 3: Deteksi Outlier Menggunakan Metode IQR
+outliers_plot = df_raw[is_outlier]
+
+fig, ax = plt.subplots(figsize=(12, 4.5), dpi=150)
+ax.plot(df_raw['date'], df_raw['CO'], color='#7f8c8d', linewidth=1.0, alpha=0.7, label='Sinyal Valid Mentah')
+ax.scatter(outliers_plot['date'], outliers_plot['CO'], color='#e74c3c', s=45, zorder=5, marker='o', edgecolor='black', linewidth=0.8, label=f'Outlier Terdeteksi ({len(outliers_plot)} Hari)')
+ax.axhline(upper_bound, color='#c0392b', linestyle='--', linewidth=1.2, label=f'Batas Atas / Upper Bound ({upper_bound:.5f})')
+ax.axhline(lower_bound, color='#2980b9', linestyle='--', linewidth=1.2, label=f'Batas Bawah / Lower Bound ({lower_bound:.5f})')
+ax.set_title(f'3. Deteksi 11 Outlier CO Menggunakan Metode Interquartile Range (IQR)', fontsize=11, fontweight='bold', pad=10)
+ax.set_xlabel('Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)', fontsize=10)
+ax.set_ylabel('Konsentrasi CO (mol/m²)', fontsize=10)
+ax.legend(loc='upper right', frameon=True, fontsize=9)
+ax.grid(True, linestyle=':', alpha=0.6)
+plt.tight_layout()
+plt.show()
+```
+
+```{code-cell} ipython3
+# Grafik 4: Sinyal CO Final Setelah Outlier Dibersihkan & Diimputasi
+fig, ax = plt.subplots(figsize=(12, 4), dpi=150)
+ax.plot(df_clean['date'], df_clean['CO_clean'], color='#27ae60', linewidth=1.4, label='Sinyal Mulus Super Clean (365 Hari)')
+ax.set_title('4. Sinyal CO Final Setelah Penanganan Outlier & Imputasi Linear (Clean Dataset)', fontsize=11, fontweight='bold', pad=10)
+ax.set_xlabel('Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)', fontsize=10)
+ax.set_ylabel('Konsentrasi CO (mol/m²)', fontsize=10)
+ax.legend(loc='upper right', frameon=True)
+ax.grid(True, linestyle=':', alpha=0.6)
+plt.tight_layout()
+plt.show()
+```
+
+### Tabel Ringkasan Perubahan Status Sinyal
+
+| Tahapan Data Preparation | Jumlah Data Valid | Jumlah Missing Values (`NaN`) | Jumlah Outliers | Keterangan Status |
+| :--- | :---: | :---: | :---: | :--- |
+| **1. Data Mentah (Raw)** | 192 hari | 173 hari (47.40%) | 11 hari | Ada celah `NaN` & pencilan |
+| **2. Pengosongan Outlier** | 181 hari | 184 hari (50.41%) | 0 hari | Outlier diubah menjadi `NaN` |
+| **3. Imputasi Akhir (Clean)** | **365 hari** | **0 hari (0.00%)** | **0 hari** | **Sinyal mulus 100% utuh** |
+
+```{figure} ../assets/editor/data_prep/1_co_raw_missing.png
+:width: 100%
+:align: center
+
+Grafik 1: Sinyal CO Mentah dengan Celah Missing Values (173 Hari Kosong / NaN)
+```
+
+```{figure} ../assets/editor/data_prep/2_co_imputed_missing.png
+:width: 100%
+:align: center
+
+Grafik 2: Sinyal CO Setelah Imputasi Missing Values (Linear Time Interpolation)
+```
+
+```{figure} ../assets/editor/data_prep/3_co_outlier_detection.png
+:width: 100%
+:align: center
+
+Grafik 3: Deteksi 11 Outlier CO Menggunakan Metode Interquartile Range (IQR)
+```
+
+```{figure} ../assets/editor/data_prep/4_co_final_clean.png
+:width: 100%
+:align: center
+
+Grafik 4: Sinyal CO Final Setelah Penanganan Outlier & Imputasi Linear (Clean Dataset)
+```
 
 ---
 
@@ -94,104 +235,106 @@ X(t) = X(t_1) + \frac{t - t_1}{t_2 - t_1} \cdot \left[ X(t_2) - X(t_1) \right]
 Untuk merepresentasikan karakteristik dinamika sinyal konsentrasi $\text{CO}$ selama 365 hari dalam bentuk vektor numerik yang siap diproses oleh algoritma *Machine Learning* dan analisis kemiripan (*similarity analysis*), digunakan pustaka **TSFEL (Time Series Feature Extraction Library)** mengacu pada dokumentasi resmi [TSFEL Feature List Documentation](https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html).
 
 TSFEL mengekstrak **68 fitur perwakilan** ($f_1$ hingga $f_{68}$) yang terbagi ke dalam 3 domain utama:
-1. **Domain Statistik ($f_1 \dots f_{20}$)**: Mengukur karakteristik pemusatan, sebaran, kemiringan, dan distribusi probabilitas sinyal.
-2. **Domain Temporal ($f_{21} \dots f_{41}$)**: Mengukur sifat linier, autokorelasi, frekuensi perlintasan nol, dan durasi fluktuasi dalam domain waktu.
-3. **Domain Spektral ($f_{42} \dots f_{68}$)**: Mengukur distribusi energi frekuensi sinyal menggunakan transformasi Fourier (*Fast Fourier Transform* / FFT) dan Wavelet CWT.
+1. **Domain Statistik ($f_1 \dots f_{31}$)**: Mengukur karakteristik pemusatan, sebaran, kemiringan, ECDF, dan distribusi probabilitas sinyal (31 Fitur).
+2. **Domain Temporal ($f_{32} \dots f_{45}$)**: Mengukur sifat linier, autokorelasi, perlintasan nol, dan durasi fluktuasi dalam domain waktu (14 Fitur).
+3. **Domain Spektral ($f_{46} \dots f_{68}$)**: Mengukur distribusi energi spektrogram frekuensi sinyal menggunakan transformasi Fourier (*Fast Fourier Transform* / FFT) (23 Fitur).
+
+- **Output File CSV**: Matriks 68 fitur TSFEL disimpan ke **`data/csv/CO_tsfel_features.csv`** dengan format nama header `f1_Absolute energy`, `f2_Average power`, ..., hingga `f68_Spectrogram mean coefficient_0.35Hz`.
 
 ---
 
-## 3. Katalog & Penomoran Lengkap 68 Fitur TSFEL ($f_1$ hingga $f_{68}$)
+## 3. Katalog & Penomoran Presisi 68 Fitur TSFEL ($f_1$ hingga $f_{68}$)
 
-Berikut adalah penomoran urut fitur $f_1$ hingga $f_{68}$ beserta fungsi resmi TSFEL, definisi, dan formula matematikalnya:
+Berikut adalah pemetaan resmi penomoran urut kode $f_1$ hingga $f_{68}$ beserta nama fitur TSFEL, domain, dan deskripsi fungsinya:
 
-### 3.1 Domain Statistik ($f_1$ hingga $f_{20}$)
+### 3.1 Domain Statistik ($f_1$ hingga $f_{31}$)
 
-| Kode Fitur | Nama Fungsi TSFEL | Definisi Resmi & Cara Kerja | Cara Menghitung & Rumus Matematika |
-| :---: | :--- | :--- | :--- |
-| **$f_1$** | `abs_energy` | Menghitung energi mutlak dari keseluruhan sinyal deret waktu. | $E = \sum_{t=1}^{N} \vert X(t) \vert^2$ |
-| **$f_2$** | `average_power` | Menghitung rata-rata daya sinyal per satuan waktu sampling harian. | $P = \frac{1}{N} \sum_{t=1}^{N} \vert X(t) \vert^2$ |
-| **$f_3$** | `calc_max` | Menghitung nilai puncak maksimum dari sinyal deret waktu $\text{CO}$. | $\text{Max} = \max(X_t)$ |
-| **$f_4$** | `calc_mean` | Menghitung nilai rata-rata aritmatika dari sinyal $\text{CO}$. | $\bar{X} = \frac{1}{N} \sum_{t=1}^{N} X_t$ |
-| **$f_5$** | `calc_median` | Menghitung nilai median (persentil ke-50) dari sinyal $\text{CO}$. | $Me = X_{((N+1)/2)}$ |
-| **$f_6$** | `calc_min` | Menghitung nilai minimum terendah dari sinyal $\text{CO}$. | $\text{Min} = \min(X_t)$ |
-| **$f_7$** | `calc_std` | Menghitung nilai standar deviasi (simpangan baku) populasi sinyal. | $s = \sqrt{\frac{1}{N}\sum_{t=1}^{N}(X_t - \bar{X})^2}$ |
-| **$f_8$** | `calc_var` | Menghitung nilai variansi sebaran data sinyal dari rata-ratanya. | $s^2 = \frac{1}{N}\sum_{t=1}^{N}(X_t - \bar{X})^2$ |
-| **$f_9$** | `ecdf` | Menghitung fungsi distribusi kumulatif empiris sepanjang sumbu waktu. | $F_N(x) = \frac{1}{N} \sum_{i=1}^{N} \mathbf{1}_{X_i \le x}$ |
-| **$f_{10}$** | `ecdf_percentile` | Menghitung nilai persentil ECDF dari distribusi kumulatif. | $Q(p) = \inf \{x : F_N(x) \ge p\}$ |
-| **$f_{11}$** | `ecdf_percentile_count` | Menghitung jumlah sampel kumulatif yang nilainya lebih kecil dari persentil. | $C(p) = \sum_{i=1}^{N} \mathbf{1}_{X_i \le Q(p)}$ |
-| **$f_{12}$** | `ecdf_slope` | Menghitung kemiringan (gradien) ECDF di antara dua persentil ($p_{\text{init}}, p_{\text{end}}$). | $\text{Slope}_{\text{ECDF}} = \frac{p_{\text{end}} - p_{\text{init}}}{Q(p_{\text{end}}) - Q(p_{\text{init}})}$ |
-| **$f_{13}$** | `entropy` | Menghitung tingkat keacakan/ketidakpastian sinyal (Shannon Entropy). | $H(X) = -\sum p(x_i) \log_2 p(x_i)$ |
-| **$f_{14}$** | `hist_mode` | Menghitung modus histogram dari pembagian interval bin teratur. | $\text{Mode}_{\text{hist}} = \arg\max_{b} (\text{bin}_b)$ |
-| **$f_{15}$** | `interq_range` | Menghitung rentang antarkuartil ($\text{IQR} = Q_3 - Q_1$) dari sinyal. | $\text{IQR} = Q_3 - Q_1$ |
-| **$f_{16}$** | `kurtosis` | Menghitung keruncingan puncak distribusi sinyal dibanding distribusi normal. | $K = \frac{\frac{1}{N}\sum(X_t - \bar{X})^4}{s^4} - 3$ |
-| **$f_{17}$** | `mean_abs_deviation` | Menghitung rata-rata simpangan mutlak observasi dari rata-ratanya. | $\text{MAD} = \frac{1}{N} \sum_{t=1}^{N} \vert X_t - \bar{X} \vert$ |
-| **$f_{18}$** | `median_abs_deviation` | Menghitung median dari selisih mutlak observasi terhadap median sinyal. | $\text{MedAD} = \text{median}(\vert X_t - Me \vert)$ |
-| **$f_{19}$** | `rms` | Menghitung *Root Mean Square* (akar rata-rata kuadrat) amplitudo sinyal. | $\text{RMS} = \sqrt{\frac{1}{N}\sum_{t=1}^{N} X_t^2}$ |
-| **$f_{20}$** | `skewness` | Menghitung kemiringan (asimetri) distribusi data terhadap rata-rata. | $S_k = \frac{\frac{1}{N}\sum(X_t - \bar{X})^3}{s^3}$ |
-
----
-
-### 3.2 Domain Temporal ($f_{21}$ hingga $f_{41}$)
-
-| Kode Fitur | Nama Fungsi TSFEL | Definisi Resmi & Cara Kerja | Cara Menghitung & Rumus Matematika |
-| :---: | :--- | :--- | :--- |
-| **$f_{21}$** | `autocorr` | Menghitung titik perlintasan $1/e$ pertama pada fungsi autokorelasi (ACF). | $R(k) = \frac{\sum (X_t - \bar{X})(X_{t+k} - \bar{X})}{\sum (X_t - \bar{X})^2} \to \text{Cari } k \text{ saat } R(k)=1/e$ |
-| **$f_{22}$** | `calc_centroid` | Menghitung titik pusat massa (*barycenter*) sinyal sepanjang sumbu waktu. | $C_{\text{temp}} = \frac{\sum_{t=1}^{N} t \cdot X_t}{\sum_{t=1}^{N} X_t}$ |
-| **$f_{23}$** | `dfa` | *Detrended Fluctuation Analysis* untuk mengukur ketergantungan jangka panjang. | $F(n) = \sqrt{\frac{1}{N}\sum_{y}(Y(k) - Y_n(k))^2} \sim n^\alpha$ |
-| **$f_{24}$** | `distance` | Menghitung total jarak lintasan akumulatif yang ditempuh oleh sinyal. | $D = \sum_{t=1}^{N-1} \sqrt{1 + (X_{t+1} - X_t)^2}$ |
-| **$f_{25}$** | `higuchi_fractal_dimension` | Menghitung dimensi fraktal sinyal menggunakan metode Higuchi (HFD). | $L(m, k) \propto k^{-D_H}$ |
-| **$f_{26}$** | `hurst_exponent` | Menghitung eksponen Hurst melalui analisis *Rescaled Range* ($R/S$). | $(R/S)_n \propto n^H$ |
-| **$f_{27}$** | `lempel_ziv` | Menghitung indeks kompleksitas Lempel-Ziv (LZ) yang diternormalisasi. | $C_{\text{LZ}} = \frac{c(N)}{N / \log_2(N)}$ |
-| **$f_{28}$** | `maximum_fractal_length` | Menghitung panjang fraktal maksimum (MFL) pada skala terkecil. | $\text{MFL} = \text{mean}(L(m, k_{\min}))$ |
-| **$f_{29}$** | `mean_abs_diff` | Menghitung rata-rata selisih mutlak antara sampel harian berurutan. | $\text{MAD}_{\text{diff}} = \frac{1}{N-1}\sum_{t=1}^{N-1} \vert X_{t+1} - X_t \vert$ |
-| **$f_{30}$** | `mean_diff` | Menghitung rata-rata selisih linier harian antara sampel berurutan. | $\text{M}_{\text{diff}} = \frac{1}{N-1}\sum_{t=1}^{N-1} (X_{t+1} - X_t)$ |
-| **$f_{31}$** | `median_abs_diff` | Menghitung median dari selisih mutlak observasi berurutan. | $\text{MedAD}_{\text{diff}} = \text{median}(\vert X_{t+1} - X_t \vert)$ |
-| **$f_{32}$** | `median_diff` | Menghitung median dari selisih linier harian observasi berurutan. | $\text{Med}_{\text{diff}} = \text{median}(X_{t+1} - X_t)$ |
-| **$f_{33}$** | `mse` | *Multiscale Entropy* yang mengukur kompleksitas pada berbagai skala waktu. | $\text{MSE}(m, r, \tau) = \text{SampleEntropy}(X^\tau, m, r)$ |
-| **$f_{34}$** | `negative_turning` | Menghitung jumlah titik balik negatif (lembah lokal sinyal). | $N_{TP-} = \sum \mathbf{1}_{(X_t < X_{t-1} \land X_t < X_{t+1})}$ |
-| **$f_{35}$** | `neighbourhood_peaks` | Menghitung jumlah puncak lokal dalam tetangga area dekat $n$. | $N_{\text{peaks}} = \sum \mathbf{1}_{(X_t > \max(X_{t-n..t+n}))}$ |
-| **$f_{36}$** | `petrosian_fractal_dimension` | Menghitung dimensi fraktal Petrosian (PFD) dari turunan biner sinyal. | $D_P = \frac{\log_{10} N}{\log_{10} N + \log_{10}\left(\frac{N}{N + 0.4 N_{\Delta}}\right)}$ |
-| **$f_{37}$** | `pk_pk_distance` | Menghitung jarak selisih amplitudo dari puncak maksimum ke minimum. | $P_{2P} = \max(X_t) - \min(X_t)$ |
-| **$f_{38}$** | `positive_turning` | Menghitung jumlah titik balik positif (puncak lokal sinyal). | $N_{TP+} = \sum \mathbf{1}_{(X_t > X_{t-1} \land X_t > X_{t+1})}$ |
-| **$f_{39}$** | `slope` | Menghitung gradien kemiringan regresi linier garis tren sinyal. | $\beta = \frac{\sum (t - \bar{t})(X_t - \bar{X})}{\sum (t - \bar{t})^2}$ |
-| **$f_{40}$** | `sum_abs_diff` | Menghitung total akumulasi penjumlahan selisih mutlak harian. | $S_{\text{abs}} = \sum_{t=1}^{N-1} \vert X_{t+1} - X_t \vert$ |
-| **$f_{41}$** | `zero_cross` | Menghitung laju perlintasan sinyal melewati angka nol (atau rata-rata). | $\text{ZCR} = \frac{1}{N-1}\sum \mathbf{1}_{(X_t \cdot X_{t+1} < 0)}$ |
+| Kode Fitur | Header Kolom CSV (`f{i}_NamaFitur`) | Domain | Deskripsi Fitur |
+| :---: | :--- | :---: | :--- |
+| **$f_1$** | `f1_Absolute energy` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_2$** | `f2_Average power` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_3$** | `f3_ECDF Percentile Count_0` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_4$** | `f4_ECDF Percentile Count_1` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_5$** | `f5_ECDF Percentile_0` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_6$** | `f6_ECDF Percentile_1` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_7$** | `f7_ECDF_0` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_8$** | `f8_ECDF_1` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_9$** | `f9_ECDF_2` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{10}$** | `f10_ECDF_3` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{11}$** | `f11_ECDF_4` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{12}$** | `f12_ECDF_5` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{13}$** | `f13_ECDF_6` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{14}$** | `f14_ECDF_7` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{15}$** | `f15_ECDF_8` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{16}$** | `f16_ECDF_9` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{17}$** | `f17_Entropy` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{18}$** | `f18_Histogram mode` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{19}$** | `f19_Interquartile range` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{20}$** | `f20_Kurtosis` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{21}$** | `f21_Max` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{22}$** | `f22_Mean` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{23}$** | `f23_Mean absolute deviation` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{24}$** | `f24_Median` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{25}$** | `f25_Median absolute deviation` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{26}$** | `f26_Min` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{27}$** | `f27_Peak to peak distance` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{28}$** | `f28_Root mean square` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{29}$** | `f29_Skewness` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{30}$** | `f30_Standard deviation` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
+| **$f_{31}$** | `f31_Variance` | Statistical | Ekstraksi karakteristik sinyal polutan (Statistical) |
 
 ---
 
-### 3.3 Domain Spektral ($f_{42}$ hingga $f_{68}$)
+### 3.2 Domain Temporal ($f_{32}$ hingga $f_{45}$)
 
-| Kode Fitur | Nama Fungsi TSFEL | Definisi Resmi & Cara Kerja | Cara Menghitung & Rumus Matematika |
-| :---: | :--- | :--- | :--- |
-| **$f_{42}$** | `auc` | Menghitung luas di bawah kurva spektrum menggunakan aturan trapesium. | $\text{AUC} = \int X(t) dt \approx \sum \frac{X_t + X_{t+1}}{2} \Delta t$ |
-| **$f_{43}$** | `fundamental_frequency` | Menghitung frekuensi fundamental dasar utama dari spektrum sinyal. | $f_0 = \arg\max_f \vert S(f) \vert$ |
-| **$f_{44}$** | `human_range_energy` | Menghitung rasio energi spektral pada pita rentang aktivitas harian. | $E_{\text{human}} = \frac{\sum_{f \in \text{human}} \vert S(f) \vert^2}{\sum \vert S(f) \vert^2}$ |
-| **$f_{45}$** | `lpcc` | Menghitung koefisien *Linear Prediction Cepstral* (LPCC). | $c_n = a_n + \sum_{k=1}^{n-1} \frac{k}{n} c_k a_{n-k}$ |
-| **$f_{46}$** | `max_frequency` | Menghitung frekuensi tertinggi yang memiliki respon energi spektral. | $f_{\max} = \max \{f : \vert S(f) \vert > 0\}$ |
-| **$f_{47}$** | `max_power_spectrum` | Menghitung nilai puncak kerapatan spektrum daya (*Power Spectrum Density*). | $\text{PSD}_{\max} = \max \vert S(f) \vert^2$ |
-| **$f_{48}$** | `median_frequency` | Menghitung frekuensi yang membagi dua total energi spektrogram. | $\sum_{f=0}^{f_{\text{med}}} \vert S(f) \vert^2 = \frac{1}{2} \sum \vert S(f) \vert^2$ |
-| **$f_{49}$** | `mfcc` | Menghitung koefisien spektral *Mel-Frequency Cepstral Coefficients* (MFCC). | $\text{MFCC}_m = \sum_{k=1}^{K} \log(S_k) \cos\left[ m \left(k - \frac{1}{2}\right) \frac{\pi}{K}\right]$ |
-| **$f_{50}$** | `power_bandwidth` | Menghitung lebar pita frekuensi (*bandwidth*) dari spektrum daya. | $\text{BW} = f_{\text{high}} - f_{\text{low}}$ |
-| **$f_{51}$** | `spectral_centroid` | Menghitung titik pusat massa (*barycenter*) dari spektrum frekuensi Fourier. | $C_{\text{spec}} = \frac{\sum f \cdot \vert S(f) \vert}{\sum \vert S(f) \vert}$ |
-| **$f_{52}$** | `spectral_decrease` | Menghitung tingkat penurunan amplitudo spektrum frekuensi. | $S_{\text{dec}} = \frac{1}{\sum_{k=2}^{K} S(k)} \sum_{k=2}^{K} \frac{S(k) - S(1)}{k - 1}$ |
-| **$f_{53}$** | `spectral_distance` | Menghitung jarak deviasi spektral energi relatif terhadap frekuensi. | $D_{\text{spec}} = \sqrt{\sum (S(f_k) - \bar{S})^2}$ |
-| **$f_{54}$** | `spectral_entropy` | Menghitung entropi spektral berbasis transformasi Fourier. | $H_{\text{spec}} = -\sum p_k \log_2 p_k, \quad p_k = \frac{\vert S(f_k) \vert^2}{\sum \vert S(f_k) \vert^2}$ |
-| **$f_{55}$** | `spectral_kurtosis` | Menghitung keruncingan sebaran bentuk spektrum frekuensi di sekitar rata-rata. | $K_{\text{spec}} = \frac{\sum (f_k - C_{\text{spec}})^4 S(f_k)}{\sigma_{\text{spec}}^4 \sum S(f_k)}$ |
-| **$f_{56}$** | `spectral_positive_turning` | Menghitung jumlah titik balik positif dari magnitudo sinyal FFT. | $N_{TP+,\text{fft}} = \sum \mathbf{1}_{(\vert S_k \vert > \vert S_{k-1} \vert \land \vert S_k \vert > \vert S_{k+1} \vert)}$ |
-| **$f_{57}$** | `spectral_roll_off` | Menghitung frekuensi di mana 95% energi spektral terkonsentrasi. | $\sum_{f=0}^{f_{\text{roll}}} \vert S(f) \vert^2 = 0.95 \sum \vert S(f) \vert^2$ |
-| **$f_{58}$** | `spectral_roll_on` | Menghitung frekuensi di mana 5% awal energi spektral mulai terkonsentrasi. | $\sum_{f=0}^{f_{\text{roll-on}}} \vert S(f) \vert^2 = 0.05 \sum \vert S(f) \vert^2$ |
-| **$f_{59}$** | `spectral_skewness` | Menghitung asimetri distribusi spektrum daya frekuensi. | $S_{k,\text{spec}} = \frac{\sum (f_k - C_{\text{spec}})^3 S(f_k)}{\sigma_{\text{spec}}^3 \sum S(f_k)}$ |
-| **$f_{60}$** | `spectral_slope` | Menghitung gradien kemiringan garis regresi pada spektrum frekuensi. | $\text{Slope}_{\text{spec}} = \frac{K \sum f_k S(f_k) - \sum f_k \sum S(f_k)}{K \sum f_k^2 - (\sum f_k)^2}$ |
-| **$f_{61}$** | `spectral_spread` | Menghitung simpangan sebaran spektrum di sekitar titik centroid spektral. | $\sigma_{\text{spec}}^2 = \frac{\sum (f_k - C_{\text{spec}})^2 S(f_k)}{\sum S(f_k)}$ |
-| **$f_{62}$** | `spectral_variation` | Menghitung tingkat variasi perubahan pola spektrum sepanjang waktu. | $V_{\text{spec}} = 1 - \frac{\sum S_t(f) S_{t-1}(f)}{\sqrt{\sum S_t^2(f) \sum S_{t-1}^2(f)}}$ |
-| **$f_{63}$** | `spectrogram_mean_coeff` | Menghitung rata-rata kerapatan spektral daya (PSD) dari spektrogram. | $\bar{P}(f) = \frac{1}{T}\sum_{t=1}^{T} \text{PSD}(f, t)$ |
-| **$f_{64}$** | `wavelet_abs_mean` | Menghitung rata-rata mutlak koefisien *Continuous Wavelet Transform* (CWT). | $\text{CWT}_{\text{abs}} = \frac{1}{N}\sum \vert W(a, b) \vert$ |
-| **$f_{65}$** | `wavelet_energy` | Menghitung total energi koefisien wavelet pada setiap skala *wavelet*. | $E_{\text{wavelet}}(a) = \sum_{b} \vert W(a, b) \vert^2$ |
-| **$f_{66}$** | `wavelet_entropy` | Menghitung entropi spektral energi dari hasil dekode *wavelet*. | $H_{\text{wavelet}} = -\sum p_a \log_2 p_a$ |
-| **$f_{67}$** | `wavelet_std` | Menghitung standar deviasi dari koefisien skala *wavelet* CWT. | $s_{\text{wavelet}}(a) = \text{std}(W(a, b))$ |
-| **$f_{68}$** | `wavelet_var` | Menghitung variansi dari koefisien skala *wavelet* CWT. | $s^2_{\text{wavelet}}(a) = \text{var}(W(a, b))$ |
+| Kode Fitur | Header Kolom CSV (`f{i}_NamaFitur`) | Domain | Deskripsi Fitur |
+| :---: | :--- | :---: | :--- |
+| **$f_{32}$** | `f32_Area under the curve` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{33}$** | `f33_Autocorrelation` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{34}$** | `f34_Centroid` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{35}$** | `f35_Mean absolute diff` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{36}$** | `f36_Mean diff` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{37}$** | `f37_Median absolute diff` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{38}$** | `f38_Median diff` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{39}$** | `f39_Negative turning points` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{40}$** | `f40_Neighbourhood peaks` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{41}$** | `f41_Positive turning points` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{42}$** | `f42_Signal distance` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{43}$** | `f43_Slope` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{44}$** | `f44_Sum absolute diff` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+| **$f_{45}$** | `f45_Zero crossing rate` | Temporal | Ekstraksi karakteristik sinyal polutan (Temporal) |
+
+---
+
+### 3.3 Domain Spektral ($f_{46}$ hingga $f_{68}$)
+
+| Kode Fitur | Header Kolom CSV (`f{i}_NamaFitur`) | Domain | Deskripsi Fitur |
+| :---: | :--- | :---: | :--- |
+| **$f_{46}$** | `f46_Spectrogram mean coefficient_0.02Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{47}$** | `f47_Spectrogram mean coefficient_0.03Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{48}$** | `f48_Spectrogram mean coefficient_0.05Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{49}$** | `f49_Spectrogram mean coefficient_0.06Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{50}$** | `f50_Spectrogram mean coefficient_0.08Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{51}$** | `f51_Spectrogram mean coefficient_0.0Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{52}$** | `f52_Spectrogram mean coefficient_0.11Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{53}$** | `f53_Spectrogram mean coefficient_0.13Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{54}$** | `f54_Spectrogram mean coefficient_0.15Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{55}$** | `f55_Spectrogram mean coefficient_0.16Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{56}$** | `f56_Spectrogram mean coefficient_0.18Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{57}$** | `f57_Spectrogram mean coefficient_0.19Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{58}$** | `f58_Spectrogram mean coefficient_0.1Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{59}$** | `f59_Spectrogram mean coefficient_0.21Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{60}$** | `f60_Spectrogram mean coefficient_0.23Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{61}$** | `f61_Spectrogram mean coefficient_0.24Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{62}$** | `f62_Spectrogram mean coefficient_0.26Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{63}$** | `f63_Spectrogram mean coefficient_0.27Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{64}$** | `f64_Spectrogram mean coefficient_0.29Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{65}$** | `f65_Spectrogram mean coefficient_0.31Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{66}$** | `f66_Spectrogram mean coefficient_0.32Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{67}$** | `f67_Spectrogram mean coefficient_0.34Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
+| **$f_{68}$** | `f68_Spectrogram mean coefficient_0.35Hz` | Spectral | Ekstraksi karakteristik sinyal polutan (Spectral) |
 
 ---
 
 > [!NOTE]
-> Penomoran urut kode $f_1$ hingga $f_{68}$ di atas memetakan seluruh modul fitur bawaan TSFEL secara presisi untuk memudahkan identifikasi kolom saat hasil matriks fitur diekstrak ke dalam format tabel CSV.
+> Penomoran urut kode `f1_Absolute energy` hingga `f68_Spectrogram mean coefficient_0.35Hz` memetakan 68 fitur utama TSFEL secara presisi dan terstruktur sempurna pada header file `data/csv/CO_tsfel_features.csv`.
