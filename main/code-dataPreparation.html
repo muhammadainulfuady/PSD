@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -345,13 +345,13 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="data-preparation-polutan-co-kecamatan-bungah">
 <h1>Data Preparation (Polutan CO - Kecamatan Bungah)<a class="headerlink" href="#data-preparation-polutan-co-kecamatan-bungah" title="Link to this heading">#</a></h1>
-<p>Notebook ini mengeksekusi tahapan <strong>Data Preparation</strong> metodologi CRISP-DM untuk polutan Karbon Monoksida (<span class="math notranslate nohighlight">\(	ext{CO}\)</span>) pada skala geografis <strong>Kecamatan Bungah, Kabupaten Gresik</strong> selama 365 hari (24 Agustus 2025 – 23 Agustus 2026):</p>
+<p>Notebook ini mengeksekusi tahapan <strong>Data Preparation</strong> metodologi CRISP-DM untuk polutan Karbon Monoksida (<span class="math notranslate nohighlight">\(\text{CO}\)</span>) pada skala geografis <strong>Kecamatan Bungah, Kabupaten Gresik</strong> selama 365 hari (24 Agustus 2025 – 23 Agustus 2026):</p>
 <p><strong>Alur Pemrosesan Data:</strong></p>
 <ol class="arabic simple">
 <li><p><strong>Penanganan Missing Values &amp; Outliers</strong> (Evaluasi Celah Data <span class="math notranslate nohighlight">\(\rightarrow\)</span> Deteksi Outlier IQR <span class="math notranslate nohighlight">\(\rightarrow\)</span> Pengosongan Outlier <span class="math notranslate nohighlight">\(\rightarrow\)</span> Linear Time Interpolation)</p></li>
 <li><p><strong>Visualisasi 4 Grafik Terpisah</strong> (Missing Raw, Imputed Missing, Outlier Detection, Final Clean Signal)</p></li>
 <li><p><strong>Penyimpanan Dataset Clean</strong> (<code class="docutils literal notranslate"><span class="pre">CO_clean.csv</span></code>)</p></li>
-<li><p><strong>Ekstraksi 68 Fitur Time-Series TSFEL</strong> (<code class="docutils literal notranslate"><span class="pre">CO_tsfel_features.csv</span></code> dengan format header <code class="docutils literal notranslate"><span class="pre">f1_namafitur</span></code> hingga <code class="docutils literal notranslate"><span class="pre">f68_namafitur</span></code>)</p></li>
+<li><p><strong>Ekstraksi Fitur Resmi Time-Series TSFEL</strong> (<code class="docutils literal notranslate"><span class="pre">CO_tsfel_features.csv</span></code> berbasis 4 domain utama TSFEL: Statistical, Temporal, Spectral, &amp; Fractal)</p></li>
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -552,63 +552,58 @@ SUCCESS: Dataset bersih disimpan ke '../data/csv/CO_clean.csv'
 <p>Mengekstrak 68 fitur TSFEL dan menyimpannya ke <code class="docutils literal notranslate"><span class="pre">data/csv/CO_tsfel_features.csv</span></code> dalam format matriks 68-kolom horizontal.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Memuat Katalog Fitur TSFEL</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Daftar Resmi 68 Fitur TSFEL</span>
+<span class="n">FEATURE_LIST</span> <span class="o">=</span> <span class="s2">"""abs_energy auc autocorr average_power calc_centroid calc_max calc_mean</span>
+<span class="s2">calc_median calc_min calc_std calc_var dfa distance ecdf ecdf_percentile ecdf_percentile_count</span>
+<span class="s2">ecdf_slope entropy fundamental_frequency higuchi_fractal_dimension hist_mode human_range_energy</span>
+<span class="s2">hurst_exponent interq_range kurtosis lempel_ziv lpcc max_frequency max_power_spectrum</span>
+<span class="s2">maximum_fractal_length mean_abs_deviation mean_abs_diff mean_diff median_abs_deviation</span>
+<span class="s2">median_abs_diff median_diff median_frequency mfcc mse negative_turning neighbourhood_peaks</span>
+<span class="s2">petrosian_fractal_dimension pk_pk_distance positive_turning power_bandwidth rms skewness slope</span>
+<span class="s2">spectral_centroid spectral_decrease spectral_distance spectral_entropy spectral_kurtosis</span>
+<span class="s2">spectral_positive_turning spectral_roll_off spectral_roll_on spectral_skewness spectral_slope</span>
+<span class="s2">spectral_spread spectral_variation spectrogram_mean_coeff sum_abs_diff wavelet_abs_mean</span>
+<span class="s2">wavelet_energy wavelet_entropy wavelet_std wavelet_var zero_cross"""</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="c1"># 2. Memuat Konfigurasi TSFEL &amp; Aktifkan Fitur dari FEATURE_LIST</span>
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">get_features_by_domain</span><span class="p">()</span>
-<span class="n">wavelet_feats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'Wavelet absolute mean'</span><span class="p">,</span> <span class="s1">'Wavelet energy'</span><span class="p">,</span> <span class="s1">'Wavelet standard deviation'</span><span class="p">,</span> <span class="s1">'Wavelet variance'</span><span class="p">]</span>
-<span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">wavelet_feats</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'spectral'</span><span class="p">,</span> <span class="p">{}):</span>
-        <span class="n">cfg</span><span class="p">[</span><span class="s1">'spectral'</span><span class="p">][</span><span class="n">feat</span><span class="p">][</span><span class="s1">'parameters'</span><span class="p">][</span><span class="s1">'max_width'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">func_to_feat</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">cfg</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_dict</span> <span class="ow">in</span> <span class="n">cfg</span><span class="p">[</span><span class="n">domain</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">func_name</span> <span class="o">=</span> <span class="n">feat_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'function'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'tsfel.'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="n">FEATURE_LIST</span><span class="p">:</span>
+            <span class="n">feat_dict</span><span class="p">[</span><span class="s1">'use'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'yes'</span>
+            <span class="k">if</span> <span class="s1">'wavelet'</span> <span class="ow">in</span> <span class="n">func_name</span><span class="p">:</span>
+                <span class="n">feat_dict</span><span class="p">[</span><span class="s1">'parameters'</span><span class="p">][</span><span class="s1">'max_width'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="n">func_to_feat</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">feat_name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">feat_dict</span><span class="p">[</span><span class="s1">'use'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'no'</span>
 
-<span class="c1"># Ekstraksi Fitur TSFEL</span>
-<span class="n">features_df</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO_clean'</span><span class="p">],</span> <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># 3. Ekstraksi Fitur TSFEL Langsung dari Sinyal Clean</span>
+<span class="n">raw_df</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO_clean'</span><span class="p">],</span> <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="c1"># Pemetaan Fitur ke Format f1_NamaFitur ... f68_NamaFitur</span>
-<span class="n">USER_68_FEATURES</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">"f1"</span><span class="p">,</span> <span class="s2">"Absolute energy"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f2"</span><span class="p">,</span> <span class="s2">"Average power"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f3"</span><span class="p">,</span> <span class="s2">"ECDF Percentile Count_0"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f4"</span><span class="p">,</span> <span class="s2">"ECDF Percentile Count_1"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f5"</span><span class="p">,</span> <span class="s2">"ECDF Percentile_0"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f6"</span><span class="p">,</span> <span class="s2">"ECDF Percentile_1"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f7"</span><span class="p">,</span> <span class="s2">"ECDF_0"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f8"</span><span class="p">,</span> <span class="s2">"ECDF_1"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f9"</span><span class="p">,</span> <span class="s2">"ECDF_2"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f10"</span><span class="p">,</span> <span class="s2">"ECDF_3"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f11"</span><span class="p">,</span> <span class="s2">"ECDF_4"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f12"</span><span class="p">,</span> <span class="s2">"ECDF_5"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f13"</span><span class="p">,</span> <span class="s2">"ECDF_6"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f14"</span><span class="p">,</span> <span class="s2">"ECDF_7"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f15"</span><span class="p">,</span> <span class="s2">"ECDF_8"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f16"</span><span class="p">,</span> <span class="s2">"ECDF_9"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f17"</span><span class="p">,</span> <span class="s2">"Entropy"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f18"</span><span class="p">,</span> <span class="s2">"Histogram mode"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f19"</span><span class="p">,</span> <span class="s2">"Interquartile range"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f20"</span><span class="p">,</span> <span class="s2">"Kurtosis"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f21"</span><span class="p">,</span> <span class="s2">"Max"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f22"</span><span class="p">,</span> <span class="s2">"Mean"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f23"</span><span class="p">,</span> <span class="s2">"Mean absolute deviation"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f24"</span><span class="p">,</span> <span class="s2">"Median"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f25"</span><span class="p">,</span> <span class="s2">"Median absolute deviation"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f26"</span><span class="p">,</span> <span class="s2">"Min"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f27"</span><span class="p">,</span> <span class="s2">"Peak to peak distance"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f28"</span><span class="p">,</span> <span class="s2">"Root mean square"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f29"</span><span class="p">,</span> <span class="s2">"Skewness"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f30"</span><span class="p">,</span> <span class="s2">"Standard deviation"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f31"</span><span class="p">,</span> <span class="s2">"Variance"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f32"</span><span class="p">,</span> <span class="s2">"Area under the curve"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f33"</span><span class="p">,</span> <span class="s2">"Autocorrelation"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f34"</span><span class="p">,</span> <span class="s2">"Centroid"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f35"</span><span class="p">,</span> <span class="s2">"Mean absolute diff"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f36"</span><span class="p">,</span> <span class="s2">"Mean diff"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f37"</span><span class="p">,</span> <span class="s2">"Median absolute diff"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f38"</span><span class="p">,</span> <span class="s2">"Median diff"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f39"</span><span class="p">,</span> <span class="s2">"Negative turning points"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f40"</span><span class="p">,</span> <span class="s2">"Neighbourhood peaks"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f41"</span><span class="p">,</span> <span class="s2">"Positive turning points"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f42"</span><span class="p">,</span> <span class="s2">"Signal distance"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f43"</span><span class="p">,</span> <span class="s2">"Slope"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f44"</span><span class="p">,</span> <span class="s2">"Sum absolute diff"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f45"</span><span class="p">,</span> <span class="s2">"Zero crossing rate"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f46"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.02Hz"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f47"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.03Hz"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f48"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.05Hz"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f49"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.06Hz"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f50"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.08Hz"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f51"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.0Hz"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f52"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.11Hz"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f53"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.13Hz"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f54"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.15Hz"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f55"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.16Hz"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f56"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.18Hz"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f57"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.19Hz"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f58"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.1Hz"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f59"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.21Hz"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f60"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.23Hz"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f61"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.24Hz"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f62"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.26Hz"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f63"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.27Hz"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f64"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.29Hz"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f65"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.31Hz"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f66"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.32Hz"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"f67"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.34Hz"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"f68"</span><span class="p">,</span> <span class="s2">"Spectrogram mean coefficient_0.35Hz"</span><span class="p">)</span>
-<span class="p">]</span>
-
+<span class="c1"># 4. Pemetaan Presisi Matriks 68 Fitur (f1_abs_energy ... f68_zero_cross)</span>
 <span class="n">row_dict</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">USER_68_FEATURES</span><span class="p">:</span>
-    <span class="n">col_header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
-    <span class="n">matching_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">features_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'0_'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span> <span class="ow">or</span> <span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'0_'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()[:</span><span class="mi">8</span><span class="p">])]</span>
-    <span class="k">if</span> <span class="n">matching_cols</span><span class="p">:</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">features_df</span><span class="p">[</span><span class="n">matching_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">exact</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">features_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'0_'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)]</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="n">features_df</span><span class="p">[</span><span class="n">exact</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">exact</span> <span class="k">else</span> <span class="mf">0.0</span>
-    <span class="n">row_dict</span><span class="p">[</span><span class="n">col_header</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">FEATURE_LIST</span><span class="p">):</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"f</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">matching_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">raw_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'tsfel.'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span> <span class="ow">or</span> <span class="n">func_to_feat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">matching_cols</span><span class="p">:</span>
+        <span class="n">feat_title</span> <span class="o">=</span> <span class="n">func_to_feat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+        <span class="n">matching_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">raw_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">feat_title</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+    
+    <span class="n">val</span> <span class="o">=</span> <span class="n">raw_df</span><span class="p">[</span><span class="n">matching_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">matching_cols</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="n">row_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
 
 <span class="n">df_68_matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">row_dict</span><span class="p">])</span>
 <span class="n">features_path</span> <span class="o">=</span> <span class="s1">'../data/csv/CO_tsfel_features.csv'</span>
 <span class="n">df_68_matrix</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">features_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SUCCESS: Matriks 68 Fitur TSFEL berhasil disimpan ke '</span><span class="si">{</span><span class="n">features_path</span><span class="si">}</span><span class="s2">'! (Shape: </span><span class="si">{</span><span class="n">df_68_matrix</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SUCCESS: Matriks Presisi 68 Fitur TSFEL berhasil disimpan ke '</span><span class="si">{</span><span class="n">features_path</span><span class="si">}</span><span class="s2">'! (Shape: </span><span class="si">{</span><span class="n">df_68_matrix</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
 <span class="n">df_68_matrix</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SUCCESS: Matriks 68 Fitur TSFEL berhasil disimpan ke '../data/csv/CO_tsfel_features.csv'! (Shape: (1, 68))
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SUCCESS: Matriks Presisi 68 Fitur TSFEL berhasil disimpan ke '../data/csv/CO_tsfel_features.csv'! (Shape: (1, 68))
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -629,53 +624,53 @@ SUCCESS: Dataset bersih disimpan ke '../data/csv/CO_clean.csv'
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>f1_Absolute energy</th>
-      <th>f2_Average power</th>
-      <th>f3_ECDF Percentile Count_0</th>
-      <th>f4_ECDF Percentile Count_1</th>
-      <th>f5_ECDF Percentile_0</th>
-      <th>f6_ECDF Percentile_1</th>
-      <th>f7_ECDF_0</th>
-      <th>f8_ECDF_1</th>
-      <th>f9_ECDF_2</th>
-      <th>f10_ECDF_3</th>
+      <th>f1_abs_energy</th>
+      <th>f2_auc</th>
+      <th>f3_autocorr</th>
+      <th>f4_average_power</th>
+      <th>f5_calc_centroid</th>
+      <th>f6_calc_max</th>
+      <th>f7_calc_mean</th>
+      <th>f8_calc_median</th>
+      <th>f9_calc_min</th>
+      <th>f10_calc_std</th>
       <th>...</th>
-      <th>f59_Spectrogram mean coefficient_0.21Hz</th>
-      <th>f60_Spectrogram mean coefficient_0.23Hz</th>
-      <th>f61_Spectrogram mean coefficient_0.24Hz</th>
-      <th>f62_Spectrogram mean coefficient_0.26Hz</th>
-      <th>f63_Spectrogram mean coefficient_0.27Hz</th>
-      <th>f64_Spectrogram mean coefficient_0.29Hz</th>
-      <th>f65_Spectrogram mean coefficient_0.31Hz</th>
-      <th>f66_Spectrogram mean coefficient_0.32Hz</th>
-      <th>f67_Spectrogram mean coefficient_0.34Hz</th>
-      <th>f68_Spectrogram mean coefficient_0.35Hz</th>
+      <th>f59_spectral_spread</th>
+      <th>f60_spectral_variation</th>
+      <th>f61_spectrogram_mean_coeff</th>
+      <th>f62_sum_abs_diff</th>
+      <th>f63_wavelet_abs_mean</th>
+      <th>f64_wavelet_energy</th>
+      <th>f65_wavelet_entropy</th>
+      <th>f66_wavelet_std</th>
+      <th>f67_wavelet_var</th>
+      <th>f68_zero_cross</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
       <td>0.304843</td>
+      <td>10.471861</td>
+      <td>3.0</td>
       <td>0.000837</td>
-      <td>73.0</td>
-      <td>73.0</td>
-      <td>73.0</td>
-      <td>73.0</td>
-      <td>0.00274</td>
-      <td>0.005479</td>
-      <td>0.008219</td>
-      <td>0.010959</td>
+      <td>180.435093</td>
+      <td>0.036663</td>
+      <td>0.028778</td>
+      <td>0.028753</td>
+      <td>0.021392</td>
+      <td>0.002649</td>
       <td>...</td>
+      <td>0.127599</td>
+      <td>0.73457</td>
       <td>0.000091</td>
-      <td>0.000091</td>
-      <td>0.000091</td>
-      <td>0.000091</td>
-      <td>0.000091</td>
-      <td>0.000091</td>
-      <td>0.000091</td>
-      <td>0.000091</td>
-      <td>0.000091</td>
-      <td>0.000091</td>
+      <td>0.540891</td>
+      <td>0.000134</td>
+      <td>0.00242</td>
+      <td>-0.0</td>
+      <td>0.002417</td>
+      <td>0.000006</td>
+      <td>0.0</td>
     </tr>
   </tbody>
 </table>

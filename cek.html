@@ -6,7 +6,9 @@
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Search - Proyek Sains Data IF 5B</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>&lt;no title&gt; &#8212; Proyek Sains Data IF 5B</title>
   
   
   
@@ -56,12 +58,9 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'search';</script>
-  <script src="_static/searchtools.js"></script>
-  <script src="_static/language_data.js"></script>
-  <script src="searchindex.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cek';</script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" />
+    <link rel="search" title="Search" href="search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -93,7 +92,7 @@
     <div class="search-button__overlay"></div>
     <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
-      action="#"
+      action="search.html"
       method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
   <input type="search"
@@ -224,6 +223,54 @@
 
 
 
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/cek.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
 <button onclick="toggleFullScreen()"
   class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
@@ -257,7 +304,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -266,42 +315,116 @@ document.write(`
 </div>
               
               
-  <div class="bd-search-container">
-    <h1>Search</h1>
-    <noscript>
-      <div class="admonition error">
-        <p class="admonition-title">Error</p>
-        <p>Please activate JavaScript to enable the search functionality.</p>
-      </div>
-    </noscript>
-    
-<form class="bd-search d-flex align-items-center"
-      action="#"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         id="search-input"
-         placeholder="Search..."
-         aria-label="Search..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-    <div id="search-results"></div>
-  </div>
-  <script>
-    // Activate the search field on page load
-    let searchInput = document.querySelector("form.bd-search input");
-    if (searchInput) {
-        searchInput.focus();
-        searchInput.select();
-        console.log("[PST]: Set focus on search field.");
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1><no title></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tsfel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># 1. Ambil konfigurasi seluruh fitur TSFEL</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">get_features_by_domain</span><span class="p">()</span>
+
+<span class="c1"># 2. Atur parameter wavelet jika memang diperlukan</span>
+<span class="n">wavelet_feats</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"Wavelet absolute mean"</span><span class="p">,</span>
+    <span class="s2">"Wavelet energy"</span><span class="p">,</span>
+    <span class="s2">"Wavelet standard deviation"</span><span class="p">,</span>
+    <span class="s2">"Wavelet variance"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">wavelet_feats</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"spectral"</span><span class="p">,</span> <span class="p">{}):</span>
+        <span class="n">cfg</span><span class="p">[</span><span class="s2">"spectral"</span><span class="p">][</span><span class="n">feat</span><span class="p">][</span><span class="s2">"parameters"</span><span class="p">][</span><span class="s2">"max_width"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># 3. Ekstrak fitur dari data CO</span>
+<span class="n">features_df</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span>
+    <span class="n">cfg</span><span class="p">,</span>
+    <span class="n">df_clean</span><span class="p">[</span><span class="s2">"CO_clean"</span><span class="p">],</span>
+    <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="c1"># 4. Periksa nama dan jumlah kolom yang benar-benar dihasilkan</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah kolom hasil ekstraksi:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">features_df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">nomor</span><span class="p">,</span> <span class="n">nama</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">features_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">nomor</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">nama</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># 5. Ekspor menggunakan nama kolom asli dari TSFEL</span>
+<span class="n">features_path</span> <span class="o">=</span> <span class="s2">"../data/csv/CO_tsfel_features.csv"</span>
+<span class="n">features_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">features_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"CSV tersimpan:"</span><span class="p">,</span> <span class="n">features_path</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Shape:"</span><span class="p">,</span> <span class="n">features_df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">features_df</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">22</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> 
+<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="c1"># 3. Ekstrak fitur dari data CO</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="n">features_df</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span>     <span class="n">cfg</span><span class="p">,</span>
+<span class="ne">---&gt; </span><span class="mi">22</span>     <span class="n">df_clean</span><span class="p">[</span><span class="s2">"CO_clean"</span><span class="p">],</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span>     <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="p">)</span>
+
+<span class="ne">NameError</span>: name 'df_clean' is not defined
+</pre></div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
     }
-  </script>
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
 
               
               
@@ -316,6 +439,22 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+  </nav></div>
+
+</div></div>
               
             
           </div>
