@@ -1,0 +1,77 @@
+Traceback (most recent call last):
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python312\Lib\site-packages\jupyter_cache\executors\utils.py", line 58, in single_nb_execution
+    executenb(
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python312\Lib\site-packages\nbclient\client.py", line 1323, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Roaming\Python\Python312\site-packages\jupyter_core\utils\__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python312\Lib\site-packages\nbclient\client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python312\Lib\site-packages\nbclient\client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "C:\Users\ASUS\AppData\Local\Programs\Python\Python312\Lib\site-packages\nbclient\client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import tsfel
+import pandas as pd
+
+# 1. Ambil konfigurasi seluruh fitur TSFEL
+cfg = tsfel.get_features_by_domain()
+
+# 2. Atur parameter wavelet jika memang diperlukan
+wavelet_feats = [
+    "Wavelet absolute mean",
+    "Wavelet energy",
+    "Wavelet standard deviation",
+    "Wavelet variance",
+]
+
+for feat in wavelet_feats:
+    if feat in cfg.get("spectral", {}):
+        cfg["spectral"][feat]["parameters"]["max_width"] = 2
+
+# 3. Ekstrak fitur dari data CO
+features_df = tsfel.time_series_features_extractor(
+    cfg,
+    df_clean["CO_clean"],
+    fs=1,
+    verbose=0
+)
+
+# 4. Periksa nama dan jumlah kolom yang benar-benar dihasilkan
+print("Jumlah kolom hasil ekstraksi:", len(features_df.columns))
+
+for nomor, nama in enumerate(features_df.columns, start=1):
+    print(f"{nomor}. {nama}")
+
+# 5. Ekspor menggunakan nama kolom asli dari TSFEL
+features_path = "../data/csv/CO_tsfel_features.csv"
+features_df.to_csv(features_path, index=False)
+
+print("CSV tersimpan:", features_path)
+print("Shape:", features_df.shape)
+
+features_df
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mNameError[39m                                 Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 22[39m
+[32m     18[39m 
+[32m     19[39m [38;5;66;03m# 3. Ekstrak fitur dari data CO[39;00m
+[32m     20[39m features_df = tsfel.time_series_features_extractor(
+[32m     21[39m     cfg,
+[32m---> [39m[32m22[39m     df_clean[[33m"CO_clean"[39m],
+[32m     23[39m     fs=[32m1[39m,
+[32m     24[39m     verbose=[32m0[39m
+[32m     25[39m )
+
+[31mNameError[39m: name 'df_clean' is not defined
+

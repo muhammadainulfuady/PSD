@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -341,9 +341,86 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-presisi-68-fitur-tsfel-f-1-hingga-f-68">3. Katalog &amp; Penomoran Presisi 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-31">3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{31}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-32-hingga-f-45">3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{32}\)</span> hingga <span class="math notranslate nohighlight">\(f_{45}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-46-hingga-f-68">3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{46}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-statistical-domain-22-fitur">3.1 Domain Statistik (<em>Statistical Domain</em>) (22 Fitur)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f1-f1-abs-energy"><strong>f1</strong>: <code class="docutils literal notranslate"><span class="pre">f1_abs_energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f4-f4-average-power"><strong>f4</strong>: <code class="docutils literal notranslate"><span class="pre">f4_average_power</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f6-f6-calc-max"><strong>f6</strong>: <code class="docutils literal notranslate"><span class="pre">f6_calc_max</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f7-f7-calc-mean"><strong>f7</strong>: <code class="docutils literal notranslate"><span class="pre">f7_calc_mean</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f8-f8-calc-median"><strong>f8</strong>: <code class="docutils literal notranslate"><span class="pre">f8_calc_median</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f9-f9-calc-min"><strong>f9</strong>: <code class="docutils literal notranslate"><span class="pre">f9_calc_min</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f10-f10-calc-std"><strong>f10</strong>: <code class="docutils literal notranslate"><span class="pre">f10_calc_std</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f11-f11-calc-var"><strong>f11</strong>: <code class="docutils literal notranslate"><span class="pre">f11_calc_var</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f14-f14-ecdf"><strong>f14</strong>: <code class="docutils literal notranslate"><span class="pre">f14_ecdf</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f15-f15-ecdf-percentile"><strong>f15</strong>: <code class="docutils literal notranslate"><span class="pre">f15_ecdf_percentile</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f16-f16-ecdf-percentile-count"><strong>f16</strong>: <code class="docutils literal notranslate"><span class="pre">f16_ecdf_percentile_count</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f17-f17-ecdf-slope"><strong>f17</strong>: <code class="docutils literal notranslate"><span class="pre">f17_ecdf_slope</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f18-f18-entropy"><strong>f18</strong>: <code class="docutils literal notranslate"><span class="pre">f18_entropy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f21-f21-hist-mode"><strong>f21</strong>: <code class="docutils literal notranslate"><span class="pre">f21_hist_mode</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f24-f24-interq-range"><strong>f24</strong>: <code class="docutils literal notranslate"><span class="pre">f24_interq_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f25-f25-kurtosis"><strong>f25</strong>: <code class="docutils literal notranslate"><span class="pre">f25_kurtosis</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f26-f26-lempel-ziv"><strong>f26</strong>: <code class="docutils literal notranslate"><span class="pre">f26_lempel_ziv</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f31-f31-mean-abs-deviation"><strong>f31</strong>: <code class="docutils literal notranslate"><span class="pre">f31_mean_abs_deviation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f34-f34-median-abs-deviation"><strong>f34</strong>: <code class="docutils literal notranslate"><span class="pre">f34_median_abs_deviation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f43-f43-pk-pk-distance"><strong>f43</strong>: <code class="docutils literal notranslate"><span class="pre">f43_pk_pk_distance</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f46-f46-rms"><strong>f46</strong>: <code class="docutils literal notranslate"><span class="pre">f46_rms</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f47-f47-skewness"><strong>f47</strong>: <code class="docutils literal notranslate"><span class="pre">f47_skewness</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-temporal-domain-14-fitur">3.2 Domain Temporal (<em>Temporal Domain</em>) (14 Fitur)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f2-f2-auc"><strong>f2</strong>: <code class="docutils literal notranslate"><span class="pre">f2_auc</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f3-f3-autocorr"><strong>f3</strong>: <code class="docutils literal notranslate"><span class="pre">f3_autocorr</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f5-f5-calc-centroid"><strong>f5</strong>: <code class="docutils literal notranslate"><span class="pre">f5_calc_centroid</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f13-f13-distance"><strong>f13</strong>: <code class="docutils literal notranslate"><span class="pre">f13_distance</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f32-f32-mean-abs-diff"><strong>f32</strong>: <code class="docutils literal notranslate"><span class="pre">f32_mean_abs_diff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f33-f33-mean-diff"><strong>f33</strong>: <code class="docutils literal notranslate"><span class="pre">f33_mean_diff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f35-f35-median-abs-diff"><strong>f35</strong>: <code class="docutils literal notranslate"><span class="pre">f35_median_abs_diff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f36-f36-median-diff"><strong>f36</strong>: <code class="docutils literal notranslate"><span class="pre">f36_median_diff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f40-f40-negative-turning"><strong>f40</strong>: <code class="docutils literal notranslate"><span class="pre">f40_negative_turning</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f41-f41-neighbourhood-peaks"><strong>f41</strong>: <code class="docutils literal notranslate"><span class="pre">f41_neighbourhood_peaks</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f44-f44-positive-turning"><strong>f44</strong>: <code class="docutils literal notranslate"><span class="pre">f44_positive_turning</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f48-f48-slope"><strong>f48</strong>: <code class="docutils literal notranslate"><span class="pre">f48_slope</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f62-f62-sum-abs-diff"><strong>f62</strong>: <code class="docutils literal notranslate"><span class="pre">f62_sum_abs_diff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f68-f68-zero-cross"><strong>f68</strong>: <code class="docutils literal notranslate"><span class="pre">f68_zero_cross</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-spectral-domain-26-fitur">3.3 Domain Spektral (<em>Spectral Domain</em>) (26 Fitur)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f19-f19-fundamental-frequency"><strong>f19</strong>: <code class="docutils literal notranslate"><span class="pre">f19_fundamental_frequency</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f22-f22-human-range-energy"><strong>f22</strong>: <code class="docutils literal notranslate"><span class="pre">f22_human_range_energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f27-f27-lpcc"><strong>f27</strong>: <code class="docutils literal notranslate"><span class="pre">f27_lpcc</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f28-f28-max-frequency"><strong>f28</strong>: <code class="docutils literal notranslate"><span class="pre">f28_max_frequency</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f29-f29-max-power-spectrum"><strong>f29</strong>: <code class="docutils literal notranslate"><span class="pre">f29_max_power_spectrum</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f37-f37-median-frequency"><strong>f37</strong>: <code class="docutils literal notranslate"><span class="pre">f37_median_frequency</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f38-f38-mfcc"><strong>f38</strong>: <code class="docutils literal notranslate"><span class="pre">f38_mfcc</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f45-f45-power-bandwidth"><strong>f45</strong>: <code class="docutils literal notranslate"><span class="pre">f45_power_bandwidth</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f49-f49-spectral-centroid"><strong>f49</strong>: <code class="docutils literal notranslate"><span class="pre">f49_spectral_centroid</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f50-f50-spectral-decrease"><strong>f50</strong>: <code class="docutils literal notranslate"><span class="pre">f50_spectral_decrease</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f51-f51-spectral-distance"><strong>f51</strong>: <code class="docutils literal notranslate"><span class="pre">f51_spectral_distance</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f52-f52-spectral-entropy"><strong>f52</strong>: <code class="docutils literal notranslate"><span class="pre">f52_spectral_entropy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f53-f53-spectral-kurtosis"><strong>f53</strong>: <code class="docutils literal notranslate"><span class="pre">f53_spectral_kurtosis</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f54-f54-spectral-positive-turning"><strong>f54</strong>: <code class="docutils literal notranslate"><span class="pre">f54_spectral_positive_turning</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f55-f55-spectral-roll-off"><strong>f55</strong>: <code class="docutils literal notranslate"><span class="pre">f55_spectral_roll_off</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f56-f56-spectral-roll-on"><strong>f56</strong>: <code class="docutils literal notranslate"><span class="pre">f56_spectral_roll_on</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f57-f57-spectral-skewness"><strong>f57</strong>: <code class="docutils literal notranslate"><span class="pre">f57_spectral_skewness</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f58-f58-spectral-slope"><strong>f58</strong>: <code class="docutils literal notranslate"><span class="pre">f58_spectral_slope</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f59-f59-spectral-spread"><strong>f59</strong>: <code class="docutils literal notranslate"><span class="pre">f59_spectral_spread</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f60-f60-spectral-variation"><strong>f60</strong>: <code class="docutils literal notranslate"><span class="pre">f60_spectral_variation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f61-f61-spectrogram-mean-coeff"><strong>f61</strong>: <code class="docutils literal notranslate"><span class="pre">f61_spectrogram_mean_coeff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f63-f63-wavelet-abs-mean"><strong>f63</strong>: <code class="docutils literal notranslate"><span class="pre">f63_wavelet_abs_mean</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f64-f64-wavelet-energy"><strong>f64</strong>: <code class="docutils literal notranslate"><span class="pre">f64_wavelet_energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f65-f65-wavelet-entropy"><strong>f65</strong>: <code class="docutils literal notranslate"><span class="pre">f65_wavelet_entropy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f66-f66-wavelet-std"><strong>f66</strong>: <code class="docutils literal notranslate"><span class="pre">f66_wavelet_std</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f67-f67-wavelet-var"><strong>f67</strong>: <code class="docutils literal notranslate"><span class="pre">f67_wavelet_var</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-fraktal-fractal-domain-6-fitur">3.4 Domain Fraktal (<em>Fractal Domain</em>) (6 Fitur)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f12-f12-dfa"><strong>f12</strong>: <code class="docutils literal notranslate"><span class="pre">f12_dfa</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f20-f20-higuchi-fractal-dimension"><strong>f20</strong>: <code class="docutils literal notranslate"><span class="pre">f20_higuchi_fractal_dimension</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f23-f23-hurst-exponent"><strong>f23</strong>: <code class="docutils literal notranslate"><span class="pre">f23_hurst_exponent</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f30-f30-maximum-fractal-length"><strong>f30</strong>: <code class="docutils literal notranslate"><span class="pre">f30_maximum_fractal_length</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f39-f39-mse"><strong>f39</strong>: <code class="docutils literal notranslate"><span class="pre">f39_mse</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f42-f42-petrosian-fractal-dimension"><strong>f42</strong>: <code class="docutils literal notranslate"><span class="pre">f42_petrosian_fractal_dimension</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -657,412 +734,650 @@ Dataset bersih disimpan ke '../data/csv/CO_clean.csv'
 <section id="konsep-rekayasa-fitur-time-series">
 <h3>2.1 Konsep Rekayasa Fitur Time Series<a class="headerlink" href="#konsep-rekayasa-fitur-time-series" title="Link to this heading">#</a></h3>
 <p>Untuk merepresentasikan karakteristik dinamika sinyal konsentrasi <span class="math notranslate nohighlight">\(\text{CO}\)</span> selama 365 hari dalam bentuk vektor numerik yang siap diproses oleh algoritma <em>Machine Learning</em> dan analisis kemiripan (<em>similarity analysis</em>), digunakan pustaka <strong>TSFEL (Time Series Feature Extraction Library)</strong> mengacu pada dokumentasi resmi <a class="reference external" href="https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html">TSFEL Feature List Documentation</a>.</p>
-<p>TSFEL mengekstrak <strong>68 fitur perwakilan</strong> (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>) yang terbagi ke dalam 3 domain utama:</p>
+<p>Sesuai dengan daftar resmi 68 fitur TSFEL (<code class="docutils literal notranslate"><span class="pre">FEATURE_LIST</span></code>), ekstraksi fitur dikelompokkan ke dalam <strong>4 domain utama</strong>:</p>
 <ol class="arabic simple">
-<li><p><strong>Domain Statistik (<span class="math notranslate nohighlight">\(f_1 \dots f_{31}\)</span>)</strong>: Mengukur karakteristik pemusatan, sebaran, kemiringan, ECDF, dan distribusi probabilitas sinyal (31 Fitur).</p></li>
-<li><p><strong>Domain Temporal (<span class="math notranslate nohighlight">\(f_{32} \dots f_{45}\)</span>)</strong>: Mengukur sifat linier, autokorelasi, perlintasan nol, dan durasi fluktuasi dalam domain waktu (14 Fitur).</p></li>
-<li><p><strong>Domain Spektral (<span class="math notranslate nohighlight">\(f_{46} \dots f_{68}\)</span>)</strong>: Mengukur distribusi energi spektrogram frekuensi sinyal menggunakan transformasi Fourier (<em>Fast Fourier Transform</em> / FFT) (23 Fitur).</p></li>
+<li><p><strong>Domain Statistik</strong>: Mengukur pemusatan, sebaran, kemiringan, ECDF, dan distribusi probabilitas sinyal.</p></li>
+<li><p><strong>Domain Temporal</strong>: Mengukur sifat linier, autokorelasi, perlintasan nol, dan durasi fluktuasi dalam domain waktu.</p></li>
+<li><p><strong>Domain Spektral</strong>: Mengukur distribusi energi spektrogram, MFCC, LPCC, Wavelet, dan frekuensi sinyal (FFT).</p></li>
+<li><p><strong>Domain Fraktal</strong>: Menganalisis ketidakteraturan, kompleksitas <em>self-similarity</em> (DFA, Hurst Exponent, Higuchi, Petrosian, MSE).</p></li>
 </ol>
 <ul class="simple">
-<li><p><strong>Output File CSV</strong>: Matriks 68 fitur TSFEL disimpan ke <strong><code class="docutils literal notranslate"><span class="pre">data/csv/CO_tsfel_features.csv</span></code></strong> dengan format nama header <code class="docutils literal notranslate"><span class="pre">f1_Absolute</span> <span class="pre">energy</span></code>, <code class="docutils literal notranslate"><span class="pre">f2_Average</span> <span class="pre">power</span></code>, …, hingga <code class="docutils literal notranslate"><span class="pre">f68_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.35Hz</span></code>.</p></li>
+<li><p><strong>Output File CSV</strong>: Matriks presisi 68 fitur TSFEL disimpan ke <strong><code class="docutils literal notranslate"><span class="pre">data/csv/CO_tsfel_features.csv</span></code></strong> dengan format header <code class="docutils literal notranslate"><span class="pre">f1_abs_energy</span></code> hingga <code class="docutils literal notranslate"><span class="pre">f68_zero_cross</span></code>.</p></li>
 </ul>
 </section>
 </section>
 <hr class="docutils" />
 <section id="katalog-penomoran-presisi-68-fitur-tsfel-f-1-hingga-f-68">
 <h2>3. Katalog &amp; Penomoran Presisi 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#katalog-penomoran-presisi-68-fitur-tsfel-f-1-hingga-f-68" title="Link to this heading">#</a></h2>
-<p>Berikut adalah pemetaan resmi penomoran urut kode <span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span> beserta nama fitur TSFEL, domain, dan deskripsi fungsinya:</p>
-<section id="domain-statistik-f-1-hingga-f-31">
-<h3>3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{31}\)</span>)<a class="headerlink" href="#domain-statistik-f-1-hingga-f-31" title="Link to this heading">#</a></h3>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
-<th class="head text-left"><p>Header Kolom CSV (<code class="docutils literal notranslate"><span class="pre">f{i}_NamaFitur</span></code>)</p></th>
-<th class="head text-center"><p>Domain</p></th>
-<th class="head text-left"><p>Deskripsi Fitur</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_1\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f1_Absolute</span> <span class="pre">energy</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_2\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f2_Average</span> <span class="pre">power</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_3\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f3_ECDF</span> <span class="pre">Percentile</span> <span class="pre">Count_0</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_4\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f4_ECDF</span> <span class="pre">Percentile</span> <span class="pre">Count_1</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_5\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f5_ECDF</span> <span class="pre">Percentile_0</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_6\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f6_ECDF</span> <span class="pre">Percentile_1</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_7\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f7_ECDF_0</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_8\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f8_ECDF_1</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_9\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f9_ECDF_2</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{10}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f10_ECDF_3</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{11}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f11_ECDF_4</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{12}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f12_ECDF_5</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{13}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f13_ECDF_6</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{14}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f14_ECDF_7</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{15}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f15_ECDF_8</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{16}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f16_ECDF_9</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{17}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f17_Entropy</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{18}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f18_Histogram</span> <span class="pre">mode</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{19}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f19_Interquartile</span> <span class="pre">range</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{20}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f20_Kurtosis</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{21}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f21_Max</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{22}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f22_Mean</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{23}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f23_Mean</span> <span class="pre">absolute</span> <span class="pre">deviation</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{24}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f24_Median</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{25}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f25_Median</span> <span class="pre">absolute</span> <span class="pre">deviation</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{26}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f26_Min</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{27}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f27_Peak</span> <span class="pre">to</span> <span class="pre">peak</span> <span class="pre">distance</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{28}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f28_Root</span> <span class="pre">mean</span> <span class="pre">square</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{29}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f29_Skewness</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{30}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f30_Standard</span> <span class="pre">deviation</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{31}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f31_Variance</span></code></p></td>
-<td class="text-center"><p>Statistical</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Statistical)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<p>Berikut adalah penjelasan detail komprehensif untuk <strong>seluruh 68 fitur TSFEL</strong> yang diekstrak, mencakup <strong>konsep fitur, alasan penggunaan pada sinyal CO, rumus matematis LaTeX, dan interpretasi hasil</strong> yang dikelompokkan ke dalam <strong>4 domain utama</strong>:</p>
+<section id="domain-statistik-statistical-domain-22-fitur">
+<h3>3.1 Domain Statistik (<em>Statistical Domain</em>) (22 Fitur)<a class="headerlink" href="#domain-statistik-statistical-domain-22-fitur" title="Link to this heading">#</a></h3>
+<section id="f1-f1-abs-energy">
+<h4><strong>f1</strong>: <code class="docutils literal notranslate"><span class="pre">f1_abs_energy</span></code><a class="headerlink" href="#f1-f1-abs-energy" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Akumulasi total energi mutlak sinyal CO.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur magnitudo keseluruhan akumulasi pencemaran CO selama kurun waktu pengamatan.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(E = \sum_{i=1}^{N} x_i^2\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Nilai energi tinggi menunjukkan durasi konsentrasi CO tinggi yang berkelanjutan.</p></li>
+</ul>
 </section>
-<hr class="docutils" />
-<section id="domain-temporal-f-32-hingga-f-45">
-<h3>3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{32}\)</span> hingga <span class="math notranslate nohighlight">\(f_{45}\)</span>)<a class="headerlink" href="#domain-temporal-f-32-hingga-f-45" title="Link to this heading">#</a></h3>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
-<th class="head text-left"><p>Header Kolom CSV (<code class="docutils literal notranslate"><span class="pre">f{i}_NamaFitur</span></code>)</p></th>
-<th class="head text-center"><p>Domain</p></th>
-<th class="head text-left"><p>Deskripsi Fitur</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{32}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f32_Area</span> <span class="pre">under</span> <span class="pre">the</span> <span class="pre">curve</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{33}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f33_Autocorrelation</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{34}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f34_Centroid</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{35}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f35_Mean</span> <span class="pre">absolute</span> <span class="pre">diff</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{36}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f36_Mean</span> <span class="pre">diff</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{37}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f37_Median</span> <span class="pre">absolute</span> <span class="pre">diff</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{38}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f38_Median</span> <span class="pre">diff</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{39}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f39_Negative</span> <span class="pre">turning</span> <span class="pre">points</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{40}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f40_Neighbourhood</span> <span class="pre">peaks</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{41}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f41_Positive</span> <span class="pre">turning</span> <span class="pre">points</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{42}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f42_Signal</span> <span class="pre">distance</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{43}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f43_Slope</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{44}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f44_Sum</span> <span class="pre">absolute</span> <span class="pre">diff</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{45}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f45_Zero</span> <span class="pre">crossing</span> <span class="pre">rate</span></code></p></td>
-<td class="text-center"><p>Temporal</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Temporal)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<section id="f4-f4-average-power">
+<h4><strong>f4</strong>: <code class="docutils literal notranslate"><span class="pre">f4_average_power</span></code><a class="headerlink" href="#f4-f4-average-power" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Rata-rata daya kuadrat sinyal per satuan waktu harian.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Memberikan gambaran intensitas daya emisi polusi harian rata-rata tanpa terpengaruh jumlah hari.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(P = \frac{1}{N} \sum_{i=1}^{N} x_i^2\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Indikator tingkat beban emisi rata-rata harian di Kecamatan Bungah.</p></li>
+</ul>
 </section>
-<hr class="docutils" />
-<section id="domain-spektral-f-46-hingga-f-68">
-<h3>3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{46}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)<a class="headerlink" href="#domain-spektral-f-46-hingga-f-68" title="Link to this heading">#</a></h3>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-center"><p>Kode Fitur</p></th>
-<th class="head text-left"><p>Header Kolom CSV (<code class="docutils literal notranslate"><span class="pre">f{i}_NamaFitur</span></code>)</p></th>
-<th class="head text-center"><p>Domain</p></th>
-<th class="head text-left"><p>Deskripsi Fitur</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{46}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f46_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.02Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{47}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f47_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.03Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{48}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f48_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.05Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{49}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f49_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.06Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{50}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f50_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.08Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{51}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f51_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.0Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{52}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f52_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.11Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{53}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f53_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.13Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{54}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f54_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.15Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{55}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f55_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.16Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{56}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f56_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.18Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{57}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f57_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.19Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{58}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f58_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.1Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{59}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f59_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.21Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{60}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f60_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.23Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{61}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f61_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.24Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{62}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f62_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.26Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{63}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f63_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.27Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{64}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f64_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.29Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{65}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f65_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.31Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{66}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f66_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.32Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{67}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f67_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.34Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong><span class="math notranslate nohighlight">\(f_{68}\)</span></strong></p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f68_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.35Hz</span></code></p></td>
-<td class="text-center"><p>Spectral</p></td>
-<td class="text-left"><p>Ekstraksi karakteristik sinyal polutan (Spectral)</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<section id="f6-f6-calc-max">
+<h4><strong>f6</strong>: <code class="docutils literal notranslate"><span class="pre">f6_calc_max</span></code><a class="headerlink" href="#f6-f6-calc-max" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Nilai konsentrasi CO tertinggi yang tercatat dalam 365 hari.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menandai puncak ekstrem krisis kualitas udara tertinggi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(x_{\max} = \max(x_1, x_2, \dots, x_N)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Menjadi batas atas paparan bahaya pencemaran CO.</p></li>
+</ul>
+</section>
+<section id="f7-f7-calc-mean">
+<h4><strong>f7</strong>: <code class="docutils literal notranslate"><span class="pre">f7_calc_mean</span></code><a class="headerlink" href="#f7-f7-calc-mean" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Rata-rata aritmatika konsentrasi CO harian.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Baseline standar polusi udara tahunan wilayah pengamatan.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\bar{x} = \frac{1}{N} \sum_{i=1}^{N} x_i\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Menggambarkan kualitas udara rata-rata sehari-hari.</p></li>
+</ul>
+</section>
+<section id="f8-f8-calc-median">
+<h4><strong>f8</strong>: <code class="docutils literal notranslate"><span class="pre">f8_calc_median</span></code><a class="headerlink" href="#f8-f8-calc-median" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Nilai tengah distribusi konsentrasi CO.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Tahan terhadap pencilan lonjakan singkat emisi industri.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\tilde{x} = \text{median}(x_1, x_2, \dots, x_N)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Representasi posisi tengah data yang robus dari skewness.</p></li>
+</ul>
+</section>
+<section id="f9-f9-calc-min">
+<h4><strong>f9</strong>: <code class="docutils literal notranslate"><span class="pre">f9_calc_min</span></code><a class="headerlink" href="#f9-f9-calc-min" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Nilai konsentrasi CO terendah dalam 365 hari.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menunjukkan kualitas udara paling bersih/baseline latar belakang alami.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(x_{\min} = \min(x_1, x_2, \dots, x_N)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Ambang minimum polusi lingkungan.</p></li>
+</ul>
+</section>
+<section id="f10-f10-calc-std">
+<h4><strong>f10</strong>: <code class="docutils literal notranslate"><span class="pre">f10_calc_std</span></code><a class="headerlink" href="#f10-f10-calc-std" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Standar deviasi penyebaran nilai CO dari rata-rata.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur tingkat variabilitas dan gejolak kestabilan polusi harian.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(s = \sqrt{\frac{1}{N-1}\sum_{i=1}^{N} (x_i - \bar{x})^2}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Semakin tinggi std, semakin tidak stabil kualitas udara.</p></li>
+</ul>
+</section>
+<section id="f11-f11-calc-var">
+<h4><strong>f11</strong>: <code class="docutils literal notranslate"><span class="pre">f11_calc_var</span></code><a class="headerlink" href="#f11-f11-calc-var" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Variansi atau kuadrat penyebaran data CO.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Memberikan bobot lebih besar pada variasi fluktuasi emisi ekstrem.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(s^2 = \frac{1}{N-1}\sum_{i=1}^{N} (x_i - \bar{x})^2\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Ukuran dispersi kuadratik populasi sinyal.</p></li>
+</ul>
+</section>
+<section id="f14-f14-ecdf">
+<h4><strong>f14</strong>: <code class="docutils literal notranslate"><span class="pre">f14_ecdf</span></code><a class="headerlink" href="#f14-f14-ecdf" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Fungsi Distribusi Kumulatif Empiris sinyal CO.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menjelaskan proporsi kumulatif hari yang berada di bawah ambang tertentu.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(F(x) = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(x_i \le x)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Vektor sebaran probabilitas kumulatif.</p></li>
+</ul>
+</section>
+<section id="f15-f15-ecdf-percentile">
+<h4><strong>f15</strong>: <code class="docutils literal notranslate"><span class="pre">f15_ecdf_percentile</span></code><a class="headerlink" href="#f15-f15-ecdf-percentile" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Nilai kuantil persentil spesifik dari ECDF.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menentukan batas persentil polusi (misal persentil ke-50 atau ke-90).</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(Q_p = \inf \{x : F(x) \ge p\}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Ambang batas konsentrasi CO pada persentil tertentu.</p></li>
+</ul>
+</section>
+<section id="f16-f16-ecdf-percentile-count">
+<h4><strong>f16</strong>: <code class="docutils literal notranslate"><span class="pre">f16_ecdf_percentile_count</span></code><a class="headerlink" href="#f16-f16-ecdf-percentile-count" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Jumlah hari yang konsentrasinya di bawah persentil ECDF.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menghitung frekuensi hari dengan kategori kualitas udara tertentu.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(N_p = \sum_{i=1}^{N} \mathbb{I}(x_i \le Q_p)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Jumlah akumulasi sampel hari.</p></li>
+</ul>
+</section>
+<section id="f17-f17-ecdf-slope">
+<h4><strong>f17</strong>: <code class="docutils literal notranslate"><span class="pre">f17_ecdf_slope</span></code><a class="headerlink" href="#f17-f17-ecdf-slope" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Kemiringan kenaikan kumulatif ECDF antara dua persentil.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur kerapatan sebaran data pada interval konsentrasi tertentu.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{Slope}_{\text{ECDF}} = \frac{F(p_2) - F(p_1)}{x_{p2} - x_{p1}}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Menunjukkan seberapa cepat akumulasi probabilitas naik.</p></li>
+</ul>
+</section>
+<section id="f18-f18-entropy">
+<h4><strong>f18</strong>: <code class="docutils literal notranslate"><span class="pre">f18_entropy</span></code><a class="headerlink" href="#f18-f18-entropy" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Entropi Shannon dari distribusi amplitudo sinyal.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur tingkat ketidakpastian / ketidakacakan distribusi konsentrasi CO.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(H(x) = -\sum_{i=1}^{K} p(x_i) \log_2 p(x_i)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Entropi tinggi berarti distribusi konsentrasi sangat acak dan tersebar.</p></li>
+</ul>
+</section>
+<section id="f21-f21-hist-mode">
+<h4><strong>f21</strong>: <code class="docutils literal notranslate"><span class="pre">f21_hist_mode</span></code><a class="headerlink" href="#f21-f21-hist-mode" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Nilai modus (nilai paling sering muncul) pada histogram CO.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengetahui tingkat konsentrasi CO yang paling dominan dirasakan sehari-hari.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{Mode}(x) = \arg\max_b \text{count}(b)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Titik kerapatan puncak populasi sinyal.</p></li>
+</ul>
+</section>
+<section id="f24-f24-interq-range">
+<h4><strong>f24</strong>: <code class="docutils literal notranslate"><span class="pre">f24_interq_range</span></code><a class="headerlink" href="#f24-f24-interq-range" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Rentang antarkuartil (<span class="math notranslate nohighlight">\(Q_3 - Q_1\)</span>).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Ukuran sebaran 50% data tengah yang tahan terhadap outlier ekstrem.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{IQR} = Q_3 - Q_1\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Rentang variasi konsentrasi CO normal.</p></li>
+</ul>
+</section>
+<section id="f25-f25-kurtosis">
+<h4><strong>f25</strong>: <code class="docutils literal notranslate"><span class="pre">f25_kurtosis</span></code><a class="headerlink" href="#f25-f25-kurtosis" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Keruncingan distribusi data (ekor distribusi).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mendeteksi seberapa berat ekor distribusi data CO akibat adanya spike pencilan emisi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(K = \frac{\frac{1}{N}\sum (x_i - \bar{x})^4}{s^4} - 3\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: <span class="math notranslate nohighlight">\(K &gt; 0\)</span> (leptokurtik) menandakan frekuensi insiden lonjakan ekstrem tinggi.</p></li>
+</ul>
+</section>
+<section id="f26-f26-lempel-ziv">
+<h4><strong>f26</strong>: <code class="docutils literal notranslate"><span class="pre">f26_lempel_ziv</span></code><a class="headerlink" href="#f26-f26-lempel-ziv" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Kompleksitas kompresi Lempel-Ziv sinyal terbinarisasi.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur tingkat kerumitan urutan perubahan pola polusi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(C_{LZ} = \frac{L_z}{N / \log_2 N}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Nilai mendekati 1 menunjukkan pola sinyal sangat bervariasi dan kompleks.</p></li>
+</ul>
+</section>
+<section id="f31-f31-mean-abs-deviation">
+<h4><strong>f31</strong>: <code class="docutils literal notranslate"><span class="pre">f31_mean_abs_deviation</span></code><a class="headerlink" href="#f31-f31-mean-abs-deviation" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Rata-rata deviasi mutlak sampel terhadap mean.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur sebaran data yang lebih stabil dibanding variansi kuadrat.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{MAD} = \frac{1}{N}\sum_{i=1}^{N} |x_i - \bar{x}|\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Rata-rata simpangan absolut dari nilai tengah.</p></li>
+</ul>
+</section>
+<section id="f34-f34-median-abs-deviation">
+<h4><strong>f34</strong>: <code class="docutils literal notranslate"><span class="pre">f34_median_abs_deviation</span></code><a class="headerlink" href="#f34-f34-median-abs-deviation" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Median deviasi mutlak dari nilai median.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Estimator sebaran data yang paling robus dari pencilan.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{MAD}_{med} = \text{median}(|x_i - \tilde{x}|)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Tingkat simpangan robus populasi CO.</p></li>
+</ul>
+</section>
+<section id="f43-f43-pk-pk-distance">
+<h4><strong>f43</strong>: <code class="docutils literal notranslate"><span class="pre">f43_pk_pk_distance</span></code><a class="headerlink" href="#f43-f43-pk-pk-distance" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Jarak antara nilai maksimum dan minimum (<span class="math notranslate nohighlight">\(x_{\max} - x_{\min}\)</span>).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur rentang total rentang dinamis konsentrasi CO.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{P2P} = x_{\max} - x_{\min}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Lebar jangkauan rentang pencemaran tahunan.</p></li>
+</ul>
+</section>
+<section id="f46-f46-rms">
+<h4><strong>f46</strong>: <code class="docutils literal notranslate"><span class="pre">f46_rms</span></code><a class="headerlink" href="#f46-f46-rms" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Root Mean Square (nilai efektif sinyal).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur kekuatan magnitudo sinyal secara konsisten.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{RMS} = \sqrt{\frac{1}{N}\sum_{i=1}^{N} x_i^2}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Nilai konsentrasi efektif CO harian.</p></li>
+</ul>
+</section>
+<section id="f47-f47-skewness">
+<h4><strong>f47</strong>: <code class="docutils literal notranslate"><span class="pre">f47_skewness</span></code><a class="headerlink" href="#f47-f47-skewness" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Kemiringan asimetri distribusi data CO.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengetahui apakah data lebih sering melonjak tinggi (skewness positif).</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(S = \frac{\frac{1}{N}\sum (x_i - \bar{x})^3}{s^3}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Skewness positif menandakan mayoritas hari bersih dengan sesekali spike tinggi.</p></li>
+</ul>
+</section>
+</section>
+<section id="domain-temporal-temporal-domain-14-fitur">
+<h3>3.2 Domain Temporal (<em>Temporal Domain</em>) (14 Fitur)<a class="headerlink" href="#domain-temporal-temporal-domain-14-fitur" title="Link to this heading">#</a></h3>
+<section id="f2-f2-auc">
+<h4><strong>f2</strong>: <code class="docutils literal notranslate"><span class="pre">f2_auc</span></code><a class="headerlink" href="#f2-f2-auc" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Total luas di bawah kurva sinyal waktu CO menggunakan aturan trapesium.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengakumulasi total paparan polutan CO dalam kurun waktu 365 hari.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{AUC} = \sum_{i=1}^{N-1} \frac{x_i + x_{i+1}}{2} \Delta t\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Total kuantitas paparan emisi kumulatif.</p></li>
+</ul>
+</section>
+<section id="f3-f3-autocorr">
+<h4><strong>f3</strong>: <code class="docutils literal notranslate"><span class="pre">f3_autocorr</span></code><a class="headerlink" href="#f3-f3-autocorr" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Titik peluruhan autokorelasi sinyal (<span class="math notranslate nohighlight">\(1/e\)</span> crossing).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur seberapa kuat konsentrasi hari ini mempengaruhi hari-hari berikutnya (memori temporal).</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(R(\tau) = \sum_{i=1}^{N-\tau} x_i x_{i+\tau}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Menunjukkan durasi keberlanjutan pola polusi.</p></li>
+</ul>
+</section>
+<section id="f5-f5-calc-centroid">
+<h4><strong>f5</strong>: <code class="docutils literal notranslate"><span class="pre">f5_calc_centroid</span></code><a class="headerlink" href="#f5-f5-calc-centroid" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Pusat berat (pusat massa) sinyal pada sumbu waktu.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengetahui kapan puncak akumulasi emisi CO terjadi (di awal, tengah, atau akhir tahun).</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(C_t = \frac{\sum_{i=1}^{N} i \cdot x_i}{\sum_{i=1}^{N} x_i}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Titik berat waktu konsentrasi emisi terbanyak.</p></li>
+</ul>
+</section>
+<section id="f13-f13-distance">
+<h4><strong>f13</strong>: <code class="docutils literal notranslate"><span class="pre">f13_distance</span></code><a class="headerlink" href="#f13-f13-distance" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Panjang lintasan Euclidean kurva sinyal dari waktu ke waktu.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur tingkat kerapatan dan gejolak dinamika perubahan harian sinyal.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(D = \sum_{i=1}^{N-1} \sqrt{1 + (x_{i+1} - x_i)^2}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Sinyal dengan grafik sangat bergigi/gejolak memiliki distance tinggi.</p></li>
+</ul>
+</section>
+<section id="f32-f32-mean-abs-diff">
+<h4><strong>f32</strong>: <code class="docutils literal notranslate"><span class="pre">f32_mean_abs_diff</span></code><a class="headerlink" href="#f32-f32-mean-abs-diff" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Rata-rata selisih mutlak antara hari <span class="math notranslate nohighlight">\(i+1\)</span> dan hari <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur laju perubahan laju polusi antar-hari.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\overline{|\Delta x|} = \frac{1}{N-1}\sum_{i=1}^{N-1} |x_{i+1} - x_i|\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Menggambarkan volatilitas transisi harian.</p></li>
+</ul>
+</section>
+<section id="f33-f33-mean-diff">
+<h4><strong>f33</strong>: <code class="docutils literal notranslate"><span class="pre">f33_mean_diff</span></code><a class="headerlink" href="#f33-f33-mean-diff" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Rata-rata selisih linier per pergerakan hari.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur tren arah pergerakan sinyal secara keseluruhan.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\overline{\Delta x} = \frac{x_N - x_1}{N-1}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Positif berarti ada tren kenaikan emisi secara jangka panjang.</p></li>
+</ul>
+</section>
+<section id="f35-f35-median-abs-diff">
+<h4><strong>f35</strong>: <code class="docutils literal notranslate"><span class="pre">f35_median_abs_diff</span></code><a class="headerlink" href="#f35-f35-median-abs-diff" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Median selisih mutlak antar hari yang berurutan.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Laju pergeseran harian yang robus terhadap fluktuasi ekstrem sesaat.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\widetilde{|\Delta x|} = \text{median}(|x_{i+1} - x_i|)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Variasi perubahan harian tipikal.</p></li>
+</ul>
+</section>
+<section id="f36-f36-median-diff">
+<h4><strong>f36</strong>: <code class="docutils literal notranslate"><span class="pre">f36_median_diff</span></code><a class="headerlink" href="#f36-f36-median-diff" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Median selisih linier antar hari.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Tren pergerakan harian yang paling umum terjadi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\widetilde{\Delta x} = \text{median}(x_{i+1} - x_i)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Arah tren harian tipikal.</p></li>
+</ul>
+</section>
+<section id="f40-f40-negative-turning">
+<h4><strong>f40</strong>: <code class="docutils literal notranslate"><span class="pre">f40_negative_turning</span></code><a class="headerlink" href="#f40-f40-negative-turning" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Jumlah titik lembah lokal (<span class="math notranslate nohighlight">\(x_i &lt; x_{i-1} \land x_i &lt; x_{i+1}\)</span>).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menghitung berapa kali sinyal mengalami pemulihan/penurunan kualitas udara.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(N_- = \sum \mathbb{I}(x_i &lt; x_{i-1} \land x_i &lt; x_{i+1})\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Frekuensi penurunan titik polusi.</p></li>
+</ul>
+</section>
+<section id="f41-f41-neighbourhood-peaks">
+<h4><strong>f41</strong>: <code class="docutils literal notranslate"><span class="pre">f41_neighbourhood_peaks</span></code><a class="headerlink" href="#f41-f41-neighbourhood-peaks" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Jumlah puncak lokal dalam jendela tetangga tertentu.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mendeteksi berapa banyak episoda gelombang emisi tinggi yang terjadi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(N_p = \sum \mathbb{I}(x_i &gt; \text{tetangga})\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Jumlah peristiwa lonjakan lokal.</p></li>
+</ul>
+</section>
+<section id="f44-f44-positive-turning">
+<h4><strong>f44</strong>: <code class="docutils literal notranslate"><span class="pre">f44_positive_turning</span></code><a class="headerlink" href="#f44-f44-positive-turning" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Jumlah titik puncak lokal (<span class="math notranslate nohighlight">\(x_i &gt; x_{i-1} \land x_i &gt; x_{i+1}\)</span>).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menghitung frekuensi terjadinya titik balik kenaikan emisi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(N_+ = \sum \mathbb{I}(x_i &gt; x_{i-1} \land x_i &gt; x_{i+1})\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Jumlah puncak fluktuasi sinyal.</p></li>
+</ul>
+</section>
+<section id="f48-f48-slope">
+<h4><strong>f48</strong>: <code class="docutils literal notranslate"><span class="pre">f48_slope</span></code><a class="headerlink" href="#f48-f48-slope" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Kemiringan garis regresi linier sinyal terhadap waktu.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengetahui laju tren peningkatan atau penurunan CO per hari secara keseluruhan.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\beta_1 = \frac{\sum (t_i - \bar{t})(x_i - \bar{x})}{\sum (t_i - \bar{t})^2}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Slope positif berarti polusi beresiko meningkat seiring waktu.</p></li>
+</ul>
+</section>
+<section id="f62-f62-sum-abs-diff">
+<h4><strong>f62</strong>: <code class="docutils literal notranslate"><span class="pre">f62_sum_abs_diff</span></code><a class="headerlink" href="#f62-f62-sum-abs-diff" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Total akumulasi perubahan mutlak antar-hari.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur total energi aktivitas dinamika pergerakan sinyal.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{SAD} = \sum_{i=1}^{N-1} |x_{i+1} - x_i|\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Total gejolak pergerakan sinyal sepanjang tahun.</p></li>
+</ul>
+</section>
+<section id="f68-f68-zero-cross">
+<h4><strong>f68</strong>: <code class="docutils literal notranslate"><span class="pre">f68_zero_cross</span></code><a class="headerlink" href="#f68-f68-zero-cross" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Laju perlintasan sinyal terhadap nilai rata-rata/nol.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur frekuensi sinyal berganti dari di atas rerata ke di bawah rerata.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{ZCR} = \frac{1}{N-1}\sum \mathbb{I}((x_i - \bar{x})(x_{i+1} - \bar{x}) &lt; 0)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Semakin tinggi ZCR, semakin sering sinyal bolak-balik menyeberangi rata-rata.</p></li>
+</ul>
+</section>
+</section>
+<section id="domain-spektral-spectral-domain-26-fitur">
+<h3>3.3 Domain Spektral (<em>Spectral Domain</em>) (26 Fitur)<a class="headerlink" href="#domain-spektral-spectral-domain-26-fitur" title="Link to this heading">#</a></h3>
+<section id="f19-f19-fundamental-frequency">
+<h4><strong>f19</strong>: <code class="docutils literal notranslate"><span class="pre">f19_fundamental_frequency</span></code><a class="headerlink" href="#f19-f19-fundamental-frequency" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Frekuensi utama (komponen dasar) dengan energi terbesar.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mendeteksi siklus polusi alami utama (misal siklus mingguan atau bulanan).</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(f_0 = \arg\max_f |X(f)|\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Frekuensi gelombang paling dominan.</p></li>
+</ul>
+</section>
+<section id="f22-f22-human-range-energy">
+<h4><strong>f22</strong>: <code class="docutils literal notranslate"><span class="pre">f22_human_range_energy</span></code><a class="headerlink" href="#f22-f22-human-range-energy" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Rasio energi spektral pada pita frekuensi aktivitas manusia.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengisolasi energi fluktuasi yang disebabkan oleh ritme aktivitas antropogenik/industri.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(E_{\text{human}} = \frac{\sum_{f \in \text{human}} |X(f)|^2}{\sum |X(f)|^2}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Persentase kontribusi fluktuasi aktivitas manusia.</p></li>
+</ul>
+</section>
+<section id="f27-f27-lpcc">
+<h4><strong>f27</strong>: <code class="docutils literal notranslate"><span class="pre">f27_lpcc</span></code><a class="headerlink" href="#f27-f27-lpcc" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Koefisien Cepstral Prediksi Linier (LPCC).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Memodelkan amplop spektral dari respons dinamika emisi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(c_n = a_n + \sum_{k=1}^{n-1} \frac{k}{n} c_k a_{n-k}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Fitur representasi bentuk spektrum frekuensi.</p></li>
+</ul>
+</section>
+<section id="f28-f28-max-frequency">
+<h4><strong>f28</strong>: <code class="docutils literal notranslate"><span class="pre">f28_max_frequency</span></code><a class="headerlink" href="#f28-f28-max-frequency" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Frekuensi tertinggi yang masih memiliki kandungan daya spektral bermakna.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menentukan batas frekuensi teratas dari komponen gelombang CO.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(f_{\max} = \sup \{f : |X(f)|^2 &gt; \epsilon\}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Batas frekuensi atas sinyal.</p></li>
+</ul>
+</section>
+<section id="f29-f29-max-power-spectrum">
+<h4><strong>f29</strong>: <code class="docutils literal notranslate"><span class="pre">f29_max_power_spectrum</span></code><a class="headerlink" href="#f29-f29-max-power-spectrum" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Nilai kerapatan daya spektral (PSD) maksimum pada spektrum Fourier.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengetahui puncak intensitas energi frekuensi terbesar.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(P_{\max} = \max_f |X(f)|^2\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Kekuatan maksimum gelombang frekuensi dominan.</p></li>
+</ul>
+</section>
+<section id="f37-f37-median-frequency">
+<h4><strong>f37</strong>: <code class="docutils literal notranslate"><span class="pre">f37_median_frequency</span></code><a class="headerlink" href="#f37-f37-median-frequency" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Frekuensi yang membagi total daya spektrum menjadi dua bagian sama besar.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Indikator posisi tengah distribusi energi spektral.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\sum_{f=0}^{f_{med}} |X(f)|^2 = \frac{1}{2} \sum_{f=0}^{f_{nyq}} |X(f)|^2\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Titik tengah pemisahan energi spektrum.</p></li>
+</ul>
+</section>
+<section id="f38-f38-mfcc">
+<h4><strong>f38</strong>: <code class="docutils literal notranslate"><span class="pre">f38_mfcc</span></code><a class="headerlink" href="#f38-f38-mfcc" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Mel-Frequency Cepstral Coefficients (MFCC).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menangkap bentuk enveloped spektral non-linier dari fluktuasi sinyal.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(C_m = \sum_{k=1}^{K} \log(S_k) \cos\left[m \left(k - \frac{1}{2}\right) \frac{\pi}{K}\right]\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Vektor karakteristik spektral halus sinyal.</p></li>
+</ul>
+</section>
+<section id="f45-f45-power-bandwidth">
+<h4><strong>f45</strong>: <code class="docutils literal notranslate"><span class="pre">f45_power_bandwidth</span></code><a class="headerlink" href="#f45-f45-power-bandwidth" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Lebar pita spektrum yang memuat mayoritas daya sinyal (misal 99%).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur seberapa luas rentang frekuensi yang aktif dalam dinamika CO.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{BW} = f_{\text{high}} - f_{\text{low}}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Rentang lebar pita energi utama.</p></li>
+</ul>
+</section>
+<section id="f49-f49-spectral-centroid">
+<h4><strong>f49</strong>: <code class="docutils literal notranslate"><span class="pre">f49_spectral_centroid</span></code><a class="headerlink" href="#f49-f49-spectral-centroid" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Pusat massa (barycenter) spektrum frekuensi sinyal.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menunjukkan apakah energi spektral lebih banyak terkonsentrasi di frekuensi rendah atau tinggi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(f_c = \frac{\sum f \cdot |X(f)|^2}{\sum |X(f)|^2}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Centroid tinggi berarti sinyal didominasi fluktuasi cepat (frekuensi tinggi).</p></li>
+</ul>
+</section>
+<section id="f50-f50-spectral-decrease">
+<h4><strong>f50</strong>: <code class="docutils literal notranslate"><span class="pre">f50_spectral_decrease</span></code><a class="headerlink" href="#f50-f50-spectral-decrease" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Laju penurunan amplitudo spektral seiring bertambahnya frekuensi.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur seberapa cepat daya gelombang melemah pada frekuensi tinggi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{SD} = \frac{1}{\sum_{k=2}^{K} |X(f_k)|} \sum_{k=2}^{K} \frac{|X(f_k)| - |X(f_1)|}{k-1}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Menggambarkan kecenderungan peluruhan energi spektrum.</p></li>
+</ul>
+</section>
+<section id="f51-f51-spectral-distance">
+<h4><strong>f51</strong>: <code class="docutils literal notranslate"><span class="pre">f51_spectral_distance</span></code><a class="headerlink" href="#f51-f51-spectral-distance" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Jarak penyebaran spektral terhadap profil spektrum acak.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur kompleksitas struktur bentuk spektrum Fourier sinyal.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(D_{\text{spec}} = \sqrt{\sum (|X(f_k)| - \mu_{\text{spec}})^2}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Variasi bentuk spektrum frekuensi.</p></li>
+</ul>
+</section>
+<section id="f52-f52-spectral-entropy">
+<h4><strong>f52</strong>: <code class="docutils literal notranslate"><span class="pre">f52_spectral_entropy</span></code><a class="headerlink" href="#f52-f52-spectral-entropy" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Entropi Shannon dari kerapatan spektrum daya Fourier.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur tingkat keacakan distribusi energi frekuensi (apakah seperti noise atau bernada teratur).</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(H_{\text{spec}} = -\sum P(f_k) \log_2 P(f_k)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Nilai tinggi berarti energi terbagi rata di banyak frekuensi (kompleks/noise).</p></li>
+</ul>
+</section>
+<section id="f53-f53-spectral-kurtosis">
+<h4><strong>f53</strong>: <code class="docutils literal notranslate"><span class="pre">f53_spectral_kurtosis</span></code><a class="headerlink" href="#f53-f53-spectral-kurtosis" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Keruncingan distribusi energi spektral di sekitar centroid.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mendeteksi keberadaan lonjakan puncak frekuensi tajam terisolasi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(K_{\text{spec}} = \frac{\sum (f - f_c)^4 |X(f)|^2}{\sigma_{\text{spec}}^4 \sum |X(f)|^2}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Kurtosis spektral tinggi menandakan adanya frekuensi periodik yang sangat kuat.</p></li>
+</ul>
+</section>
+<section id="f54-f54-spectral-positive-turning">
+<h4><strong>f54</strong>: <code class="docutils literal notranslate"><span class="pre">f54_spectral_positive_turning</span></code><a class="headerlink" href="#f54-f54-spectral-positive-turning" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Jumlah puncak lokal pada kurva spektrum daya Fourier.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menghitung berapa banyak komponen frekuensi resonansi berlainan.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(N_{+\text{spec}} = \sum \mathbb{I}(|X(f_k)| &gt; |X(f_{k-1})| \land |X(f_k)| &gt; |X(f_{k+1})|)\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Jumlah puncak harmonic spektrum.</p></li>
+</ul>
+</section>
+<section id="f55-f55-spectral-roll-off">
+<h4><strong>f55</strong>: <code class="docutils literal notranslate"><span class="pre">f55_spectral_roll_off</span></code><a class="headerlink" href="#f55-f55-spectral-roll-off" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Frekuensi di mana 85% akumulasi daya spektral terkonsentrasi.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menentukan batas frekuensi yang menampung mayoritas energi sinyal.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\sum_{f=0}^{f_{\text{roll}}} |X(f)|^2 = 0.85 \sum |X(f)|^2\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Batas spektral 85% energi.</p></li>
+</ul>
+</section>
+<section id="f56-f56-spectral-roll-on">
+<h4><strong>f56</strong>: <code class="docutils literal notranslate"><span class="pre">f56_spectral_roll_on</span></code><a class="headerlink" href="#f56-f56-spectral-roll-on" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Frekuensi di mana 15% akumulasi daya spektral awal mulai terbentuk.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Menentukan batas frekuensi bawah pembentuk energi awal sinyal.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\sum_{f=0}^{f_{\text{on}}} |X(f)|^2 = 0.15 \sum |X(f)|^2\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Batas spektral 15% energi awal.</p></li>
+</ul>
+</section>
+<section id="f57-f57-spectral-skewness">
+<h4><strong>f57</strong>: <code class="docutils literal notranslate"><span class="pre">f57_spectral_skewness</span></code><a class="headerlink" href="#f57-f57-spectral-skewness" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Kemiringan asimetri distribusi spektral di sekitar centroid.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengetahui ke mana energi spektral lebih condong (ke frekuensi rendah atau tinggi).</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(S_{\text{spec}} = \frac{\sum (f - f_c)^3 |X(f)|^2}{\sigma_{\text{spec}}^3 \sum |X(f)|^2}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Skewness spektral menggambarkan kemiringan spektrum daya.</p></li>
+</ul>
+</section>
+<section id="f58-f58-spectral-slope">
+<h4><strong>f58</strong>: <code class="docutils literal notranslate"><span class="pre">f58_spectral_slope</span></code><a class="headerlink" href="#f58-f58-spectral-slope" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Kemiringan garis regresi penurunan amplitudo spektrum frekuensi.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur laju redaman energi spektral seiring naik frekuensi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\beta_{\text{spec}} = \frac{\sum (f_k - \bar{f})(|X(f_k)| - \bar{|X|})}{\sum (f_k - \bar{f})^2}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Slope spektral negatif menggambarkan penurunan daya standar.</p></li>
+</ul>
+</section>
+<section id="f59-f59-spectral-spread">
+<h4><strong>f59</strong>: <code class="docutils literal notranslate"><span class="pre">f59_spectral_spread</span></code><a class="headerlink" href="#f59-f59-spectral-spread" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Penyebaran (deviasi standar) energi spektram di sekitar centroid.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur seberapa lebar spektrum frekuensi terdistribusi di sekitar titik beratnya.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\sigma_{\text{spec}} = \sqrt{\frac{\sum (f - f_c)^2 |X(f)|^2}{\sum |X(f)|^2}}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Penyebaran energi spektral.</p></li>
+</ul>
+</section>
+<section id="f60-f60-spectral-variation">
+<h4><strong>f60</strong>: <code class="docutils literal notranslate"><span class="pre">f60_spectral_variation</span></code><a class="headerlink" href="#f60-f60-spectral-variation" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Fluktuasi variasi bentuk spektrum antar-segmen waktu.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur ketidakstabilan profil frekuensi sepanjang 365 hari.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(V_{\text{spec}} = 1 - \frac{\sum |X_t(f)| |X_{t+1}(f)|}{\sqrt{\sum |X_t(f)|^2 \sum |X_{t+1}(f)|^2}}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Perubahan kontur spektral seiring waktu.</p></li>
+</ul>
+</section>
+<section id="f61-f61-spectrogram-mean-coeff">
+<h4><strong>f61</strong>: <code class="docutils literal notranslate"><span class="pre">f61_spectrogram_mean_coeff</span></code><a class="headerlink" href="#f61-f61-spectrogram-mean-coeff" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Rata-rata daya spektrogram STFT pada pita frekuensi.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur intensitas rata-rata energi pada matriks waktu-frekuensi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\bar{S}(f_k) = \frac{1}{M}\sum_{m=1}^{M} |X(m, f_k)|^2\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Koefisien daya rata-rata spektrogram.</p></li>
+</ul>
+</section>
+<section id="f63-f63-wavelet-abs-mean">
+<h4><strong>f63</strong>: <code class="docutils literal notranslate"><span class="pre">f63_wavelet_abs_mean</span></code><a class="headerlink" href="#f63-f63-wavelet-abs-mean" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Rata-rata mutlak koefisien Transformasi Wavelet Kontinu (CWT).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mendeteksi energi lokal pada berbagai skala waktu-frekuensi secara presisi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\overline{|W(a, b)|} = \frac{1}{N}\sum |W(a, b)|\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Magnitudo respons wavelet skala tertentu.</p></li>
+</ul>
+</section>
+<section id="f64-f64-wavelet-energy">
+<h4><strong>f64</strong>: <code class="docutils literal notranslate"><span class="pre">f64_wavelet_energy</span></code><a class="headerlink" href="#f64-f64-wavelet-energy" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Total energi kuadrat koefisien Transformasi Wavelet.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur total konsentrasi daya sinyal pada resolusi multiskala.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(E_{\text{wav}} = \sum |W(a, b)|^2\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Kandungan energi wavelet multiresolusi.</p></li>
+</ul>
+</section>
+<section id="f65-f65-wavelet-entropy">
+<h4><strong>f65</strong>: <code class="docutils literal notranslate"><span class="pre">f65_wavelet_entropy</span></code><a class="headerlink" href="#f65-f65-wavelet-entropy" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Entropi Shannon dari distribusi energi koefisien Wavelet.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur kompleksitas alokasi energi pada skala waktu-frekuensi.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(H_{\text{wav}} = -\sum p_i \log_2 p_i\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Derajat keacakan sub-band wavelet.</p></li>
+</ul>
+</section>
+<section id="f66-f66-wavelet-std">
+<h4><strong>f66</strong>: <code class="docutils literal notranslate"><span class="pre">f66_wavelet_std</span></code><a class="headerlink" href="#f66-f66-wavelet-std" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Standar deviasi koefisien Transformasi Wavelet.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur variabilitas respons gelombang pada skala wavelet tertentu.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\sigma_{\text{wav}} = \sqrt{\frac{1}{N}\sum (W_i - \bar{W})^2}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Variabilitas koefisien wavelet.</p></li>
+</ul>
+</section>
+<section id="f67-f67-wavelet-var">
+<h4><strong>f67</strong>: <code class="docutils literal notranslate"><span class="pre">f67_wavelet_var</span></code><a class="headerlink" href="#f67-f67-wavelet-var" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Variansi kuadrat koefisien Transformasi Wavelet.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur penyebaran daya pada domain skala wavelet.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\sigma_{\text{wav}}^2 = \frac{1}{N}\sum (W_i - \bar{W})^2\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Dispersi energi wavelet.</p></li>
+</ul>
+</section>
+</section>
+<section id="domain-fraktal-fractal-domain-6-fitur">
+<h3>3.4 Domain Fraktal (<em>Fractal Domain</em>) (6 Fitur)<a class="headerlink" href="#domain-fraktal-fractal-domain-6-fitur" title="Link to this heading">#</a></h3>
+<section id="f12-f12-dfa">
+<h4><strong>f12</strong>: <code class="docutils literal notranslate"><span class="pre">f12_dfa</span></code><a class="headerlink" href="#f12-f12-dfa" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Detrended Fluctuation Analysis (DFA) sinyal CO.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur eksponen korelasi memori jangka panjang (<em>long-range temporal dependence</em>).</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(F(n) = \sqrt{\frac{1}{N}\sum (y(k) - y_n(k))^2} \sim n^\alpha\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: <span class="math notranslate nohighlight">\(\alpha \approx 0.5\)</span> (white noise), <span class="math notranslate nohighlight">\(\alpha &gt; 0.5\)</span> (memori positif/persisten), <span class="math notranslate nohighlight">\(\alpha &gt; 1\)</span> (non-stasioner).</p></li>
+</ul>
+</section>
+<section id="f20-f20-higuchi-fractal-dimension">
+<h4><strong>f20</strong>: <code class="docutils literal notranslate"><span class="pre">f20_higuchi_fractal_dimension</span></code><a class="headerlink" href="#f20-f20-higuchi-fractal-dimension" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Dimensi fraktal linier metode Higuchi (HFD).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur tingkat kekasaran dan kompleksitas fraktal sinyal deret waktu non-linier.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(L(k) \sim k^{-D_H}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Mendekati 1 (sinyal mulus), mendekati 2 (sinyal sangat kasar dan bergejolak).</p></li>
+</ul>
+</section>
+<section id="f23-f23-hurst-exponent">
+<h4><strong>f23</strong>: <code class="docutils literal notranslate"><span class="pre">f23_hurst_exponent</span></code><a class="headerlink" href="#f23-f23-hurst-exponent" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Eksponen Hurst (<span class="math notranslate nohighlight">\(H\)</span>) melalui analisis Rescaled Range (<span class="math notranslate nohighlight">\(R/S\)</span>).</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengetahui sifat keberlanjutan tren (<em>persistency</em>) atau pembalikan tren (<em>anti-persistency</em>).</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\mathbb{E}[R(n)/S(n)] = C n^H\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: <span class="math notranslate nohighlight">\(H &gt; 0.5\)</span> (tren persisten/berlanjut), <span class="math notranslate nohighlight">\(H &lt; 0.5\)</span> (anti-persisten/mean-reverting).</p></li>
+</ul>
+</section>
+<section id="f30-f30-maximum-fractal-length">
+<h4><strong>f30</strong>: <code class="docutils literal notranslate"><span class="pre">f30_maximum_fractal_length</span></code><a class="headerlink" href="#f30-f30-maximum-fractal-length" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Panjang fraktal maksimum pada skala interval terkecil Higuchi.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengukur titik jenuh batas kompleksitas fraktal sinyal.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{MFL} = \max(L(k))\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Batas maksimum kekasaran skala fraktal.</p></li>
+</ul>
+</section>
+<section id="f39-f39-mse">
+<h4><strong>f39</strong>: <code class="docutils literal notranslate"><span class="pre">f39_mse</span></code><a class="headerlink" href="#f39-f39-mse" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Multiscale Entropy (MSE) sinyal.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Mengevaluasi kompleksitas dan keteraturan sinyal pada berbagai skala resolusi waktu.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(\text{MSE}(\tau) = \text{SampEn}(y^{(\tau)})\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Tingkat kompleksitas dinamika sinyal antar-skala.</p></li>
+</ul>
+</section>
+<section id="f42-f42-petrosian-fractal-dimension">
+<h4><strong>f42</strong>: <code class="docutils literal notranslate"><span class="pre">f42_petrosian_fractal_dimension</span></code><a class="headerlink" href="#f42-f42-petrosian-fractal-dimension" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Apa sebenarnya fitur ini?</strong>: Dimensi fraktal metode Petrosian untuk sinyal terbinarisasi.</p></li>
+<li><p><strong>Kenapa fitur ini digunakan?</strong>: Estimasi cepat kompleksitas fraktal berdasarkan perubahan tanda turunan sinyal.</p></li>
+<li><p><strong>Rumus Matematis LaTeX</strong>: <span class="math notranslate nohighlight">\(D_P = \frac{\log_{10} N}{\log_{10} N + \log_{10} \frac{N}{N + 0.4 N_{\delta}}}\)</span></p></li>
+<li><p><strong>Interpretasi Hasil</strong>: Dimensi fraktal Petrosian (biasanya antara 1 dan 1.5).</p></li>
+</ul>
 <hr class="docutils" />
 <blockquote>
 <div><p>[!NOTE]
-Penomoran urut kode <code class="docutils literal notranslate"><span class="pre">f1_Absolute</span> <span class="pre">energy</span></code> hingga <code class="docutils literal notranslate"><span class="pre">f68_Spectrogram</span> <span class="pre">mean</span> <span class="pre">coefficient_0.35Hz</span></code> memetakan 68 fitur utama TSFEL secara presisi dan terstruktur sempurna pada header file <code class="docutils literal notranslate"><span class="pre">data/csv/CO_tsfel_features.csv</span></code>.</p>
+Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang diekstrak ke dalam file <code class="docutils literal notranslate"><span class="pre">data/csv/CO_tsfel_features.csv</span></code>, memberikan landasan analisis yang kuat untuk tahap pemodelan <em>Machine Learning</em> dan analisis kemiripan sinyal.</p>
 </div></blockquote>
+</section>
 </section>
 </section>
 </section>
@@ -1136,9 +1451,86 @@ Penomoran urut kode <code class="docutils literal notranslate"><span class="pre"
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#katalog-penomoran-presisi-68-fitur-tsfel-f-1-hingga-f-68">3. Katalog &amp; Penomoran Presisi 68 Fitur TSFEL (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-f-1-hingga-f-31">3.1 Domain Statistik (<span class="math notranslate nohighlight">\(f_1\)</span> hingga <span class="math notranslate nohighlight">\(f_{31}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-f-32-hingga-f-45">3.2 Domain Temporal (<span class="math notranslate nohighlight">\(f_{32}\)</span> hingga <span class="math notranslate nohighlight">\(f_{45}\)</span>)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-f-46-hingga-f-68">3.3 Domain Spektral (<span class="math notranslate nohighlight">\(f_{46}\)</span> hingga <span class="math notranslate nohighlight">\(f_{68}\)</span>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-statistik-statistical-domain-22-fitur">3.1 Domain Statistik (<em>Statistical Domain</em>) (22 Fitur)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f1-f1-abs-energy"><strong>f1</strong>: <code class="docutils literal notranslate"><span class="pre">f1_abs_energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f4-f4-average-power"><strong>f4</strong>: <code class="docutils literal notranslate"><span class="pre">f4_average_power</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f6-f6-calc-max"><strong>f6</strong>: <code class="docutils literal notranslate"><span class="pre">f6_calc_max</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f7-f7-calc-mean"><strong>f7</strong>: <code class="docutils literal notranslate"><span class="pre">f7_calc_mean</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f8-f8-calc-median"><strong>f8</strong>: <code class="docutils literal notranslate"><span class="pre">f8_calc_median</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f9-f9-calc-min"><strong>f9</strong>: <code class="docutils literal notranslate"><span class="pre">f9_calc_min</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f10-f10-calc-std"><strong>f10</strong>: <code class="docutils literal notranslate"><span class="pre">f10_calc_std</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f11-f11-calc-var"><strong>f11</strong>: <code class="docutils literal notranslate"><span class="pre">f11_calc_var</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f14-f14-ecdf"><strong>f14</strong>: <code class="docutils literal notranslate"><span class="pre">f14_ecdf</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f15-f15-ecdf-percentile"><strong>f15</strong>: <code class="docutils literal notranslate"><span class="pre">f15_ecdf_percentile</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f16-f16-ecdf-percentile-count"><strong>f16</strong>: <code class="docutils literal notranslate"><span class="pre">f16_ecdf_percentile_count</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f17-f17-ecdf-slope"><strong>f17</strong>: <code class="docutils literal notranslate"><span class="pre">f17_ecdf_slope</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f18-f18-entropy"><strong>f18</strong>: <code class="docutils literal notranslate"><span class="pre">f18_entropy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f21-f21-hist-mode"><strong>f21</strong>: <code class="docutils literal notranslate"><span class="pre">f21_hist_mode</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f24-f24-interq-range"><strong>f24</strong>: <code class="docutils literal notranslate"><span class="pre">f24_interq_range</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f25-f25-kurtosis"><strong>f25</strong>: <code class="docutils literal notranslate"><span class="pre">f25_kurtosis</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f26-f26-lempel-ziv"><strong>f26</strong>: <code class="docutils literal notranslate"><span class="pre">f26_lempel_ziv</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f31-f31-mean-abs-deviation"><strong>f31</strong>: <code class="docutils literal notranslate"><span class="pre">f31_mean_abs_deviation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f34-f34-median-abs-deviation"><strong>f34</strong>: <code class="docutils literal notranslate"><span class="pre">f34_median_abs_deviation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f43-f43-pk-pk-distance"><strong>f43</strong>: <code class="docutils literal notranslate"><span class="pre">f43_pk_pk_distance</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f46-f46-rms"><strong>f46</strong>: <code class="docutils literal notranslate"><span class="pre">f46_rms</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f47-f47-skewness"><strong>f47</strong>: <code class="docutils literal notranslate"><span class="pre">f47_skewness</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-temporal-temporal-domain-14-fitur">3.2 Domain Temporal (<em>Temporal Domain</em>) (14 Fitur)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f2-f2-auc"><strong>f2</strong>: <code class="docutils literal notranslate"><span class="pre">f2_auc</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f3-f3-autocorr"><strong>f3</strong>: <code class="docutils literal notranslate"><span class="pre">f3_autocorr</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f5-f5-calc-centroid"><strong>f5</strong>: <code class="docutils literal notranslate"><span class="pre">f5_calc_centroid</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f13-f13-distance"><strong>f13</strong>: <code class="docutils literal notranslate"><span class="pre">f13_distance</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f32-f32-mean-abs-diff"><strong>f32</strong>: <code class="docutils literal notranslate"><span class="pre">f32_mean_abs_diff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f33-f33-mean-diff"><strong>f33</strong>: <code class="docutils literal notranslate"><span class="pre">f33_mean_diff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f35-f35-median-abs-diff"><strong>f35</strong>: <code class="docutils literal notranslate"><span class="pre">f35_median_abs_diff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f36-f36-median-diff"><strong>f36</strong>: <code class="docutils literal notranslate"><span class="pre">f36_median_diff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f40-f40-negative-turning"><strong>f40</strong>: <code class="docutils literal notranslate"><span class="pre">f40_negative_turning</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f41-f41-neighbourhood-peaks"><strong>f41</strong>: <code class="docutils literal notranslate"><span class="pre">f41_neighbourhood_peaks</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f44-f44-positive-turning"><strong>f44</strong>: <code class="docutils literal notranslate"><span class="pre">f44_positive_turning</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f48-f48-slope"><strong>f48</strong>: <code class="docutils literal notranslate"><span class="pre">f48_slope</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f62-f62-sum-abs-diff"><strong>f62</strong>: <code class="docutils literal notranslate"><span class="pre">f62_sum_abs_diff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f68-f68-zero-cross"><strong>f68</strong>: <code class="docutils literal notranslate"><span class="pre">f68_zero_cross</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-spektral-spectral-domain-26-fitur">3.3 Domain Spektral (<em>Spectral Domain</em>) (26 Fitur)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f19-f19-fundamental-frequency"><strong>f19</strong>: <code class="docutils literal notranslate"><span class="pre">f19_fundamental_frequency</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f22-f22-human-range-energy"><strong>f22</strong>: <code class="docutils literal notranslate"><span class="pre">f22_human_range_energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f27-f27-lpcc"><strong>f27</strong>: <code class="docutils literal notranslate"><span class="pre">f27_lpcc</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f28-f28-max-frequency"><strong>f28</strong>: <code class="docutils literal notranslate"><span class="pre">f28_max_frequency</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f29-f29-max-power-spectrum"><strong>f29</strong>: <code class="docutils literal notranslate"><span class="pre">f29_max_power_spectrum</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f37-f37-median-frequency"><strong>f37</strong>: <code class="docutils literal notranslate"><span class="pre">f37_median_frequency</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f38-f38-mfcc"><strong>f38</strong>: <code class="docutils literal notranslate"><span class="pre">f38_mfcc</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f45-f45-power-bandwidth"><strong>f45</strong>: <code class="docutils literal notranslate"><span class="pre">f45_power_bandwidth</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f49-f49-spectral-centroid"><strong>f49</strong>: <code class="docutils literal notranslate"><span class="pre">f49_spectral_centroid</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f50-f50-spectral-decrease"><strong>f50</strong>: <code class="docutils literal notranslate"><span class="pre">f50_spectral_decrease</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f51-f51-spectral-distance"><strong>f51</strong>: <code class="docutils literal notranslate"><span class="pre">f51_spectral_distance</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f52-f52-spectral-entropy"><strong>f52</strong>: <code class="docutils literal notranslate"><span class="pre">f52_spectral_entropy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f53-f53-spectral-kurtosis"><strong>f53</strong>: <code class="docutils literal notranslate"><span class="pre">f53_spectral_kurtosis</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f54-f54-spectral-positive-turning"><strong>f54</strong>: <code class="docutils literal notranslate"><span class="pre">f54_spectral_positive_turning</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f55-f55-spectral-roll-off"><strong>f55</strong>: <code class="docutils literal notranslate"><span class="pre">f55_spectral_roll_off</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f56-f56-spectral-roll-on"><strong>f56</strong>: <code class="docutils literal notranslate"><span class="pre">f56_spectral_roll_on</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f57-f57-spectral-skewness"><strong>f57</strong>: <code class="docutils literal notranslate"><span class="pre">f57_spectral_skewness</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f58-f58-spectral-slope"><strong>f58</strong>: <code class="docutils literal notranslate"><span class="pre">f58_spectral_slope</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f59-f59-spectral-spread"><strong>f59</strong>: <code class="docutils literal notranslate"><span class="pre">f59_spectral_spread</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f60-f60-spectral-variation"><strong>f60</strong>: <code class="docutils literal notranslate"><span class="pre">f60_spectral_variation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f61-f61-spectrogram-mean-coeff"><strong>f61</strong>: <code class="docutils literal notranslate"><span class="pre">f61_spectrogram_mean_coeff</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f63-f63-wavelet-abs-mean"><strong>f63</strong>: <code class="docutils literal notranslate"><span class="pre">f63_wavelet_abs_mean</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f64-f64-wavelet-energy"><strong>f64</strong>: <code class="docutils literal notranslate"><span class="pre">f64_wavelet_energy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f65-f65-wavelet-entropy"><strong>f65</strong>: <code class="docutils literal notranslate"><span class="pre">f65_wavelet_entropy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f66-f66-wavelet-std"><strong>f66</strong>: <code class="docutils literal notranslate"><span class="pre">f66_wavelet_std</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f67-f67-wavelet-var"><strong>f67</strong>: <code class="docutils literal notranslate"><span class="pre">f67_wavelet_var</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-fraktal-fractal-domain-6-fitur">3.4 Domain Fraktal (<em>Fractal Domain</em>) (6 Fitur)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f12-f12-dfa"><strong>f12</strong>: <code class="docutils literal notranslate"><span class="pre">f12_dfa</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f20-f20-higuchi-fractal-dimension"><strong>f20</strong>: <code class="docutils literal notranslate"><span class="pre">f20_higuchi_fractal_dimension</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f23-f23-hurst-exponent"><strong>f23</strong>: <code class="docutils literal notranslate"><span class="pre">f23_hurst_exponent</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f30-f30-maximum-fractal-length"><strong>f30</strong>: <code class="docutils literal notranslate"><span class="pre">f30_maximum_fractal_length</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f39-f39-mse"><strong>f39</strong>: <code class="docutils literal notranslate"><span class="pre">f39_mse</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f42-f42-petrosian-fractal-dimension"><strong>f42</strong>: <code class="docutils literal notranslate"><span class="pre">f42_petrosian_fractal_dimension</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
