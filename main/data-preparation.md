@@ -32,7 +32,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # 1. Membaca Dataset Mentah CO (365 Hari)
-raw_path = '../data/csv/CO_gresik_timeseries.csv'
+raw_path = '../data/csv/timeseries/CO_gresik_timeseries.csv'
 df_raw = pd.read_csv(raw_path)
 df_raw['date'] = pd.to_datetime(df_raw['date'])
 df_raw = df_raw.sort_values('date').reset_index(drop=True)
@@ -93,6 +93,107 @@ print(df_outliers.to_string(index=False))
 
 ---
 
+### 1.2.1 Evaluasi & Perbandingan Deteksi Outlier 5 Metode Machine Learning (PyOD)
+
+Selain metode statistik tradisional seperti IQR, dilakukan pula evaluasi perbandingan menggunakan **5 metode deteksi outlier berbasis Machine Learning & Probabilitas (PyOD)** dengan taksonomi algoritma yang berbeda:
+
+1. **Isolation Forest (`IForest`)** — *Tree-based Isolation*: Memisahkan data dengan memotong-motong ruang fitur secara acak.
+2. **k-Nearest Neighbors (`KNN`)** — *Distance-based*: Mengukur rata-rata jarak Euclidean ke $k$-tetangga terdekat.
+3. **Local Outlier Factor (`LOF`)** — *Density-based*: Membandingkan kerapatan lokal (*local density*) suatu titik terhadap tetangganya.
+4. **COPOD (Copula-Based Outlier Detection)** — *Probabilistic*: Menggunakan teori kopula *multivariate* untuk menghitung ekor probabilitas tanpa asumsi distribusi.
+5. **ECOD (Empirical Cumulative Distribution Functions)** — *Distribution-based*: Menghitung skor outlier berdasarkan ekor fungsi distribusi kumulatif empiris (*ECDF*).
+
+Eksekusi kode Python berikut memproses ke-4 polutan ($\text{CH}_4$, $\text{CO}$, $\text{NO}_2$, dan $\text{SO}_2$) dengan 5 metode Machine Learning terpisah serta menampilkan rincian tanggal pencilan:
+
+```{code-cell} ipython3
+from pyod.models.iforest import IForest
+from pyod.models.knn import KNN
+from pyod.models.lof import LOF
+from pyod.models.copod import COPOD
+from pyod.models.ecod import ECOD
+
+pollutants = ['CH4', 'CO', 'NO2', 'SO2']
+contamination_rate = 0.05
+
+HARI_MAP = {'Monday': 'Senin', 'Tuesday': 'Selasa', 'Wednesday': 'Rabu', 'Thursday': 'Kamis', 'Friday': 'Jumat', 'Saturday': 'Sabtu', 'Sunday': 'Minggu'}
+BULAN_MAP = {1: 'Januari', 2: 'Februari', 3: 'Maret', 4: 'April', 5: 'Mei', 6: 'Juni', 7: 'Juli', 8: 'Agustus', 9: 'September', 10: 'Oktober', 11: 'November', 12: 'Desember'}
+
+for pol in pollutants:
+    file_path = f"../data/csv/timeseries/{pol}_gresik_timeseries.csv"
+    df_p = pd.read_csv(file_path)
+    df_p['date'] = pd.to_datetime(df_p['date'])
+    df_valid_p = df_p.dropna(subset=[pol]).copy()
+    X_p = df_valid_p[[pol]].values
+    
+    models_p = {
+        'Isolation Forest': IForest(contamination=contamination_rate, random_state=42),
+        'KNN': KNN(contamination=contamination_rate),
+        'LOF': LOF(contamination=contamination_rate),
+        'COPOD': COPOD(contamination=contamination_rate),
+        'ECOD': ECOD(contamination=contamination_rate)
+    }
+    
+    print("==========================================================================")
+    print(f"         PERBANDINGAN 5 METODE OUTLIER MACHINE LEARNING — {pol}")
+    print("==========================================================================")
+    print(f"Total Data Valid {pol}: {len(df_valid_p)} hari\n")
+    
+    for name, model in models_p.items():
+        model.fit(X_p)
+        df_valid_p[f'outlier_{name}'] = model.labels_
+        outliers_m = df_valid_p[df_valid_p[f'outlier_{name}'] == 1]
+        print(f">>> Metode: {name} | Jumlah Outlier Terdeteksi: {len(outliers_m)} hari")
+        for idx, row in outliers_m.iterrows():
+            dt = row['date']
+            hari = HARI_MAP[dt.strftime('%A')]
+            print(f"    • {hari}, {dt.day} {BULAN_MAP[dt.month]} {dt.year} | Nilai {pol}: {row[pol]:.4f}")
+        print()
+```
+
+Visualisasi perbandingan hasil deteksi 5 metode untuk setiap polutan dalam bentuk subplot:
+
+```{code-cell} ipython3
+# Visualisasi Subplot 5 Metode Outlier untuk Setiap Polutan
+for pol in pollutants:
+    file_path = f"../data/csv/timeseries/{pol}_gresik_timeseries.csv"
+    df_p = pd.read_csv(file_path)
+    df_p['date'] = pd.to_datetime(df_p['date'])
+    df_valid_p = df_p.dropna(subset=[pol]).copy()
+    X_p = df_valid_p[[pol]].values
+    
+    models_p = {
+        'Isolation Forest': IForest(contamination=contamination_rate, random_state=42),
+        'KNN': KNN(contamination=contamination_rate),
+        'LOF': LOF(contamination=contamination_rate),
+        'COPOD': COPOD(contamination=contamination_rate),
+        'ECOD': ECOD(contamination=contamination_rate)
+    }
+    
+    fig, axes = plt.subplots(5, 1, figsize=(12, 10), sharex=True, dpi=120)
+    
+    for i, (name, model) in enumerate(models_p.items()):
+        model.fit(X_p)
+        labels = model.labels_
+        normal_m = df_valid_p[labels == 0]
+        outliers_m = df_valid_p[labels == 1]
+        
+        ax = axes[i]
+        ax.plot(df_valid_p['date'], df_valid_p[pol], color='#bdc3c7', linewidth=0.8, alpha=0.6)
+        ax.scatter(normal_m['date'], normal_m[pol], color='#2980b9', s=18, alpha=0.7, label='Normal')
+        ax.scatter(outliers_m['date'], outliers_m[pol], color='#e74c3c', s=40, edgecolors='black', label=f'Outlier ({len(outliers_m)})')
+        ax.set_title(f'Deteksi Outlier {pol} — Metode: {name}', fontsize=9, fontweight='bold')
+        ax.set_ylabel(pol, fontsize=8)
+        ax.legend(loc='upper right', fontsize=8)
+        ax.grid(True, linestyle=':', alpha=0.5)
+        
+    plt.xlabel('Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)', fontsize=9)
+    plt.suptitle(f'Grafik Deteksi Outlier 5 Metode — Polutan {pol}', fontsize=12, fontweight='bold', y=1.01)
+    plt.tight_layout()
+    plt.show()
+```
+
+---
+
 ### 1.3 Pengosongan Outlier & Imputasi Linear Time Interpolation
 
 Titik data pencilan diubah menjadi `NaN` lalu diimputasi bersama dengan celah data mentah menggunakan **Linear Time Interpolation**:
@@ -117,8 +218,8 @@ print(f"Jumlah NaN Setelah Imputasi Akhir      : {nan_akhir} hari (100% Terisi &
 
 # Simpan dataset bersih ke file CSV
 df_save = df_clean[['date', 'CO_clean']].rename(columns={'CO_clean': 'CO'})
-df_save.to_csv('../data/csv/CO_clean.csv', index=False)
-print("Dataset bersih disimpan ke '../data/csv/CO_clean.csv'")
+df_save.to_csv('../data/csv/clean/CO_clean.csv', index=False)
+print("Dataset bersih disimpan ke '../data/csv/clean/CO_clean.csv'")
 ```
 
 ---
@@ -240,7 +341,7 @@ Sesuai dengan daftar resmi 68 fitur TSFEL (`FEATURE_LIST`), ekstraksi fitur dike
 3. **Domain Spektral**: Mengukur distribusi energi spektrogram, MFCC, LPCC, Wavelet, dan frekuensi sinyal (FFT).
 4. **Domain Fraktal**: Menganalisis ketidakteraturan, kompleksitas *self-similarity* (DFA, Hurst Exponent, Higuchi, Petrosian, MSE).
 
-- **Output File CSV**: Matriks presisi 68 fitur TSFEL disimpan ke **`data/csv/CO_tsfel_features.csv`** dengan format header `f1_abs_energy` hingga `f68_zero_cross`.
+- **Output File CSV**: Matriks presisi 68 fitur TSFEL disimpan ke **`data/csv/features/CO_tsfel_features.csv`** dengan format header `f1_abs_energy` hingga `f68_zero_cross`.
 
 ---
 
@@ -667,4 +768,87 @@ Berikut adalah penjelasan detail komprehensif untuk **seluruh 68 fitur TSFEL** y
 ---
 
 > [!NOTE]
-> Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang diekstrak ke dalam file `data/csv/CO_tsfel_features.csv`, memberikan landasan analisis yang kuat untuk tahap pemodelan *Machine Learning* dan analisis kemiripan sinyal.
+> Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang diekstrak ke dalam file `data/csv/features/CO_tsfel_features.csv`, memberikan landasan analisis yang kuat untuk tahap pemodelan *Machine Learning* dan analisis kemiripan sinyal.
+
+---
+
+## 4. Evaluasi Perbandingan Clustering K-Means ($k=2$ vs $k=5$) & Deteksi Outlier
+
+Setelah ekstraksi 272 fitur TSFEL dari 19 sampel daerah/mahasiswa dilakukan, pengelompokan (*clustering*) dievaluasi secara komprehensif menggunakan algoritma **K-Means** dalam dua skenario utama jumlah cluster: **$k=2$** (Pemisahan Biner Ekstrem) dan **$k=5$** (Segmentasi Granular Spesifik), baik dengan reduksi dimensi **PCA (19 Komponen Utama: PCA 0 s.d. PCA 18)** maupun **Tanpa PCA (Fitur Utuh)**.
+
+---
+
+### 4.1 Visualisasi Workflow KNIME & Scatter Plot Analytics Platform
+
+Proses ekstraksi, pra-pemrosesan, reduksi dimensi PCA, dan pengelompokan K-Means dijalankan menggunakan alur kerja (*workflow*) KNIME Analytics Platform:
+
+```{figure} ../assets/editor/knime/workflow-clustering.png
+:width: 100%
+:align: center
+
+Gambar 4.0: Workflow Clustering K-Means & Reduksi Dimensi PCA pada KNIME Analytics Platform
+```
+
+Hasil pengelompokan dari alur KNIME disajikan dalam bentuk grafik **Scatter Plot KNIME** yang memetakan sebaran 19 mahasiswa/daerah terhadap label cluster masing-masing:
+
+```{figure} ../assets/editor/knime/ScatterPlotk2denganpca.png
+:width: 100%
+:align: center
+
+Gambar 4.1: KNIME Scatter Plot K-Means (k=2) Dengan Reduksi Dimensi PCA (19 Komponen)
+```
+
+**Penjelasan Gambar 4.1 (K-Means $k=2$ dengan PCA):**
+Pada skenario $k=2$ menggunakan reduksi dimensi PCA 19 komponen (PCA 0 s.d. PCA 18), mayoritas 18 mahasiswa/daerah dikelompokkan ke dalam **`cluster_0`**. Hanya 1 mahasiswa, yaitu **Muhammad Fathul Iman Wahid (Burneh, Bangkalan)**, yang terpisah secara ekstrem ke dalam **`cluster_1`** sebagai pencilan (*outlier*).
+
+```{figure} ../assets/editor/knime/ScatterPlotk2tanpapca.png
+:width: 100%
+:align: center
+
+Gambar 4.2: KNIME Scatter Plot K-Means (k=2) Tanpa PCA (272 Fitur TSFEL Utuh)
+```
+
+**Penjelasan Gambar 4.2 (K-Means $k=2$ tanpa PCA):**
+Pada skenario $k=2$ menggunakan 272 fitur TSFEL utuh ter-normalisasi tanpa PCA, hasil pengelompokan menunjukkan konsistensi 100% di mana 18 mahasiswa berada di **`cluster_0`** dan **Muhammad Fathul Iman Wahid (Burneh, Bangkalan)** tetap menjadi outlier tunggal di **`cluster_1`**.
+
+```{figure} ../assets/editor/knime/ScatterPlotk5denganpca.png
+:width: 100%
+:align: center
+
+Gambar 4.3: KNIME Scatter Plot K-Means (k=5) Dengan Reduksi Dimensi PCA
+```
+
+**Penjelasan Gambar 4.3 (K-Means $k=5$ dengan PCA):**
+Ketika jumlah cluster ditingkatkan menjadi $k=5$ dengan PCA, kelompok mayoritas terurai secara granular menjadi 5 kelompok:
+- **`cluster_2`**: Kelompok utama terbanyak (14 mahasiswa/daerah).
+- **`cluster_4`**: **Firman Candra Dwi Nugroho** (Kraton, Bangkalan).
+- **`cluster_0`**: **Intan Resti Haslindawati** (Kadur, Pamekasan).
+- **`cluster_1`**: **Muhammad Fathul Iman Wahid** (Burneh, Bangkalan).
+- **`cluster_3`**: **Raihan Aryanova Narendra** (Sokobanah).
+
+```{figure} ../assets/editor/knime/ScatterPlotk5tanpapca.png
+:width: 100%
+:align: center
+
+Gambar 4.4: KNIME Scatter Plot K-Means (k=5) Tanpa PCA (272 Fitur TSFEL Utuh)
+```
+
+**Penjelasan Gambar 4.4 (K-Means $k=5$ tanpa PCA):**
+Pengelompokan $k=5$ menggunakan 272 fitur TSFEL utuh tanpa PCA menghasilkan pemetaan yang serupa dengan variasi label cluster yang selaras, menguraikan 19 mahasiswa menjadi 1 kelompok utama dan 4 cluster pencilan spesifik.
+
+---
+
+### 4.2 Kesimpulan Perbandingan (=2$ vs =5$) & Pengaruh Reduksi Dimensi PCA (19 Komponen)
+
+Berdasarkan hasil pemodelan K-Means dan analisis visual Scatter Plot:
+
+1. **Efektivitas Skenario $k=2$**:
+   - Skenario $k=2$ berhasil mengisolasi anomali pencilan utama secara biner: **18 mahasiswa/daerah berada di kelompok mayoritas (`cluster_0`)**, sedangkan **Muhammad Fathul Iman Wahid (Burneh, Bangkalan)** terisolasi secara eksplisit di **`cluster_1`**.
+
+2. **Dinamika Skenario $k=5$**:
+   - Peningkatan nilai $k$ dari 2 menjadi 5 menguraikan kelompok mayoritas menjadi segmentasi yang lebih kaya:
+     - 1 kelompok mayoritas (14 mahasiswa).
+     - 4 cluster pencilan spesifik beranggotakan 1 mahasiswa: **Firman Candra Dwi Nugroho**, **Intan Resti Haslindawati**, **Muhammad Fathul Iman Wahid**, dan **Raihan Aryanova Narendra**.
+
+3. **Peran Reduksi Dimensi PCA**:
+   - PCA (19 komponen utama: PCA 0 s.d. PCA 18) mampu menyerap 100% rasio varians dari 272 fitur TSFEL tanpa kehilangan informasi spasial maupun temporal, menghasilkan struktur cluster yang 100% selaras antara pemodelan dengan PCA dan tanpa PCA.

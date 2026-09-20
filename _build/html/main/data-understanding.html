@@ -352,7 +352,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co">3.2 CO</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no2">3.3 NO2</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so2">3.4 SO2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polutan-gresik-csv-gabungan-4-polutan">3.5 polutan_gresik.csv (Gabungan 4 Polutan)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-polutan-gresik-csv-gabungan-4-polutan">3.5 table_polutan_gresik.csv (Gabungan 4 Polutan)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">3.6 Kenapa Ada Nilai NaN?</a></li>
 </ul>
 </li>
@@ -543,7 +543,7 @@ Authenticated using device code flow.
 <h4>a. Memuat Data NO2<a class="headerlink" href="#a-memuat-data-no2" title="Link to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
-    <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
+    <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-23"</span><span class="p">],</span>
     <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.5058378</span><span class="p">,</span>
         <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0683846</span><span class="p">,</span>
@@ -559,7 +559,7 @@ Authenticated using device code flow.
 <h4>b. Memuat Data CO<a class="headerlink" href="#b-memuat-data-co" title="Link to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
-    <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
+    <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-23"</span><span class="p">],</span>
     <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.5058378</span><span class="p">,</span>
         <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0683846</span><span class="p">,</span>
@@ -575,7 +575,7 @@ Authenticated using device code flow.
 <h4>c. Memuat Data SO2<a class="headerlink" href="#c-memuat-data-so2" title="Link to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
-    <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
+    <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-23"</span><span class="p">],</span>
     <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.5058378</span><span class="p">,</span>
         <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0683846</span><span class="p">,</span>
@@ -591,7 +591,7 @@ Authenticated using device code flow.
 <h4>d. Memuat Data CH4<a class="headerlink" href="#d-memuat-data-ch4" title="Link to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s5</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
     <span class="s2">"SENTINEL_5P_L2"</span><span class="p">,</span>
-    <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-24"</span><span class="p">],</span>
+    <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-23"</span><span class="p">],</span>
     <span class="n">spatial_extent</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">"west"</span><span class="p">:</span> <span class="mf">112.5058378</span><span class="p">,</span>
         <span class="s2">"south"</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.0683846</span><span class="p">,</span>
@@ -728,7 +728,7 @@ Authenticated using device code flow.
             &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
             &lt;style&gt;
-                #map_964bb898f6fa442135d5baa6dd2864d9 {
+                #map_b97081c7679bc37e5724a38c9b67f3f0 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -765,14 +765,14 @@ Authenticated using device code flow.
 &lt;body&gt;
     
     
-            &lt;div class=&quot;folium-map&quot; id=&quot;map_964bb898f6fa442135d5baa6dd2864d9&quot; &gt;&lt;/div&gt;
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_b97081c7679bc37e5724a38c9b67f3f0&quot; &gt;&lt;/div&gt;
         
 &lt;/body&gt;
 &lt;script&gt;
     
     
-            var map_964bb898f6fa442135d5baa6dd2864d9 = L.map(
-                &quot;map_964bb898f6fa442135d5baa6dd2864d9&quot;,
+            var map_b97081c7679bc37e5724a38c9b67f3f0 = L.map(
+                &quot;map_b97081c7679bc37e5724a38c9b67f3f0&quot;,
                 {
                     center: [-7.0457171, 112.55109479999999],
                     crs: L.CRS.EPSG3857,
@@ -789,7 +789,7 @@ Authenticated using device code flow.
 
         
     
-            var tile_layer_cf62ecfd5b0e20af66eff1e6c875b420 = L.tileLayer(
+            var tile_layer_78327eb20646eed7d5992d8ddd25361b = L.tileLayer(
                 &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
                 {
   &quot;minZoom&quot;: 0,
@@ -806,16 +806,16 @@ Authenticated using device code flow.
             );
         
     
-            tile_layer_cf62ecfd5b0e20af66eff1e6c875b420.addTo(map_964bb898f6fa442135d5baa6dd2864d9);
+            tile_layer_78327eb20646eed7d5992d8ddd25361b.addTo(map_b97081c7679bc37e5724a38c9b67f3f0);
         
     
-            var rectangle_555eeb375963993230d1b3420fd498c1 = L.rectangle(
+            var rectangle_cf3ab88d0bd2dd53f855aa96d897d3ec = L.rectangle(
                 [[-7.0683846, 112.5058378], [-7.0230496, 112.5963518]],
                 {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;red&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;red&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 1.0, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
-            ).addTo(map_964bb898f6fa442135d5baa6dd2864d9);
+            ).addTo(map_b97081c7679bc37e5724a38c9b67f3f0);
         
     
-            rectangle_555eeb375963993230d1b3420fd498c1.bindTooltip(
+            rectangle_cf3ab88d0bd2dd53f855aa96d897d3ec.bindTooltip(
                 `&lt;div&gt;
                      Area Pengamatan Kabupaten Gresik (AOI Baru)
                  &lt;/div&gt;`,
@@ -844,7 +844,7 @@ Authenticated using device code flow.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># Menampilkan 5 data teratas CSV CH4</span>
-<span class="n">df_ch4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df_ch4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./../data/csv/timeseries/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_ch4</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -916,7 +916,7 @@ Authenticated using device code flow.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># Menampilkan 5 data teratas CSV CO</span>
-<span class="n">df_co</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./../data/csv/CO_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df_co</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./../data/csv/timeseries/CO_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_co</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -988,7 +988,7 @@ Authenticated using device code flow.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># Menampilkan 5 data teratas CSV NO2</span>
-<span class="n">df_no2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./../data/csv/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df_no2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./../data/csv/timeseries/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_no2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1060,7 +1060,7 @@ Authenticated using device code flow.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># Menampilkan 5 data teratas CSV SO2</span>
-<span class="n">df_so2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./../data/csv/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df_so2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./../data/csv/timeseries/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_so2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1120,8 +1120,8 @@ Authenticated using device code flow.
 </div></div></div>
 </div>
 </section>
-<section id="polutan-gresik-csv-gabungan-4-polutan">
-<h3>3.5 polutan_gresik.csv (Gabungan 4 Polutan)<a class="headerlink" href="#polutan-gresik-csv-gabungan-4-polutan" title="Link to this heading">#</a></h3>
+<section id="table-polutan-gresik-csv-gabungan-4-polutan">
+<h3>3.5 table_polutan_gresik.csv (Gabungan 4 Polutan)<a class="headerlink" href="#table-polutan-gresik-csv-gabungan-4-polutan" title="Link to this heading">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1132,7 +1132,7 @@ Authenticated using device code flow.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># Menampilkan 5 data teratas CSV gabungan 4 polutan</span>
-<span class="n">df_polutan</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./../data/csv/polutan_gresik.csv"</span><span class="p">)</span>
+<span class="n">df_polutan</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"./../data/csv/timeseries/table_polutan_gresik.csv"</span><span class="p">)</span>
 <span class="n">df_polutan</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1240,7 +1240,7 @@ Authenticated using device code flow.
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">ch4</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"CH4"</span><span class="p">]</span>
 <span class="n">missingValueCH4</span> <span class="o">=</span> <span class="n">ch4</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">validValueCH4</span> <span class="o">=</span> <span class="n">ch4</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -1251,7 +1251,7 @@ Authenticated using device code flow.
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data ch4 : 346
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data ch4 : 345
 Jumlah data terisi (valid) pada data ch4 : 20
 </pre></div>
 </div>
@@ -1267,7 +1267,7 @@ Jumlah data terisi (valid) pada data ch4 : 20
 <p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CO_gresik_timeseries.csv"</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/CO_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">co</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"CO"</span><span class="p">]</span>
 <span class="n">missingValueCO</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">validValueCO</span> <span class="o">=</span> <span class="n">co</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -1278,7 +1278,7 @@ Jumlah data terisi (valid) pada data ch4 : 20
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data co : 174
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data co : 173
 Jumlah data terisi (valid) pada data co : 192
 </pre></div>
 </div>
@@ -1294,7 +1294,7 @@ Jumlah data terisi (valid) pada data co : 192
 <p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">no2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"NO2"</span><span class="p">]</span>
 <span class="n">missingValueNO2</span> <span class="o">=</span> <span class="n">no2</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">validValueNO2</span> <span class="o">=</span> <span class="n">no2</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -1305,7 +1305,7 @@ Jumlah data terisi (valid) pada data co : 192
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data no2 : 166
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data no2 : 165
 Jumlah data terisi (valid) pada data no2 : 200
 </pre></div>
 </div>
@@ -1321,7 +1321,7 @@ Jumlah data terisi (valid) pada data no2 : 200
 <p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">so2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"SO2"</span><span class="p">]</span>
 <span class="n">missingValueSO2</span> <span class="o">=</span> <span class="n">so2</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">validValueSO2</span> <span class="o">=</span> <span class="n">so2</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -1332,7 +1332,7 @@ Jumlah data terisi (valid) pada data no2 : 200
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data so2 : 131
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah missing value pada data so2 : 130
 Jumlah data terisi (valid) pada data so2 : 235
 </pre></div>
 </div>
@@ -1358,7 +1358,7 @@ Jumlah data terisi (valid) pada data so2 : 235
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
@@ -1393,7 +1393,7 @@ Jumlah tidak outlier (normal) pada data ch4 : 19
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CO_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/CO_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
@@ -1428,7 +1428,7 @@ Jumlah tidak outlier (normal) pada data co : 182
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
@@ -1463,7 +1463,7 @@ Jumlah tidak outlier (normal) pada data no2 : 190
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
@@ -1509,7 +1509,7 @@ Jumlah tidak outlier (normal) pada data so2 : 223
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">mean_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -1543,7 +1543,7 @@ Koefisien Variasi (CV) CH4 : 1.31%
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CO_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/CO_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">mean_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -1577,7 +1577,7 @@ Koefisien Variasi (CV) CO : 14.19%
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">mean_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -1611,7 +1611,7 @@ Koefisien Variasi (CV) NO2 : 70.51%
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">mean_val</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -1649,10 +1649,10 @@ Koefisien Variasi (CV) SO2 : 361.62%
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="c1"># 1. Load Data 4 Polutan</span>
-<span class="n">df_no2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/NO2_gresik_timeseries.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">])</span>
-<span class="n">df_co</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CO_gresik_timeseries.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">])</span>
-<span class="n">df_ch4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">])</span>
-<span class="n">df_so2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/SO2_gresik_timeseries.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">])</span>
+<span class="n">df_no2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/NO2_gresik_timeseries.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">])</span>
+<span class="n">df_co</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/CO_gresik_timeseries.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">])</span>
+<span class="n">df_ch4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/CH4_gresik_timeseries.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">])</span>
+<span class="n">df_so2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/SO2_gresik_timeseries.csv"</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">])</span>
 
 <span class="n">df_no2</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_no2</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
 <span class="n">df_co</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_co</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
@@ -1776,7 +1776,7 @@ Koefisien Variasi (CV) SO2 : 361.62%
 <p><strong>DBeaver</strong> digunakan sebagai <em>Database Management Tool (GUI Client)</em> untuk mengelola struktur tabel relasional dan menguji koneksi jaringan ke cloud Aiven:</p>
 <ol class="arabic simple">
 <li><p>Membuat koneksi baru (<em>New Database Connection</em>) berjenis PostgreSQL di DBeaver menggunakan Host, Port, dan kredensial Aiven.</p></li>
-<li><p>Mengimpor dataset <code class="docutils literal notranslate"><span class="pre">csv</span></code> 4 polutan ke dalam tabel relasional PostgreSQL bernama <code class="docutils literal notranslate"><span class="pre">polutan_gresik</span></code>.</p></li>
+<li><p>Mengimpor dataset <code class="docutils literal notranslate"><span class="pre">csv</span></code> 4 polutan ke dalam tabel relasional PostgreSQL bernama <code class="docutils literal notranslate"><span class="pre">table_polutan_gresik</span></code>.</p></li>
 <li><p>Menjalankan <em>SQL Query</em> <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">*</span> <span class="pre">FROM</span> <span class="pre">table_polutan_gresik;</span></code> untuk memastikan data terstruktur dengan benar di dalam <em>cloud database</em>.</p></li>
 </ol>
 <figure class="align-center" id="id4">
@@ -2135,7 +2135,7 @@ X_{\left(\frac{N+1}{2}\right)}, &amp; \text{jika } N \text{ ganjil} \\
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#co">3.2 CO</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no2">3.3 NO2</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#so2">3.4 SO2</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#polutan-gresik-csv-gabungan-4-polutan">3.5 polutan_gresik.csv (Gabungan 4 Polutan)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#table-polutan-gresik-csv-gabungan-4-polutan">3.5 table_polutan_gresik.csv (Gabungan 4 Polutan)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kenapa-ada-nilai-nan">3.6 Kenapa Ada Nilai NaN?</a></li>
 </ul>
 </li>

@@ -331,6 +331,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-outliers-data-cleaning-terpadu">1. Penanganan Missing Values &amp; Outliers (Data Cleaning Terpadu)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-missing-values-celah-data-mentah">1.1 Evaluasi Missing Values (Celah Data Mentah)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-pengosongan-outlier-metode-iqr-dinamis-berbasis-kode">1.2 Deteksi &amp; Pengosongan Outlier (Metode IQR Dinamis Berbasis Kode)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-perbandingan-deteksi-outlier-5-metode-machine-learning-pyod">1.2.1 Evaluasi &amp; Perbandingan Deteksi Outlier 5 Metode Machine Learning (PyOD)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengosongan-outlier-imputasi-linear-time-interpolation">1.3 Pengosongan Outlier &amp; Imputasi Linear Time Interpolation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-4-grafik-terpisah-ringkasan-perubahan-status-sinyal">1.4 Visualisasi 4 Grafik Terpisah &amp; Ringkasan Perubahan Status Sinyal</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-ringkasan-perubahan-status-sinyal">Tabel Ringkasan Perubahan Status Sinyal</a></li>
@@ -423,6 +424,11 @@ document.write(`
 </li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-perbandingan-clustering-k-means-k-2-vs-k-5-deteksi-outlier">4. Evaluasi Perbandingan Clustering K-Means (<span class="math notranslate nohighlight">\(k=2\)</span> vs <span class="math notranslate nohighlight">\(k=5\)</span>) &amp; Deteksi Outlier</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-workflow-knime-scatter-plot-analytics-platform">4.1 Visualisasi Workflow KNIME &amp; Scatter Plot Analytics Platform</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-perbandingan-2-vs-5-pengaruh-reduksi-dimensi-pca-19-komponen">4.2 Kesimpulan Perbandingan (=2<span class="math notranslate nohighlight">\( vs =5\)</span>) &amp; Pengaruh Reduksi Dimensi PCA (19 Komponen)</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -451,7 +457,7 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="c1"># 1. Membaca Dataset Mentah CO (365 Hari)</span>
-<span class="n">raw_path</span> <span class="o">=</span> <span class="s1">'../data/csv/CO_gresik_timeseries.csv'</span>
+<span class="n">raw_path</span> <span class="o">=</span> <span class="s1">'../data/csv/timeseries/CO_gresik_timeseries.csv'</span>
 <span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">raw_path</span><span class="p">)</span>
 <span class="n">df_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
 <span class="n">df_raw</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -541,6 +547,350 @@ Daftar Tanggal &amp; Nilai Outlier Terdeteksi secara Akurat:
 </div>
 </section>
 <hr class="docutils" />
+<section id="evaluasi-perbandingan-deteksi-outlier-5-metode-machine-learning-pyod">
+<h3>1.2.1 Evaluasi &amp; Perbandingan Deteksi Outlier 5 Metode Machine Learning (PyOD)<a class="headerlink" href="#evaluasi-perbandingan-deteksi-outlier-5-metode-machine-learning-pyod" title="Link to this heading">#</a></h3>
+<p>Selain metode statistik tradisional seperti IQR, dilakukan pula evaluasi perbandingan menggunakan <strong>5 metode deteksi outlier berbasis Machine Learning &amp; Probabilitas (PyOD)</strong> dengan taksonomi algoritma yang berbeda:</p>
+<ol class="arabic simple">
+<li><p><strong>Isolation Forest (<code class="docutils literal notranslate"><span class="pre">IForest</span></code>)</strong> — <em>Tree-based Isolation</em>: Memisahkan data dengan memotong-motong ruang fitur secara acak.</p></li>
+<li><p><strong>k-Nearest Neighbors (<code class="docutils literal notranslate"><span class="pre">KNN</span></code>)</strong> — <em>Distance-based</em>: Mengukur rata-rata jarak Euclidean ke <span class="math notranslate nohighlight">\(k\)</span>-tetangga terdekat.</p></li>
+<li><p><strong>Local Outlier Factor (<code class="docutils literal notranslate"><span class="pre">LOF</span></code>)</strong> — <em>Density-based</em>: Membandingkan kerapatan lokal (<em>local density</em>) suatu titik terhadap tetangganya.</p></li>
+<li><p><strong>COPOD (Copula-Based Outlier Detection)</strong> — <em>Probabilistic</em>: Menggunakan teori kopula <em>multivariate</em> untuk menghitung ekor probabilitas tanpa asumsi distribusi.</p></li>
+<li><p><strong>ECOD (Empirical Cumulative Distribution Functions)</strong> — <em>Distribution-based</em>: Menghitung skor outlier berdasarkan ekor fungsi distribusi kumulatif empiris (<em>ECDF</em>).</p></li>
+</ol>
+<p>Eksekusi kode Python berikut memproses ke-4 polutan (<span class="math notranslate nohighlight">\(\text{CH}_4\)</span>, <span class="math notranslate nohighlight">\(\text{CO}\)</span>, <span class="math notranslate nohighlight">\(\text{NO}_2\)</span>, dan <span class="math notranslate nohighlight">\(\text{SO}_2\)</span>) dengan 5 metode Machine Learning terpisah serta menampilkan rincian tanggal pencilan:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.iforest</span><span class="w"> </span><span class="kn">import</span> <span class="n">IForest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.knn</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.lof</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.copod</span><span class="w"> </span><span class="kn">import</span> <span class="n">COPOD</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.ecod</span><span class="w"> </span><span class="kn">import</span> <span class="n">ECOD</span>
+
+<span class="n">pollutants</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'CH4'</span><span class="p">,</span> <span class="s1">'CO'</span><span class="p">,</span> <span class="s1">'NO2'</span><span class="p">,</span> <span class="s1">'SO2'</span><span class="p">]</span>
+<span class="n">contamination_rate</span> <span class="o">=</span> <span class="mf">0.05</span>
+
+<span class="n">HARI_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Monday'</span><span class="p">:</span> <span class="s1">'Senin'</span><span class="p">,</span> <span class="s1">'Tuesday'</span><span class="p">:</span> <span class="s1">'Selasa'</span><span class="p">,</span> <span class="s1">'Wednesday'</span><span class="p">:</span> <span class="s1">'Rabu'</span><span class="p">,</span> <span class="s1">'Thursday'</span><span class="p">:</span> <span class="s1">'Kamis'</span><span class="p">,</span> <span class="s1">'Friday'</span><span class="p">:</span> <span class="s1">'Jumat'</span><span class="p">,</span> <span class="s1">'Saturday'</span><span class="p">:</span> <span class="s1">'Sabtu'</span><span class="p">,</span> <span class="s1">'Sunday'</span><span class="p">:</span> <span class="s1">'Minggu'</span><span class="p">}</span>
+<span class="n">BULAN_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">'Januari'</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">'Februari'</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">'Maret'</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">'April'</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">'Mei'</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s1">'Juni'</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s1">'Juli'</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s1">'Agustus'</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s1">'September'</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="s1">'Oktober'</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="s1">'November'</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="s1">'Desember'</span><span class="p">}</span>
+
+<span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="n">pollutants</span><span class="p">:</span>
+    <span class="n">file_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"../data/csv/timeseries/</span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s2">_gresik_timeseries.csv"</span>
+    <span class="n">df_p</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="n">df_p</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_p</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+    <span class="n">df_valid_p</span> <span class="o">=</span> <span class="n">df_p</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">pol</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">X_p</span> <span class="o">=</span> <span class="n">df_valid_p</span><span class="p">[[</span><span class="n">pol</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="n">models_p</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'Isolation Forest'</span><span class="p">:</span> <span class="n">IForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+        <span class="s1">'KNN'</span><span class="p">:</span> <span class="n">KNN</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+        <span class="s1">'LOF'</span><span class="p">:</span> <span class="n">LOF</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+        <span class="s1">'COPOD'</span><span class="p">:</span> <span class="n">COPOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+        <span class="s1">'ECOD'</span><span class="p">:</span> <span class="n">ECOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"         PERBANDINGAN 5 METODE OUTLIER MACHINE LEARNING — </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Data Valid </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_valid_p</span><span class="p">)</span><span class="si">}</span><span class="s2"> hari</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models_p</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_p</span><span class="p">)</span>
+        <span class="n">df_valid_p</span><span class="p">[</span><span class="sa">f</span><span class="s1">'outlier_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">labels_</span>
+        <span class="n">outliers_m</span> <span class="o">=</span> <span class="n">df_valid_p</span><span class="p">[</span><span class="n">df_valid_p</span><span class="p">[</span><span class="sa">f</span><span class="s1">'outlier_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"&gt;&gt;&gt; Metode: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> | Jumlah Outlier Terdeteksi: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_m</span><span class="p">)</span><span class="si">}</span><span class="s2"> hari"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">outliers_m</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span>
+            <span class="n">hari</span> <span class="o">=</span> <span class="n">HARI_MAP</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%A'</span><span class="p">)]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    • </span><span class="si">{</span><span class="n">hari</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">BULAN_MAP</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> | Nilai </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="n">pol</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==========================================================================
+         PERBANDINGAN 5 METODE OUTLIER MACHINE LEARNING — CH4
+==========================================================================
+Total Data Valid CH4: 20 hari
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: Isolation Forest | Jumlah Outlier Terdeteksi: 1 hari
+    • Minggu, 7 Juni 2026 | Nilai CH4: 1821.6421
+
+&gt;&gt;&gt; Metode: KNN | Jumlah Outlier Terdeteksi: 1 hari
+    • Minggu, 7 Juni 2026 | Nilai CH4: 1821.6421
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: LOF | Jumlah Outlier Terdeteksi: 1 hari
+    • Jumat, 29 Agustus 2025 | Nilai CH4: 1871.7540
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: COPOD | Jumlah Outlier Terdeteksi: 1 hari
+    • Minggu, 7 Juni 2026 | Nilai CH4: 1821.6421
+
+&gt;&gt;&gt; Metode: ECOD | Jumlah Outlier Terdeteksi: 0 hari
+
+==========================================================================
+         PERBANDINGAN 5 METODE OUTLIER MACHINE LEARNING — CO
+==========================================================================
+Total Data Valid CO: 192 hari
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: Isolation Forest | Jumlah Outlier Terdeteksi: 10 hari
+    • Minggu, 14 September 2025 | Nilai CO: 0.0174
+    • Rabu, 24 September 2025 | Nilai CO: 0.0416
+    • Kamis, 9 Oktober 2025 | Nilai CO: 0.0452
+    • Minggu, 5 April 2026 | Nilai CO: 0.0176
+    • Selasa, 5 Mei 2026 | Nilai CO: 0.0176
+    • Selasa, 12 Mei 2026 | Nilai CO: 0.0170
+    • Sabtu, 13 Juni 2026 | Nilai CO: 0.0187
+    • Senin, 29 Juni 2026 | Nilai CO: 0.0214
+    • Rabu, 15 Juli 2026 | Nilai CO: 0.0191
+    • Senin, 10 Agustus 2026 | Nilai CO: 0.0384
+
+&gt;&gt;&gt; Metode: KNN | Jumlah Outlier Terdeteksi: 10 hari
+    • Minggu, 14 September 2025 | Nilai CO: 0.0174
+    • Rabu, 24 September 2025 | Nilai CO: 0.0416
+    • Rabu, 8 Oktober 2025 | Nilai CO: 0.0391
+    • Kamis, 9 Oktober 2025 | Nilai CO: 0.0452
+    • Selasa, 12 Mei 2026 | Nilai CO: 0.0170
+    • Sabtu, 13 Juni 2026 | Nilai CO: 0.0187
+    • Senin, 29 Juni 2026 | Nilai CO: 0.0214
+    • Rabu, 15 Juli 2026 | Nilai CO: 0.0191
+    • Senin, 10 Agustus 2026 | Nilai CO: 0.0384
+    • Jumat, 14 Agustus 2026 | Nilai CO: 0.0391
+
+&gt;&gt;&gt; Metode: LOF | Jumlah Outlier Terdeteksi: 10 hari
+    • Minggu, 14 September 2025 | Nilai CO: 0.0174
+    • Rabu, 24 September 2025 | Nilai CO: 0.0416
+    • Rabu, 8 Oktober 2025 | Nilai CO: 0.0391
+    • Kamis, 9 Oktober 2025 | Nilai CO: 0.0452
+    • Minggu, 5 April 2026 | Nilai CO: 0.0176
+    • Selasa, 5 Mei 2026 | Nilai CO: 0.0176
+    • Selasa, 12 Mei 2026 | Nilai CO: 0.0170
+    • Sabtu, 13 Juni 2026 | Nilai CO: 0.0187
+    • Rabu, 15 Juli 2026 | Nilai CO: 0.0191
+    • Jumat, 14 Agustus 2026 | Nilai CO: 0.0391
+
+&gt;&gt;&gt; Metode: COPOD | Jumlah Outlier Terdeteksi: 10 hari
+    • Rabu, 24 September 2025 | Nilai CO: 0.0416
+    • Jumat, 3 Oktober 2025 | Nilai CO: 0.0351
+    • Rabu, 8 Oktober 2025 | Nilai CO: 0.0391
+    • Kamis, 9 Oktober 2025 | Nilai CO: 0.0452
+    • Jumat, 10 Oktober 2025 | Nilai CO: 0.0361
+    • Minggu, 1 Februari 2026 | Nilai CO: 0.0359
+    • Senin, 9 Maret 2026 | Nilai CO: 0.0355
+    • Rabu, 22 Juli 2026 | Nilai CO: 0.0367
+    • Senin, 10 Agustus 2026 | Nilai CO: 0.0384
+    • Jumat, 14 Agustus 2026 | Nilai CO: 0.0391
+
+&gt;&gt;&gt; Metode: ECOD | Jumlah Outlier Terdeteksi: 10 hari
+    • Minggu, 14 September 2025 | Nilai CO: 0.0174
+    • Rabu, 24 September 2025 | Nilai CO: 0.0416
+    • Rabu, 8 Oktober 2025 | Nilai CO: 0.0391
+    • Kamis, 9 Oktober 2025 | Nilai CO: 0.0452
+    • Minggu, 5 April 2026 | Nilai CO: 0.0176
+    • Selasa, 5 Mei 2026 | Nilai CO: 0.0176
+    • Selasa, 12 Mei 2026 | Nilai CO: 0.0170
+    • Sabtu, 13 Juni 2026 | Nilai CO: 0.0187
+    • Senin, 10 Agustus 2026 | Nilai CO: 0.0384
+    • Jumat, 14 Agustus 2026 | Nilai CO: 0.0391
+
+==========================================================================
+         PERBANDINGAN 5 METODE OUTLIER MACHINE LEARNING — NO2
+==========================================================================
+Total Data Valid NO2: 200 hari
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: Isolation Forest | Jumlah Outlier Terdeteksi: 10 hari
+    • Rabu, 24 September 2025 | Nilai NO2: 0.0003
+    • Minggu, 28 September 2025 | Nilai NO2: -0.0000
+    • Kamis, 9 Oktober 2025 | Nilai NO2: 0.0001
+    • Rabu, 17 Desember 2025 | Nilai NO2: 0.0000
+    • Senin, 20 April 2026 | Nilai NO2: 0.0002
+    • Jumat, 29 Mei 2026 | Nilai NO2: 0.0002
+    • Selasa, 2 Juni 2026 | Nilai NO2: 0.0002
+    • Senin, 8 Juni 2026 | Nilai NO2: 0.0002
+    • Kamis, 18 Juni 2026 | Nilai NO2: 0.0001
+    • Selasa, 30 Juni 2026 | Nilai NO2: 0.0001
+
+&gt;&gt;&gt; Metode: KNN | Jumlah Outlier Terdeteksi: 10 hari
+    • Senin, 25 Agustus 2025 | Nilai NO2: 0.0001
+    • Rabu, 24 September 2025 | Nilai NO2: 0.0003
+    • Kamis, 9 Oktober 2025 | Nilai NO2: 0.0001
+    • Senin, 20 April 2026 | Nilai NO2: 0.0002
+    • Jumat, 29 Mei 2026 | Nilai NO2: 0.0002
+    • Selasa, 2 Juni 2026 | Nilai NO2: 0.0002
+    • Senin, 8 Juni 2026 | Nilai NO2: 0.0002
+    • Selasa, 9 Juni 2026 | Nilai NO2: 0.0001
+    • Kamis, 18 Juni 2026 | Nilai NO2: 0.0001
+    • Selasa, 30 Juni 2026 | Nilai NO2: 0.0001
+
+&gt;&gt;&gt; Metode: LOF | Jumlah Outlier Terdeteksi: 10 hari
+    • Senin, 25 Agustus 2025 | Nilai NO2: 0.0001
+    • Rabu, 24 September 2025 | Nilai NO2: 0.0003
+    • Minggu, 28 September 2025 | Nilai NO2: -0.0000
+    • Kamis, 9 Oktober 2025 | Nilai NO2: 0.0001
+    • Rabu, 17 Desember 2025 | Nilai NO2: 0.0000
+    • Senin, 20 April 2026 | Nilai NO2: 0.0002
+    • Jumat, 29 Mei 2026 | Nilai NO2: 0.0002
+    • Selasa, 2 Juni 2026 | Nilai NO2: 0.0002
+    • Senin, 8 Juni 2026 | Nilai NO2: 0.0002
+    • Kamis, 11 Juni 2026 | Nilai NO2: 0.0001
+
+&gt;&gt;&gt; Metode: COPOD | Jumlah Outlier Terdeteksi: 10 hari
+    • Senin, 25 Agustus 2025 | Nilai NO2: 0.0001
+    • Rabu, 24 September 2025 | Nilai NO2: 0.0003
+    • Kamis, 9 Oktober 2025 | Nilai NO2: 0.0001
+    • Senin, 20 April 2026 | Nilai NO2: 0.0002
+    • Jumat, 29 Mei 2026 | Nilai NO2: 0.0002
+    • Selasa, 2 Juni 2026 | Nilai NO2: 0.0002
+    • Rabu, 3 Juni 2026 | Nilai NO2: 0.0001
+    • Senin, 8 Juni 2026 | Nilai NO2: 0.0002
+    • Kamis, 11 Juni 2026 | Nilai NO2: 0.0001
+    • Minggu, 28 Juni 2026 | Nilai NO2: 0.0001
+
+&gt;&gt;&gt; Metode: ECOD | Jumlah Outlier Terdeteksi: 10 hari
+    • Rabu, 24 September 2025 | Nilai NO2: 0.0003
+    • Minggu, 28 September 2025 | Nilai NO2: -0.0000
+    • Rabu, 17 Desember 2025 | Nilai NO2: 0.0000
+    • Jumat, 30 Januari 2026 | Nilai NO2: 0.0000
+    • Jumat, 13 Maret 2026 | Nilai NO2: 0.0000
+    • Senin, 20 April 2026 | Nilai NO2: 0.0002
+    • Kamis, 23 April 2026 | Nilai NO2: 0.0000
+    • Jumat, 29 Mei 2026 | Nilai NO2: 0.0002
+    • Selasa, 2 Juni 2026 | Nilai NO2: 0.0002
+    • Senin, 8 Juni 2026 | Nilai NO2: 0.0002
+
+==========================================================================
+         PERBANDINGAN 5 METODE OUTLIER MACHINE LEARNING — SO2
+==========================================================================
+Total Data Valid SO2: 235 hari
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: Isolation Forest | Jumlah Outlier Terdeteksi: 12 hari
+    • Selasa, 26 Agustus 2025 | Nilai SO2: 0.0014
+    • Minggu, 31 Agustus 2025 | Nilai SO2: -0.0006
+    • Senin, 1 September 2025 | Nilai SO2: -0.0004
+    • Sabtu, 27 September 2025 | Nilai SO2: 0.0006
+    • Sabtu, 18 Oktober 2025 | Nilai SO2: -0.0005
+    • Selasa, 28 Oktober 2025 | Nilai SO2: -0.0005
+    • Senin, 29 Desember 2025 | Nilai SO2: 0.0006
+    • Jumat, 27 Maret 2026 | Nilai SO2: -0.0005
+    • Rabu, 6 Mei 2026 | Nilai SO2: 0.0004
+    • Rabu, 10 Juni 2026 | Nilai SO2: 0.0007
+    • Jumat, 26 Juni 2026 | Nilai SO2: -0.0003
+    • Kamis, 13 Agustus 2026 | Nilai SO2: -0.0007
+
+&gt;&gt;&gt; Metode: KNN | Jumlah Outlier Terdeteksi: 12 hari
+    • Selasa, 26 Agustus 2025 | Nilai SO2: 0.0014
+    • Minggu, 31 Agustus 2025 | Nilai SO2: -0.0006
+    • Senin, 1 September 2025 | Nilai SO2: -0.0004
+    • Sabtu, 18 Oktober 2025 | Nilai SO2: -0.0005
+    • Selasa, 28 Oktober 2025 | Nilai SO2: -0.0005
+    • Senin, 29 Desember 2025 | Nilai SO2: 0.0006
+    • Jumat, 27 Maret 2026 | Nilai SO2: -0.0005
+    • Rabu, 6 Mei 2026 | Nilai SO2: 0.0004
+    • Senin, 18 Mei 2026 | Nilai SO2: 0.0005
+    • Rabu, 10 Juni 2026 | Nilai SO2: 0.0007
+    • Jumat, 26 Juni 2026 | Nilai SO2: -0.0003
+    • Kamis, 13 Agustus 2026 | Nilai SO2: -0.0007
+
+&gt;&gt;&gt; Metode: LOF | Jumlah Outlier Terdeteksi: 12 hari
+    • Selasa, 26 Agustus 2025 | Nilai SO2: 0.0014
+    • Minggu, 31 Agustus 2025 | Nilai SO2: -0.0006
+    • Senin, 1 September 2025 | Nilai SO2: -0.0004
+    • Senin, 29 September 2025 | Nilai SO2: -0.0003
+    • Sabtu, 18 Oktober 2025 | Nilai SO2: -0.0005
+    • Selasa, 28 Oktober 2025 | Nilai SO2: -0.0005
+    • Sabtu, 6 Desember 2025 | Nilai SO2: -0.0003
+    • Jumat, 27 Maret 2026 | Nilai SO2: -0.0005
+    • Kamis, 23 April 2026 | Nilai SO2: -0.0003
+    • Rabu, 10 Juni 2026 | Nilai SO2: 0.0007
+    • Jumat, 26 Juni 2026 | Nilai SO2: -0.0003
+    • Kamis, 13 Agustus 2026 | Nilai SO2: -0.0007
+
+&gt;&gt;&gt; Metode: COPOD | Jumlah Outlier Terdeteksi: 12 hari
+    • Senin, 25 Agustus 2025 | Nilai SO2: 0.0006
+    • Selasa, 26 Agustus 2025 | Nilai SO2: 0.0014
+    • Kamis, 11 September 2025 | Nilai SO2: 0.0005
+    • Sabtu, 27 September 2025 | Nilai SO2: 0.0006
+    • Rabu, 19 November 2025 | Nilai SO2: 0.0006
+    • Senin, 29 Desember 2025 | Nilai SO2: 0.0006
+    • Minggu, 29 Maret 2026 | Nilai SO2: 0.0005
+    • Selasa, 7 April 2026 | Nilai SO2: 0.0006
+    • Sabtu, 9 Mei 2026 | Nilai SO2: 0.0006
+    • Minggu, 7 Juni 2026 | Nilai SO2: 0.0006
+    • Rabu, 10 Juni 2026 | Nilai SO2: 0.0007
+    • Minggu, 2 Agustus 2026 | Nilai SO2: 0.0005
+
+&gt;&gt;&gt; Metode: ECOD | Jumlah Outlier Terdeteksi: 12 hari
+    • Senin, 25 Agustus 2025 | Nilai SO2: 0.0006
+    • Selasa, 26 Agustus 2025 | Nilai SO2: 0.0014
+    • Minggu, 31 Agustus 2025 | Nilai SO2: -0.0006
+    • Senin, 1 September 2025 | Nilai SO2: -0.0004
+    • Sabtu, 27 September 2025 | Nilai SO2: 0.0006
+    • Sabtu, 18 Oktober 2025 | Nilai SO2: -0.0005
+    • Selasa, 28 Oktober 2025 | Nilai SO2: -0.0005
+    • Senin, 29 Desember 2025 | Nilai SO2: 0.0006
+    • Jumat, 27 Maret 2026 | Nilai SO2: -0.0005
+    • Selasa, 7 April 2026 | Nilai SO2: 0.0006
+    • Rabu, 10 Juni 2026 | Nilai SO2: 0.0007
+    • Kamis, 13 Agustus 2026 | Nilai SO2: -0.0007
+</pre></div>
+</div>
+</div>
+</div>
+<p>Visualisasi perbandingan hasil deteksi 5 metode untuk setiap polutan dalam bentuk subplot:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualisasi Subplot 5 Metode Outlier untuk Setiap Polutan</span>
+<span class="k">for</span> <span class="n">pol</span> <span class="ow">in</span> <span class="n">pollutants</span><span class="p">:</span>
+    <span class="n">file_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"../data/csv/timeseries/</span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s2">_gresik_timeseries.csv"</span>
+    <span class="n">df_p</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="n">df_p</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_p</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+    <span class="n">df_valid_p</span> <span class="o">=</span> <span class="n">df_p</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">pol</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">X_p</span> <span class="o">=</span> <span class="n">df_valid_p</span><span class="p">[[</span><span class="n">pol</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="n">models_p</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">'Isolation Forest'</span><span class="p">:</span> <span class="n">IForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+        <span class="s1">'KNN'</span><span class="p">:</span> <span class="n">KNN</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+        <span class="s1">'LOF'</span><span class="p">:</span> <span class="n">LOF</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+        <span class="s1">'COPOD'</span><span class="p">:</span> <span class="n">COPOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+        <span class="s1">'ECOD'</span><span class="p">:</span> <span class="n">ECOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models_p</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_p</span><span class="p">)</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">labels_</span>
+        <span class="n">normal_m</span> <span class="o">=</span> <span class="n">df_valid_p</span><span class="p">[</span><span class="n">labels</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">outliers_m</span> <span class="o">=</span> <span class="n">df_valid_p</span><span class="p">[</span><span class="n">labels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_valid_p</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_valid_p</span><span class="p">[</span><span class="n">pol</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#bdc3c7'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal_m</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal_m</span><span class="p">[</span><span class="n">pol</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#2980b9'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers_m</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers_m</span><span class="p">[</span><span class="n">pol</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#e74c3c'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Outlier (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_m</span><span class="p">)</span><span class="si">}</span><span class="s1">)'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Deteksi Outlier </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s1"> — Metode: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">pol</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Grafik Deteksi Outlier 5 Metode — Polutan </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.01</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/cb3699b7826b5471e449aad17f399f5b9cc367b2043a8dc587295b1d0c8f1452.png" src="../_images/cb3699b7826b5471e449aad17f399f5b9cc367b2043a8dc587295b1d0c8f1452.png" />
+<img alt="../_images/256070b1ee7e424b4406c1f5724a69bfd0c92b6139d1263de73ae9529ed40007.png" src="../_images/256070b1ee7e424b4406c1f5724a69bfd0c92b6139d1263de73ae9529ed40007.png" />
+<img alt="../_images/e8fa1d69ec87f13eb1b5b9b669c482ac44ed41c99c881e04db77f0d4e056f91b.png" src="../_images/e8fa1d69ec87f13eb1b5b9b669c482ac44ed41c99c881e04db77f0d4e056f91b.png" />
+<img alt="../_images/f69d685fcdd64af34140e5d06cb1b64fe5a70540a8219d26c58bf5d95a25ff6a.png" src="../_images/f69d685fcdd64af34140e5d06cb1b64fe5a70540a8219d26c58bf5d95a25ff6a.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
 <section id="pengosongan-outlier-imputasi-linear-time-interpolation">
 <h3>1.3 Pengosongan Outlier &amp; Imputasi Linear Time Interpolation<a class="headerlink" href="#pengosongan-outlier-imputasi-linear-time-interpolation" title="Link to this heading">#</a></h3>
 <p>Titik data pencilan diubah menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> lalu diimputasi bersama dengan celah data mentah menggunakan <strong>Linear Time Interpolation</strong>:</p>
@@ -563,15 +913,15 @@ Daftar Tanggal &amp; Nilai Outlier Terdeteksi secara Akurat:
 
 <span class="c1"># Simpan dataset bersih ke file CSV</span>
 <span class="n">df_save</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[[</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'CO_clean'</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'CO_clean'</span><span class="p">:</span> <span class="s1">'CO'</span><span class="p">})</span>
-<span class="n">df_save</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'../data/csv/CO_clean.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Dataset bersih disimpan ke '../data/csv/CO_clean.csv'"</span><span class="p">)</span>
+<span class="n">df_save</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'../data/csv/clean/CO_clean.csv'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Dataset bersih disimpan ke '../data/csv/clean/CO_clean.csv'"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah NaN Setelah Outlier Dikosongkan : 184 hari (50.41%)
 Jumlah NaN Setelah Imputasi Akhir      : 0 hari (100% Terisi &amp; Clean)
-Dataset bersih disimpan ke '../data/csv/CO_clean.csv'
+Dataset bersih disimpan ke '../data/csv/clean/CO_clean.csv'
 </pre></div>
 </div>
 </div>
@@ -742,7 +1092,7 @@ Dataset bersih disimpan ke '../data/csv/CO_clean.csv'
 <li><p><strong>Domain Fraktal</strong>: Menganalisis ketidakteraturan, kompleksitas <em>self-similarity</em> (DFA, Hurst Exponent, Higuchi, Petrosian, MSE).</p></li>
 </ol>
 <ul class="simple">
-<li><p><strong>Output File CSV</strong>: Matriks presisi 68 fitur TSFEL disimpan ke <strong><code class="docutils literal notranslate"><span class="pre">data/csv/CO_tsfel_features.csv</span></code></strong> dengan format header <code class="docutils literal notranslate"><span class="pre">f1_abs_energy</span></code> hingga <code class="docutils literal notranslate"><span class="pre">f68_zero_cross</span></code>.</p></li>
+<li><p><strong>Output File CSV</strong>: Matriks presisi 68 fitur TSFEL disimpan ke <strong><code class="docutils literal notranslate"><span class="pre">data/csv/features/CO_tsfel_features.csv</span></code></strong> dengan format header <code class="docutils literal notranslate"><span class="pre">f1_abs_energy</span></code> hingga <code class="docutils literal notranslate"><span class="pre">f68_zero_cross</span></code>.</p></li>
 </ul>
 </section>
 </section>
@@ -1375,9 +1725,92 @@ Dataset bersih disimpan ke '../data/csv/CO_clean.csv'
 <hr class="docutils" />
 <blockquote>
 <div><p>[!NOTE]
-Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang diekstrak ke dalam file <code class="docutils literal notranslate"><span class="pre">data/csv/CO_tsfel_features.csv</span></code>, memberikan landasan analisis yang kuat untuk tahap pemodelan <em>Machine Learning</em> dan analisis kemiripan sinyal.</p>
+Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang diekstrak ke dalam file <code class="docutils literal notranslate"><span class="pre">data/csv/features/CO_tsfel_features.csv</span></code>, memberikan landasan analisis yang kuat untuk tahap pemodelan <em>Machine Learning</em> dan analisis kemiripan sinyal.</p>
 </div></blockquote>
 </section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="evaluasi-perbandingan-clustering-k-means-k-2-vs-k-5-deteksi-outlier">
+<h2>4. Evaluasi Perbandingan Clustering K-Means (<span class="math notranslate nohighlight">\(k=2\)</span> vs <span class="math notranslate nohighlight">\(k=5\)</span>) &amp; Deteksi Outlier<a class="headerlink" href="#evaluasi-perbandingan-clustering-k-means-k-2-vs-k-5-deteksi-outlier" title="Link to this heading">#</a></h2>
+<p>Setelah ekstraksi 272 fitur TSFEL dari 19 sampel daerah/mahasiswa dilakukan, pengelompokan (<em>clustering</em>) dievaluasi secara komprehensif menggunakan algoritma <strong>K-Means</strong> dalam dua skenario utama jumlah cluster: <strong><span class="math notranslate nohighlight">\(k=2\)</span></strong> (Pemisahan Biner Ekstrem) dan <strong><span class="math notranslate nohighlight">\(k=5\)</span></strong> (Segmentasi Granular Spesifik), baik dengan reduksi dimensi <strong>PCA (19 Komponen Utama: PCA 0 s.d. PCA 18)</strong> maupun <strong>Tanpa PCA (Fitur Utuh)</strong>.</p>
+<hr class="docutils" />
+<section id="visualisasi-workflow-knime-scatter-plot-analytics-platform">
+<h3>4.1 Visualisasi Workflow KNIME &amp; Scatter Plot Analytics Platform<a class="headerlink" href="#visualisasi-workflow-knime-scatter-plot-analytics-platform" title="Link to this heading">#</a></h3>
+<p>Proses ekstraksi, pra-pemrosesan, reduksi dimensi PCA, dan pengelompokan K-Means dijalankan menggunakan alur kerja (<em>workflow</em>) KNIME Analytics Platform:</p>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/workflow-clustering.png"><img alt="../_images/workflow-clustering.png" src="../_images/workflow-clustering.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Gambar 4.0: Workflow Clustering K-Means &amp; Reduksi Dimensi PCA pada KNIME Analytics Platform</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Hasil pengelompokan dari alur KNIME disajikan dalam bentuk grafik <strong>Scatter Plot KNIME</strong> yang memetakan sebaran 19 mahasiswa/daerah terhadap label cluster masing-masing:</p>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/ScatterPlotk2denganpca.png"><img alt="../_images/ScatterPlotk2denganpca.png" src="../_images/ScatterPlotk2denganpca.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Gambar 4.1: KNIME Scatter Plot K-Means (k=2) Dengan Reduksi Dimensi PCA (19 Komponen)</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Penjelasan Gambar 4.1 (K-Means <span class="math notranslate nohighlight">\(k=2\)</span> dengan PCA):</strong>
+Pada skenario <span class="math notranslate nohighlight">\(k=2\)</span> menggunakan reduksi dimensi PCA 19 komponen (PCA 0 s.d. PCA 18), mayoritas 18 mahasiswa/daerah dikelompokkan ke dalam <strong><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></strong>. Hanya 1 mahasiswa, yaitu <strong>Muhammad Fathul Iman Wahid (Burneh, Bangkalan)</strong>, yang terpisah secara ekstrem ke dalam <strong><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></strong> sebagai pencilan (<em>outlier</em>).</p>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/ScatterPlotk2tanpapca.png"><img alt="../_images/ScatterPlotk2tanpapca.png" src="../_images/ScatterPlotk2tanpapca.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Gambar 4.2: KNIME Scatter Plot K-Means (k=2) Tanpa PCA (272 Fitur TSFEL Utuh)</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Penjelasan Gambar 4.2 (K-Means <span class="math notranslate nohighlight">\(k=2\)</span> tanpa PCA):</strong>
+Pada skenario <span class="math notranslate nohighlight">\(k=2\)</span> menggunakan 272 fitur TSFEL utuh ter-normalisasi tanpa PCA, hasil pengelompokan menunjukkan konsistensi 100% di mana 18 mahasiswa berada di <strong><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></strong> dan <strong>Muhammad Fathul Iman Wahid (Burneh, Bangkalan)</strong> tetap menjadi outlier tunggal di <strong><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></strong>.</p>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../_images/ScatterPlotk5denganpca.png"><img alt="../_images/ScatterPlotk5denganpca.png" src="../_images/ScatterPlotk5denganpca.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Gambar 4.3: KNIME Scatter Plot K-Means (k=5) Dengan Reduksi Dimensi PCA</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Penjelasan Gambar 4.3 (K-Means <span class="math notranslate nohighlight">\(k=5\)</span> dengan PCA):</strong>
+Ketika jumlah cluster ditingkatkan menjadi <span class="math notranslate nohighlight">\(k=5\)</span> dengan PCA, kelompok mayoritas terurai secara granular menjadi 5 kelompok:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_2</span></code></strong>: Kelompok utama terbanyak (14 mahasiswa/daerah).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_4</span></code></strong>: <strong>Firman Candra Dwi Nugroho</strong> (Kraton, Bangkalan).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></strong>: <strong>Intan Resti Haslindawati</strong> (Kadur, Pamekasan).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></strong>: <strong>Muhammad Fathul Iman Wahid</strong> (Burneh, Bangkalan).</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_3</span></code></strong>: <strong>Raihan Aryanova Narendra</strong> (Sokobanah).</p></li>
+</ul>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="../_images/ScatterPlotk5tanpapca.png"><img alt="../_images/ScatterPlotk5tanpapca.png" src="../_images/ScatterPlotk5tanpapca.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Gambar 4.4: KNIME Scatter Plot K-Means (k=5) Tanpa PCA (272 Fitur TSFEL Utuh)</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Penjelasan Gambar 4.4 (K-Means <span class="math notranslate nohighlight">\(k=5\)</span> tanpa PCA):</strong>
+Pengelompokan <span class="math notranslate nohighlight">\(k=5\)</span> menggunakan 272 fitur TSFEL utuh tanpa PCA menghasilkan pemetaan yang serupa dengan variasi label cluster yang selaras, menguraikan 19 mahasiswa menjadi 1 kelompok utama dan 4 cluster pencilan spesifik.</p>
+</section>
+<hr class="docutils" />
+<section id="kesimpulan-perbandingan-2-vs-5-pengaruh-reduksi-dimensi-pca-19-komponen">
+<h3>4.2 Kesimpulan Perbandingan (=2<span class="math notranslate nohighlight">\( vs =5\)</span>) &amp; Pengaruh Reduksi Dimensi PCA (19 Komponen)<a class="headerlink" href="#kesimpulan-perbandingan-2-vs-5-pengaruh-reduksi-dimensi-pca-19-komponen" title="Link to this heading">#</a></h3>
+<p>Berdasarkan hasil pemodelan K-Means dan analisis visual Scatter Plot:</p>
+<ol class="arabic simple">
+<li><p><strong>Efektivitas Skenario <span class="math notranslate nohighlight">\(k=2\)</span></strong>:</p>
+<ul class="simple">
+<li><p>Skenario <span class="math notranslate nohighlight">\(k=2\)</span> berhasil mengisolasi anomali pencilan utama secara biner: <strong>18 mahasiswa/daerah berada di kelompok mayoritas (<code class="docutils literal notranslate"><span class="pre">cluster_0</span></code>)</strong>, sedangkan <strong>Muhammad Fathul Iman Wahid (Burneh, Bangkalan)</strong> terisolasi secara eksplisit di <strong><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></strong>.</p></li>
+</ul>
+</li>
+<li><p><strong>Dinamika Skenario <span class="math notranslate nohighlight">\(k=5\)</span></strong>:</p>
+<ul class="simple">
+<li><p>Peningkatan nilai <span class="math notranslate nohighlight">\(k\)</span> dari 2 menjadi 5 menguraikan kelompok mayoritas menjadi segmentasi yang lebih kaya:</p>
+<ul>
+<li><p>1 kelompok mayoritas (14 mahasiswa).</p></li>
+<li><p>4 cluster pencilan spesifik beranggotakan 1 mahasiswa: <strong>Firman Candra Dwi Nugroho</strong>, <strong>Intan Resti Haslindawati</strong>, <strong>Muhammad Fathul Iman Wahid</strong>, dan <strong>Raihan Aryanova Narendra</strong>.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Peran Reduksi Dimensi PCA</strong>:</p>
+<ul class="simple">
+<li><p>PCA (19 komponen utama: PCA 0 s.d. PCA 18) mampu menyerap 100% rasio varians dari 272 fitur TSFEL tanpa kehilangan informasi spasial maupun temporal, menghasilkan struktur cluster yang 100% selaras antara pemodelan dengan PCA dan tanpa PCA.</p></li>
+</ul>
+</li>
+</ol>
 </section>
 </section>
 </section>
@@ -1441,6 +1874,7 @@ Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang die
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-outliers-data-cleaning-terpadu">1. Penanganan Missing Values &amp; Outliers (Data Cleaning Terpadu)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-missing-values-celah-data-mentah">1.1 Evaluasi Missing Values (Celah Data Mentah)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deteksi-pengosongan-outlier-metode-iqr-dinamis-berbasis-kode">1.2 Deteksi &amp; Pengosongan Outlier (Metode IQR Dinamis Berbasis Kode)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-perbandingan-deteksi-outlier-5-metode-machine-learning-pyod">1.2.1 Evaluasi &amp; Perbandingan Deteksi Outlier 5 Metode Machine Learning (PyOD)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pengosongan-outlier-imputasi-linear-time-interpolation">1.3 Pengosongan Outlier &amp; Imputasi Linear Time Interpolation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-4-grafik-terpisah-ringkasan-perubahan-status-sinyal">1.4 Visualisasi 4 Grafik Terpisah &amp; Ringkasan Perubahan Status Sinyal</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-ringkasan-perubahan-status-sinyal">Tabel Ringkasan Perubahan Status Sinyal</a></li>
@@ -1531,6 +1965,11 @@ Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang die
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#f42-f42-petrosian-fractal-dimension"><strong>f42</strong>: <code class="docutils literal notranslate"><span class="pre">f42_petrosian_fractal_dimension</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-perbandingan-clustering-k-means-k-2-vs-k-5-deteksi-outlier">4. Evaluasi Perbandingan Clustering K-Means (<span class="math notranslate nohighlight">\(k=2\)</span> vs <span class="math notranslate nohighlight">\(k=5\)</span>) &amp; Deteksi Outlier</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-workflow-knime-scatter-plot-analytics-platform">4.1 Visualisasi Workflow KNIME &amp; Scatter Plot Analytics Platform</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-perbandingan-2-vs-5-pengaruh-reduksi-dimensi-pca-19-komponen">4.2 Kesimpulan Perbandingan (=2<span class="math notranslate nohighlight">\( vs =5\)</span>) &amp; Pengaruh Reduksi Dimensi PCA (19 Komponen)</a></li>
 </ul>
 </li>
 </ul>

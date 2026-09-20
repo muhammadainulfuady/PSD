@@ -358,10 +358,10 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Path file CSV hasil crawling</span>
-<span class="n">path_ch4</span> <span class="o">=</span> <span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span>
-<span class="n">path_co</span>  <span class="o">=</span> <span class="s2">"../data/csv/CO_gresik_timeseries.csv"</span>
-<span class="n">path_no2</span> <span class="o">=</span> <span class="s2">"../data/csv/NO2_gresik_timeseries.csv"</span>
-<span class="n">path_so2</span> <span class="o">=</span> <span class="s2">"../data/csv/SO2_gresik_timeseries.csv"</span>
+<span class="n">path_ch4</span> <span class="o">=</span> <span class="s2">"../data/csv/timeseries/CH4_gresik_timeseries.csv"</span>
+<span class="n">path_co</span>  <span class="o">=</span> <span class="s2">"../data/csv/timeseries/CO_gresik_timeseries.csv"</span>
+<span class="n">path_no2</span> <span class="o">=</span> <span class="s2">"../data/csv/timeseries/NO2_gresik_timeseries.csv"</span>
+<span class="n">path_so2</span> <span class="o">=</span> <span class="s2">"../data/csv/timeseries/SO2_gresik_timeseries.csv"</span>
 
 <span class="c1"># Read CSV</span>
 <span class="n">df_ch4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_ch4</span><span class="p">)</span>
@@ -377,10 +377,10 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data CH4  : 366 baris, 2 kolom
-Data CO   : 366 baris, 2 kolom
-Data NO2  : 366 baris, 2 kolom
-Data SO2  : 366 baris, 2 kolom
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data CH4  : 365 baris, 2 kolom
+Data CO   : 365 baris, 2 kolom
+Data NO2  : 365 baris, 2 kolom
+Data SO2  : 365 baris, 2 kolom
 </pre></div>
 </div>
 </div>
@@ -406,7 +406,7 @@ Data SO2  : 366 baris, 2 kolom
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hasil Penggabungan Terpadu: 366 baris, 5 kolom
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hasil Penggabungan Terpadu: 365 baris, 5 kolom
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -538,14 +538,14 @@ Data SO2  : 366 baris, 2 kolom
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Jumlah Missing Values (Sel Kosong) ===
 date      0
-CH4     346
-CO      174
-NO2     166
-SO2     131
+CH4     345
+CO      173
+NO2     165
+SO2     130
 dtype: int64
 
 === Jumlah Data Valid (Terisi) ===
-date    366
+date    365
 CH4      20
 CO      192
 NO2     200
@@ -554,10 +554,10 @@ dtype: int64
 
 === Persentase Data Valid (%) ===
 date    100.0 %
-CH4      5.46 %
-CO      52.46 %
-NO2     54.64 %
-SO2     64.21 %
+CH4      5.48 %
+CO       52.6 %
+NO2     54.79 %
+SO2     64.38 %
 dtype: object
 </pre></div>
 </div>
@@ -568,7 +568,7 @@ dtype: object
 <h2>4. Menyimpan File CSV Terpadu Utama (<code class="docutils literal notranslate"><span class="pre">polutan_gresik.csv</span></code>)<a class="headerlink" href="#menyimpan-file-csv-terpadu-utama-polutan-gresik-csv" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output_csv_path</span> <span class="o">=</span> <span class="s2">"../data/csv/polutan_gresik.csv"</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output_csv_path</span> <span class="o">=</span> <span class="s2">"../data/csv/timeseries/polutan_gresik.csv"</span>
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">"../data/csv"</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Simpan ke file CSV terpadu</span>
@@ -578,7 +578,7 @@ dtype: object
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[SUCCESS] Berhasil menyimpan dataset 4 polutan terpadu di: ../data/csv/polutan_gresik.csv
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[SUCCESS] Berhasil menyimpan dataset 4 polutan terpadu di: ../data/csv/timeseries/polutan_gresik.csv
 </pre></div>
 </div>
 </div>

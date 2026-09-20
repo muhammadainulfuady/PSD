@@ -39,6 +39,6 @@ Here is a preview of the cell contents:
 -------------------
 ['# Daftar Polutan yang akan di-crawl', 'pollutants = ["CH4", "CO", "NO2", "SO2"]', '', '# Pastikan directory data output ada', 'os.makedirs("../data/nc", exist_ok=True)']
 ...
-['', '# Simpan CSV Master Gabungan Seluruh Polutan', 'master_csv_path = "../data/csv/polutan_gresik.csv"', 'master_df.to_csv(master_csv_path, index=False)', 'print(f"\\n[SUCCESS] Master CSV Terpadu (CH4, CO, NO2, SO2) Berhasil Disimpan: {master_csv_path}")']
+['', '# Simpan CSV Master Gabungan Seluruh Polutan', 'master_csv_path = "../data/timeseries/polutan_gresik.csv"', 'master_df.to_csv(master_csv_path, index=False)', 'print(f"\\n[SUCCESS] Master CSV Terpadu (CH4, CO, NO2, SO2) Berhasil Disimpan: {master_csv_path}")']
 -------------------
 

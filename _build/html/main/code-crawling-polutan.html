@@ -423,7 +423,7 @@ document.write(`
 
 <span class="c1"># Pastikan directory data output ada</span>
 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">"../data/nc"</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">"../data/csv"</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">"../data/timeseries"</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Buat Dataframe Master Rentang Tanggal Lengkap</span>
 <span class="n">full_dates</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">"D"</span><span class="p">)</span>
@@ -448,7 +448,7 @@ document.write(`
     <span class="n">s5</span> <span class="o">=</span> <span class="n">s5</span><span class="o">.</span><span class="n">aggregate_spatial</span><span class="p">(</span><span class="n">reducer</span><span class="o">=</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">geometries</span><span class="o">=</span><span class="n">aoi</span><span class="p">)</span>
     
     <span class="n">nc_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"../data/nc/polutan_</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">_gresik.nc"</span>
-    <span class="n">csv_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"../data/csv/</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">_gresik_timeseries.csv"</span>
+    <span class="n">csv_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"../data/timeseries/</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">_gresik_timeseries.csv"</span>
     
     <span class="c1"># Eksekusi Batch Job di Server openEO</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mengirim Batch Job openEO untuk </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
@@ -474,7 +474,7 @@ document.write(`
     <span class="n">ds</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 <span class="c1"># Simpan CSV Master Gabungan Seluruh Polutan</span>
-<span class="n">master_csv_path</span> <span class="o">=</span> <span class="s2">"../data/csv/polutan_gresik.csv"</span>
+<span class="n">master_csv_path</span> <span class="o">=</span> <span class="s2">"../data/timeseries/polutan_gresik.csv"</span>
 <span class="n">master_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">master_csv_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">[SUCCESS] Master CSV Terpadu (CH4, CO, NO2, SO2) Berhasil Disimpan: </span><span class="si">{</span><span class="n">master_csv_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
@@ -489,19 +489,19 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mengirim Batch Job openEO untuk CH4...
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:00 Job 'j-26091400432949d68293f81e27ded524': send 'start'
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:00 Job 'j-26092016105647969d6d2b5855587138': send 'start'
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:03 Job 'j-26091400432949d68293f81e27ded524': created (progress 0%)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:03 Job 'j-26092016105647969d6d2b5855587138': queued (progress 0%)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:09 Job 'j-26091400432949d68293f81e27ded524': queued (progress 0%)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:09 Job 'j-26092016105647969d6d2b5855587138': queued (progress 0%)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:15 Job 'j-26091400432949d68293f81e27ded524': queued (progress 0%)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:15 Job 'j-26092016105647969d6d2b5855587138': queued (progress 0%)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:24 Job 'j-26091400432949d68293f81e27ded524': queued (progress 0%)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:24 Job 'j-26092016105647969d6d2b5855587138': queued (progress 0%)
 </pre></div>
 </div>
 </div>

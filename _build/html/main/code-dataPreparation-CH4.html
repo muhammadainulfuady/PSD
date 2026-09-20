@@ -1,0 +1,783 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Data Preparation (Polutan Metana - Kecamatan Bungah) &#8212; Proyek Sains Data IF 5B</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'main/code-dataPreparation-CH4';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.jpg" class="logo__image only-light" alt="Proyek Sains Data IF 5B - Home"/>
+    <script>document.write(`<img src="../_static/logo.jpg" class="logo__image only-dark" alt="Proyek Sains Data IF 5B - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="polutan-kabupaten-gresik.html">Polutan Kabupaten Gresik</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-understanding.html">Data Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-preparation.html">Data Preparation (Persiapan Data CO)</a></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/main/code-dataPreparation-CH4.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Data Preparation (Polutan Metana - Kecamatan Bungah)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-deteksi-outlier-iqr-method">1. Penanganan Missing Values &amp; Deteksi Outlier (IQR Method)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-4-grafik-terpisah">2. Visualisasi 4 Grafik Terpisah</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-68-fitur-time-series-tsfel-f1-namafitur-hingga-f68-namafitur">3. Ekstraksi 68 Fitur Time-Series TSFEL (<code class="docutils literal notranslate"><span class="pre">f1_namafitur</span></code> hingga <code class="docutils literal notranslate"><span class="pre">f68_namafitur</span></code>)</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="data-preparation-polutan-metana-kecamatan-bungah">
+<h1>Data Preparation (Polutan Metana - Kecamatan Bungah)<a class="headerlink" href="#data-preparation-polutan-metana-kecamatan-bungah" title="Link to this heading">#</a></h1>
+<p>Notebook ini mengeksekusi tahapan <strong>Data Preparation</strong> metodologi CRISP-DM untuk polutan Metana (<span class="math notranslate nohighlight">\({\text{CH4}}\)</span>) pada skala geografis <strong>Kecamatan Bungah, Kabupaten Gresik</strong> selama 365 hari (24 Agustus 2025 – 23 Agustus 2026):</p>
+<p><strong>Alur Pemrosesan Data:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Penanganan Missing Values &amp; Outliers</strong> (Evaluasi Celah Data <span class="math notranslate nohighlight">\(\rightarrow\)</span> Deteksi Outlier IQR <span class="math notranslate nohighlight">\(\rightarrow\)</span> Pengosongan Outlier <span class="math notranslate nohighlight">\(\rightarrow\)</span> Linear Time Interpolation)</p></li>
+<li><p><strong>Visualisasi 4 Grafik Terpisah</strong> (Missing Raw, Imputed Missing, Outlier Detection, Final Clean Signal)</p></li>
+<li><p><strong>Penyimpanan Dataset Clean</strong> (<code class="docutils literal notranslate"><span class="pre">data/csv/clean/CH4_clean.csv</span></code>)</p></li>
+<li><p><strong>Ekstraksi Fitur Resmi Time-Series TSFEL</strong> (<code class="docutils literal notranslate"><span class="pre">data/csv/features/CH4_tsfel_features.csv</span></code> berbasis 4 domain utama TSFEL: Statistical, Temporal, Spectral, &amp; Fractal)</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tsfel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="c1"># Set style visualisasi plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">'seaborn-v0_8-whitegrid'</span> <span class="k">if</span> <span class="s1">'seaborn-v0_8-whitegrid'</span> <span class="ow">in</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">available</span> <span class="k">else</span> <span class="s1">'default'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="penanganan-missing-values-deteksi-outlier-iqr-method">
+<h2>1. Penanganan Missing Values &amp; Deteksi Outlier (IQR Method)<a class="headerlink" href="#penanganan-missing-values-deteksi-outlier-iqr-method" title="Link to this heading">#</a></h2>
+<p>Memuat data mentah 365 hari, menghitung statistik data valid/missing, menentukan ambang batas IQR (<span class="math notranslate nohighlight">\(Q_1, Q_3, \text{IQR}\)</span>, Lower &amp; Upper Bound), serta mengosongkan titik outlier menjadi <code class="docutils literal notranslate"><span class="pre">NaN</span></code> untuk diimputasi bersama.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Membaca Dataset Mentah CH4 (365 Hari)</span>
+<span class="n">raw_path</span> <span class="o">=</span> <span class="s1">'../data/csv/timeseries/CH4_gresik_timeseries.csv'</span>
+<span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">raw_path</span><span class="p">)</span>
+<span class="n">df_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
+<span class="n">df_raw</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">total_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_raw</span><span class="p">)</span>
+<span class="n">nan_awal</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">valid_awal</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Baris Observasi   : </span><span class="si">{</span><span class="n">total_rows</span><span class="si">}</span><span class="s2"> hari"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah Data Valid Awal  : </span><span class="si">{</span><span class="n">valid_awal</span><span class="si">}</span><span class="s2"> hari (</span><span class="si">{</span><span class="n">valid_awal</span><span class="o">/</span><span class="n">total_rows</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah Missing (NaN)    : </span><span class="si">{</span><span class="n">nan_awal</span><span class="si">}</span><span class="s2"> hari (</span><span class="si">{</span><span class="n">nan_awal</span><span class="o">/</span><span class="n">total_rows</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)"</span><span class="p">)</span>
+
+<span class="c1"># 2. Deteksi Outlier Menggunakan Metode Interquartile Range (IQR) pada Data Valid</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">iqr</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">-</span> <span class="n">q1</span>
+<span class="n">lower_bound</span> <span class="o">=</span> <span class="n">q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+<span class="n">upper_bound</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">iqr</span>
+
+<span class="n">is_outlier</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">)</span>
+<span class="n">jumlah_outlier</span> <span class="o">=</span> <span class="n">is_outlier</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Kuartil 1 (Q1)           : </span><span class="si">{</span><span class="n">q1</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> ppb"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kuartil 3 (Q3)           : </span><span class="si">{</span><span class="n">q3</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> ppb"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"IQR (Q3 - Q1)            : </span><span class="si">{</span><span class="n">iqr</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> ppb"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Batas Bawah (Lower Bound): </span><span class="si">{</span><span class="n">lower_bound</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> ppb"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Batas Atas (Upper Bound) : </span><span class="si">{</span><span class="n">upper_bound</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> ppb"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah Outlier Terdeteksi: </span><span class="si">{</span><span class="n">jumlah_outlier</span><span class="si">}</span><span class="s2"> hari"</span><span class="p">)</span>
+
+<span class="c1"># Menampilkan rincian tanggal &amp; nilai outlier yang terdeteksi</span>
+<span class="n">df_outliers</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="n">is_outlier</span><span class="p">][[</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'CH4'</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_outliers</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_outliers</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Daftar Tanggal &amp; Nilai Outlier Terdeteksi:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_outliers</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+<span class="c1"># 3. Pengosongan Nilai Outlier Menjadi NaN &amp; Imputasi Linear Time Interpolation</span>
+<span class="n">df_prep</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_prep</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">is_outlier</span><span class="p">,</span> <span class="s1">'CH4'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="n">nan_setelah_outlier</span> <span class="o">=</span> <span class="n">df_prep</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Jumlah NaN Setelah Outlier Dikosongkan: </span><span class="si">{</span><span class="n">nan_setelah_outlier</span><span class="si">}</span><span class="s2"> hari (</span><span class="si">{</span><span class="n">nan_setelah_outlier</span><span class="o">/</span><span class="n">total_rows</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)"</span><span class="p">)</span>
+
+<span class="n">df_clean</span> <span class="o">=</span> <span class="n">df_prep</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4_clean'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s1">'both'</span><span class="p">)</span>
+<span class="n">nan_akhir</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4_clean'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah NaN Setelah Imputasi Akhir      : </span><span class="si">{</span><span class="n">nan_akhir</span><span class="si">}</span><span class="s2"> hari (100% Clean!)"</span><span class="p">)</span>
+
+<span class="c1"># Simpan dataset bersih ke file CSV</span>
+<span class="n">clean_csv_path</span> <span class="o">=</span> <span class="s1">'../data/csv/clean/CH4_clean.csv'</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">clean_csv_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_clean</span><span class="p">[[</span><span class="s1">'date'</span><span class="p">,</span> <span class="s1">'CH4_clean'</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'CH4_clean'</span><span class="p">:</span> <span class="s1">'CH4'</span><span class="p">})</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">clean_csv_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SUCCESS: Dataset bersih disimpan ke '</span><span class="si">{</span><span class="n">clean_csv_path</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total Baris Observasi   : 365 hari
+Jumlah Data Valid Awal  : 20 hari (5.48%)
+Jumlah Missing (NaN)    : 345 hari (94.52%)
+
+Kuartil 1 (Q1)           : 1879.265198 ppb
+Kuartil 3 (Q3)           : 1905.920166 ppb
+IQR (Q3 - Q1)            : 26.654968 ppb
+Batas Bawah (Lower Bound): 1839.282745 ppb
+Batas Atas (Upper Bound) : 1945.902618 ppb
+Jumlah Outlier Terdeteksi: 1 hari
+
+Daftar Tanggal &amp; Nilai Outlier Terdeteksi:
+      date        CH4
+2026-06-07 1821.64209
+
+Jumlah NaN Setelah Outlier Dikosongkan: 346 hari (94.79%)
+Jumlah NaN Setelah Imputasi Akhir      : 0 hari (100% Clean!)
+SUCCESS: Dataset bersih disimpan ke '../data/csv/clean/CH4_clean.csv'
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualisasi-4-grafik-terpisah">
+<h2>2. Visualisasi 4 Grafik Terpisah<a class="headerlink" href="#visualisasi-4-grafik-terpisah" title="Link to this heading">#</a></h2>
+<p>Menyajikannya secara terpisah agar tidak menumpuk banyak warna dalam satu grafik.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grafik 1: Missing Values (Data Mentah dengan Celah Kosong / NaN)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#2c3e50'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Sinyal Valid Mentah (</span><span class="si">{</span><span class="n">valid_awal</span><span class="si">}</span><span class="s1"> Hari)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'1. Sinyal CH4 Mentah dengan Celah Missing Values (</span><span class="si">{</span><span class="n">nan_awal</span><span class="si">}</span><span class="s1"> Hari Kosong / NaN)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CH4 (ppb)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d93a0d0fa37dea8187ffc21786ecce40c9aa7aef707dc1142a07f5d3d9254bb9.png" src="../_images/d93a0d0fa37dea8187ffc21786ecce40c9aa7aef707dc1142a07f5d3d9254bb9.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grafik 2: Sinyal Setelah Missing Values Diimputasi (Sebelum Cleaning Outlier)</span>
+<span class="n">df_raw_imputed</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'CH4_imputed'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s1">'both'</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'CH4_imputed'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#2980b9'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Sinyal Terisi Utuh (365 Hari)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'2. Sinyal CH4 Setelah Imputasi Missing Values (Linear Time Interpolation)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CH4 (ppb)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8efb8a118f7d9353ebc4480d82b1452d5c1f3f9c3319b91ae0b9c074f50e8be6.png" src="../_images/8efb8a118f7d9353ebc4480d82b1452d5c1f3f9c3319b91ae0b9c074f50e8be6.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grafik 3: Deteksi Outlier Menggunakan Metode IQR</span>
+<span class="n">outliers_plot</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="n">is_outlier</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_raw</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#7f8c8d'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Sinyal Valid Mentah'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers_plot</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers_plot</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#e74c3c'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Outlier Terdeteksi (</span><span class="si">{</span><span class="n">jumlah_outlier</span><span class="si">}</span><span class="s1"> Hari)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#c0392b'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Batas Atas / Upper Bound (</span><span class="si">{</span><span class="n">upper_bound</span><span class="si">:</span><span class="s1">.5f</span><span class="si">}</span><span class="s1">)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#2980b9'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Batas Bawah / Lower Bound (</span><span class="si">{</span><span class="n">lower_bound</span><span class="si">:</span><span class="s1">.5f</span><span class="si">}</span><span class="s1">)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'3. Deteksi </span><span class="si">{</span><span class="n">jumlah_outlier</span><span class="si">}</span><span class="s1"> Outlier CH4 Menggunakan Metode Interquartile Range (IQR)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CH4 (ppb)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fe8fdc58e6335864eba26773a61aa26a88e86d29da99e6727147a3398c0ace7e.png" src="../_images/fe8fdc58e6335864eba26773a61aa26a88e86d29da99e6727147a3398c0ace7e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grafik 4: Sinyal CH4 Final Setelah Outlier Dibersihkan &amp; Diimputasi</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4_clean'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#27ae60'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Sinyal Mulus Super Clean (365 Hari)'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'4. Sinyal CH4 Final Setelah Penanganan Outlier &amp; Imputasi Linear (Clean Dataset)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CH4 (ppb)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/43111ac70d1a144a95a5ab99a92fa9ad6b66e69e747fa7cd82f50054455dd616.png" src="../_images/43111ac70d1a144a95a5ab99a92fa9ad6b66e69e747fa7cd82f50054455dd616.png" />
+</div>
+</div>
+</section>
+<section id="ekstraksi-68-fitur-time-series-tsfel-f1-namafitur-hingga-f68-namafitur">
+<h2>3. Ekstraksi 68 Fitur Time-Series TSFEL (<code class="docutils literal notranslate"><span class="pre">f1_namafitur</span></code> hingga <code class="docutils literal notranslate"><span class="pre">f68_namafitur</span></code>)<a class="headerlink" href="#ekstraksi-68-fitur-time-series-tsfel-f1-namafitur-hingga-f68-namafitur" title="Link to this heading">#</a></h2>
+<p>Mengekstrak 68 fitur TSFEL dan menyimpannya ke <code class="docutils literal notranslate"><span class="pre">data/csv/features/CH4_tsfel_features.csv</span></code> dalam format matriks 68-kolom horizontal.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Daftar Resmi 68 Fitur TSFEL</span>
+<span class="n">FEATURE_LIST</span> <span class="o">=</span> <span class="s2">"""abs_energy auc autocorr average_power calc_centroid calc_max calc_mean</span>
+<span class="s2">calc_median calc_min calc_std calc_var dfa distance ecdf ecdf_percentile ecdf_percentile_count</span>
+<span class="s2">ecdf_slope entropy fundamental_frequency higuchi_fractal_dimension hist_mode human_range_energy</span>
+<span class="s2">hurst_exponent interq_range kurtosis lempel_ziv lpcc max_frequency max_power_spectrum</span>
+<span class="s2">maximum_fractal_length mean_abs_deviation mean_abs_diff mean_diff median_abs_deviation</span>
+<span class="s2">median_abs_diff median_diff median_frequency mfcc mse negative_turning neighbourhood_peaks</span>
+<span class="s2">petrosian_fractal_dimension pk_pk_distance positive_turning power_bandwidth rms skewness slope</span>
+<span class="s2">spectral_centroid spectral_decrease spectral_distance spectral_entropy spectral_kurtosis</span>
+<span class="s2">spectral_positive_turning spectral_roll_off spectral_roll_on spectral_skewness spectral_slope</span>
+<span class="s2">spectral_spread spectral_variation spectrogram_mean_coeff sum_abs_diff wavelet_abs_mean</span>
+<span class="s2">wavelet_energy wavelet_entropy wavelet_std wavelet_var zero_cross"""</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+<span class="c1"># 2. Memuat Konfigurasi TSFEL &amp; Aktifkan Fitur dari FEATURE_LIST</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">get_features_by_domain</span><span class="p">()</span>
+<span class="n">func_to_feat</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">domain</span> <span class="ow">in</span> <span class="n">cfg</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">feat_name</span><span class="p">,</span> <span class="n">feat_dict</span> <span class="ow">in</span> <span class="n">cfg</span><span class="p">[</span><span class="n">domain</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">func_name</span> <span class="o">=</span> <span class="n">feat_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'function'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'tsfel.'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="n">FEATURE_LIST</span><span class="p">:</span>
+            <span class="n">feat_dict</span><span class="p">[</span><span class="s1">'use'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'yes'</span>
+            <span class="k">if</span> <span class="s1">'wavelet'</span> <span class="ow">in</span> <span class="n">func_name</span><span class="p">:</span>
+                <span class="n">feat_dict</span><span class="p">[</span><span class="s1">'parameters'</span><span class="p">][</span><span class="s1">'max_width'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="n">func_to_feat</span><span class="p">[</span><span class="n">func_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">feat_name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">feat_dict</span><span class="p">[</span><span class="s1">'use'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'no'</span>
+
+<span class="c1"># 3. Ekstraksi Fitur TSFEL Langsung dari Sinyal Clean</span>
+<span class="n">raw_df</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4_clean'</span><span class="p">],</span> <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># 4. Pemetaan Presisi Matriks 68 Fitur (f1_abs_energy ... f68_zero_cross)</span>
+<span class="n">row_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">FEATURE_LIST</span><span class="p">):</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"f</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">matching_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">raw_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">func_name</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'tsfel.'</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span> <span class="ow">or</span> <span class="n">func_to_feat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">matching_cols</span><span class="p">:</span>
+        <span class="n">feat_title</span> <span class="o">=</span> <span class="n">func_to_feat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="s1">''</span><span class="p">)</span>
+        <span class="n">matching_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">raw_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">feat_title</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
+    
+    <span class="n">val</span> <span class="o">=</span> <span class="n">raw_df</span><span class="p">[</span><span class="n">matching_cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">matching_cols</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="n">row_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+<span class="n">df_68_matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">row_dict</span><span class="p">])</span>
+<span class="n">features_path</span> <span class="o">=</span> <span class="s1">'../data/csv/features/CH4_tsfel_features.csv'</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">features_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df_68_matrix</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">features_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SUCCESS: Matriks Presisi 68 Fitur TSFEL berhasil disimpan ke '</span><span class="si">{</span><span class="n">features_path</span><span class="si">}</span><span class="s2">'! (Shape: </span><span class="si">{</span><span class="n">df_68_matrix</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="n">df_68_matrix</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SUCCESS: Matriks Presisi 68 Fitur TSFEL berhasil disimpan ke '../data/csv/features/CH4_tsfel_features.csv'! (Shape: (1, 68))
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ASUS\AppData\Local\Programs\Python\Python312\Lib\site-packages\tsfel\feature_extraction\features_utils.py:534: RuntimeWarning: invalid value encountered in divide
+  rs = np.divide(r, s)
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>f1_abs_energy</th>
+      <th>f2_auc</th>
+      <th>f3_autocorr</th>
+      <th>f4_average_power</th>
+      <th>f5_calc_centroid</th>
+      <th>f6_calc_max</th>
+      <th>f7_calc_mean</th>
+      <th>f8_calc_median</th>
+      <th>f9_calc_min</th>
+      <th>f10_calc_std</th>
+      <th>...</th>
+      <th>f59_spectral_spread</th>
+      <th>f60_spectral_variation</th>
+      <th>f61_spectrogram_mean_coeff</th>
+      <th>f62_sum_abs_diff</th>
+      <th>f63_wavelet_abs_mean</th>
+      <th>f64_wavelet_energy</th>
+      <th>f65_wavelet_entropy</th>
+      <th>f66_wavelet_std</th>
+      <th>f67_wavelet_var</th>
+      <th>f68_zero_cross</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.302724e+09</td>
+      <td>687663.309387</td>
+      <td>21.0</td>
+      <td>3.578912e+06</td>
+      <td>182.53874</td>
+      <td>1916.421265</td>
+      <td>1889.164578</td>
+      <td>1891.473342</td>
+      <td>1845.876221</td>
+      <td>12.8207</td>
+      <td>...</td>
+      <td>0.027387</td>
+      <td>0.716212</td>
+      <td>5169.427845</td>
+      <td>384.951965</td>
+      <td>8.152634</td>
+      <td>80.392049</td>
+      <td>-0.0</td>
+      <td>79.977598</td>
+      <td>6396.416175</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 68 columns</p>
+</div></div></div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./main"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-deteksi-outlier-iqr-method">1. Penanganan Missing Values &amp; Deteksi Outlier (IQR Method)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-4-grafik-terpisah">2. Visualisasi 4 Grafik Terpisah</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-68-fitur-time-series-tsfel-f1-namafitur-hingga-f68-namafitur">3. Ekstraksi 68 Fitur Time-Series TSFEL (<code class="docutils literal notranslate"><span class="pre">f1_namafitur</span></code> hingga <code class="docutils literal notranslate"><span class="pre">f68_namafitur</span></code>)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Muhammad Ainul Fuady
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

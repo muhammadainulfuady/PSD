@@ -109,7 +109,7 @@ Data dimuat untuk masing-masing polutan menggunakan rentang koordinat _Bounding 
 ```python
 s5 = connection.load_collection(
     "SENTINEL_5P_L2",
-    temporal_extent=["2025-08-24", "2026-08-24"],
+    temporal_extent=["2025-08-24", "2026-08-23"],
     spatial_extent={
         "west": 112.5058378,
         "south": -7.0683846,
@@ -125,7 +125,7 @@ s5 = connection.load_collection(
 ```python
 s5 = connection.load_collection(
     "SENTINEL_5P_L2",
-    temporal_extent=["2025-08-24", "2026-08-24"],
+    temporal_extent=["2025-08-24", "2026-08-23"],
     spatial_extent={
         "west": 112.5058378,
         "south": -7.0683846,
@@ -141,7 +141,7 @@ s5 = connection.load_collection(
 ```python
 s5 = connection.load_collection(
     "SENTINEL_5P_L2",
-    temporal_extent=["2025-08-24", "2026-08-24"],
+    temporal_extent=["2025-08-24", "2026-08-23"],
     spatial_extent={
         "west": 112.5058378,
         "south": -7.0683846,
@@ -157,7 +157,7 @@ s5 = connection.load_collection(
 ```python
 s5 = connection.load_collection(
     "SENTINEL_5P_L2",
-    temporal_extent=["2025-08-24", "2026-08-24"],
+    temporal_extent=["2025-08-24", "2026-08-23"],
     spatial_extent={
         "west": 112.5058378,
         "south": -7.0683846,
@@ -269,7 +269,7 @@ Setelah data dikonversi menjadi CSV, kita dapat menampilkan isi data menggunakan
 import pandas as pd
 
 # Menampilkan 5 data teratas CSV CH4
-df_ch4 = pd.read_csv("./../data/csv/CH4_gresik_timeseries.csv")
+df_ch4 = pd.read_csv("./../data/csv/timeseries/CH4_gresik_timeseries.csv")
 df_ch4.head()
 ```
 
@@ -280,7 +280,7 @@ df_ch4.head()
 import pandas as pd
 
 # Menampilkan 5 data teratas CSV CO
-df_co = pd.read_csv("./../data/csv/CO_gresik_timeseries.csv")
+df_co = pd.read_csv("./../data/csv/timeseries/CO_gresik_timeseries.csv")
 df_co.head()
 ```
 
@@ -291,7 +291,7 @@ df_co.head()
 import pandas as pd
 
 # Menampilkan 5 data teratas CSV NO2
-df_no2 = pd.read_csv("./../data/csv/NO2_gresik_timeseries.csv")
+df_no2 = pd.read_csv("./../data/csv/timeseries/NO2_gresik_timeseries.csv")
 df_no2.head()
 ```
 
@@ -302,18 +302,18 @@ df_no2.head()
 import pandas as pd
 
 # Menampilkan 5 data teratas CSV SO2
-df_so2 = pd.read_csv("./../data/csv/SO2_gresik_timeseries.csv")
+df_so2 = pd.read_csv("./../data/csv/timeseries/SO2_gresik_timeseries.csv")
 df_so2.head()
 ```
 
-### 3.5 polutan_gresik.csv (Gabungan 4 Polutan)
+### 3.5 table_polutan_gresik.csv (Gabungan 4 Polutan)
 
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
 
 # Menampilkan 5 data teratas CSV gabungan 4 polutan
-df_polutan = pd.read_csv("./../data/csv/polutan_gresik.csv")
+df_polutan = pd.read_csv("./../data/csv/timeseries/table_polutan_gresik.csv")
 df_polutan.head()
 ```
 
@@ -346,7 +346,7 @@ Pada tahap ini dilakukan **identifikasi** (mencatat) masalah-masalah pada data, 
 ```{code-cell}
 :tags: [hide-input]
 import pandas as pd
-df = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/CH4_gresik_timeseries.csv")
 ch4 = df["CH4"]
 missingValueCH4 = ch4.isna().sum()
 validValueCH4 = ch4.notna().sum()
@@ -358,7 +358,7 @@ print(f"Jumlah data terisi (valid) pada data ch4 : {validValueCH4}")
 
 ```{code-cell}
 :tags: [hide-input]
-df = pd.read_csv("../data/csv/CO_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/CO_gresik_timeseries.csv")
 co = df["CO"]
 missingValueCO = co.isna().sum()
 validValueCO = co.notna().sum()
@@ -370,7 +370,7 @@ print(f"Jumlah data terisi (valid) pada data co : {validValueCO}")
 
 ```{code-cell}
 :tags: [hide-input]
-df = pd.read_csv("../data/csv/NO2_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/NO2_gresik_timeseries.csv")
 no2 = df["NO2"]
 missingValueNO2 = no2.isna().sum()
 validValueNO2 = no2.notna().sum()
@@ -382,7 +382,7 @@ print(f"Jumlah data terisi (valid) pada data no2 : {validValueNO2}")
 
 ```{code-cell}
 :tags: [hide-input]
-df = pd.read_csv("../data/csv/SO2_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/SO2_gresik_timeseries.csv")
 so2 = df["SO2"]
 missingValueSO2 = so2.isna().sum()
 validValueSO2 = so2.notna().sum()
@@ -407,7 +407,7 @@ Berikut adalah hasil identifikasi jumlah outlier untuk masing-masing polutan:
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 
-df = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/CH4_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['CH4']).copy()
 
 model = IsolationForest(contamination=0.05, random_state=42)
@@ -427,7 +427,7 @@ print(f"Jumlah tidak outlier (normal) pada data ch4 : {len(normal_ch4)}")
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 
-df = pd.read_csv("../data/csv/CO_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/CO_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['CO']).copy()
 
 model = IsolationForest(contamination=0.05, random_state=42)
@@ -447,7 +447,7 @@ print(f"Jumlah tidak outlier (normal) pada data co : {len(normal_co)}")
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 
-df = pd.read_csv("../data/csv/NO2_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/NO2_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['NO2']).copy()
 
 model = IsolationForest(contamination=0.05, random_state=42)
@@ -467,7 +467,7 @@ print(f"Jumlah tidak outlier (normal) pada data no2 : {len(normal_no2)}")
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 
-df = pd.read_csv("../data/csv/SO2_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/SO2_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['SO2']).copy()
 
 model = IsolationForest(contamination=0.05, random_state=42)
@@ -500,7 +500,7 @@ Berikut adalah hasil identifikasi indikator statistik _noise_ untuk masing-masin
 :tags: [hide-input]
 import pandas as pd
 
-df = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/CH4_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['CH4']).copy()
 
 mean_val = df_clean['CH4'].mean()
@@ -518,7 +518,7 @@ print(f"Koefisien Variasi (CV) CH4 : {cv_val:.2f}%")
 :tags: [hide-input]
 import pandas as pd
 
-df = pd.read_csv("../data/csv/CO_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/CO_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['CO']).copy()
 
 mean_val = df_clean['CO'].mean()
@@ -536,7 +536,7 @@ print(f"Koefisien Variasi (CV) CO : {cv_val:.2f}%")
 :tags: [hide-input]
 import pandas as pd
 
-df = pd.read_csv("../data/csv/NO2_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/NO2_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['NO2']).copy()
 
 mean_val = df_clean['NO2'].mean()
@@ -554,7 +554,7 @@ print(f"Koefisien Variasi (CV) NO2 : {cv_val:.2f}%")
 :tags: [hide-input]
 import pandas as pd
 
-df = pd.read_csv("../data/csv/SO2_gresik_timeseries.csv")
+df = pd.read_csv("../data/csv/timeseries/SO2_gresik_timeseries.csv")
 df_clean = df.dropna(subset=['SO2']).copy()
 
 mean_val = df_clean['SO2'].mean()
@@ -578,10 +578,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # 1. Load Data 4 Polutan
-df_no2 = pd.read_csv("../data/csv/NO2_gresik_timeseries.csv").dropna(subset=['NO2'])
-df_co  = pd.read_csv("../data/csv/CO_gresik_timeseries.csv").dropna(subset=['CO'])
-df_ch4 = pd.read_csv("../data/csv/CH4_gresik_timeseries.csv").dropna(subset=['CH4'])
-df_so2 = pd.read_csv("../data/csv/SO2_gresik_timeseries.csv").dropna(subset=['SO2'])
+df_no2 = pd.read_csv("../data/csv/timeseries/NO2_gresik_timeseries.csv").dropna(subset=['NO2'])
+df_co  = pd.read_csv("../data/csv/timeseries/CO_gresik_timeseries.csv").dropna(subset=['CO'])
+df_ch4 = pd.read_csv("../data/csv/timeseries/CH4_gresik_timeseries.csv").dropna(subset=['CH4'])
+df_so2 = pd.read_csv("../data/csv/timeseries/SO2_gresik_timeseries.csv").dropna(subset=['SO2'])
 
 df_no2['date'] = pd.to_datetime(df_no2['date'])
 df_co['date']  = pd.to_datetime(df_co['date'])
@@ -688,7 +688,7 @@ Konfigurasi Service Cloud Database PostgreSQL pada Console Aiven
 **DBeaver** digunakan sebagai _Database Management Tool (GUI Client)_ untuk mengelola struktur tabel relasional dan menguji koneksi jaringan ke cloud Aiven:
 
 1. Membuat koneksi baru (_New Database Connection_) berjenis PostgreSQL di DBeaver menggunakan Host, Port, dan kredensial Aiven.
-2. Mengimpor dataset `csv` 4 polutan ke dalam tabel relasional PostgreSQL bernama `polutan_gresik`.
+2. Mengimpor dataset `csv` 4 polutan ke dalam tabel relasional PostgreSQL bernama `table_polutan_gresik`.
 3. Menjalankan _SQL Query_ `SELECT * FROM table_polutan_gresik;` untuk memastikan data terstruktur dengan benar di dalam _cloud database_.
 
 ```{figure} ../assets/editor/dbeaver/select-tabel.png
