@@ -342,161 +342,592 @@ document.write(`
   <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.iforest</span><span class="w"> </span><span class="kn">import</span> <span class="n">IForest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.knn</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.lof</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.copod</span><span class="w"> </span><span class="kn">import</span> <span class="n">COPOD</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.ecod</span><span class="w"> </span><span class="kn">import</span> <span class="n">ECOD</span>
+
+<span class="c1"># 1. Load Data CH4</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/CH4_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[[</span><span class="s1">'CH4'</span><span class="p">]])</span>
+<span class="c1"># 2. Inisialisasi 5 Metode Outlier</span>
+<span class="n">contamination_rate</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'Isolation Forest'</span><span class="p">:</span> <span class="n">IForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+    <span class="s1">'KNN'</span><span class="p">:</span> <span class="n">KNN</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'LOF'</span><span class="p">:</span> <span class="n">LOF</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'COPOD'</span><span class="p">:</span> <span class="n">COPOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'ECOD'</span><span class="p">:</span> <span class="n">ECOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span class="n">normal</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">outliers</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[[</span><span class="s1">'CH4'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">HARI_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Monday'</span><span class="p">:</span> <span class="s1">'Senin'</span><span class="p">,</span> <span class="s1">'Tuesday'</span><span class="p">:</span> <span class="s1">'Selasa'</span><span class="p">,</span> <span class="s1">'Wednesday'</span><span class="p">:</span> <span class="s1">'Rabu'</span><span class="p">,</span> <span class="s1">'Thursday'</span><span class="p">:</span> <span class="s1">'Kamis'</span><span class="p">,</span> <span class="s1">'Friday'</span><span class="p">:</span> <span class="s1">'Jumat'</span><span class="p">,</span> <span class="s1">'Saturday'</span><span class="p">:</span> <span class="s1">'Sabtu'</span><span class="p">,</span> <span class="s1">'Sunday'</span><span class="p">:</span> <span class="s1">'Minggu'</span><span class="p">}</span>
+<span class="n">BULAN_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">'Januari'</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">'Februari'</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">'Maret'</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">'April'</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">'Mei'</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s1">'Juni'</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s1">'Juli'</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s1">'Agustus'</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s1">'September'</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="s1">'Oktober'</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="s1">'November'</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="s1">'Desember'</span><span class="p">}</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah outlier pada data CH4:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah tidak outlier (normal) pada data CH4:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">normal</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"             PERBANDINGAN 5 METODE OUTLIER PADA DATA CH4"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Data Valid CH4: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_clean</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="c1"># Visualisasi Grafik Outlier CH4</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier CH4 (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
+<span class="n">summary_counts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'outlier_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span>
+    <span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">labels_</span> <span class="c1"># 0 = Normal, 1 = Outlier</span>
+    
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">outliers</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">summary_counts</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"&gt;&gt;&gt; Metode: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (Jumlah Outlier: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">outliers</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">]</span>
+            <span class="n">hari</span> <span class="o">=</span> <span class="n">HARI_MAP</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%A'</span><span class="p">)]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    - </span><span class="si">{</span><span class="n">hari</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">BULAN_MAP</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> | Nilai CH4: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"    - Tidak ada outlier terdeteksi."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+    
+    <span class="c1"># Plot per metode</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">],</span> <span class="n">normal</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">],</span> <span class="n">outliers</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Outlier (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span><span class="si">}</span><span class="s1">)'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Deteksi Outlier CH4 — Metode: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'CH4'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CH4'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=== RINGKASAN JUMLAH OUTLIER CH4 PER METODE ==="</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">summary_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> outlier"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data CH4: 2
-Jumlah tidak outlier (normal) pada data CH4: 29
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==========================================================================
+             PERBANDINGAN 5 METODE OUTLIER PADA DATA CH4
+==========================================================================
+Total Data Valid CH4: 20
 </pre></div>
 </div>
-<img alt="../_images/5db4bf2732890200e9ea8b715095709fc85141962da01619a1e0a6c2127db760.png" src="../_images/5db4bf2732890200e9ea8b715095709fc85141962da01619a1e0a6c2127db760.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: Isolation Forest (Jumlah Outlier: 1)
+    - Minggu, 7 Juni 2026 | Nilai CH4: 1821.6421
+
+&gt;&gt;&gt; Metode: KNN (Jumlah Outlier: 1)
+    - Minggu, 7 Juni 2026 | Nilai CH4: 1821.6421
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: LOF (Jumlah Outlier: 1)
+    - Jumat, 29 Agustus 2025 | Nilai CH4: 1871.7540
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: COPOD (Jumlah Outlier: 1)
+    - Minggu, 7 Juni 2026 | Nilai CH4: 1821.6421
+
+&gt;&gt;&gt; Metode: ECOD (Jumlah Outlier: 0)
+    - Tidak ada outlier terdeteksi.
+</pre></div>
+</div>
+<img alt="../_images/e7263037f992544028cfe973a456357c699b9f9f9aac7fdf068afe56bec8efde.png" src="../_images/e7263037f992544028cfe973a456357c699b9f9f9aac7fdf068afe56bec8efde.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== RINGKASAN JUMLAH OUTLIER CH4 PER METODE ===
+- Isolation Forest: 1 outlier
+- KNN: 1 outlier
+- LOF: 1 outlier
+- COPOD: 1 outlier
+- ECOD: 0 outlier
+</pre></div>
+</div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/CO_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.iforest</span><span class="w"> </span><span class="kn">import</span> <span class="n">IForest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.knn</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.lof</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.copod</span><span class="w"> </span><span class="kn">import</span> <span class="n">COPOD</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.ecod</span><span class="w"> </span><span class="kn">import</span> <span class="n">ECOD</span>
+
+<span class="c1"># 1. Load Data CO</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/CO_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[[</span><span class="s1">'CO'</span><span class="p">]])</span>
+<span class="c1"># 2. Inisialisasi 5 Metode Outlier</span>
+<span class="n">contamination_rate</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'Isolation Forest'</span><span class="p">:</span> <span class="n">IForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+    <span class="s1">'KNN'</span><span class="p">:</span> <span class="n">KNN</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'LOF'</span><span class="p">:</span> <span class="n">LOF</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'COPOD'</span><span class="p">:</span> <span class="n">COPOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'ECOD'</span><span class="p">:</span> <span class="n">ECOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span class="n">normal</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">outliers</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[[</span><span class="s1">'CO'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">HARI_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Monday'</span><span class="p">:</span> <span class="s1">'Senin'</span><span class="p">,</span> <span class="s1">'Tuesday'</span><span class="p">:</span> <span class="s1">'Selasa'</span><span class="p">,</span> <span class="s1">'Wednesday'</span><span class="p">:</span> <span class="s1">'Rabu'</span><span class="p">,</span> <span class="s1">'Thursday'</span><span class="p">:</span> <span class="s1">'Kamis'</span><span class="p">,</span> <span class="s1">'Friday'</span><span class="p">:</span> <span class="s1">'Jumat'</span><span class="p">,</span> <span class="s1">'Saturday'</span><span class="p">:</span> <span class="s1">'Sabtu'</span><span class="p">,</span> <span class="s1">'Sunday'</span><span class="p">:</span> <span class="s1">'Minggu'</span><span class="p">}</span>
+<span class="n">BULAN_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">'Januari'</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">'Februari'</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">'Maret'</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">'April'</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">'Mei'</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s1">'Juni'</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s1">'Juli'</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s1">'Agustus'</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s1">'September'</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="s1">'Oktober'</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="s1">'November'</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="s1">'Desember'</span><span class="p">}</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah outlier pada data CO:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah tidak outlier (normal) pada data CO:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">normal</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"             PERBANDINGAN 5 METODE OUTLIER PADA DATA CO"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Data Valid CO: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_clean</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="c1"># Visualisasi Grafik Outlier CO</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier CO (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
+<span class="n">summary_counts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'outlier_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span>
+    <span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">labels_</span> <span class="c1"># 0 = Normal, 1 = Outlier</span>
+    
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">outliers</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">summary_counts</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"&gt;&gt;&gt; Metode: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (Jumlah Outlier: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">outliers</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">]</span>
+            <span class="n">hari</span> <span class="o">=</span> <span class="n">HARI_MAP</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%A'</span><span class="p">)]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    - </span><span class="si">{</span><span class="n">hari</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">BULAN_MAP</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> | Nilai CO: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"    - Tidak ada outlier terdeteksi."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+    
+    <span class="c1"># Plot per metode</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">],</span> <span class="n">normal</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">],</span> <span class="n">outliers</span><span class="p">[</span><span class="s1">'CO'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Outlier (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span><span class="si">}</span><span class="s1">)'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Deteksi Outlier CO — Metode: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'CO'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CO'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=== RINGKASAN JUMLAH OUTLIER CO PER METODE ==="</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">summary_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> outlier"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data CO: 11
-Jumlah tidak outlier (normal) pada data CO: 198
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==========================================================================
+             PERBANDINGAN 5 METODE OUTLIER PADA DATA CO
+==========================================================================
+Total Data Valid CO: 192
 </pre></div>
 </div>
-<img alt="../_images/bd846f278f377f4e110b27d044872ae76849416edfb8d033a7e00156140cb491.png" src="../_images/bd846f278f377f4e110b27d044872ae76849416edfb8d033a7e00156140cb491.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: Isolation Forest (Jumlah Outlier: 10)
+    - Minggu, 14 September 2025 | Nilai CO: 0.0174
+    - Rabu, 24 September 2025 | Nilai CO: 0.0416
+    - Kamis, 9 Oktober 2025 | Nilai CO: 0.0452
+    - Minggu, 5 April 2026 | Nilai CO: 0.0176
+    - Selasa, 5 Mei 2026 | Nilai CO: 0.0176
+    - Selasa, 12 Mei 2026 | Nilai CO: 0.0170
+    - Sabtu, 13 Juni 2026 | Nilai CO: 0.0187
+    - Senin, 29 Juni 2026 | Nilai CO: 0.0214
+    - Rabu, 15 Juli 2026 | Nilai CO: 0.0191
+    - Senin, 10 Agustus 2026 | Nilai CO: 0.0384
+
+&gt;&gt;&gt; Metode: KNN (Jumlah Outlier: 10)
+    - Minggu, 14 September 2025 | Nilai CO: 0.0174
+    - Rabu, 24 September 2025 | Nilai CO: 0.0416
+    - Rabu, 8 Oktober 2025 | Nilai CO: 0.0391
+    - Kamis, 9 Oktober 2025 | Nilai CO: 0.0452
+    - Selasa, 12 Mei 2026 | Nilai CO: 0.0170
+    - Sabtu, 13 Juni 2026 | Nilai CO: 0.0187
+    - Senin, 29 Juni 2026 | Nilai CO: 0.0214
+    - Rabu, 15 Juli 2026 | Nilai CO: 0.0191
+    - Senin, 10 Agustus 2026 | Nilai CO: 0.0384
+    - Jumat, 14 Agustus 2026 | Nilai CO: 0.0391
+
+&gt;&gt;&gt; Metode: LOF (Jumlah Outlier: 10)
+    - Minggu, 14 September 2025 | Nilai CO: 0.0174
+    - Rabu, 24 September 2025 | Nilai CO: 0.0416
+    - Rabu, 8 Oktober 2025 | Nilai CO: 0.0391
+    - Kamis, 9 Oktober 2025 | Nilai CO: 0.0452
+    - Minggu, 5 April 2026 | Nilai CO: 0.0176
+    - Selasa, 5 Mei 2026 | Nilai CO: 0.0176
+    - Selasa, 12 Mei 2026 | Nilai CO: 0.0170
+    - Sabtu, 13 Juni 2026 | Nilai CO: 0.0187
+    - Rabu, 15 Juli 2026 | Nilai CO: 0.0191
+    - Jumat, 14 Agustus 2026 | Nilai CO: 0.0391
+
+&gt;&gt;&gt; Metode: COPOD (Jumlah Outlier: 10)
+    - Rabu, 24 September 2025 | Nilai CO: 0.0416
+    - Jumat, 3 Oktober 2025 | Nilai CO: 0.0351
+    - Rabu, 8 Oktober 2025 | Nilai CO: 0.0391
+    - Kamis, 9 Oktober 2025 | Nilai CO: 0.0452
+    - Jumat, 10 Oktober 2025 | Nilai CO: 0.0361
+    - Minggu, 1 Februari 2026 | Nilai CO: 0.0359
+    - Senin, 9 Maret 2026 | Nilai CO: 0.0355
+    - Rabu, 22 Juli 2026 | Nilai CO: 0.0367
+    - Senin, 10 Agustus 2026 | Nilai CO: 0.0384
+    - Jumat, 14 Agustus 2026 | Nilai CO: 0.0391
+
+&gt;&gt;&gt; Metode: ECOD (Jumlah Outlier: 10)
+    - Minggu, 14 September 2025 | Nilai CO: 0.0174
+    - Rabu, 24 September 2025 | Nilai CO: 0.0416
+    - Rabu, 8 Oktober 2025 | Nilai CO: 0.0391
+    - Kamis, 9 Oktober 2025 | Nilai CO: 0.0452
+    - Minggu, 5 April 2026 | Nilai CO: 0.0176
+    - Selasa, 5 Mei 2026 | Nilai CO: 0.0176
+    - Selasa, 12 Mei 2026 | Nilai CO: 0.0170
+    - Sabtu, 13 Juni 2026 | Nilai CO: 0.0187
+    - Senin, 10 Agustus 2026 | Nilai CO: 0.0384
+    - Jumat, 14 Agustus 2026 | Nilai CO: 0.0391
+</pre></div>
+</div>
+<img alt="../_images/03adadadc2cfdf0757b5f1b7e80cdcda13cf60700d19dc24db7e71232de67058.png" src="../_images/03adadadc2cfdf0757b5f1b7e80cdcda13cf60700d19dc24db7e71232de67058.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== RINGKASAN JUMLAH OUTLIER CO PER METODE ===
+- Isolation Forest: 10 outlier
+- KNN: 10 outlier
+- LOF: 10 outlier
+- COPOD: 10 outlier
+- ECOD: 10 outlier
+</pre></div>
+</div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.iforest</span><span class="w"> </span><span class="kn">import</span> <span class="n">IForest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.knn</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.lof</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.copod</span><span class="w"> </span><span class="kn">import</span> <span class="n">COPOD</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.ecod</span><span class="w"> </span><span class="kn">import</span> <span class="n">ECOD</span>
+
+<span class="c1"># 1. Load Data NO2</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/NO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[[</span><span class="s1">'NO2'</span><span class="p">]])</span>
+<span class="c1"># 2. Inisialisasi 5 Metode Outlier</span>
+<span class="n">contamination_rate</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'Isolation Forest'</span><span class="p">:</span> <span class="n">IForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+    <span class="s1">'KNN'</span><span class="p">:</span> <span class="n">KNN</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'LOF'</span><span class="p">:</span> <span class="n">LOF</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'COPOD'</span><span class="p">:</span> <span class="n">COPOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'ECOD'</span><span class="p">:</span> <span class="n">ECOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span class="n">normal</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">outliers</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[[</span><span class="s1">'NO2'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">HARI_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Monday'</span><span class="p">:</span> <span class="s1">'Senin'</span><span class="p">,</span> <span class="s1">'Tuesday'</span><span class="p">:</span> <span class="s1">'Selasa'</span><span class="p">,</span> <span class="s1">'Wednesday'</span><span class="p">:</span> <span class="s1">'Rabu'</span><span class="p">,</span> <span class="s1">'Thursday'</span><span class="p">:</span> <span class="s1">'Kamis'</span><span class="p">,</span> <span class="s1">'Friday'</span><span class="p">:</span> <span class="s1">'Jumat'</span><span class="p">,</span> <span class="s1">'Saturday'</span><span class="p">:</span> <span class="s1">'Sabtu'</span><span class="p">,</span> <span class="s1">'Sunday'</span><span class="p">:</span> <span class="s1">'Minggu'</span><span class="p">}</span>
+<span class="n">BULAN_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">'Januari'</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">'Februari'</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">'Maret'</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">'April'</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">'Mei'</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s1">'Juni'</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s1">'Juli'</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s1">'Agustus'</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s1">'September'</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="s1">'Oktober'</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="s1">'November'</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="s1">'Desember'</span><span class="p">}</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah outlier pada data NO2:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah tidak outlier (normal) pada data NO2:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">normal</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"             PERBANDINGAN 5 METODE OUTLIER PADA DATA NO2"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Data Valid NO2: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_clean</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="c1"># Visualisasi Grafik Outlier NO2</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier NO2 (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
+<span class="n">summary_counts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'outlier_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span>
+    <span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">labels_</span> <span class="c1"># 0 = Normal, 1 = Outlier</span>
+    
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">outliers</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">summary_counts</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"&gt;&gt;&gt; Metode: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (Jumlah Outlier: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">outliers</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">]</span>
+            <span class="n">hari</span> <span class="o">=</span> <span class="n">HARI_MAP</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%A'</span><span class="p">)]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    - </span><span class="si">{</span><span class="n">hari</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">BULAN_MAP</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> | Nilai NO2: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"    - Tidak ada outlier terdeteksi."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+    
+    <span class="c1"># Plot per metode</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">],</span> <span class="n">normal</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">],</span> <span class="n">outliers</span><span class="p">[</span><span class="s1">'NO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Outlier (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span><span class="si">}</span><span class="s1">)'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Deteksi Outlier NO2 — Metode: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'NO2'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi NO2'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=== RINGKASAN JUMLAH OUTLIER NO2 PER METODE ==="</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">summary_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> outlier"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data NO2: 10
-Jumlah tidak outlier (normal) pada data NO2: 177
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==========================================================================
+             PERBANDINGAN 5 METODE OUTLIER PADA DATA NO2
+==========================================================================
+Total Data Valid NO2: 200
 </pre></div>
 </div>
-<img alt="../_images/bb85cd57881f8c8ee0a912a980dff4754b4e8330b2ae22b1cdd3d3455789eb23.png" src="../_images/bb85cd57881f8c8ee0a912a980dff4754b4e8330b2ae22b1cdd3d3455789eb23.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: Isolation Forest (Jumlah Outlier: 10)
+    - Rabu, 24 September 2025 | Nilai NO2: 0.0003
+    - Minggu, 28 September 2025 | Nilai NO2: -0.0000
+    - Kamis, 9 Oktober 2025 | Nilai NO2: 0.0001
+    - Rabu, 17 Desember 2025 | Nilai NO2: 0.0000
+    - Senin, 20 April 2026 | Nilai NO2: 0.0002
+    - Jumat, 29 Mei 2026 | Nilai NO2: 0.0002
+    - Selasa, 2 Juni 2026 | Nilai NO2: 0.0002
+    - Senin, 8 Juni 2026 | Nilai NO2: 0.0002
+    - Kamis, 18 Juni 2026 | Nilai NO2: 0.0001
+    - Selasa, 30 Juni 2026 | Nilai NO2: 0.0001
+
+&gt;&gt;&gt; Metode: KNN (Jumlah Outlier: 10)
+    - Senin, 25 Agustus 2025 | Nilai NO2: 0.0001
+    - Rabu, 24 September 2025 | Nilai NO2: 0.0003
+    - Kamis, 9 Oktober 2025 | Nilai NO2: 0.0001
+    - Senin, 20 April 2026 | Nilai NO2: 0.0002
+    - Jumat, 29 Mei 2026 | Nilai NO2: 0.0002
+    - Selasa, 2 Juni 2026 | Nilai NO2: 0.0002
+    - Senin, 8 Juni 2026 | Nilai NO2: 0.0002
+    - Selasa, 9 Juni 2026 | Nilai NO2: 0.0001
+    - Kamis, 18 Juni 2026 | Nilai NO2: 0.0001
+    - Selasa, 30 Juni 2026 | Nilai NO2: 0.0001
+
+&gt;&gt;&gt; Metode: LOF (Jumlah Outlier: 10)
+    - Senin, 25 Agustus 2025 | Nilai NO2: 0.0001
+    - Rabu, 24 September 2025 | Nilai NO2: 0.0003
+    - Minggu, 28 September 2025 | Nilai NO2: -0.0000
+    - Kamis, 9 Oktober 2025 | Nilai NO2: 0.0001
+    - Rabu, 17 Desember 2025 | Nilai NO2: 0.0000
+    - Senin, 20 April 2026 | Nilai NO2: 0.0002
+    - Jumat, 29 Mei 2026 | Nilai NO2: 0.0002
+    - Selasa, 2 Juni 2026 | Nilai NO2: 0.0002
+    - Senin, 8 Juni 2026 | Nilai NO2: 0.0002
+    - Kamis, 11 Juni 2026 | Nilai NO2: 0.0001
+
+&gt;&gt;&gt; Metode: COPOD (Jumlah Outlier: 10)
+    - Senin, 25 Agustus 2025 | Nilai NO2: 0.0001
+    - Rabu, 24 September 2025 | Nilai NO2: 0.0003
+    - Kamis, 9 Oktober 2025 | Nilai NO2: 0.0001
+    - Senin, 20 April 2026 | Nilai NO2: 0.0002
+    - Jumat, 29 Mei 2026 | Nilai NO2: 0.0002
+    - Selasa, 2 Juni 2026 | Nilai NO2: 0.0002
+    - Rabu, 3 Juni 2026 | Nilai NO2: 0.0001
+    - Senin, 8 Juni 2026 | Nilai NO2: 0.0002
+    - Kamis, 11 Juni 2026 | Nilai NO2: 0.0001
+    - Minggu, 28 Juni 2026 | Nilai NO2: 0.0001
+
+&gt;&gt;&gt; Metode: ECOD (Jumlah Outlier: 10)
+    - Rabu, 24 September 2025 | Nilai NO2: 0.0003
+    - Minggu, 28 September 2025 | Nilai NO2: -0.0000
+    - Rabu, 17 Desember 2025 | Nilai NO2: 0.0000
+    - Jumat, 30 Januari 2026 | Nilai NO2: 0.0000
+    - Jumat, 13 Maret 2026 | Nilai NO2: 0.0000
+    - Senin, 20 April 2026 | Nilai NO2: 0.0002
+    - Kamis, 23 April 2026 | Nilai NO2: 0.0000
+    - Jumat, 29 Mei 2026 | Nilai NO2: 0.0002
+    - Selasa, 2 Juni 2026 | Nilai NO2: 0.0002
+    - Senin, 8 Juni 2026 | Nilai NO2: 0.0002
+</pre></div>
+</div>
+<img alt="../_images/fe1eed610db1450462682d0e58006a74783b897fafff2b03c917b99cc5f3644f.png" src="../_images/fe1eed610db1450462682d0e58006a74783b897fafff2b03c917b99cc5f3644f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== RINGKASAN JUMLAH OUTLIER NO2 PER METODE ===
+- Isolation Forest: 10 outlier
+- KNN: 10 outlier
+- LOF: 10 outlier
+- COPOD: 10 outlier
+- ECOD: 10 outlier
+</pre></div>
+</div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsolationForest</span>
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.iforest</span><span class="w"> </span><span class="kn">import</span> <span class="n">IForest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.knn</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.lof</span><span class="w"> </span><span class="kn">import</span> <span class="n">LOF</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.copod</span><span class="w"> </span><span class="kn">import</span> <span class="n">COPOD</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyod.models.ecod</span><span class="w"> </span><span class="kn">import</span> <span class="n">ECOD</span>
+
+<span class="c1"># 1. Load Data SO2</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"../data/csv/timeseries/SO2_gresik_timeseries.csv"</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">IsolationForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[[</span><span class="s1">'SO2'</span><span class="p">]])</span>
+<span class="c1"># 2. Inisialisasi 5 Metode Outlier</span>
+<span class="n">contamination_rate</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'Isolation Forest'</span><span class="p">:</span> <span class="n">IForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
+    <span class="s1">'KNN'</span><span class="p">:</span> <span class="n">KNN</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'LOF'</span><span class="p">:</span> <span class="n">LOF</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'COPOD'</span><span class="p">:</span> <span class="n">COPOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
+    <span class="s1">'ECOD'</span><span class="p">:</span> <span class="n">ECOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">)</span>
+<span class="p">}</span>
 
-<span class="n">normal</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">outliers</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'outlier_flag'</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[[</span><span class="s1">'SO2'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">HARI_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Monday'</span><span class="p">:</span> <span class="s1">'Senin'</span><span class="p">,</span> <span class="s1">'Tuesday'</span><span class="p">:</span> <span class="s1">'Selasa'</span><span class="p">,</span> <span class="s1">'Wednesday'</span><span class="p">:</span> <span class="s1">'Rabu'</span><span class="p">,</span> <span class="s1">'Thursday'</span><span class="p">:</span> <span class="s1">'Kamis'</span><span class="p">,</span> <span class="s1">'Friday'</span><span class="p">:</span> <span class="s1">'Jumat'</span><span class="p">,</span> <span class="s1">'Saturday'</span><span class="p">:</span> <span class="s1">'Sabtu'</span><span class="p">,</span> <span class="s1">'Sunday'</span><span class="p">:</span> <span class="s1">'Minggu'</span><span class="p">}</span>
+<span class="n">BULAN_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s1">'Januari'</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s1">'Februari'</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">'Maret'</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s1">'April'</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">'Mei'</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="s1">'Juni'</span><span class="p">,</span> <span class="mi">7</span><span class="p">:</span> <span class="s1">'Juli'</span><span class="p">,</span> <span class="mi">8</span><span class="p">:</span> <span class="s1">'Agustus'</span><span class="p">,</span> <span class="mi">9</span><span class="p">:</span> <span class="s1">'September'</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="s1">'Oktober'</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="s1">'November'</span><span class="p">,</span> <span class="mi">12</span><span class="p">:</span> <span class="s1">'Desember'</span><span class="p">}</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah outlier pada data SO2:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Jumlah tidak outlier (normal) pada data SO2:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">normal</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"             PERBANDINGAN 5 METODE OUTLIER PADA DATA SO2"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Data Valid SO2: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_clean</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
 
-<span class="c1"># Visualisasi Grafik Outlier SO2</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">outliers</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Outlier'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Deteksi Outlier SO2 (Merah = Outlier, Biru = Normal)'</span><span class="p">)</span>
+<span class="n">summary_counts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">col_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'outlier_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span>
+    <span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">labels_</span> <span class="c1"># 0 = Normal, 1 = Outlier</span>
+    
+    <span class="n">normal</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">outliers</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="n">df_clean</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">summary_counts</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"&gt;&gt;&gt; Metode: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> (Jumlah Outlier: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">outliers</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">]</span>
+            <span class="n">hari</span> <span class="o">=</span> <span class="n">HARI_MAP</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%A'</span><span class="p">)]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    - </span><span class="si">{</span><span class="n">hari</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">BULAN_MAP</span><span class="p">[</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="si">}</span><span class="s2"> | Nilai SO2: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"    - Tidak ada outlier terdeteksi."</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+    
+    <span class="c1"># Plot per metode</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">],</span> <span class="n">normal</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">outliers</span><span class="p">[</span><span class="s1">'date_dt'</span><span class="p">],</span> <span class="n">outliers</span><span class="p">[</span><span class="s1">'SO2'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">'Outlier (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span><span class="si">}</span><span class="s1">)'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Deteksi Outlier SO2 — Metode: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'SO2'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi SO2'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=== RINGKASAN JUMLAH OUTLIER SO2 PER METODE ==="</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">summary_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> outlier"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah outlier pada data SO2: 12
-Jumlah tidak outlier (normal) pada data SO2: 210
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==========================================================================
+             PERBANDINGAN 5 METODE OUTLIER PADA DATA SO2
+==========================================================================
+Total Data Valid SO2: 235
 </pre></div>
 </div>
-<img alt="../_images/c9f9cc4cd470d17213d5d48ef3a64ccc5c9d034b30b581c815fdb986a96b3981.png" src="../_images/c9f9cc4cd470d17213d5d48ef3a64ccc5c9d034b30b581c815fdb986a96b3981.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; Metode: Isolation Forest (Jumlah Outlier: 12)
+    - Selasa, 26 Agustus 2025 | Nilai SO2: 0.0014
+    - Minggu, 31 Agustus 2025 | Nilai SO2: -0.0006
+    - Senin, 1 September 2025 | Nilai SO2: -0.0004
+    - Sabtu, 27 September 2025 | Nilai SO2: 0.0006
+    - Sabtu, 18 Oktober 2025 | Nilai SO2: -0.0005
+    - Selasa, 28 Oktober 2025 | Nilai SO2: -0.0005
+    - Senin, 29 Desember 2025 | Nilai SO2: 0.0006
+    - Jumat, 27 Maret 2026 | Nilai SO2: -0.0005
+    - Rabu, 6 Mei 2026 | Nilai SO2: 0.0004
+    - Rabu, 10 Juni 2026 | Nilai SO2: 0.0007
+    - Jumat, 26 Juni 2026 | Nilai SO2: -0.0003
+    - Kamis, 13 Agustus 2026 | Nilai SO2: -0.0007
+
+&gt;&gt;&gt; Metode: KNN (Jumlah Outlier: 12)
+    - Selasa, 26 Agustus 2025 | Nilai SO2: 0.0014
+    - Minggu, 31 Agustus 2025 | Nilai SO2: -0.0006
+    - Senin, 1 September 2025 | Nilai SO2: -0.0004
+    - Sabtu, 18 Oktober 2025 | Nilai SO2: -0.0005
+    - Selasa, 28 Oktober 2025 | Nilai SO2: -0.0005
+    - Senin, 29 Desember 2025 | Nilai SO2: 0.0006
+    - Jumat, 27 Maret 2026 | Nilai SO2: -0.0005
+    - Rabu, 6 Mei 2026 | Nilai SO2: 0.0004
+    - Senin, 18 Mei 2026 | Nilai SO2: 0.0005
+    - Rabu, 10 Juni 2026 | Nilai SO2: 0.0007
+    - Jumat, 26 Juni 2026 | Nilai SO2: -0.0003
+    - Kamis, 13 Agustus 2026 | Nilai SO2: -0.0007
+
+&gt;&gt;&gt; Metode: LOF (Jumlah Outlier: 12)
+    - Selasa, 26 Agustus 2025 | Nilai SO2: 0.0014
+    - Minggu, 31 Agustus 2025 | Nilai SO2: -0.0006
+    - Senin, 1 September 2025 | Nilai SO2: -0.0004
+    - Senin, 29 September 2025 | Nilai SO2: -0.0003
+    - Sabtu, 18 Oktober 2025 | Nilai SO2: -0.0005
+    - Selasa, 28 Oktober 2025 | Nilai SO2: -0.0005
+    - Sabtu, 6 Desember 2025 | Nilai SO2: -0.0003
+    - Jumat, 27 Maret 2026 | Nilai SO2: -0.0005
+    - Kamis, 23 April 2026 | Nilai SO2: -0.0003
+    - Rabu, 10 Juni 2026 | Nilai SO2: 0.0007
+    - Jumat, 26 Juni 2026 | Nilai SO2: -0.0003
+    - Kamis, 13 Agustus 2026 | Nilai SO2: -0.0007
+
+&gt;&gt;&gt; Metode: COPOD (Jumlah Outlier: 12)
+    - Senin, 25 Agustus 2025 | Nilai SO2: 0.0006
+    - Selasa, 26 Agustus 2025 | Nilai SO2: 0.0014
+    - Kamis, 11 September 2025 | Nilai SO2: 0.0005
+    - Sabtu, 27 September 2025 | Nilai SO2: 0.0006
+    - Rabu, 19 November 2025 | Nilai SO2: 0.0006
+    - Senin, 29 Desember 2025 | Nilai SO2: 0.0006
+    - Minggu, 29 Maret 2026 | Nilai SO2: 0.0005
+    - Selasa, 7 April 2026 | Nilai SO2: 0.0006
+    - Sabtu, 9 Mei 2026 | Nilai SO2: 0.0006
+    - Minggu, 7 Juni 2026 | Nilai SO2: 0.0006
+    - Rabu, 10 Juni 2026 | Nilai SO2: 0.0007
+    - Minggu, 2 Agustus 2026 | Nilai SO2: 0.0005
+
+&gt;&gt;&gt; Metode: ECOD (Jumlah Outlier: 12)
+    - Senin, 25 Agustus 2025 | Nilai SO2: 0.0006
+    - Selasa, 26 Agustus 2025 | Nilai SO2: 0.0014
+    - Minggu, 31 Agustus 2025 | Nilai SO2: -0.0006
+    - Senin, 1 September 2025 | Nilai SO2: -0.0004
+    - Sabtu, 27 September 2025 | Nilai SO2: 0.0006
+    - Sabtu, 18 Oktober 2025 | Nilai SO2: -0.0005
+    - Selasa, 28 Oktober 2025 | Nilai SO2: -0.0005
+    - Senin, 29 Desember 2025 | Nilai SO2: 0.0006
+    - Jumat, 27 Maret 2026 | Nilai SO2: -0.0005
+    - Selasa, 7 April 2026 | Nilai SO2: 0.0006
+    - Rabu, 10 Juni 2026 | Nilai SO2: 0.0007
+    - Kamis, 13 Agustus 2026 | Nilai SO2: -0.0007
+</pre></div>
+</div>
+<img alt="../_images/265d27db4068fc68a127aa10ffe42ace8791a85aa7807e9dcb143c075b8b8cc1.png" src="../_images/265d27db4068fc68a127aa10ffe42ace8791a85aa7807e9dcb143c075b8b8cc1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== RINGKASAN JUMLAH OUTLIER SO2 PER METODE ===
+- Isolation Forest: 12 outlier
+- KNN: 12 outlier
+- LOF: 12 outlier
+- COPOD: 12 outlier
+- ECOD: 12 outlier
+</pre></div>
+</div>
 </div>
 </div>
 
