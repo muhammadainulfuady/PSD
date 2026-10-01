@@ -51,7 +51,7 @@ print(f"Jumlah Missing (NaN)    : {nan_awal} hari ({nan_awal/total_rows*100:.2f}
 
 ### 1.2 Deteksi & Pengosongan Outlier (Metode IQR Dinamis Berbasis Kode)
 
-Sebelum dilakukan imputasi deret waktu, titik pencilan (*outliers*) dievaluasi terlebih dahulu pada populasi data valid agar lonjakan ekstrem tidak merusak kemiringan (*slope*) garis interpolasi.
+Sebelum dilakukan imputasi deret waktu, titik pencilan (*outliers*) dievaluasi terlebih dahulu pada populasi data valid agar lonjakan ekstrem tidak merusak bentuk kurva interpolasi.
 
 Metode **Interquartile Range (IQR)** dihitung secara presisi dengan pustaka Pandas/NumPy:
 
@@ -194,12 +194,12 @@ for pol in pollutants:
 
 ---
 
-### 1.3 Pengosongan Outlier & Imputasi Linear Time Interpolation
+### 1.3 Pengosongan Outlier & Imputasi Polynomial Interpolation
 
-Titik data pencilan diubah menjadi `NaN` lalu diimputasi bersama dengan celah data mentah menggunakan **Linear Time Interpolation**:
+Titik data pencilan diubah menjadi `NaN` lalu diimputasi bersama dengan celah data mentah menggunakan **Polynomial Interpolation (Orde 2)**:
 
 ```{math}
-X(t) = X(t_1) + \frac{t - t_1}{t_2 - t_1} \cdot \left[ X(t_2) - X(t_1) \right]
+P(t) = a_2 t^2 + a_1 t + a_0
 ```
 
 ```{code-cell} ipython3
@@ -208,9 +208,9 @@ df_prep = df_raw.copy()
 df_prep.loc[is_outlier, 'CO'] = np.nan
 nan_setelah_outlier = df_prep['CO'].isna().sum()
 
-# 4. Imputasi Linear Time Interpolation Sekaligus
+# 4. Imputasi Polynomial Interpolation Sekaligus
 df_clean = df_prep.copy()
-df_clean['CO_clean'] = df_clean['CO'].interpolate(method='linear', limit_direction='both')
+df_clean['CO_clean'] = df_clean['CO'].interpolate(method='polynomial', order=2, limit_direction='both')
 nan_akhir = df_clean['CO_clean'].isna().sum()
 
 print(f"Jumlah NaN Setelah Outlier Dikosongkan : {nan_setelah_outlier} hari ({nan_setelah_outlier/total_rows*100:.2f}%)")
@@ -247,11 +247,11 @@ plt.show()
 ```{code-cell} ipython3
 # Grafik 2: Sinyal Setelah Missing Values Diimputasi (Sebelum Cleaning Outlier)
 df_raw_imputed = df_raw.copy()
-df_raw_imputed['CO_imputed'] = df_raw_imputed['CO'].interpolate(method='linear', limit_direction='both')
+df_raw_imputed['CO_imputed'] = df_raw_imputed['CO'].interpolate(method='polynomial', order=2, limit_direction='both')
 
 fig, ax = plt.subplots(figsize=(12, 4), dpi=150)
 ax.plot(df_raw_imputed['date'], df_raw_imputed['CO_imputed'], color='#2980b9', linewidth=1.2, label='Sinyal Terisi Utuh (365 Hari)')
-ax.set_title('2. Sinyal CO Setelah Imputasi Missing Values (Linear Time Interpolation)', fontsize=11, fontweight='bold', pad=10)
+ax.set_title('2. Sinyal CO Setelah Imputasi Missing Values (Polynomial Interpolation)', fontsize=11, fontweight='bold', pad=10)
 ax.set_xlabel('Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)', fontsize=10)
 ax.set_ylabel('Konsentrasi CO (mol/m²)', fontsize=10)
 ax.legend(loc='upper right', frameon=True)
@@ -282,7 +282,7 @@ plt.show()
 # Grafik 4: Sinyal CO Final Setelah Outlier Dibersihkan & Diimputasi
 fig, ax = plt.subplots(figsize=(12, 4), dpi=150)
 ax.plot(df_clean['date'], df_clean['CO_clean'], color='#27ae60', linewidth=1.4, label='Sinyal Mulus Super Clean (365 Hari)')
-ax.set_title('4. Sinyal CO Final Setelah Penanganan Outlier & Imputasi Linear (Clean Dataset)', fontsize=11, fontweight='bold', pad=10)
+ax.set_title('4. Sinyal CO Final Setelah Penanganan Outlier & Imputasi Polinomial (Clean Dataset)', fontsize=11, fontweight='bold', pad=10)
 ax.set_xlabel('Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)', fontsize=10)
 ax.set_ylabel('Konsentrasi CO (mol/m²)', fontsize=10)
 ax.legend(loc='upper right', frameon=True)
@@ -310,7 +310,7 @@ Grafik 1: Sinyal CO Mentah dengan Celah Missing Values (173 Hari Kosong / NaN)
 :width: 100%
 :align: center
 
-Grafik 2: Sinyal CO Setelah Imputasi Missing Values (Linear Time Interpolation)
+Grafik 2: Sinyal CO Setelah Imputasi Missing Values (Polynomial Interpolation)
 ```
 
 ```{figure} ../assets/editor/data_prep/3_co_outlier_detection.png
@@ -324,7 +324,7 @@ Grafik 3: Deteksi 11 Outlier CO Menggunakan Metode Interquartile Range (IQR)
 :width: 100%
 :align: center
 
-Grafik 4: Sinyal CO Final Setelah Penanganan Outlier & Imputasi Linear (Clean Dataset)
+Grafik 4: Sinyal CO Final Setelah Penanganan Outlier & Imputasi Polinomial (Clean Dataset)
 ```
 
 ---

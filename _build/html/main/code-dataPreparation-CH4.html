@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -348,7 +348,7 @@ document.write(`
 <p>Notebook ini mengeksekusi tahapan <strong>Data Preparation</strong> metodologi CRISP-DM untuk polutan Metana (<span class="math notranslate nohighlight">\({\text{CH4}}\)</span>) pada skala geografis <strong>Kecamatan Bungah, Kabupaten Gresik</strong> selama 365 hari (24 Agustus 2025 – 23 Agustus 2026):</p>
 <p><strong>Alur Pemrosesan Data:</strong></p>
 <ol class="arabic simple">
-<li><p><strong>Penanganan Missing Values &amp; Outliers</strong> (Evaluasi Celah Data <span class="math notranslate nohighlight">\(\rightarrow\)</span> Deteksi Outlier IQR <span class="math notranslate nohighlight">\(\rightarrow\)</span> Pengosongan Outlier <span class="math notranslate nohighlight">\(\rightarrow\)</span> Linear Time Interpolation)</p></li>
+<li><p><strong>Penanganan Missing Values &amp; Outliers</strong> (Evaluasi Celah Data <span class="math notranslate nohighlight">\(\rightarrow\)</span> Deteksi Outlier IQR <span class="math notranslate nohighlight">\(\rightarrow\)</span> Pengosongan Outlier <span class="math notranslate nohighlight">\(\rightarrow\)</span> Polynomial Interpolation)</p></li>
 <li><p><strong>Visualisasi 4 Grafik Terpisah</strong> (Missing Raw, Imputed Missing, Outlier Detection, Final Clean Signal)</p></li>
 <li><p><strong>Penyimpanan Dataset Clean</strong> (<code class="docutils literal notranslate"><span class="pre">data/csv/clean/CH4_clean.csv</span></code>)</p></li>
 <li><p><strong>Ekstraksi Fitur Resmi Time-Series TSFEL</strong> (<code class="docutils literal notranslate"><span class="pre">data/csv/features/CH4_tsfel_features.csv</span></code> berbasis 4 domain utama TSFEL: Statistical, Temporal, Spectral, &amp; Fractal)</p></li>
@@ -407,14 +407,14 @@ document.write(`
 <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Daftar Tanggal &amp; Nilai Outlier Terdeteksi:"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df_outliers</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 
-<span class="c1"># 3. Pengosongan Nilai Outlier Menjadi NaN &amp; Imputasi Linear Time Interpolation</span>
+<span class="c1"># 3. Pengosongan Nilai Outlier Menjadi NaN &amp; Imputasi Polynomial Interpolation</span>
 <span class="n">df_prep</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">df_prep</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">is_outlier</span><span class="p">,</span> <span class="s1">'CH4'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 <span class="n">nan_setelah_outlier</span> <span class="o">=</span> <span class="n">df_prep</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Jumlah NaN Setelah Outlier Dikosongkan: </span><span class="si">{</span><span class="n">nan_setelah_outlier</span><span class="si">}</span><span class="s2"> hari (</span><span class="si">{</span><span class="n">nan_setelah_outlier</span><span class="o">/</span><span class="n">total_rows</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)"</span><span class="p">)</span>
 
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">df_prep</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4_clean'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s1">'both'</span><span class="p">)</span>
+<span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4_clean'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'polynomial'</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s1">'both'</span><span class="p">)</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
 <span class="n">nan_akhir</span> <span class="o">=</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4_clean'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah NaN Setelah Imputasi Akhir      : </span><span class="si">{</span><span class="n">nan_akhir</span><span class="si">}</span><span class="s2"> hari (100% Clean!)"</span><span class="p">)</span>
 
@@ -476,11 +476,11 @@ SUCCESS: Dataset bersih disimpan ke '../data/csv/clean/CH4_clean.csv'
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grafik 2: Sinyal Setelah Missing Values Diimputasi (Sebelum Cleaning Outlier)</span>
 <span class="n">df_raw_imputed</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'CH4_imputed'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s1">'both'</span><span class="p">)</span>
+<span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'CH4_imputed'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'CH4'</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">'polynomial'</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">limit_direction</span><span class="o">=</span><span class="s1">'both'</span><span class="p">)</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_raw_imputed</span><span class="p">[</span><span class="s1">'CH4_imputed'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#2980b9'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Sinyal Terisi Utuh (365 Hari)'</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'2. Sinyal CH4 Setelah Imputasi Missing Values (Linear Time Interpolation)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'2. Sinyal CH4 Setelah Imputasi Missing Values (Polynomial Interpolation)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CH4 (ppb)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -491,7 +491,7 @@ SUCCESS: Dataset bersih disimpan ke '../data/csv/clean/CH4_clean.csv'
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/8efb8a118f7d9353ebc4480d82b1452d5c1f3f9c3319b91ae0b9c074f50e8be6.png" src="../_images/8efb8a118f7d9353ebc4480d82b1452d5c1f3f9c3319b91ae0b9c074f50e8be6.png" />
+<img alt="../_images/91b8b7869a4cc5ad4e9627f941fdef36518bfbcf6967a1f44324baf75527a2f8.png" src="../_images/91b8b7869a4cc5ad4e9627f941fdef36518bfbcf6967a1f44324baf75527a2f8.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -523,7 +523,7 @@ SUCCESS: Dataset bersih disimpan ke '../data/csv/clean/CH4_clean.csv'
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Grafik 4: Sinyal CH4 Final Setelah Outlier Dibersihkan &amp; Diimputasi</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_clean</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_clean</span><span class="p">[</span><span class="s1">'CH4_clean'</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#27ae60'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Sinyal Mulus Super Clean (365 Hari)'</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'4. Sinyal CH4 Final Setelah Penanganan Outlier &amp; Imputasi Linear (Clean Dataset)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'4. Sinyal CH4 Final Setelah Penanganan Outlier &amp; Imputasi Polinomial (Clean Dataset)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Konsentrasi CH4 (ppb)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -534,7 +534,7 @@ SUCCESS: Dataset bersih disimpan ke '../data/csv/clean/CH4_clean.csv'
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/43111ac70d1a144a95a5ab99a92fa9ad6b66e69e747fa7cd82f50054455dd616.png" src="../_images/43111ac70d1a144a95a5ab99a92fa9ad6b66e69e747fa7cd82f50054455dd616.png" />
+<img alt="../_images/7b1b07d253e18fd0ad9e7e599ae6614e5869b1831d07c12ac03e013e8fb63f62.png" src="../_images/7b1b07d253e18fd0ad9e7e599ae6614e5869b1831d07c12ac03e013e8fb63f62.png" />
 </div>
 </div>
 </section>
@@ -595,11 +595,11 @@ SUCCESS: Dataset bersih disimpan ke '../data/csv/clean/CH4_clean.csv'
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SUCCESS: Matriks Presisi 68 Fitur TSFEL berhasil disimpan ke '../data/csv/features/CH4_tsfel_features.csv'! (Shape: (1, 68))
-</pre></div>
-</div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ASUS\AppData\Local\Programs\Python\Python312\Lib\site-packages\tsfel\feature_extraction\features_utils.py:534: RuntimeWarning: invalid value encountered in divide
   rs = np.divide(r, s)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SUCCESS: Matriks Presisi 68 Fitur TSFEL berhasil disimpan ke '../data/csv/features/CH4_tsfel_features.csv'! (Shape: (1, 68))
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -646,26 +646,26 @@ SUCCESS: Dataset bersih disimpan ke '../data/csv/clean/CH4_clean.csv'
   <tbody>
     <tr>
       <th>0</th>
-      <td>1.302724e+09</td>
-      <td>687663.309387</td>
-      <td>21.0</td>
-      <td>3.578912e+06</td>
-      <td>182.53874</td>
-      <td>1916.421265</td>
-      <td>1889.164578</td>
-      <td>1891.473342</td>
-      <td>1845.876221</td>
-      <td>12.8207</td>
+      <td>1.410516e+09</td>
+      <td>714702.11404</td>
+      <td>50.0</td>
+      <td>3.875045e+06</td>
+      <td>181.910219</td>
+      <td>2145.879225</td>
+      <td>1963.243495</td>
+      <td>1927.874132</td>
+      <td>1793.170282</td>
+      <td>100.513702</td>
       <td>...</td>
-      <td>0.027387</td>
-      <td>0.716212</td>
-      <td>5169.427845</td>
-      <td>384.951965</td>
+      <td>0.020547</td>
+      <td>0.143538</td>
+      <td>106176.960383</td>
+      <td>1368.585788</td>
       <td>8.152634</td>
-      <td>80.392049</td>
+      <td>80.525494</td>
       <td>-0.0</td>
-      <td>79.977598</td>
-      <td>6396.416175</td>
+      <td>80.111733</td>
+      <td>6417.889716</td>
       <td>0.0</td>
     </tr>
   </tbody>
