@@ -63,6 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'main/data-preparation';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Pemetaan dan Klasifikasi Lahan Sawah dan Pemukiman Menggunakan Citra Sentinel-2A" href="pemetaan-lahan.html" />
     <link rel="prev" title="Data Understanding" href="data-understanding.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -178,6 +179,7 @@
 <li class="toctree-l2"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data-understanding.html">Data Understanding</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Data Preparation (Persiapan Data CO)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pemetaan-lahan.html">Pemetaan dan Klasifikasi Lahan Sawah dan Pemukiman Menggunakan Citra Sentinel-2A</a></li>
 </ul>
 </details></li>
 </ul>
@@ -1739,14 +1741,14 @@ Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang die
 <h3>4.1 Visualisasi Workflow KNIME &amp; Scatter Plot Analytics Platform<a class="headerlink" href="#visualisasi-workflow-knime-scatter-plot-analytics-platform" title="Link to this heading">#</a></h3>
 <p>Proses ekstraksi, pra-pemrosesan, reduksi dimensi PCA, dan pengelompokan K-Means dijalankan menggunakan alur kerja (<em>workflow</em>) KNIME Analytics Platform:</p>
 <figure class="align-center" id="id5">
-<a class="reference internal image-reference" href="../_images/workflow-clustering.png"><img alt="../_images/workflow-clustering.png" src="../_images/workflow-clustering.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/workflow.png"><img alt="../_images/workflow.png" src="../_images/workflow.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Gambar 4.0: Workflow Clustering K-Means &amp; Reduksi Dimensi PCA pada KNIME Analytics Platform</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Gambar 4.0: Workflow Clustering K-Means &amp; Reduksi Dimensi PCA pada KNIME Analytics Platform (Imputasi Polinomial)</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Hasil pengelompokan dari alur KNIME disajikan dalam bentuk grafik <strong>Scatter Plot KNIME</strong> yang memetakan sebaran 19 mahasiswa/daerah terhadap label cluster masing-masing:</p>
+<p>Hasil pengelompokan dari alur KNIME berbasis imputasi polinomial disajikan dalam bentuk grafik <strong>Scatter Plot KNIME</strong> yang memetakan sebaran 19 mahasiswa/daerah terhadap label cluster masing-masing:</p>
 <figure class="align-center" id="id6">
-<a class="reference internal image-reference" href="../_images/ScatterPlotk2denganpca.png"><img alt="../_images/ScatterPlotk2denganpca.png" src="../_images/ScatterPlotk2denganpca.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/clusterK2Pca.png"><img alt="../_images/clusterK2Pca.png" src="../_images/clusterK2Pca.png" style="width: 100%;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 12 </span><span class="caption-text">Gambar 4.1: KNIME Scatter Plot K-Means (k=2) Dengan Reduksi Dimensi PCA (19 Komponen)</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
 </figcaption>
@@ -1754,7 +1756,7 @@ Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang die
 <p><strong>Penjelasan Gambar 4.1 (K-Means <span class="math notranslate nohighlight">\(k=2\)</span> dengan PCA):</strong>
 Pada skenario <span class="math notranslate nohighlight">\(k=2\)</span> menggunakan reduksi dimensi PCA 19 komponen (PCA 0 s.d. PCA 18), mayoritas 18 mahasiswa/daerah dikelompokkan ke dalam <strong><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></strong>. Hanya 1 mahasiswa, yaitu <strong>Muhammad Fathul Iman Wahid (Burneh, Bangkalan)</strong>, yang terpisah secara ekstrem ke dalam <strong><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></strong> sebagai pencilan (<em>outlier</em>).</p>
 <figure class="align-center" id="id7">
-<a class="reference internal image-reference" href="../_images/ScatterPlotk2tanpapca.png"><img alt="../_images/ScatterPlotk2tanpapca.png" src="../_images/ScatterPlotk2tanpapca.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/clusterK2TanpaPca.png"><img alt="../_images/clusterK2TanpaPca.png" src="../_images/clusterK2TanpaPca.png" style="width: 100%;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 13 </span><span class="caption-text">Gambar 4.2: KNIME Scatter Plot K-Means (k=2) Tanpa PCA (272 Fitur TSFEL Utuh)</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
 </figcaption>
@@ -1762,7 +1764,7 @@ Pada skenario <span class="math notranslate nohighlight">\(k=2\)</span> mengguna
 <p><strong>Penjelasan Gambar 4.2 (K-Means <span class="math notranslate nohighlight">\(k=2\)</span> tanpa PCA):</strong>
 Pada skenario <span class="math notranslate nohighlight">\(k=2\)</span> menggunakan 272 fitur TSFEL utuh ter-normalisasi tanpa PCA, hasil pengelompokan menunjukkan konsistensi 100% di mana 18 mahasiswa berada di <strong><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></strong> dan <strong>Muhammad Fathul Iman Wahid (Burneh, Bangkalan)</strong> tetap menjadi outlier tunggal di <strong><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></strong>.</p>
 <figure class="align-center" id="id8">
-<a class="reference internal image-reference" href="../_images/ScatterPlotk5denganpca.png"><img alt="../_images/ScatterPlotk5denganpca.png" src="../_images/ScatterPlotk5denganpca.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/clusterK5Pca.png"><img alt="../_images/clusterK5Pca.png" src="../_images/clusterK5Pca.png" style="width: 100%;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 14 </span><span class="caption-text">Gambar 4.3: KNIME Scatter Plot K-Means (k=5) Dengan Reduksi Dimensi PCA</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
 </figcaption>
@@ -1777,7 +1779,7 @@ Ketika jumlah cluster ditingkatkan menjadi <span class="math notranslate nohighl
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_3</span></code></strong>: <strong>Raihan Aryanova Narendra</strong> (Sokobanah).</p></li>
 </ul>
 <figure class="align-center" id="id9">
-<a class="reference internal image-reference" href="../_images/ScatterPlotk5tanpapca.png"><img alt="../_images/ScatterPlotk5tanpapca.png" src="../_images/ScatterPlotk5tanpapca.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/clusterK5TanpaPca.png"><img alt="../_images/clusterK5TanpaPca.png" src="../_images/clusterK5TanpaPca.png" style="width: 100%;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 15 </span><span class="caption-text">Gambar 4.4: KNIME Scatter Plot K-Means (k=5) Tanpa PCA (272 Fitur TSFEL Utuh)</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
 </figcaption>
@@ -1853,6 +1855,15 @@ Pengelompokan <span class="math notranslate nohighlight">\(k=5\)</span> mengguna
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">Data Understanding</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="pemetaan-lahan.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Pemetaan dan Klasifikasi Lahan Sawah dan Pemukiman Menggunakan Citra Sentinel-2A</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>

@@ -782,16 +782,16 @@ Setelah ekstraksi 272 fitur TSFEL dari 19 sampel daerah/mahasiswa dilakukan, pen
 
 Proses ekstraksi, pra-pemrosesan, reduksi dimensi PCA, dan pengelompokan K-Means dijalankan menggunakan alur kerja (*workflow*) KNIME Analytics Platform:
 
-```{figure} ../assets/editor/knime/workflow-clustering.png
+```{figure} ../assets/editor/knime/cluster-workflow/workflow.png
 :width: 100%
 :align: center
 
-Gambar 4.0: Workflow Clustering K-Means & Reduksi Dimensi PCA pada KNIME Analytics Platform
+Gambar 4.0: Workflow Clustering K-Means & Reduksi Dimensi PCA pada KNIME Analytics Platform (Imputasi Polinomial)
 ```
 
-Hasil pengelompokan dari alur KNIME disajikan dalam bentuk grafik **Scatter Plot KNIME** yang memetakan sebaran 19 mahasiswa/daerah terhadap label cluster masing-masing:
+Hasil pengelompokan dari alur KNIME berbasis imputasi polinomial disajikan dalam bentuk grafik **Scatter Plot KNIME** yang memetakan sebaran 19 mahasiswa/daerah terhadap label cluster masing-masing:
 
-```{figure} ../assets/editor/knime/ScatterPlotk2denganpca.png
+```{figure} ../assets/editor/knime/cluster/clusterK2Pca.png
 :width: 100%
 :align: center
 
@@ -801,7 +801,7 @@ Gambar 4.1: KNIME Scatter Plot K-Means (k=2) Dengan Reduksi Dimensi PCA (19 Komp
 **Penjelasan Gambar 4.1 (K-Means $k=2$ dengan PCA):**
 Pada skenario $k=2$ menggunakan reduksi dimensi PCA 19 komponen (PCA 0 s.d. PCA 18), mayoritas 18 mahasiswa/daerah dikelompokkan ke dalam **`cluster_0`**. Hanya 1 mahasiswa, yaitu **Muhammad Fathul Iman Wahid (Burneh, Bangkalan)**, yang terpisah secara ekstrem ke dalam **`cluster_1`** sebagai pencilan (*outlier*).
 
-```{figure} ../assets/editor/knime/ScatterPlotk2tanpapca.png
+```{figure} ../assets/editor/knime/cluster/clusterK2TanpaPca.png
 :width: 100%
 :align: center
 
@@ -811,7 +811,7 @@ Gambar 4.2: KNIME Scatter Plot K-Means (k=2) Tanpa PCA (272 Fitur TSFEL Utuh)
 **Penjelasan Gambar 4.2 (K-Means $k=2$ tanpa PCA):**
 Pada skenario $k=2$ menggunakan 272 fitur TSFEL utuh ter-normalisasi tanpa PCA, hasil pengelompokan menunjukkan konsistensi 100% di mana 18 mahasiswa berada di **`cluster_0`** dan **Muhammad Fathul Iman Wahid (Burneh, Bangkalan)** tetap menjadi outlier tunggal di **`cluster_1`**.
 
-```{figure} ../assets/editor/knime/ScatterPlotk5denganpca.png
+```{figure} ../assets/editor/knime/cluster/clusterK5Pca.png
 :width: 100%
 :align: center
 
@@ -826,7 +826,7 @@ Ketika jumlah cluster ditingkatkan menjadi $k=5$ dengan PCA, kelompok mayoritas 
 - **`cluster_1`**: **Muhammad Fathul Iman Wahid** (Burneh, Bangkalan).
 - **`cluster_3`**: **Raihan Aryanova Narendra** (Sokobanah).
 
-```{figure} ../assets/editor/knime/ScatterPlotk5tanpapca.png
+```{figure} ../assets/editor/knime/cluster/clusterK5TanpaPca.png
 :width: 100%
 :align: center
 

@@ -177,6 +177,7 @@
 <li class="toctree-l2"><a class="reference internal" href="main/business-understanding.html">Business Understanding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="main/data-understanding.html">Data Understanding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="main/data-preparation.html">Data Preparation (Persiapan Data CO)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main/pemetaan-lahan.html">Pemetaan dan Klasifikasi Lahan Sawah dan Pemukiman Menggunakan Citra Sentinel-2A</a></li>
 </ul>
 </details></li>
 </ul>
@@ -341,7 +342,7 @@ document.write(`
                   
   <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tsfel</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tsfel</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># 1. Ambil konfigurasi seluruh fitur TSFEL</span>
@@ -381,23 +382,6 @@ document.write(`
 <span class="nb">print</span><span class="p">(</span><span class="s2">"Shape:"</span><span class="p">,</span> <span class="n">features_df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
 <span class="n">features_df</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">22</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> 
-<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="c1"># 3. Ekstrak fitur dari data CO</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="n">features_df</span> <span class="o">=</span> <span class="n">tsfel</span><span class="o">.</span><span class="n">time_series_features_extractor</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span>     <span class="n">cfg</span><span class="p">,</span>
-<span class="ne">---&gt; </span><span class="mi">22</span>     <span class="n">df_clean</span><span class="p">[</span><span class="s2">"CO_clean"</span><span class="p">],</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span>     <span class="n">fs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span>
-<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="p">)</span>
-
-<span class="ne">NameError</span>: name 'df_clean' is not defined
 </pre></div>
 </div>
 </div>
