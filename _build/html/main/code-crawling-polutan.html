@@ -177,6 +177,7 @@
 <li class="toctree-l2"><a class="reference internal" href="business-understanding.html">Business Understanding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data-understanding.html">Data Understanding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data-preparation.html">Data Preparation (Persiapan Data CO)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pemetaan-lahan.html">Pemetaan dan Klasifikasi Lahan Sawah dan Pemukiman Menggunakan Citra Sentinel-2A</a></li>
 </ul>
 </details></li>
 </ul>
@@ -484,24 +485,89 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=========================================
 [*] Memulai Proses Crawling Polutan: CH4
 =========================================
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mengirim Batch Job openEO untuk CH4...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:00 Job 'j-2610011341504e0b9f9945b81ccb3ebd': send 'start'
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:03 Job 'j-2610011341504e0b9f9945b81ccb3ebd': queued (progress 0%)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:09 Job 'j-2610011341504e0b9f9945b81ccb3ebd': queued (progress 0%)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:16 Job 'j-2610011341504e0b9f9945b81ccb3ebd': queued (progress 0%)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0:00:24 Job 'j-2610011341504e0b9f9945b81ccb3ebd': queued (progress 0%)
+Mengirim Batch Job openEO untuk CH4...
+0:00:00 Job 'j-26091015434241dc9514d8a8ffc36ec7': send 'start'
+0:00:04 Job 'j-26091015434241dc9514d8a8ffc36ec7': queued (progress 0%)
+0:00:10 Job 'j-26091015434241dc9514d8a8ffc36ec7': queued (progress 0%)
+0:00:16 Job 'j-26091015434241dc9514d8a8ffc36ec7': queued (progress 0%)
+0:00:24 Job 'j-26091015434241dc9514d8a8ffc36ec7': queued (progress 0%)
+0:00:34 Job 'j-26091015434241dc9514d8a8ffc36ec7': queued (progress 0%)
+0:00:47 Job 'j-26091015434241dc9514d8a8ffc36ec7': queued (progress 0%)
+0:01:03 Job 'j-26091015434241dc9514d8a8ffc36ec7': queued (progress 0%)
+0:01:22 Job 'j-26091015434241dc9514d8a8ffc36ec7': queued (progress 0%)
+0:01:46 Job 'j-26091015434241dc9514d8a8ffc36ec7': running (progress N/A)
+0:02:16 Job 'j-26091015434241dc9514d8a8ffc36ec7': running (progress N/A)
+0:02:54 Job 'j-26091015434241dc9514d8a8ffc36ec7': running (progress N/A)
+0:03:41 Job 'j-26091015434241dc9514d8a8ffc36ec7': running (progress N/A)
+0:04:39 Job 'j-26091015434241dc9514d8a8ffc36ec7': finished (progress 100%)
+[✓] File NetCDF tersimpan di: ../data/nc/polutan_CH4_gresik.nc
+[✓] File CSV Individual tersimpan di: ../data/csv/CH4_gresik_timeseries.csv
+
+=========================================
+[*] Memulai Proses Crawling Polutan: CO
+=========================================
+Mengirim Batch Job openEO untuk CO...
+0:00:00 Job 'j-2609101548564cd19a713b3dacbd9cff': send 'start'
+0:00:05 Job 'j-2609101548564cd19a713b3dacbd9cff': queued (progress 0%)
+0:00:11 Job 'j-2609101548564cd19a713b3dacbd9cff': queued (progress 0%)
+0:00:17 Job 'j-2609101548564cd19a713b3dacbd9cff': queued (progress 0%)
+0:00:26 Job 'j-2609101548564cd19a713b3dacbd9cff': queued (progress 0%)
+0:00:36 Job 'j-2609101548564cd19a713b3dacbd9cff': queued (progress 0%)
+0:00:48 Job 'j-2609101548564cd19a713b3dacbd9cff': queued (progress 0%)
+0:01:04 Job 'j-2609101548564cd19a713b3dacbd9cff': queued (progress 0%)
+0:01:23 Job 'j-2609101548564cd19a713b3dacbd9cff': queued (progress 0%)
+0:01:47 Job 'j-2609101548564cd19a713b3dacbd9cff': queued (progress 0%)
+0:02:18 Job 'j-2609101548564cd19a713b3dacbd9cff': running (progress N/A)
+0:02:55 Job 'j-2609101548564cd19a713b3dacbd9cff': running (progress N/A)
+0:03:42 Job 'j-2609101548564cd19a713b3dacbd9cff': running (progress N/A)
+0:04:41 Job 'j-2609101548564cd19a713b3dacbd9cff': finished (progress 100%)
+[✓] File NetCDF tersimpan di: ../data/nc/polutan_CO_gresik.nc
+[✓] File CSV Individual tersimpan di: ../data/csv/CO_gresik_timeseries.csv
+
+=========================================
+[*] Memulai Proses Crawling Polutan: NO2
+=========================================
+Mengirim Batch Job openEO untuk NO2...
+0:00:00 Job 'j-260910155410408bb532b5f62914d0fd': send 'start'
+0:00:04 Job 'j-260910155410408bb532b5f62914d0fd': created (progress 0%)
+0:00:09 Job 'j-260910155410408bb532b5f62914d0fd': queued (progress 0%)
+0:00:16 Job 'j-260910155410408bb532b5f62914d0fd': queued (progress 0%)
+0:00:24 Job 'j-260910155410408bb532b5f62914d0fd': queued (progress 0%)
+0:00:34 Job 'j-260910155410408bb532b5f62914d0fd': queued (progress 0%)
+0:00:47 Job 'j-260910155410408bb532b5f62914d0fd': queued (progress 0%)
+0:01:02 Job 'j-260910155410408bb532b5f62914d0fd': queued (progress 0%)
+0:01:22 Job 'j-260910155410408bb532b5f62914d0fd': queued (progress 0%)
+0:01:46 Job 'j-260910155410408bb532b5f62914d0fd': running (progress N/A)
+0:02:16 Job 'j-260910155410408bb532b5f62914d0fd': running (progress N/A)
+0:02:54 Job 'j-260910155410408bb532b5f62914d0fd': running (progress N/A)
+0:03:41 Job 'j-260910155410408bb532b5f62914d0fd': running (progress N/A)
+0:04:40 Job 'j-260910155410408bb532b5f62914d0fd': finished (progress 100%)
+[✓] File NetCDF tersimpan di: ../data/nc/polutan_NO2_gresik.nc
+[✓] File CSV Individual tersimpan di: ../data/csv/NO2_gresik_timeseries.csv
+
+=========================================
+[*] Memulai Proses Crawling Polutan: SO2
+=========================================
+Mengirim Batch Job openEO untuk SO2...
+0:00:00 Job 'j-2609101559244d7a9e2426295188e079': send 'start'
+0:00:04 Job 'j-2609101559244d7a9e2426295188e079': queued (progress 0%)
+0:00:10 Job 'j-2609101559244d7a9e2426295188e079': queued (progress 0%)
+0:00:16 Job 'j-2609101559244d7a9e2426295188e079': queued (progress 0%)
+0:00:25 Job 'j-2609101559244d7a9e2426295188e079': queued (progress 0%)
+0:00:35 Job 'j-2609101559244d7a9e2426295188e079': queued (progress 0%)
+0:00:47 Job 'j-2609101559244d7a9e2426295188e079': queued (progress 0%)
+0:01:03 Job 'j-2609101559244d7a9e2426295188e079': queued (progress 0%)
+0:01:22 Job 'j-2609101559244d7a9e2426295188e079': running (progress N/A)
+0:01:46 Job 'j-2609101559244d7a9e2426295188e079': running (progress N/A)
+0:02:17 Job 'j-2609101559244d7a9e2426295188e079': running (progress N/A)
+0:02:54 Job 'j-2609101559244d7a9e2426295188e079': running (progress N/A)
+0:03:41 Job 'j-2609101559244d7a9e2426295188e079': running (progress N/A)
+0:04:40 Job 'j-2609101559244d7a9e2426295188e079': running (progress N/A)
+0:05:40 Job 'j-2609101559244d7a9e2426295188e079': finished (progress 100%)
+[✓] File NetCDF tersimpan di: ../data/nc/polutan_SO2_gresik.nc
+[✓] File CSV Individual tersimpan di: ../data/csv/SO2_gresik_timeseries.csv
+
+[SUCCESS] Master CSV Terpadu (CH4, CO, NO2, SO2) Berhasil Disimpan: ../data/csv/polutan_gresik.csv
 </pre></div>
 </div>
 </div>

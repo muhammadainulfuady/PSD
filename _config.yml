@@ -16,9 +16,13 @@ myst_enable_extensions:
 # See https://jupyterbook.org/content/execute.html
 execute:
   execute_notebooks: cache
+  timeout: 300
   # Don't execute working notebooks that need an openEO login / long batch jobs.
   exclude_patterns:
     - "pertemuan-1/code-*.ipynb"
+    - "main/code-crawling-polutan.ipynb"
+    - "main/code-pemetaanLahanKlasifikasi.ipynb"
+    - "cek.ipynb"
 # Define the name of the latex output file for PDF builds
 latex:
   latex_documents:
@@ -43,5 +47,8 @@ html:
 
 sphinx:
   config:
+    html_extra_path:
+      - _assets_wrapper
+      - assets
     html_theme_options:
       show_toc_level: 2

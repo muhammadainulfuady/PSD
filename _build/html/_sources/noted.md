@@ -17,7 +17,6 @@
 - **Pengambilan Data (GeoJSON Crawling):** Tentukan koordinat area untuk **50 titik sawah** dan **50 titik pemukiman**.
 - **Pengunduhan Citra:** Unduh data citra satelit **Sentinel-2A** berdasarkan area GeoJSON tersebut hingga menghasilkan keluaran berupa **file TIF**.
 - **Klasifikasi Lahan:** Lakukan klasifikasi untuk memvalidasi dan membedakan area mana yang termasuk sawah dan pemukiman.
-
 ---
 
 ## 📅 Jadwal & Pengumpulan
