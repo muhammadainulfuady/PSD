@@ -10,3 +10,9 @@ chapters:
       - file: main/data-understanding
       - file: main/data-preparation
       - file: main/pemetaan-lahan
+  - file: uts/tugas-uts
+    sections:
+      - file: uts/catatan-uts
+      - file: uts/code-crawling-geojson
+      - file: uts/code-cek-visual
+      - file: uts/code-uts
