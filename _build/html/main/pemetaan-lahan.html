@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -330,14 +330,19 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gambaran-umum-alur-kerja">1. Gambaran Umum Alur Kerja</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-masukan-geojson">2. Data Masukan: GeoJSON</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-masukan-pembagian-dataset-train-vs-test-per-poligon">2. Data Masukan &amp; Pembagian Dataset (Train vs Test per Poligon)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pembagian-data-training-testing-yang-transparan">Pembagian Data Training &amp; Testing yang Transparan</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rincian-berkas-keluaran-csv-data-csv-split-dataset">Rincian Berkas Keluaran CSV (<code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/</span></code>)</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#akuisisi-citra-sentinel-2a-tif-melalui-openeo">3. Akuisisi Citra Sentinel-2A (<code class="docutils literal notranslate"><span class="pre">.tif</span></code>) melalui openEO</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-spektral-dan-indeks-turunan">4. Fitur Spektral dan Indeks Turunan</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-nilai-spektral-per-poligon">5. Ekstraksi Nilai Spektral per Poligon</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#klasifikasi-random-forest">6. Klasifikasi Random Forest</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-pelatihan">6.1 Dataset Pelatihan</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pembagian-data-latih-dan-uji">6.2 Pembagian Data Latih dan Uji</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pelatihan-model">6.3 Pelatihan Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-pelatihan-dan-pengujian-per-piksel">6.1 Dataset Pelatihan dan Pengujian (Per Piksel)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pelatihan-evaluasi-model">6.2 Pelatihan &amp; Evaluasi Model</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-validasi-dan-evaluasi-model">7. Hasil Validasi dan Evaluasi Model</a></li>
@@ -357,7 +362,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="pemetaan-dan-klasifikasi-lahan-sawah-dan-pemukiman-menggunakan-citra-sentinel-2a">
 <h1>Pemetaan dan Klasifikasi Lahan Sawah dan Pemukiman Menggunakan Citra Sentinel-2A<a class="headerlink" href="#pemetaan-dan-klasifikasi-lahan-sawah-dan-pemukiman-menggunakan-citra-sentinel-2a" title="Link to this heading">#</a></h1>
-<p>Bagian ini mendokumentasikan seluruh alur pemetaan lahan, mulai dari penentuan area dan sampel berbasis <strong>GeoJSON</strong>, akuisisi citra satelit <strong>Sentinel-2A (Level-2A)</strong> berformat <strong>GeoTIFF (<code class="docutils literal notranslate"><span class="pre">.tif</span></code>)</strong> melalui <strong>openEO</strong> (Copernicus Data Space Ecosystem), ekstraksi fitur spektral, klasifikasi <strong>Random Forest</strong> untuk membedakan <strong>Sawah</strong> dan <strong>Pemukiman</strong>, validasi akurasi, hingga visualisasi hasil dalam bentuk peta 2D dan 3D.</p>
+<p>Bagian ini mendokumentasikan seluruh alur pemetaan lahan, mulai dari penentuan area dan sampel berbasis <strong>GeoJSON</strong>, akuisisi citra satelit <strong>Sentinel-2A (Level-2A)</strong> berformat <strong>GeoTIFF (<code class="docutils literal notranslate"><span class="pre">.tif</span></code>)</strong> melalui <strong>openEO</strong> (Copernicus Data Space Ecosystem), ekstraksi fitur spektral, pembagian dataset secara transparan pada level poligon sampel (<strong>70% Training / 30% Testing</strong>), klasifikasi <strong>Random Forest</strong> untuk membedakan <strong>Sawah</strong> dan <strong>Pemukiman</strong>, validasi akurasi, hingga visualisasi hasil dalam bentuk peta 2D dan 3D.</p>
 <hr class="docutils" />
 <section id="gambaran-umum-alur-kerja">
 <h2>1. Gambaran Umum Alur Kerja<a class="headerlink" href="#gambaran-umum-alur-kerja" title="Link to this heading">#</a></h2>
@@ -370,8 +375,8 @@ document.write(`
 </thead>
 <tbody>
 <tr class="row-even"><td class="text-center"><p>1</p></td>
-<td class="text-left"><p>Membaca GeoJSON (area studi dan sampel)</p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">GeoDataFrame</span></code> 101 poligon</p></td>
+<td class="text-left"><p>Membaca GeoJSON &amp; Pembagian Split Data</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">GeoDataFrame</span></code> 101 poligon &amp; <code class="docutils literal notranslate"><span class="pre">pembagian_dataset_train_test.csv</span></code></p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p>2</p></td>
 <td class="text-left"><p>Mengunduh citra Sentinel-2A via openEO</p></td>
@@ -379,11 +384,11 @@ document.write(`
 </tr>
 <tr class="row-even"><td class="text-center"><p>3</p></td>
 <td class="text-left"><p>Mengekstrak nilai spektral per poligon</p></td>
-<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">fitur_sampel.csv</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">fitur_sampel.csv</span></code> (dilengkapi <code class="docutils literal notranslate"><span class="pre">Status_Split</span></code>)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p>4</p></td>
 <td class="text-left"><p>Melatih dan memvalidasi Random Forest</p></td>
-<td class="text-left"><p>Confusion matrix, Overall Accuracy, Kappa</p></td>
+<td class="text-left"><p>Evaluasi Train &amp; Test (Confusion matrix, Akurasi, Kappa)</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p>5</p></td>
 <td class="text-left"><p>Memprediksi seluruh area</p></td>
@@ -398,9 +403,9 @@ document.write(`
 </div>
 </section>
 <hr class="docutils" />
-<section id="data-masukan-geojson">
-<h2>2. Data Masukan: GeoJSON<a class="headerlink" href="#data-masukan-geojson" title="Link to this heading">#</a></h2>
-<p>Seluruh data spasial berasal dari satu berkas, yaitu <code class="docutils literal notranslate"><span class="pre">data/geojson/input2.geojson</span></code>, yang berisi <strong>101 fitur bertipe Polygon</strong>. Atribut kelas disimpan pada kolom <code class="docutils literal notranslate"><span class="pre">Type</span></code>.</p>
+<section id="data-masukan-pembagian-dataset-train-vs-test-per-poligon">
+<h2>2. Data Masukan &amp; Pembagian Dataset (Train vs Test per Poligon)<a class="headerlink" href="#data-masukan-pembagian-dataset-train-vs-test-per-poligon" title="Link to this heading">#</a></h2>
+<p>Seluruh data spasial berasal dari berkas <code class="docutils literal notranslate"><span class="pre">data/geojson/input2.geojson</span></code> yang berisi <strong>101 fitur bertipe Polygon</strong>. Atribut kelas disimpan pada kolom <code class="docutils literal notranslate"><span class="pre">Type</span></code>.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Nilai <code class="docutils literal notranslate"><span class="pre">Type</span></code></p></th>
@@ -415,31 +420,78 @@ document.write(`
 </tr>
 <tr class="row-odd"><td class="text-left"><p><strong>Sawah</strong></p></td>
 <td class="text-center"><p>50</p></td>
-<td class="text-left"><p>Sampel pelatihan dan pengujian kelas Sawah</p></td>
+<td class="text-left"><p>Sampel poligon kelas Sawah (<code class="docutils literal notranslate"><span class="pre">Sawah_01</span></code> s.d. <code class="docutils literal notranslate"><span class="pre">Sawah_50</span></code>)</p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p><strong>Pemukiman</strong></p></td>
 <td class="text-center"><p>50</p></td>
-<td class="text-left"><p>Sampel pelatihan dan pengujian kelas Pemukiman</p></td>
+<td class="text-left"><p>Sampel poligon kelas Pemukiman (<code class="docutils literal notranslate"><span class="pre">Pemukiman_01</span></code> s.d. <code class="docutils literal notranslate"><span class="pre">Pemukiman_50</span></code>)</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Beberapa hal yang perlu diperhatikan pada data sampel:</p>
+<section id="pembagian-data-training-testing-yang-transparan">
+<h3>Pembagian Data Training &amp; Testing yang Transparan<a class="headerlink" href="#pembagian-data-training-testing-yang-transparan" title="Link to this heading">#</a></h3>
+<p>Untuk mencegah kebocoran data (<em>data leakage</em>) akibat autokorelasi spasial antar piksel dalam poligon yang sama, pembagian dataset dilakukan secara terstratifikasi pada <strong>level poligon sampel (Group-based Split)</strong> sebesar <strong>70% Training</strong> dan <strong>30% Testing</strong>:</p>
 <ul class="simple">
-<li><p>Sampel berupa <strong>poligon</strong>, bukan titik. Satu poligon dapat mencakup banyak piksel Sentinel-2 (resolusi 10 m), sehingga jumlah data latih jauh lebih banyak dari 100.</p></li>
-<li><p>Ukuran poligon bervariasi. Poligon sawah terkecil sekitar 133 m² (kurang dari 2 piksel), sedangkan poligon pemukiman dapat mencapai sekitar 98.000 m². Akibatnya jumlah piksel kedua kelas tidak seimbang, dan hal ini ditangani pada tahap pemodelan.</p></li>
+<li><p><strong>Data Training (70%):</strong> 35 Poligon Sawah &amp; 35 Poligon Pemukiman (<strong>Total 70 Poligon / 8.618 Piksel</strong>)</p></li>
+<li><p><strong>Data Testing (30%):</strong> 15 Poligon Sawah &amp; 15 Poligon Pemukiman (<strong>Total 30 Poligon / 3.419 Piksel</strong>)</p></li>
 </ul>
+<section id="rincian-berkas-keluaran-csv-data-csv-split-dataset">
+<h4>Rincian Berkas Keluaran CSV (<code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/</span></code>)<a class="headerlink" href="#rincian-berkas-keluaran-csv-data-csv-split-dataset" title="Link to this heading">#</a></h4>
+<p>Guna memudahkan pengujian dan peninjauan oleh dosen/penguji, berkas CSV dipisahkan secara eksplisit berdasarkan <strong>tingkatan data (Level Poligon vs Level Piksel)</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Berkas Tingkat Poligon (Area Sampel):</strong></p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/data_training_poligon.csv</span></code></strong>: Daftar 70 ID Poligon (<code class="docutils literal notranslate"><span class="pre">Sawah_01..35</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Pemukiman_01..35</span></code>) yang dijadikan lokasi <strong>latihan</strong>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/data_testing_poligon.csv</span></code></strong>: Daftar 30 ID Poligon (<code class="docutils literal notranslate"><span class="pre">Sawah_36..50</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">Pemukiman_36..50</span></code>) yang dijadikan lokasi <strong>pengujian independen</strong>.</p></li>
+</ul>
+</li>
+<li><p><strong>Berkas Tingkat Piksel (Titik Data Fitur Spektral):</strong></p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/fitur_piksel_training.csv</span></code></strong>: Memuat <strong>8.618 baris data piksel</strong> dari 70 poligon latih (lengkap dengan nilai reflektansi B02, B03, B04, B08, B11, NDVI, NDWI, NDBI). Data ini yang <strong>dimasukkan ke algoritma Random Forest untuk proses pembelajaran</strong>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/fitur_piksel_testing.csv</span></code></strong>: Memuat <strong>3.419 baris data piksel</strong> dari 30 poligon uji. Data ini <strong>TIDAK pernah dilihat model saat latihan</strong>, dan digunakan murni untuk <strong>mengukur akurasi pengujian (99,65%)</strong>.</p></li>
+</ul>
+</li>
+</ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openeo</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
 
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">"../data/geojson/input2.geojson"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">"Sawah"</span><span class="p">,</span> <span class="s2">"Pemukiman"</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="c1"># Poligon "Daerah" dipakai sebagai batas area unduhan citra</span>
-<span class="n">daerah</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Daerah"</span><span class="p">]</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">geom</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">daerah</span><span class="p">])</span><span class="o">.</span><span class="n">to_json</span><span class="p">())[</span><span class="s2">"features"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"geometry"</span><span class="p">]</span>
+<span class="c1"># Berikan ID Poligon Unik</span>
+<span class="n">sawah_cnt</span><span class="p">,</span> <span class="n">pemukiman_cnt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">id_poligon</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="s2">"Sawah"</span><span class="p">:</span>
+        <span class="n">id_poligon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sawah_</span><span class="si">{</span><span class="n">sawah_cnt</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">sawah_cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">id_poligon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Pemukiman_</span><span class="si">{</span><span class="n">pemukiman_cnt</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">pemukiman_cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">samples</span><span class="p">[</span><span class="s2">"ID_Poligon"</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_poligon</span>
+
+<span class="c1"># Pembagian Stratified Train-Test per Poligon</span>
+<span class="n">train_ids</span><span class="p">,</span> <span class="n">test_ids</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">samples</span><span class="p">[</span><span class="s2">"ID_Poligon"</span><span class="p">],</span>
+    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span>
+    <span class="n">stratify</span><span class="o">=</span><span class="n">samples</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">],</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+<span class="n">samples</span><span class="p">[</span><span class="s2">"Status_Split"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s2">"ID_Poligon"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">train_ids</span><span class="p">),</span> <span class="s2">"Training"</span><span class="p">,</span> <span class="s2">"Testing"</span><span class="p">)</span>
+
+<span class="n">split_dir</span> <span class="o">=</span> <span class="s2">"../data/csv/split_dataset"</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">split_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">samples</span><span class="p">[[</span><span class="s2">"ID_Poligon"</span><span class="p">,</span> <span class="s2">"Type"</span><span class="p">,</span> <span class="s2">"Status_Split"</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"../data/csv/pembagian_dataset_train_test.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">samples</span><span class="p">[</span><span class="n">samples</span><span class="p">[</span><span class="s2">"Status_Split"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Training"</span><span class="p">][[</span><span class="s2">"ID_Poligon"</span><span class="p">,</span> <span class="s2">"Type"</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_dir</span><span class="p">,</span> <span class="s2">"data_training_poligon.csv"</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">samples</span><span class="p">[</span><span class="n">samples</span><span class="p">[</span><span class="s2">"Status_Split"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Testing"</span><span class="p">][[</span><span class="s2">"ID_Poligon"</span><span class="p">,</span> <span class="s2">"Type"</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_dir</span><span class="p">,</span> <span class="s2">"data_testing_poligon.csv"</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
+</section>
+</section>
 </section>
 <hr class="docutils" />
 <section id="akuisisi-citra-sentinel-2a-tif-melalui-openeo">
@@ -564,86 +616,99 @@ document.write(`
 <hr class="docutils" />
 <section id="ekstraksi-nilai-spektral-per-poligon">
 <h2>5. Ekstraksi Nilai Spektral per Poligon<a class="headerlink" href="#ekstraksi-nilai-spektral-per-poligon" title="Link to this heading">#</a></h2>
-<p>Untuk setiap poligon sampel, piksel yang berada di dalam poligon diambil menggunakan <code class="docutils literal notranslate"><span class="pre">rasterio.mask</span></code>. Parameter <code class="docutils literal notranslate"><span class="pre">all_touched=True</span></code> memastikan poligon kecil tetap menyumbang minimal satu piksel. Piksel yang tertutup awan atau tidak memiliki data (NaN atau bernilai 0) dibuang.</p>
+<p>Untuk setiap poligon sampel, piksel yang berada di dalam poligon diambil menggunakan <code class="docutils literal notranslate"><span class="pre">rasterio.mask</span></code>. Parameter <code class="docutils literal notranslate"><span class="pre">all_touched=True</span></code> memastikan poligon kecil tetap menyumbang minimal satu piksel. Piksel yang tertutup awan atau tidak memiliki data (NaN atau bernilai 0) dibuang. Setiap poligon dicatat status pembagian datanya (<code class="docutils literal notranslate"><span class="pre">Training</span></code> / <code class="docutils literal notranslate"><span class="pre">Testing</span></code>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">rasterio</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.mask</span><span class="w"> </span><span class="kn">import</span> <span class="n">mask</span> <span class="k">as</span> <span class="n">rio_mask</span>
 
-<span class="n">samples</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">"Sawah"</span><span class="p">,</span> <span class="s2">"Pemukiman"</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"../data/tif/sentinel2_area_studi.tif"</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
-    <span class="n">samples</span> <span class="o">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
-    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="n">m</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rio_mask</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">geometry</span><span class="p">],</span> <span class="n">crop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_touched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">arr</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"float32"</span><span class="p">)</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>   <span class="c1"># reflektansi</span>
-        <span class="n">b02</span><span class="p">,</span> <span class="n">b03</span><span class="p">,</span> <span class="n">b04</span><span class="p">,</span> <span class="n">b08</span><span class="p">,</span> <span class="n">b11</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
-        <span class="n">ok</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b04</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b08</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b03</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b11</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">ok</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">continue</span>
-        <span class="c1"># ... hitung NDVI, NDWI, NDBI lalu simpan rata-rata per poligon</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">"../data/tif/sentinel2_area_studi.tif"</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"../data/tif/sentinel2_area_studi.tif"</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+        <span class="n">smp</span> <span class="o">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">smp</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">m</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rio_mask</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">geometry</span><span class="p">],</span> <span class="n">crop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_touched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"float32"</span><span class="p">)</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
+            <span class="c1"># ... hitung NDVI, NDWI, NDBI lalu simpan rata-rata &amp; status split per poligon</span>
 </pre></div>
 </div>
-<p>Ringkasan rata-rata indeks per kelas:</p>
+<p>Ringkasan rata-rata indeks per kelas dan status pembagian data (<em>Split Status</em>):</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p>Kelas</p></th>
+<th class="head text-center"><p>Status Split</p></th>
+<th class="head text-center"><p>Jumlah Piksel Rata-rata</p></th>
 <th class="head text-center"><p>NDVI</p></th>
 <th class="head text-center"><p>NDWI</p></th>
 <th class="head text-center"><p>NDBI</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-left"><p>Sawah</p></td>
-<td class="text-center"><p>0,3186</p></td>
-<td class="text-center"><p>-0,1987</p></td>
-<td class="text-center"><p>-0,2624</p></td>
+<tr class="row-even"><td class="text-left"><p><strong>Pemukiman</strong></p></td>
+<td class="text-center"><p>Testing</p></td>
+<td class="text-center"><p>205.93</p></td>
+<td class="text-center"><p>0.2798</p></td>
+<td class="text-center"><p>-0.3156</p></td>
+<td class="text-center"><p>0.0866</p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>Pemukiman</p></td>
-<td class="text-center"><p>0,2918</p></td>
-<td class="text-center"><p>-0,3310</p></td>
-<td class="text-center"><p>0,0920</p></td>
+<tr class="row-odd"><td class="text-left"><p><strong>Pemukiman</strong></p></td>
+<td class="text-center"><p>Training</p></td>
+<td class="text-center"><p>203.11</p></td>
+<td class="text-center"><p>0.2941</p></td>
+<td class="text-center"><p>-0.3340</p></td>
+<td class="text-center"><p>0.0766</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Sawah</strong></p></td>
+<td class="text-center"><p>Testing</p></td>
+<td class="text-center"><p>22.00</p></td>
+<td class="text-center"><p>0.3682</p></td>
+<td class="text-center"><p>-0.2767</p></td>
+<td class="text-center"><p>-0.2342</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Sawah</strong></p></td>
+<td class="text-center"><p>Training</p></td>
+<td class="text-center"><p>43.11</p></td>
+<td class="text-center"><p>0.3287</p></td>
+<td class="text-center"><p>-0.2174</p></td>
+<td class="text-center"><p>-0.2761</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><strong>Interpretasi.</strong> Indeks yang paling jelas membedakan kedua kelas adalah <strong>NDBI</strong>: pemukiman bernilai positif (0,092) sedangkan sawah bernilai negatif (-0,262). NDWI sawah juga lebih tinggi daripada pemukiman (-0,199 dibanding -0,331), sesuai dengan sifat sawah yang lembap dan sering tergenang.</p>
+<p><strong>Interpretasi.</strong> Indeks yang paling jelas membedakan kedua kelas adalah <strong>NDBI</strong>: pemukiman bernilai positif (0,076 s.d. 0,086) sedangkan sawah bernilai negatif (-0,234 s.d. -0,276). NDWI sawah juga lebih tinggi daripada pemukiman (-0,217 dibanding -0,334), sesuai dengan sifat sawah yang lembap dan sering tergenang.</p>
 </section>
 <hr class="docutils" />
 <section id="klasifikasi-random-forest">
 <h2>6. Klasifikasi Random Forest<a class="headerlink" href="#klasifikasi-random-forest" title="Link to this heading">#</a></h2>
-<section id="dataset-pelatihan">
-<h3>6.1 Dataset Pelatihan<a class="headerlink" href="#dataset-pelatihan" title="Link to this heading">#</a></h3>
-<p>Pemodelan memakai <strong>data per piksel</strong>, bukan rata-rata per poligon. Total ekstraksi piksel dari 100 poligon sampel menghasilkan <strong>12.037 piksel</strong>:</p>
+<section id="dataset-pelatihan-dan-pengujian-per-piksel">
+<h3>6.1 Dataset Pelatihan dan Pengujian (Per Piksel)<a class="headerlink" href="#dataset-pelatihan-dan-pengujian-per-piksel" title="Link to this heading">#</a></h3>
+<p>Pemodelan memakai <strong>data per piksel</strong> yang mewarisi status pembagian poligon asal-nya (<code class="docutils literal notranslate"><span class="pre">Training</span></code> atau <code class="docutils literal notranslate"><span class="pre">Testing</span></code>). Total ekstraksi piksel dari 100 poligon sampel menghasilkan <strong>12.037 piksel</strong>:</p>
 <ul class="simple">
-<li><p><strong>Pemukiman</strong>: 10.198 piksel</p></li>
-<li><p><strong>Sawah</strong>: 1.839 piksel</p></li>
+<li><p><strong>Piksel Training (70% Poligon / 70 Poligon)</strong>: <strong>8.618 piksel</strong></p></li>
+<li><p><strong>Piksel Testing (30% Poligon / 30 Poligon)</strong>: <strong>3.419 piksel</strong></p></li>
 </ul>
 </section>
-<section id="pembagian-data-latih-dan-uji">
-<h3>6.2 Pembagian Data Latih dan Uji<a class="headerlink" href="#pembagian-data-latih-dan-uji" title="Link to this heading">#</a></h3>
-<p>Data dibagi <strong>70% latih (9.418 piksel) dan 30% uji (2.619 piksel)</strong> dengan <code class="docutils literal notranslate"><span class="pre">GroupShuffleSplit</span></code>, yaitu pembagian <strong>per poligon</strong> untuk menghindari <em>data leakage</em>.</p>
-</section>
-<section id="pelatihan-model">
-<h3>6.3 Pelatihan Model<a class="headerlink" href="#pelatihan-model" title="Link to this heading">#</a></h3>
+<section id="pelatihan-evaluasi-model">
+<h3>6.2 Pelatihan &amp; Evaluasi Model<a class="headerlink" href="#pelatihan-evaluasi-model" title="Link to this heading">#</a></h3>
+<p>Model <strong>Random Forest Classifier</strong> dilatih hanya menggunakan piksel dari poligon Training Set, kemudian dievaluasi secara ketat pada piksel dari poligon Testing Set.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">GroupShuffleSplit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">,</span>
                              <span class="n">cohen_kappa_score</span><span class="p">,</span> <span class="n">classification_report</span><span class="p">)</span>
 
-<span class="n">gss</span> <span class="o">=</span> <span class="n">GroupShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">tr</span><span class="p">,</span> <span class="n">te</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">gss</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">grp</span><span class="p">))</span>
-
+<span class="c1"># Melatih Model pada Data Training</span>
 <span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">class_weight</span><span class="o">=</span><span class="s2">"balanced"</span><span class="p">,</span>
                             <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">tr</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">tr</span><span class="p">])</span>
-<span class="n">pred</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">te</span><span class="p">])</span>
+<span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
 
-<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Sawah"</span><span class="p">,</span> <span class="s2">"Pemukiman"</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Confusion matrix (baris=aktual, kolom=prediksi):"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">te</span><span class="p">],</span> <span class="n">pred</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Overall Accuracy:"</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">te</span><span class="p">],</span> <span class="n">pred</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Kappa           :"</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">cohen_kappa_score</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">te</span><span class="p">],</span> <span class="n">pred</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">te</span><span class="p">],</span> <span class="n">pred</span><span class="p">))</span>
+<span class="c1"># Prediksi Data Training &amp; Testing</span>
+<span class="n">pred_train</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">pred_test</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Akurasi Data Training:"</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">pred_train</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Akurasi Data Testing :"</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">pred_test</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Cohen's Kappa (Test) :"</span><span class="p">,</span> <span class="n">cohen_kappa_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">pred_test</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">pred_test</span><span class="p">))</span>
 </pre></div>
 </div>
 </section>
@@ -651,8 +716,8 @@ document.write(`
 <hr class="docutils" />
 <section id="hasil-validasi-dan-evaluasi-model">
 <h2>7. Hasil Validasi dan Evaluasi Model<a class="headerlink" href="#hasil-validasi-dan-evaluasi-model" title="Link to this heading">#</a></h2>
-<p>Validasi dilakukan pada data uji (30% poligon uji = 2.619 piksel).</p>
-<p><strong>Confusion Matrix</strong> (baris = aktual, kolom = prediksi):</p>
+<p>Validasi dilakukan secara independen pada data uji (30% poligon uji = 3.419 piksel).</p>
+<p><strong>Confusion Matrix (Data Testing)</strong> (baris = aktual, kolom = prediksi):</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-left"><p></p></th>
@@ -662,12 +727,12 @@ document.write(`
 </thead>
 <tbody>
 <tr class="row-even"><td class="text-left"><p><strong>Aktual Sawah</strong></p></td>
-<td class="text-center"><p><strong>888</strong></p></td>
-<td class="text-center"><p>12</p></td>
+<td class="text-center"><p><strong>321</strong></p></td>
+<td class="text-center"><p>9</p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p><strong>Aktual Pemukiman</strong></p></td>
-<td class="text-center"><p><strong>0</strong></p></td>
-<td class="text-center"><p><strong>1.719</strong></p></td>
+<td class="text-center"><p><strong>3</strong></p></td>
+<td class="text-center"><p><strong>3.086</strong></p></td>
 </tr>
 </tbody>
 </table>
@@ -681,47 +746,51 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-left"><p><strong>Overall Accuracy</strong></p></td>
-<td class="text-center"><p><strong>99,54%</strong></p></td>
-<td class="text-left"><p>2.607 dari 2.619 piksel uji berhasil diklasifikasi dengan benar</p></td>
+<tr class="row-even"><td class="text-left"><p><strong>Training Accuracy</strong></p></td>
+<td class="text-center"><p><strong>99,90%</strong></p></td>
+<td class="text-left"><p>Performa model pada data pelatihan</p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p><strong>Cohen’s Kappa</strong></p></td>
-<td class="text-center"><p><strong>0,9898</strong></p></td>
+<tr class="row-odd"><td class="text-left"><p><strong>Testing Accuracy</strong></p></td>
+<td class="text-center"><p><strong>99,65%</strong></p></td>
+<td class="text-left"><p>3.407 dari 3.419 piksel uji berhasil diklasifikasi dengan benar</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Cohen’s Kappa</strong></p></td>
+<td class="text-center"><p><strong>0,9797</strong></p></td>
 <td class="text-left"><p>Menunjukkan tingkat kesepakatan yang sangat tinggi</p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p><strong>Precision Sawah</strong></p></td>
-<td class="text-center"><p>1.00</p></td>
-<td class="text-left"><p>Seluruh piksel yang diprediksi Sawah adalah benar-benar Sawah</p></td>
-</tr>
-<tr class="row-odd"><td class="text-left"><p><strong>Recall Sawah</strong></p></td>
+<tr class="row-odd"><td class="text-left"><p><strong>Precision Sawah</strong></p></td>
 <td class="text-center"><p>0.99</p></td>
-<td class="text-left"><p>99% piksel Sawah berhasil terdeteksi</p></td>
+<td class="text-left"><p>99% piksel yang diprediksi Sawah adalah benar-benar Sawah</p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p><strong>F1-Score Sawah</strong></p></td>
-<td class="text-center"><p>0.99</p></td>
+<tr class="row-even"><td class="text-left"><p><strong>Recall Sawah</strong></p></td>
+<td class="text-center"><p>0.97</p></td>
+<td class="text-left"><p>97% piksel Sawah berhasil terdeteksi</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>F1-Score Sawah</strong></p></td>
+<td class="text-center"><p>0.98</p></td>
 <td class="text-left"><p>Keseimbangan sensitivitas dan presisi untuk kelas Sawah</p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p><strong>Precision Pemukiman</strong></p></td>
-<td class="text-center"><p>0.99</p></td>
-<td class="text-left"><p>Presisi tinggi untuk kelas Pemukiman</p></td>
-</tr>
-<tr class="row-even"><td class="text-left"><p><strong>Recall Pemukiman</strong></p></td>
+<tr class="row-even"><td class="text-left"><p><strong>Precision Pemukiman</strong></p></td>
 <td class="text-center"><p>1.00</p></td>
-<td class="text-left"><p>Seluruh piksel Pemukiman berhasil terdeteksi secara sempurna</p></td>
+<td class="text-left"><p>Presisi sempurna untuk kelas Pemukiman</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Recall Pemukiman</strong></p></td>
+<td class="text-center"><p>1.00</p></td>
+<td class="text-left"><p>Seluruh piksel Pemukiman terdeteksi dengan sangat akurat</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <p><strong>Urutan Kepentingan Fitur (<em>Feature Importance</em>):</strong></p>
 <ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">B11</span></code> (<em>SWIR</em>): <strong>0.368</strong> (Fitur paling dominan membedakan kelembapan &amp; bahan bangunan)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">B04</span></code> (<em>Red</em>): <strong>0.176</strong></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NDBI</span></code> (<em>Built-up Index</em>): <strong>0.161</strong></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">B08</span></code> (<em>NIR</em>): <strong>0.111</strong></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">B02</span></code> (<em>Blue</em>): <strong>0.098</strong></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NDWI</span></code> (<em>Water Index</em>): <strong>0.037</strong></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">B03</span></code> (<em>Green</em>): <strong>0.031</strong></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NDVI</span></code> (<em>Vegetation Index</em>): <strong>0.017</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B11</span></code> (<em>SWIR</em>): <strong>0.347</strong> (Fitur paling dominan membedakan kelembapan &amp; bahan bangunan)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NDBI</span></code> (<em>Built-up Index</em>): <strong>0.201</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B04</span></code> (<em>Red</em>): <strong>0.134</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B08</span></code> (<em>NIR</em>): <strong>0.108</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NDWI</span></code> (<em>Water Index</em>): <strong>0.076</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B02</span></code> (<em>Blue</em>): <strong>0.067</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NDVI</span></code> (<em>Vegetation Index</em>): <strong>0.038</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B03</span></code> (<em>Green</em>): <strong>0.029</strong></p></li>
 </ol>
 </section>
 <hr class="docutils" />
@@ -740,7 +809,6 @@ document.write(`
 <h2>10. Notebook Interaktif &amp; Berkas Keluaran<a class="headerlink" href="#notebook-interaktif-berkas-keluaran" title="Link to this heading">#</a></h2>
 <p>Seluruh eksperimen dan eksekusi kode dapat diakses melalui berkas notebook berikut:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="code-pemetaanLahanKlasifikasi.html"><span class="std std-doc">code-pemetaanLahanKlasifikasi.ipynb</span></a></p></li>
 <li><p><a class="reference internal" href="code-klasifikasiLahan.html"><span class="std std-doc">code-klasifikasiLahan.ipynb</span></a></p></li>
 </ul>
 <p><strong>Berkas Keluaran Proyek</strong></p>
@@ -751,6 +819,24 @@ document.write(`
 </tr>
 </thead>
 <tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">data/csv/pembagian_dataset_train_test.csv</span></code></p></td>
+<td class="text-left"><p>Rekapitulasi 100 poligon sampel &amp; status split (70:30)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/data_training_poligon.csv</span></code></p></td>
+<td class="text-left"><p>Daftar 70 poligon sampel Data Training</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/data_testing_poligon.csv</span></code></p></td>
+<td class="text-left"><p>Daftar 30 poligon sampel Data Testing</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/fitur_piksel_training.csv</span></code></p></td>
+<td class="text-left"><p>Data fitur spektral 8.618 piksel Data Training</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/fitur_piksel_testing.csv</span></code></p></td>
+<td class="text-left"><p>Data fitur spektral 3.419 piksel Data Testing</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">data/csv/fitur_sampel.csv</span></code></p></td>
+<td class="text-left"><p>Nilai fitur spektral rata-rata per poligon sampel</p></td>
+</tr>
 <tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">data/tif/sentinel2_area_studi.tif</span></code></p></td>
 <td class="text-left"><p>Citra Sentinel-2A komposit (B02, B03, B04, B08, B11)</p></td>
 </tr>
@@ -760,13 +846,10 @@ document.write(`
 <tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">data/tif/dem_area_studi.tif</span></code></p></td>
 <td class="text-left"><p>Model elevasi digital area studi</p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">data/csv/fitur_sampel.csv</span></code></p></td>
-<td class="text-left"><p>Nilai fitur rata-rata per poligon sampel</p></td>
-</tr>
-<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">assets/peta_klasifikasi.png</span></code></p></td>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">assets/peta_klasifikasi.png</span></code></p></td>
 <td class="text-left"><p>Peta 2D klasifikasi tutupan lahan</p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">assets/editor/html/peta_3d.html</span></code></p></td>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">assets/editor/html/peta_3d.html</span></code></p></td>
 <td class="text-left"><p>Peta 3D interaktif</p></td>
 </tr>
 </tbody>
@@ -832,14 +915,19 @@ document.write(`
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gambaran-umum-alur-kerja">1. Gambaran Umum Alur Kerja</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-masukan-geojson">2. Data Masukan: GeoJSON</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-masukan-pembagian-dataset-train-vs-test-per-poligon">2. Data Masukan &amp; Pembagian Dataset (Train vs Test per Poligon)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pembagian-data-training-testing-yang-transparan">Pembagian Data Training &amp; Testing yang Transparan</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rincian-berkas-keluaran-csv-data-csv-split-dataset">Rincian Berkas Keluaran CSV (<code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/</span></code>)</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#akuisisi-citra-sentinel-2a-tif-melalui-openeo">3. Akuisisi Citra Sentinel-2A (<code class="docutils literal notranslate"><span class="pre">.tif</span></code>) melalui openEO</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-spektral-dan-indeks-turunan">4. Fitur Spektral dan Indeks Turunan</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-nilai-spektral-per-poligon">5. Ekstraksi Nilai Spektral per Poligon</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#klasifikasi-random-forest">6. Klasifikasi Random Forest</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-pelatihan">6.1 Dataset Pelatihan</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pembagian-data-latih-dan-uji">6.2 Pembagian Data Latih dan Uji</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pelatihan-model">6.3 Pelatihan Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-pelatihan-dan-pengujian-per-piksel">6.1 Dataset Pelatihan dan Pengujian (Per Piksel)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pelatihan-evaluasi-model">6.2 Pelatihan &amp; Evaluasi Model</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hasil-validasi-dan-evaluasi-model">7. Hasil Validasi dan Evaluasi Model</a></li>

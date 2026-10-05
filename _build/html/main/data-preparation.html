@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -427,8 +427,12 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-perbandingan-clustering-k-means-k-2-vs-k-5-deteksi-outlier">4. Evaluasi Perbandingan Clustering K-Means (<span class="math notranslate nohighlight">\(k=2\)</span> vs <span class="math notranslate nohighlight">\(k=5\)</span>) &amp; Deteksi Outlier</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-workflow-knime-scatter-plot-analytics-platform">4.1 Visualisasi Workflow KNIME &amp; Scatter Plot Analytics Platform</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-perbandingan-2-vs-5-pengaruh-reduksi-dimensi-pca-19-komponen">4.2 Kesimpulan Perbandingan (=2<span class="math notranslate nohighlight">\( vs =5\)</span>) &amp; Pengaruh Reduksi Dimensi PCA (19 Komponen)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-workflow-knime-scatter-plot">4.1 Visualisasi Workflow KNIME &amp; Scatter Plot</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means-k-2">4.1.1 K-Means <span class="math notranslate nohighlight">\(k=2\)</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means-k-5">4.1.2 K-Means <span class="math notranslate nohighlight">\(k=5\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-perbandingan-k-2-vs-k-5-pengaruh-reduksi-dimensi-pca-19-komponen">4.2 Kesimpulan Perbandingan (<span class="math notranslate nohighlight">\(k=2\)</span> vs <span class="math notranslate nohighlight">\(k=5\)</span>) &amp; Pengaruh Reduksi Dimensi PCA (19 Komponen)</a></li>
 </ul>
 </li>
 </ul>
@@ -580,7 +584,7 @@ Daftar Tanggal &amp; Nilai Outlier Terdeteksi secara Akurat:
     <span class="n">df_p</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_p</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
     <span class="n">df_valid_p</span> <span class="o">=</span> <span class="n">df_p</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">pol</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">X_p</span> <span class="o">=</span> <span class="n">df_valid_p</span><span class="p">[[</span><span class="n">pol</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
-    
+
     <span class="n">models_p</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">'Isolation Forest'</span><span class="p">:</span> <span class="n">IForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
         <span class="s1">'KNN'</span><span class="p">:</span> <span class="n">KNN</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
@@ -588,12 +592,12 @@ Daftar Tanggal &amp; Nilai Outlier Terdeteksi secara Akurat:
         <span class="s1">'COPOD'</span><span class="p">:</span> <span class="n">COPOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
         <span class="s1">'ECOD'</span><span class="p">:</span> <span class="n">ECOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">)</span>
     <span class="p">}</span>
-    
+
     <span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"         PERBANDINGAN 5 METODE OUTLIER MACHINE LEARNING — </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">"=========================================================================="</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Data Valid </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_valid_p</span><span class="p">)</span><span class="si">}</span><span class="s2"> hari</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-    
+
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models_p</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_p</span><span class="p">)</span>
         <span class="n">df_valid_p</span><span class="p">[</span><span class="sa">f</span><span class="s1">'outlier_</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">labels_</span>
@@ -851,7 +855,7 @@ Total Data Valid SO2: 235 hari
     <span class="n">df_p</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df_p</span><span class="p">[</span><span class="s1">'date'</span><span class="p">])</span>
     <span class="n">df_valid_p</span> <span class="o">=</span> <span class="n">df_p</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="n">pol</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">X_p</span> <span class="o">=</span> <span class="n">df_valid_p</span><span class="p">[[</span><span class="n">pol</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
-    
+
     <span class="n">models_p</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">'Isolation Forest'</span><span class="p">:</span> <span class="n">IForest</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">),</span>
         <span class="s1">'KNN'</span><span class="p">:</span> <span class="n">KNN</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
@@ -859,15 +863,15 @@ Total Data Valid SO2: 235 hari
         <span class="s1">'COPOD'</span><span class="p">:</span> <span class="n">COPOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">),</span>
         <span class="s1">'ECOD'</span><span class="p">:</span> <span class="n">ECOD</span><span class="p">(</span><span class="n">contamination</span><span class="o">=</span><span class="n">contamination_rate</span><span class="p">)</span>
     <span class="p">}</span>
-    
+
     <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
-    
+
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">models_p</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
         <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_p</span><span class="p">)</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">labels_</span>
         <span class="n">normal_m</span> <span class="o">=</span> <span class="n">df_valid_p</span><span class="p">[</span><span class="n">labels</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
         <span class="n">outliers_m</span> <span class="o">=</span> <span class="n">df_valid_p</span><span class="p">[</span><span class="n">labels</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
-        
+
         <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df_valid_p</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">df_valid_p</span><span class="p">[</span><span class="n">pol</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#bdc3c7'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">normal_m</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">normal_m</span><span class="p">[</span><span class="n">pol</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'#2980b9'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Normal'</span><span class="p">)</span>
@@ -876,7 +880,7 @@ Total Data Valid SO2: 235 hari
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">pol</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-        
+
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Grafik Deteksi Outlier 5 Metode — Polutan </span><span class="si">{</span><span class="n">pol</span><span class="si">}</span><span class="s1">'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.01</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -1735,10 +1739,10 @@ Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang die
 <hr class="docutils" />
 <section id="evaluasi-perbandingan-clustering-k-means-k-2-vs-k-5-deteksi-outlier">
 <h2>4. Evaluasi Perbandingan Clustering K-Means (<span class="math notranslate nohighlight">\(k=2\)</span> vs <span class="math notranslate nohighlight">\(k=5\)</span>) &amp; Deteksi Outlier<a class="headerlink" href="#evaluasi-perbandingan-clustering-k-means-k-2-vs-k-5-deteksi-outlier" title="Link to this heading">#</a></h2>
-<p>Setelah ekstraksi 272 fitur TSFEL dari 19 sampel daerah/mahasiswa dilakukan, pengelompokan (<em>clustering</em>) dievaluasi secara komprehensif menggunakan algoritma <strong>K-Means</strong> dalam dua skenario utama jumlah cluster: <strong><span class="math notranslate nohighlight">\(k=2\)</span></strong> (Pemisahan Biner Ekstrem) dan <strong><span class="math notranslate nohighlight">\(k=5\)</span></strong> (Segmentasi Granular Spesifik), baik dengan reduksi dimensi <strong>PCA (19 Komponen Utama: PCA 0 s.d. PCA 18)</strong> maupun <strong>Tanpa PCA (Fitur Utuh)</strong>.</p>
+<p>Setelah ekstraksi 272 fitur TSFEL dari 19 sampel daerah/mahasiswa dilakukan, pengelompokan (<em>clustering</em>) dievaluasi menggunakan algoritma <strong>K-Means</strong> dalam dua skenario jumlah cluster: <strong><span class="math notranslate nohighlight">\(k=2\)</span></strong> (pemisahan biner) dan <strong><span class="math notranslate nohighlight">\(k=5\)</span></strong> (segmentasi lebih granular), baik dengan reduksi dimensi <strong>PCA (19 Komponen Utama: PCA 0 s.d. PCA 18)</strong> maupun <strong>Tanpa PCA (fitur utuh)</strong>. Kualitas setiap hasil diukur dengan <strong>Mean Silhouette Coefficient</strong> per cluster dan secara keseluruhan (<em>overall</em>).</p>
 <hr class="docutils" />
-<section id="visualisasi-workflow-knime-scatter-plot-analytics-platform">
-<h3>4.1 Visualisasi Workflow KNIME &amp; Scatter Plot Analytics Platform<a class="headerlink" href="#visualisasi-workflow-knime-scatter-plot-analytics-platform" title="Link to this heading">#</a></h3>
+<section id="visualisasi-workflow-knime-scatter-plot">
+<h3>4.1 Visualisasi Workflow KNIME &amp; Scatter Plot<a class="headerlink" href="#visualisasi-workflow-knime-scatter-plot" title="Link to this heading">#</a></h3>
 <p>Proses ekstraksi, pra-pemrosesan, reduksi dimensi PCA, dan pengelompokan K-Means dijalankan menggunakan alur kerja (<em>workflow</em>) KNIME Analytics Platform:</p>
 <figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../_images/workflow.png"><img alt="../_images/workflow.png" src="../_images/workflow.png" style="width: 100%;" /></a>
@@ -1746,7 +1750,9 @@ Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang die
 <p><span class="caption-number">Fig. 11 </span><span class="caption-text">Gambar 4.0: Workflow Clustering K-Means &amp; Reduksi Dimensi PCA pada KNIME Analytics Platform (Imputasi Polinomial)</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Hasil pengelompokan dari alur KNIME berbasis imputasi polinomial disajikan dalam bentuk grafik <strong>Scatter Plot KNIME</strong> yang memetakan sebaran 19 mahasiswa/daerah terhadap label cluster masing-masing:</p>
+<p>Hasil pengelompokan disajikan dalam bentuk <strong>Scatter Plot KNIME</strong> yang memetakan 19 mahasiswa/daerah terhadap label cluster masing-masing, diikuti tabel <strong>Mean Silhouette Coefficient</strong> untuk setiap skenario.</p>
+<section id="k-means-k-2">
+<h4>4.1.1 K-Means <span class="math notranslate nohighlight">\(k=2\)</span><a class="headerlink" href="#k-means-k-2" title="Link to this heading">#</a></h4>
 <figure class="align-center" id="id6">
 <a class="reference internal image-reference" href="../_images/clusterK2Pca.png"><img alt="../_images/clusterK2Pca.png" src="../_images/clusterK2Pca.png" style="width: 100%;" /></a>
 <figcaption>
@@ -1754,7 +1760,11 @@ Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang die
 </figcaption>
 </figure>
 <p><strong>Penjelasan Gambar 4.1 (K-Means <span class="math notranslate nohighlight">\(k=2\)</span> dengan PCA):</strong>
-Pada skenario <span class="math notranslate nohighlight">\(k=2\)</span> menggunakan reduksi dimensi PCA 19 komponen (PCA 0 s.d. PCA 18), mayoritas 18 mahasiswa/daerah dikelompokkan ke dalam <strong><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></strong>. Hanya 1 mahasiswa, yaitu <strong>Muhammad Fathul Iman Wahid (Burneh, Bangkalan)</strong>, yang terpisah secara ekstrem ke dalam <strong><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></strong> sebagai pencilan (<em>outlier</em>).</p>
+Data terbagi menjadi dua kelompok yang tidak seimbang:</p>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></strong> (kelompok mayoritas, <strong>16 mahasiswa</strong>): Achmad Saiful Fuadi, Ahmad Soleh Majid, Ahmad Ubaidillah Mappattiro, Alif Baiatur Ridhwan El Habibie, Intan Resti Haslindawati, Irwan Dwi Mukhlisin, Kevin Koligombowo Mangaraja, Mohammad Andri Firmansyah, Mohammad Waqidi, Muhammad Ainul Fuady, Muhammad Farhan, Muhammad Ilham, Muhammad Sirul Amin, Raihan Aryanova Narendra, Shofiatul Mahmudah, dan fikri mutawakkil.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></strong> (kelompok pencilan, <strong>3 mahasiswa</strong>): <strong>Aisya</strong>, <strong>Firman Candra Dwi Nugroho</strong> (Kraton, Bangkalan), dan <strong>Muhammad Fathul Iman Wahid</strong> (Burneh, Bangkalan).</p></li>
+</ul>
 <figure class="align-center" id="id7">
 <a class="reference internal image-reference" href="../_images/clusterK2TanpaPca.png"><img alt="../_images/clusterK2TanpaPca.png" src="../_images/clusterK2TanpaPca.png" style="width: 100%;" /></a>
 <figcaption>
@@ -1762,54 +1772,196 @@ Pada skenario <span class="math notranslate nohighlight">\(k=2\)</span> mengguna
 </figcaption>
 </figure>
 <p><strong>Penjelasan Gambar 4.2 (K-Means <span class="math notranslate nohighlight">\(k=2\)</span> tanpa PCA):</strong>
-Pada skenario <span class="math notranslate nohighlight">\(k=2\)</span> menggunakan 272 fitur TSFEL utuh ter-normalisasi tanpa PCA, hasil pengelompokan menunjukkan konsistensi 100% di mana 18 mahasiswa berada di <strong><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></strong> dan <strong>Muhammad Fathul Iman Wahid (Burneh, Bangkalan)</strong> tetap menjadi outlier tunggal di <strong><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></strong>.</p>
+Dengan 272 fitur TSFEL utuh ter-normalisasi tanpa PCA, keanggotaan cluster sama dengan Gambar 4.1: 16 mahasiswa di kelompok mayoritas dan 3 mahasiswa (Aisya, Firman Candra Dwi Nugroho, Muhammad Fathul Iman Wahid) di kelompok pencilan.</p>
 <figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../_images/k2PCA.png"><img alt="../_images/k2PCA.png" src="../_images/k2PCA.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Gambar 4.3: Mean Silhouette Coefficient K-Means (k=2) Dengan PCA</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="../_images/k2TanpaPCA.png"><img alt="../_images/k2TanpaPCA.png" src="../_images/k2TanpaPCA.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Gambar 4.4: Mean Silhouette Coefficient K-Means (k=2) Tanpa PCA</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Penjelasan Gambar 4.3 &amp; 4.4 (Silhouette <span class="math notranslate nohighlight">\(k=2\)</span>):</strong>
+Kedua skenario menghasilkan nilai identik:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Kelompok</p></th>
+<th class="head"><p>Anggota</p></th>
+<th class="head"><p>Mean Silhouette</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code> (mayoritas)</p></td>
+<td><p>16</p></td>
+<td><p>1.000</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code> (pencilan)</p></td>
+<td><p>3</p></td>
+<td><p>0.689</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Overall</strong></p></td>
+<td><p>19</p></td>
+<td><p><strong>0.951</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Nilai <em>overall</em> 0.951 sangat tinggi (mendekati 1), menandakan pemisahan dua kelompok sangat jelas.</p>
+</section>
+<section id="k-means-k-5">
+<h4>4.1.2 K-Means <span class="math notranslate nohighlight">\(k=5\)</span><a class="headerlink" href="#k-means-k-5" title="Link to this heading">#</a></h4>
+<figure class="align-center" id="id10">
 <a class="reference internal image-reference" href="../_images/clusterK5Pca.png"><img alt="../_images/clusterK5Pca.png" src="../_images/clusterK5Pca.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Gambar 4.3: KNIME Scatter Plot K-Means (k=5) Dengan Reduksi Dimensi PCA</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Gambar 4.5: KNIME Scatter Plot K-Means (k=5) Dengan Reduksi Dimensi PCA</span><a class="headerlink" href="#id10" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p><strong>Penjelasan Gambar 4.3 (K-Means <span class="math notranslate nohighlight">\(k=5\)</span> dengan PCA):</strong>
-Ketika jumlah cluster ditingkatkan menjadi <span class="math notranslate nohighlight">\(k=5\)</span> dengan PCA, kelompok mayoritas terurai secara granular menjadi 5 kelompok:</p>
-<ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_2</span></code></strong>: Kelompok utama terbanyak (14 mahasiswa/daerah).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_4</span></code></strong>: <strong>Firman Candra Dwi Nugroho</strong> (Kraton, Bangkalan).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></strong>: <strong>Intan Resti Haslindawati</strong> (Kadur, Pamekasan).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></strong>: <strong>Muhammad Fathul Iman Wahid</strong> (Burneh, Bangkalan).</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_3</span></code></strong>: <strong>Raihan Aryanova Narendra</strong> (Sokobanah).</p></li>
-</ul>
-<figure class="align-center" id="id9">
+<p><strong>Penjelasan Gambar 4.5 (K-Means <span class="math notranslate nohighlight">\(k=5\)</span> dengan PCA):</strong>
+Ketika <span class="math notranslate nohighlight">\(k\)</span> ditingkatkan menjadi 5, data terurai menjadi lima kelompok:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cluster</p></th>
+<th class="head"><p>Jumlah</p></th>
+<th class="head"><p>Anggota</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_4</span></code></p></td>
+<td><p>6</p></td>
+<td><p>Achmad Saiful Fuadi, Ahmad Soleh Majid, Alif Baiatur Ridhwan El Habibie, Irwan Dwi Mukhlisin, Shofiatul Mahmudah, fikri mutawakkil</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></p></td>
+<td><p>6</p></td>
+<td><p>Ahmad Ubaidillah Mappattiro, Kevin Koligombowo Mangaraja, Mohammad Andri Firmansyah, Mohammad Waqidi, Muhammad Ilham, Raihan Aryanova Narendra</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_2</span></code></p></td>
+<td><p>3</p></td>
+<td><p>Aisya, Firman Candra Dwi Nugroho, Muhammad Fathul Iman Wahid</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_3</span></code></p></td>
+<td><p>2</p></td>
+<td><p>Intan Resti Haslindawati, Muhammad Sirul Amin</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></p></td>
+<td><p>2</p></td>
+<td><p>Muhammad Ainul Fuady, Muhammad Farhan</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="align-center" id="id11">
 <a class="reference internal image-reference" href="../_images/clusterK5TanpaPca.png"><img alt="../_images/clusterK5TanpaPca.png" src="../_images/clusterK5TanpaPca.png" style="width: 100%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Gambar 4.4: KNIME Scatter Plot K-Means (k=5) Tanpa PCA (272 Fitur TSFEL Utuh)</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Gambar 4.6: KNIME Scatter Plot K-Means (k=5) Tanpa PCA (272 Fitur TSFEL Utuh)</span><a class="headerlink" href="#id11" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p><strong>Penjelasan Gambar 4.4 (K-Means <span class="math notranslate nohighlight">\(k=5\)</span> tanpa PCA):</strong>
-Pengelompokan <span class="math notranslate nohighlight">\(k=5\)</span> menggunakan 272 fitur TSFEL utuh tanpa PCA menghasilkan pemetaan yang serupa dengan variasi label cluster yang selaras, menguraikan 19 mahasiswa menjadi 1 kelompok utama dan 4 cluster pencilan spesifik.</p>
+<p><strong>Penjelasan Gambar 4.6 (K-Means <span class="math notranslate nohighlight">\(k=5\)</span> tanpa PCA):</strong>
+Pengelompokan <span class="math notranslate nohighlight">\(k=5\)</span> tanpa PCA menghasilkan keanggotaan yang sama persis dengan Gambar 4.5 (6-6-3-2-2 mahasiswa), termasuk label cluster yang selaras.</p>
+<figure class="align-center" id="id12">
+<a class="reference internal image-reference" href="../_images/k5PCA.png"><img alt="../_images/k5PCA.png" src="../_images/k5PCA.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Gambar 4.7: Mean Silhouette Coefficient K-Means (k=5) Dengan PCA</span><a class="headerlink" href="#id12" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id13">
+<a class="reference internal image-reference" href="../_images/k5TanpaPCA.png"><img alt="../_images/k5TanpaPCA.png" src="../_images/k5TanpaPCA.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Gambar 4.8: Mean Silhouette Coefficient K-Means (k=5) Tanpa PCA</span><a class="headerlink" href="#id13" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><strong>Penjelasan Gambar 4.7 &amp; 4.8 (Silhouette <span class="math notranslate nohighlight">\(k=5\)</span>):</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Cluster</p></th>
+<th class="head"><p>Anggota</p></th>
+<th class="head"><p>Silhouette (PCA)</p></th>
+<th class="head"><p>Silhouette (Tanpa PCA)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_4</span></code></p></td>
+<td><p>6</p></td>
+<td><p>0.467</p></td>
+<td><p>0.470</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></p></td>
+<td><p>6</p></td>
+<td><p>-0.125</p></td>
+<td><p>-0.128</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_2</span></code></p></td>
+<td><p>3</p></td>
+<td><p>0.689</p></td>
+<td><p>0.689</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_3</span></code></p></td>
+<td><p>2</p></td>
+<td><p>0.946</p></td>
+<td><p>0.942</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></p></td>
+<td><p>2</p></td>
+<td><p>0.976</p></td>
+<td><p>0.976</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Overall</strong></p></td>
+<td><p>19</p></td>
+<td><p><strong>0.419</strong></p></td>
+<td><p><strong>0.419</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Cluster kecil (<code class="docutils literal notranslate"><span class="pre">cluster_1</span></code>, <code class="docutils literal notranslate"><span class="pre">cluster_3</span></code>, <code class="docutils literal notranslate"><span class="pre">cluster_2</span></code>) terbentuk sangat kompak (silhouette 0.69-0.98). Sebaliknya, <code class="docutils literal notranslate"><span class="pre">cluster_0</span></code> memiliki silhouette <strong>negatif</strong>, artinya sebagian anggotanya sebenarnya lebih dekat ke cluster lain sehingga batasnya tumpang tindih.</p>
+</section>
 </section>
 <hr class="docutils" />
-<section id="kesimpulan-perbandingan-2-vs-5-pengaruh-reduksi-dimensi-pca-19-komponen">
-<h3>4.2 Kesimpulan Perbandingan (=2<span class="math notranslate nohighlight">\( vs =5\)</span>) &amp; Pengaruh Reduksi Dimensi PCA (19 Komponen)<a class="headerlink" href="#kesimpulan-perbandingan-2-vs-5-pengaruh-reduksi-dimensi-pca-19-komponen" title="Link to this heading">#</a></h3>
-<p>Berdasarkan hasil pemodelan K-Means dan analisis visual Scatter Plot:</p>
-<ol class="arabic simple">
+<section id="kesimpulan-perbandingan-k-2-vs-k-5-pengaruh-reduksi-dimensi-pca-19-komponen">
+<h3>4.2 Kesimpulan Perbandingan (<span class="math notranslate nohighlight">\(k=2\)</span> vs <span class="math notranslate nohighlight">\(k=5\)</span>) &amp; Pengaruh Reduksi Dimensi PCA (19 Komponen)<a class="headerlink" href="#kesimpulan-perbandingan-k-2-vs-k-5-pengaruh-reduksi-dimensi-pca-19-komponen" title="Link to this heading">#</a></h3>
+<p>Berdasarkan hasil pemodelan K-Means, scatter plot, dan nilai Silhouette:</p>
+<ol class="arabic">
 <li><p><strong>Efektivitas Skenario <span class="math notranslate nohighlight">\(k=2\)</span></strong>:</p>
 <ul class="simple">
-<li><p>Skenario <span class="math notranslate nohighlight">\(k=2\)</span> berhasil mengisolasi anomali pencilan utama secara biner: <strong>18 mahasiswa/daerah berada di kelompok mayoritas (<code class="docutils literal notranslate"><span class="pre">cluster_0</span></code>)</strong>, sedangkan <strong>Muhammad Fathul Iman Wahid (Burneh, Bangkalan)</strong> terisolasi secara eksplisit di <strong><code class="docutils literal notranslate"><span class="pre">cluster_1</span></code></strong>.</p></li>
+<li><p>Memisahkan <strong>16 mahasiswa</strong> (kelompok mayoritas, <code class="docutils literal notranslate"><span class="pre">cluster_1</span></code>) dari <strong>3 mahasiswa pencilan</strong> (<code class="docutils literal notranslate"><span class="pre">cluster_0</span></code>): Aisya, Firman Candra Dwi Nugroho, dan Muhammad Fathul Iman Wahid.</p></li>
+<li><p>Silhouette <em>overall</em> <strong>0.951</strong>: pemisahan sangat kuat dan jelas.</p></li>
 </ul>
 </li>
 <li><p><strong>Dinamika Skenario <span class="math notranslate nohighlight">\(k=5\)</span></strong>:</p>
 <ul class="simple">
-<li><p>Peningkatan nilai <span class="math notranslate nohighlight">\(k\)</span> dari 2 menjadi 5 menguraikan kelompok mayoritas menjadi segmentasi yang lebih kaya:</p>
-<ul>
-<li><p>1 kelompok mayoritas (14 mahasiswa).</p></li>
-<li><p>4 cluster pencilan spesifik beranggotakan 1 mahasiswa: <strong>Firman Candra Dwi Nugroho</strong>, <strong>Intan Resti Haslindawati</strong>, <strong>Muhammad Fathul Iman Wahid</strong>, dan <strong>Raihan Aryanova Narendra</strong>.</p></li>
+<li><p>Kelompok mayoritas terurai menjadi dua cluster berukuran 6 (<code class="docutils literal notranslate"><span class="pre">cluster_4</span></code> dan <code class="docutils literal notranslate"><span class="pre">cluster_0</span></code>), sementara kelompok pencilan <span class="math notranslate nohighlight">\(k=2\)</span> tetap utuh sebagai <code class="docutils literal notranslate"><span class="pre">cluster_2</span></code> (3 anggota), ditambah dua pasangan (<code class="docutils literal notranslate"><span class="pre">cluster_3</span></code> dan <code class="docutils literal notranslate"><span class="pre">cluster_1</span></code>).</p></li>
+<li><p>Silhouette <em>overall</em> turun menjadi <strong>0.419</strong>, terutama akibat <code class="docutils literal notranslate"><span class="pre">cluster_0</span></code> yang bernilai negatif (-0.125 / -0.128). Pemecahan lebih detail ini kurang didukung struktur data.</p></li>
 </ul>
 </li>
-</ul>
+<li><p><strong>Perbandingan Ringkas</strong>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Skenario</p></th>
+<th class="head"><p>Overall Silhouette (PCA)</p></th>
+<th class="head"><p>Overall Silhouette (Tanpa PCA)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(k=2\)</span></p></td>
+<td><p>0.951</p></td>
+<td><p>0.951</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(k=5\)</span></p></td>
+<td><p>0.419</p></td>
+<td><p>0.419</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Berdasarkan Silhouette, <strong><span class="math notranslate nohighlight">\(k=2\)</span> merupakan pilihan yang lebih baik</strong> untuk data 19 sampel ini; <span class="math notranslate nohighlight">\(k=5\)</span> berguna bila diperlukan segmentasi yang lebih rinci, dengan catatan kualitas cluster tidak merata.</p>
 </li>
 <li><p><strong>Peran Reduksi Dimensi PCA</strong>:</p>
 <ul class="simple">
-<li><p>PCA (19 komponen utama: PCA 0 s.d. PCA 18) mampu menyerap 100% rasio varians dari 272 fitur TSFEL tanpa kehilangan informasi spasial maupun temporal, menghasilkan struktur cluster yang 100% selaras antara pemodelan dengan PCA dan tanpa PCA.</p></li>
+<li><p>PCA 19 komponen (PCA 0 s.d. PCA 18) mempertahankan seluruh varians dari 272 fitur TSFEL, sehingga <strong>keanggotaan cluster identik</strong> antara skenario dengan PCA dan tanpa PCA, baik pada <span class="math notranslate nohighlight">\(k=2\)</span> maupun <span class="math notranslate nohighlight">\(k=5\)</span>.</p></li>
+<li><p>Perbedaan hanya muncul pada nilai Silhouette per cluster di <span class="math notranslate nohighlight">\(k=5\)</span> (selisih maksimal sekitar 0.004), sedangkan nilai <em>overall</em> tetap sama (0.951 untuk <span class="math notranslate nohighlight">\(k=2\)</span> dan 0.419 untuk <span class="math notranslate nohighlight">\(k=5\)</span>). Dengan demikian PCA tidak mengubah kesimpulan analisis.</p></li>
 </ul>
 </li>
 </ol>
@@ -1979,8 +2131,12 @@ Pengelompokan <span class="math notranslate nohighlight">\(k=5\)</span> mengguna
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-perbandingan-clustering-k-means-k-2-vs-k-5-deteksi-outlier">4. Evaluasi Perbandingan Clustering K-Means (<span class="math notranslate nohighlight">\(k=2\)</span> vs <span class="math notranslate nohighlight">\(k=5\)</span>) &amp; Deteksi Outlier</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-workflow-knime-scatter-plot-analytics-platform">4.1 Visualisasi Workflow KNIME &amp; Scatter Plot Analytics Platform</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-perbandingan-2-vs-5-pengaruh-reduksi-dimensi-pca-19-komponen">4.2 Kesimpulan Perbandingan (=2<span class="math notranslate nohighlight">\( vs =5\)</span>) &amp; Pengaruh Reduksi Dimensi PCA (19 Komponen)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-workflow-knime-scatter-plot">4.1 Visualisasi Workflow KNIME &amp; Scatter Plot</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means-k-2">4.1.1 K-Means <span class="math notranslate nohighlight">\(k=2\)</span></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means-k-5">4.1.2 K-Means <span class="math notranslate nohighlight">\(k=5\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kesimpulan-perbandingan-k-2-vs-k-5-pengaruh-reduksi-dimensi-pca-19-komponen">4.2 Kesimpulan Perbandingan (<span class="math notranslate nohighlight">\(k=2\)</span> vs <span class="math notranslate nohighlight">\(k=5\)</span>) &amp; Pengaruh Reduksi Dimensi PCA (19 Komponen)</a></li>
 </ul>
 </li>
 </ul>
