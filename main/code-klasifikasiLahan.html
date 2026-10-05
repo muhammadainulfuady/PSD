@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -328,9 +328,13 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-masukan-bounding-box-geojson">1. Data Masukan &amp; Bounding Box GeoJSON</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-spektral-b02-b03-b04-b08-b11-ndvi-ndwi-ndbi">2. Ekstraksi Fitur Spektral (B02, B03, B04, B08, B11, NDVI, NDWI, NDBI)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#klasifikasi-random-forest-evaluasi-model">3. Klasifikasi Random Forest &amp; Evaluasi Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transparansi-pembagian-dataset-data-training-testing">📌 Transparansi Pembagian Dataset (Data Training &amp; Testing)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-masukan-pembagian-dataset-poligon-train-vs-test">1. Data Masukan &amp; Pembagian Dataset Poligon (Train vs Test)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-spektral-pembentukan-file-csv-piksel-latih-uji">2. Ekstraksi Fitur Spektral &amp; Pembentukan File CSV Piksel Latih/Uji</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perbedaan-berkas-csv-piksel-latih-uji">📊 Perbedaan Berkas CSV Piksel Latih &amp; Uji:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pemodelan-random-forest-evaluasi-performa-train-vs-test">3. Pemodelan Random Forest &amp; Evaluasi Performa (Train vs Test)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-peta-3d-interaktif-plotly-surface">4. Visualisasi Peta 3D Interaktif (Plotly Surface)</a></li>
 </ul>
             </nav>
@@ -346,81 +350,153 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="pemetaan-klasifikasi-lahan-sawah-dan-pemukiman-menggunakan-sentinel-2a-openeo">
 <h1>Pemetaan &amp; Klasifikasi Lahan Sawah dan Pemukiman Menggunakan Sentinel-2A &amp; openEO<a class="headerlink" href="#pemetaan-klasifikasi-lahan-sawah-dan-pemukiman-menggunakan-sentinel-2a-openeo" title="Link to this heading">#</a></h1>
 <p>Notebook ini berisi alur kerja lengkap klasifikasi tutupan lahan <strong>Sawah</strong> dan <strong>Pemukiman</strong> di Kecamatan Bungah, Kabupaten Gresik menggunakan citra satelit optik <strong>Sentinel-2A (Level-2A)</strong> via platform <strong>openEO</strong> (Copernicus Data Space Ecosystem) dan pemodelan Machine Learning <strong>Random Forest Classifier</strong>.</p>
-<section id="data-masukan-bounding-box-geojson">
-<h2>1. Data Masukan &amp; Bounding Box GeoJSON<a class="headerlink" href="#data-masukan-bounding-box-geojson" title="Link to this heading">#</a></h2>
-<p>Membaca data geospasial <code class="docutils literal notranslate"><span class="pre">data/geojson/input2.geojson</span></code> yang memuat 101 geometri polygon (1 Batas Daerah, 50 Polygon Sawah, dan 50 Polygon Pemukiman).</p>
+<hr class="docutils" />
+<section id="transparansi-pembagian-dataset-data-training-testing">
+<h2>📌 Transparansi Pembagian Dataset (Data Training &amp; Testing)<a class="headerlink" href="#transparansi-pembagian-dataset-data-training-testing" title="Link to this heading">#</a></h2>
+<p>Untuk mencegah kebocoran data (<em>data leakage</em>) akibat autokorelasi spasial antar piksel dalam poligon yang sama, pembagian dataset sebesar <strong>70% Training</strong> dan <strong>30% Testing</strong> dilakukan secara terstratifikasi pada tingkat <strong>Poligon Sampel (Group-based Split)</strong>.</p>
+<p>Berkas CSV hasil pembagian diekspor secara terpisah ke dalam direktori <code class="docutils literal notranslate"><span class="pre">data/csv/split_dataset/</span></code> agar dapat diperiksa dengan mudah:</p>
+<ol class="arabic simple">
+<li><p><strong>Tingkat Poligon (Area Sampel):</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">data_training_poligon.csv</span></code> (70 Poligon: 35 Sawah, 35 Pemukiman)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_testing_poligon.csv</span></code> (30 Poligon: 15 Sawah, 15 Pemukiman)</p></li>
+</ul>
+</li>
+<li><p><strong>Tingkat Piksel (Titik Data Fitur Spektral):</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fitur_piksel_training.csv</span></code> (8.618 Piksel Data Latih)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fitur_piksel_testing.csv</span></code> (3.419 Piksel Data Uji)</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="data-masukan-pembagian-dataset-poligon-train-vs-test">
+<h2>1. Data Masukan &amp; Pembagian Dataset Poligon (Train vs Test)<a class="headerlink" href="#data-masukan-pembagian-dataset-poligon-train-vs-test" title="Link to this heading">#</a></h2>
+<p>Membaca data geospasial <code class="docutils literal notranslate"><span class="pre">data/geojson/input2.geojson</span></code> (101 geometri: 1 Batas Daerah, 50 Poligon Sawah, dan 50 Poligon Pemukiman), memberikan ID Unik untuk setiap poligon (<code class="docutils literal notranslate"><span class="pre">Sawah_01..50</span></code>, <code class="docutils literal notranslate"><span class="pre">Pemukiman_01..50</span></code>), serta membagi dataset secara transparan menjadi data <strong>Training (70%)</strong> dan <strong>Testing (30%)</strong> pada tingkat poligon sampel.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">openeo</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
 
 <span class="c1"># 1. Read GeoJSON Dataset (input2.geojson)</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">"../data/geojson/input2.geojson"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"=== Jumlah Polygon per Kelas ==="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=== TOTAL POLIGON MASUKAN GEOJSON ==="</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
 
-<span class="c1"># Ambil Poligon Batas Daerah sebagai Spatial Extent</span>
-<span class="n">daerah</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Daerah"</span><span class="p">]</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">geom</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">daerah</span><span class="p">])</span><span class="o">.</span><span class="n">to_json</span><span class="p">())[</span><span class="s2">"features"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"geometry"</span><span class="p">]</span>
+<span class="c1"># Ambil Poligon Sawah dan Pemukiman</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">"Sawah"</span><span class="p">,</span> <span class="s2">"Pemukiman"</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="c1"># 2. Koneksi ke Backend openEO Copernicus Data Space Ecosystem</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">conn</span> <span class="o">=</span> <span class="n">openeo</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"openeo.dataspace.copernicus.eu"</span><span class="p">)</span><span class="o">.</span><span class="n">authenticate_oidc</span><span class="p">()</span>
-    <span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"B02"</span><span class="p">,</span> <span class="s2">"B03"</span><span class="p">,</span> <span class="s2">"B04"</span><span class="p">,</span> <span class="s2">"B08"</span><span class="p">,</span> <span class="s2">"B11"</span><span class="p">,</span> <span class="s2">"SCL"</span><span class="p">]</span>
-    <span class="n">cube</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
-        <span class="s2">"SENTINEL2_L2A"</span><span class="p">,</span>
-        <span class="n">spatial_extent</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span>
-        <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-23"</span><span class="p">],</span>
-        <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span>
-        <span class="n">max_cloud_cover</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">scl</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">band</span><span class="p">(</span><span class="s2">"SCL"</span><span class="p">)</span>
-    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">scl</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">scl</span> <span class="o">==</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">scl</span> <span class="o">==</span> <span class="mi">9</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">scl</span> <span class="o">==</span> <span class="mi">10</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">scl</span> <span class="o">==</span> <span class="mi">11</span><span class="p">)</span>
-    <span class="n">cube</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">resample_cube_spatial</span><span class="p">(</span><span class="n">cube</span><span class="p">))</span><span class="o">.</span><span class="n">filter_bands</span><span class="p">(</span><span class="n">bands</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">cube</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">reduce_dimension</span><span class="p">(</span><span class="n">dimension</span><span class="o">=</span><span class="s2">"t"</span><span class="p">,</span> <span class="n">reducer</span><span class="o">=</span><span class="s2">"median"</span><span class="p">)</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">"../data/tif"</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">cube</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">"../data/tif/sentinel2_area_studi.tif"</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"GTiff"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"SUCCESS: Berhasil mengunduh citra Sentinel-2A via openEO."</span><span class="p">)</span>
-<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"[openEO Info]: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Memastikan file raster GeoTIFF lokal tersedia di '../data/tif/sentinel2_area_studi.tif'..."</span><span class="p">)</span>
+<span class="c1"># Berikan ID Poligon Unik untuk melacak setiap titik sampel</span>
+<span class="n">sawah_cnt</span><span class="p">,</span> <span class="n">pemukiman_cnt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">id_poligon</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">==</span> <span class="s2">"Sawah"</span><span class="p">:</span>
+        <span class="n">id_poligon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sawah_</span><span class="si">{</span><span class="n">sawah_cnt</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">sawah_cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">id_poligon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Pemukiman_</span><span class="si">{</span><span class="n">pemukiman_cnt</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">pemukiman_cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">samples</span><span class="p">[</span><span class="s2">"ID_Poligon"</span><span class="p">]</span> <span class="o">=</span> <span class="n">id_poligon</span>
+
+<span class="c1"># Pembagian Stratified Train-Test (70% Training, 30% Testing) berdasarkan ID Poligon</span>
+<span class="n">train_ids</span><span class="p">,</span> <span class="n">test_ids</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">samples</span><span class="p">[</span><span class="s2">"ID_Poligon"</span><span class="p">],</span>
+    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.30</span><span class="p">,</span>
+    <span class="n">stratify</span><span class="o">=</span><span class="n">samples</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">],</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+<span class="n">samples</span><span class="p">[</span><span class="s2">"Status_Split"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s2">"ID_Poligon"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">train_ids</span><span class="p">),</span> <span class="s2">"Training"</span><span class="p">,</span> <span class="s2">"Testing"</span><span class="p">)</span>
+
+<span class="c1"># Ekspor Laporan Pembagian Dataset Poligon ke File CSV di Folder Dedicated</span>
+<span class="n">split_dir</span> <span class="o">=</span> <span class="s2">"../data/csv/split_dataset"</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">split_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">samples</span><span class="p">[[</span><span class="s2">"ID_Poligon"</span><span class="p">,</span> <span class="s2">"Type"</span><span class="p">,</span> <span class="s2">"Status_Split"</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"../data/csv/pembagian_dataset_train_test.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">samples</span><span class="p">[</span><span class="n">samples</span><span class="p">[</span><span class="s2">"Status_Split"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Training"</span><span class="p">][[</span><span class="s2">"ID_Poligon"</span><span class="p">,</span> <span class="s2">"Type"</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_dir</span><span class="p">,</span> <span class="s2">"data_training_poligon.csv"</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">samples</span><span class="p">[</span><span class="n">samples</span><span class="p">[</span><span class="s2">"Status_Split"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Testing"</span><span class="p">][[</span><span class="s2">"ID_Poligon"</span><span class="p">,</span> <span class="s2">"Type"</span><span class="p">]]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_dir</span><span class="p">,</span> <span class="s2">"data_testing_poligon.csv"</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== RINGKASAN PEMBAGIAN DATASET POLIGON (TRAINING vs TESTING) ==="</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">samples</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">],</span> <span class="n">samples</span><span class="p">[</span><span class="s2">"Status_Split"</span><span class="p">],</span> <span class="n">margins</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">[SUCCESS]: File CSV Poligon Latih (35 Sawah, 35 Pemukiman) &amp; Uji (15 Sawah, 15 Pemukiman) disimpan di '</span><span class="si">{</span><span class="n">split_dir</span><span class="si">}</span><span class="s2">/'"</span><span class="p">)</span>
+
+<span class="c1"># 2. Unduh/Cek Citra Satellite Sentinel-2A via openEO atau File Lokal</span>
+<span class="n">tif_target</span> <span class="o">=</span> <span class="s2">"../data/tif/sentinel2_area_studi.tif"</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tif_target</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">[INFO]: File raster lokal '</span><span class="si">{</span><span class="n">tif_target</span><span class="si">}</span><span class="s2">' sudah tersedia."</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">daerah</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Daerah"</span><span class="p">]</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">geom</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">gpd</span><span class="o">.</span><span class="n">GeoSeries</span><span class="p">([</span><span class="n">daerah</span><span class="p">])</span><span class="o">.</span><span class="n">to_json</span><span class="p">())[</span><span class="s2">"features"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"geometry"</span><span class="p">]</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">openeo</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">"openeo.dataspace.copernicus.eu"</span><span class="p">)</span><span class="o">.</span><span class="n">authenticate_oidc</span><span class="p">()</span>
+        <span class="n">bands</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"B02"</span><span class="p">,</span> <span class="s2">"B03"</span><span class="p">,</span> <span class="s2">"B04"</span><span class="p">,</span> <span class="s2">"B08"</span><span class="p">,</span> <span class="s2">"B11"</span><span class="p">,</span> <span class="s2">"SCL"</span><span class="p">]</span>
+        <span class="n">cube</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">load_collection</span><span class="p">(</span>
+            <span class="s2">"SENTINEL2_L2A"</span><span class="p">,</span>
+            <span class="n">spatial_extent</span><span class="o">=</span><span class="n">geom</span><span class="p">,</span>
+            <span class="n">temporal_extent</span><span class="o">=</span><span class="p">[</span><span class="s2">"2025-08-24"</span><span class="p">,</span> <span class="s2">"2026-08-23"</span><span class="p">],</span>
+            <span class="n">bands</span><span class="o">=</span><span class="n">bands</span><span class="p">,</span>
+            <span class="n">max_cloud_cover</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">scl</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">band</span><span class="p">(</span><span class="s2">"SCL"</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">scl</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">scl</span> <span class="o">==</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">scl</span> <span class="o">==</span> <span class="mi">9</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">scl</span> <span class="o">==</span> <span class="mi">10</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">scl</span> <span class="o">==</span> <span class="mi">11</span><span class="p">)</span>
+        <span class="n">cube</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">resample_cube_spatial</span><span class="p">(</span><span class="n">cube</span><span class="p">))</span><span class="o">.</span><span class="n">filter_bands</span><span class="p">(</span><span class="n">bands</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">cube</span> <span class="o">=</span> <span class="n">cube</span><span class="o">.</span><span class="n">reduce_dimension</span><span class="p">(</span><span class="n">dimension</span><span class="o">=</span><span class="s2">"t"</span><span class="p">,</span> <span class="n">reducer</span><span class="o">=</span><span class="s2">"median"</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">"../data/tif"</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">cube</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">tif_target</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"GTiff"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">SUCCESS: Berhasil mengunduh citra Sentinel-2A via openEO."</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">[openEO Info]: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Jumlah Polygon per Kelas ===
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== TOTAL POLIGON MASUKAN GEOJSON ===
 Type
 Sawah        50
 Pemukiman    50
 Daerah        1
 Name: count, dtype: int64
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Authenticated using refresh token.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SUCCESS: Berhasil mengunduh citra Sentinel-2A via openEO.
+
+=== RINGKASAN PEMBAGIAN DATASET POLIGON (TRAINING vs TESTING) ===
+Status_Split  Testing  Training  All
+Type                                
+Pemukiman          15        35   50
+Sawah              15        35   50
+All                30        70  100
+
+[SUCCESS]: File CSV Poligon Latih (35 Sawah, 35 Pemukiman) &amp; Uji (15 Sawah, 15 Pemukiman) disimpan di '../data/csv/split_dataset/'
+
+[INFO]: File raster lokal '../data/tif/sentinel2_area_studi.tif' sudah tersedia.
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="ekstraksi-fitur-spektral-b02-b03-b04-b08-b11-ndvi-ndwi-ndbi">
-<h2>2. Ekstraksi Fitur Spektral (B02, B03, B04, B08, B11, NDVI, NDWI, NDBI)<a class="headerlink" href="#ekstraksi-fitur-spektral-b02-b03-b04-b08-b11-ndvi-ndwi-ndbi" title="Link to this heading">#</a></h2>
-<p>Mengekstrak nilai reflektansi piksel per poligon sampel dan menghitung indeks vegetasi (NDVI), kebasahan (NDWI), dan indeks bangunan (NDBI).</p>
+<section id="ekstraksi-fitur-spektral-pembentukan-file-csv-piksel-latih-uji">
+<h2>2. Ekstraksi Fitur Spektral &amp; Pembentukan File CSV Piksel Latih/Uji<a class="headerlink" href="#ekstraksi-fitur-spektral-pembentukan-file-csv-piksel-latih-uji" title="Link to this heading">#</a></h2>
+<p>Mengekstrak nilai reflektansi piksel per poligon sampel (B02, B03, B04, B08, B11), menghitung indeks vegetasi (NDVI), kebasahan (NDWI), dan indeks bangunan (NDBI).</p>
+<section id="perbedaan-berkas-csv-piksel-latih-uji">
+<h3>📊 Perbedaan Berkas CSV Piksel Latih &amp; Uji:<a class="headerlink" href="#perbedaan-berkas-csv-piksel-latih-uji" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">fitur_piksel_training.csv</span></code></strong>: Berisi seluruh baris piksel (8.618 piksel) yang berasal dari 70 Poligon Training. Data ini yang <strong>dimasukkan ke algoritma Machine Learning untuk melatih model</strong>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">fitur_piksel_testing.csv</span></code></strong>: Berisi seluruh baris piksel (3.419 piksel) yang berasal dari 30 Poligon Testing. Data ini <strong>sama sekali tidak pernah dilihat oleh model saat latihan</strong>, dan digunakan murni untuk <strong>menguji keandalan dan akurasi prediksi model</strong>.</p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">rasterio</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.mask</span><span class="w"> </span><span class="kn">import</span> <span class="n">mask</span> <span class="k">as</span> <span class="n">rio_mask</span>
 
-<span class="n">samples</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">"Sawah"</span><span class="p">,</span> <span class="s2">"Pemukiman"</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">tif_path</span> <span class="o">=</span> <span class="s2">"../data/tif/sentinel2_area_studi.tif"</span>
+<span class="n">split_dir</span> <span class="o">=</span> <span class="s2">"../data/csv/split_dataset"</span>
 
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tif_path</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tif_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
-        <span class="n">samples</span> <span class="o">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+        <span class="n">smp</span> <span class="o">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">samples</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">pix_tr_rows</span><span class="p">,</span> <span class="n">pix_te_rows</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">smp</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">m</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rio_mask</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">geometry</span><span class="p">],</span> <span class="n">crop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_touched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
@@ -429,63 +505,93 @@ Name: count, dtype: int64
             <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">nodata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">arr</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">src</span><span class="o">.</span><span class="n">nodata</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="n">b02</span><span class="p">,</span> <span class="n">b03</span><span class="p">,</span> <span class="n">b04</span><span class="p">,</span> <span class="n">b08</span><span class="p">,</span> <span class="n">b11</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
-            <span class="n">ok</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b04</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b08</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b03</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b11</span><span class="p">)</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b04</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b08</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b03</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b11</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">b04</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">b08</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">ok</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">b02</span><span class="p">,</span> <span class="n">b03</span><span class="p">,</span> <span class="n">b04</span><span class="p">,</span> <span class="n">b08</span><span class="p">,</span> <span class="n">b11</span> <span class="o">=</span> <span class="n">b02</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b03</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b04</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b08</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b11</span><span class="p">[</span><span class="n">ok</span><span class="p">]</span>
-            <span class="n">ndvi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b08</span> <span class="o">-</span> <span class="n">b04</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b08</span> <span class="o">+</span> <span class="n">b04</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
-            <span class="n">ndwi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b03</span> <span class="o">-</span> <span class="n">b08</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b03</span> <span class="o">+</span> <span class="n">b08</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
-            <span class="n">ndbi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b11</span> <span class="o">-</span> <span class="n">b08</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b11</span> <span class="o">+</span> <span class="n">b08</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
-            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"id"</span><span class="p">:</span> <span class="n">idx</span><span class="p">,</span> <span class="s2">"kelas"</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">],</span> <span class="s2">"n_piksel"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">ok</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
-                         <span class="s2">"B02"</span><span class="p">:</span> <span class="n">b02</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"B03"</span><span class="p">:</span> <span class="n">b03</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"B04"</span><span class="p">:</span> <span class="n">b04</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-                         <span class="s2">"B08"</span><span class="p">:</span> <span class="n">b08</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"B11"</span><span class="p">:</span> <span class="n">b11</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
-                         <span class="s2">"NDVI"</span><span class="p">:</span> <span class="n">ndvi</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"NDWI"</span><span class="p">:</span> <span class="n">ndwi</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"NDBI"</span><span class="p">:</span> <span class="n">ndbi</span><span class="o">.</span><span class="n">mean</span><span class="p">()})</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Sampel Poligon Valid: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== Rata-rata Indeks Spektral per Kelas ==="</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"kelas"</span><span class="p">)[[</span><span class="s2">"NDVI"</span><span class="p">,</span> <span class="s2">"NDWI"</span><span class="p">,</span> <span class="s2">"NDBI"</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+            <span class="n">b02_v</span><span class="p">,</span> <span class="n">b03_v</span><span class="p">,</span> <span class="n">b04_v</span><span class="p">,</span> <span class="n">b08_v</span><span class="p">,</span> <span class="n">b11_v</span> <span class="o">=</span> <span class="n">b02</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b03</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b04</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b08</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b11</span><span class="p">[</span><span class="n">ok</span><span class="p">]</span>
+            <span class="n">ndvi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b08_v</span> <span class="o">-</span> <span class="n">b04_v</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b08_v</span> <span class="o">+</span> <span class="n">b04_v</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+            <span class="n">ndwi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b03_v</span> <span class="o">-</span> <span class="n">b08_v</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b03_v</span> <span class="o">+</span> <span class="n">b08_v</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+            <span class="n">ndbi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b11_v</span> <span class="o">-</span> <span class="n">b08_v</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b11_v</span> <span class="o">+</span> <span class="n">b08_v</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+            
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s2">"ID_Poligon"</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s2">"ID_Poligon"</span><span class="p">],</span>
+                <span class="s2">"Kelas"</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">],</span>
+                <span class="s2">"Status_Split"</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s2">"Status_Split"</span><span class="p">],</span>
+                <span class="s2">"n_piksel"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">ok</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+                <span class="s2">"B02"</span><span class="p">:</span> <span class="n">b02_v</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"B03"</span><span class="p">:</span> <span class="n">b03_v</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"B04"</span><span class="p">:</span> <span class="n">b04_v</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+                <span class="s2">"B08"</span><span class="p">:</span> <span class="n">b08_v</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"B11"</span><span class="p">:</span> <span class="n">b11_v</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+                <span class="s2">"NDVI"</span><span class="p">:</span> <span class="n">ndvi</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"NDWI"</span><span class="p">:</span> <span class="n">ndwi</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="s2">"NDBI"</span><span class="p">:</span> <span class="n">ndbi</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="p">})</span>
+            
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b02_v</span><span class="p">)):</span>
+                <span class="n">p_row</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">"ID_Poligon"</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s2">"ID_Poligon"</span><span class="p">],</span>
+                    <span class="s2">"Kelas"</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">],</span>
+                    <span class="s2">"B02"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">b02_v</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">4</span><span class="p">),</span> <span class="s2">"B03"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">b03_v</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">4</span><span class="p">),</span> <span class="s2">"B04"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">b04_v</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">4</span><span class="p">),</span>
+                    <span class="s2">"B08"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">b08_v</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">4</span><span class="p">),</span> <span class="s2">"B11"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">b11_v</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">4</span><span class="p">),</span>
+                    <span class="s2">"NDVI"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">ndvi</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">4</span><span class="p">),</span> <span class="s2">"NDWI"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">ndwi</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">4</span><span class="p">),</span> <span class="s2">"NDBI"</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">ndbi</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">"Status_Split"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Training"</span><span class="p">:</span>
+                    <span class="n">pix_tr_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_row</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">pix_te_rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_row</span><span class="p">)</span>
+                    
+    <span class="n">df_fitur</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+    <span class="n">df_pix_tr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pix_tr_rows</span><span class="p">)</span>
+    <span class="n">df_pix_te</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pix_te_rows</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Sampel Poligon Valid: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_fitur</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- Jumlah Piksel Latih (fitur_piksel_training.csv) : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_pix_tr</span><span class="p">)</span><span class="si">}</span><span class="s2"> baris (dari 70 Poligon Latih)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"- Jumlah Piksel Uji   (fitur_piksel_testing.csv)  : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_pix_te</span><span class="p">)</span><span class="si">}</span><span class="s2"> baris (dari 30 Poligon Uji)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== RATA-RATA INDEKS SPEKTRAL PER KELAS &amp; SPLIT STATUS ==="</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">df_fitur</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">"Kelas"</span><span class="p">,</span> <span class="s2">"Status_Split"</span><span class="p">])[[</span><span class="s2">"n_piksel"</span><span class="p">,</span> <span class="s2">"NDVI"</span><span class="p">,</span> <span class="s2">"NDWI"</span><span class="p">,</span> <span class="s2">"NDBI"</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+    
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">"../data/csv"</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"../data/csv/fitur_sampel.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">split_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df_fitur</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">"../data/csv/fitur_sampel.csv"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">df_pix_tr</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_dir</span><span class="p">,</span> <span class="s2">"fitur_piksel_training.csv"</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">df_pix_te</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">split_dir</span><span class="p">,</span> <span class="s2">"fitur_piksel_testing.csv"</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">[SUCCESS]: File CSV 'fitur_piksel_training.csv' (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_pix_tr</span><span class="p">)</span><span class="si">}</span><span class="s2"> baris) &amp; 'fitur_piksel_testing.csv' (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_pix_te</span><span class="p">)</span><span class="si">}</span><span class="s2"> baris) berhasil diekspor ke '</span><span class="si">{</span><span class="n">split_dir</span><span class="si">}</span><span class="s2">/'"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total Sampel Poligon Valid: 100
+- Jumlah Piksel Latih (fitur_piksel_training.csv) : 8618 baris (dari 70 Poligon Latih)
+- Jumlah Piksel Uji   (fitur_piksel_testing.csv)  : 3419 baris (dari 30 Poligon Uji)
 
-=== Rata-rata Indeks Spektral per Kelas ===
-               NDVI      NDWI      NDBI
-kelas                                  
-Pemukiman  0.289784 -0.328458  0.079627
-Sawah      0.340569 -0.235186 -0.263561
+=== RATA-RATA INDEKS SPEKTRAL PER KELAS &amp; SPLIT STATUS ===
+                          n_piksel      NDVI      NDWI      NDBI
+Kelas     Status_Split                                          
+Pemukiman Testing       205.933333  0.279766 -0.315628  0.086602
+          Training      203.114286  0.294078 -0.333957  0.076638
+Sawah     Testing        22.000000  0.368242 -0.276711 -0.234219
+          Training       43.114286  0.328709 -0.217390 -0.276136
+
+[SUCCESS]: File CSV 'fitur_piksel_training.csv' (8618 baris) &amp; 'fitur_piksel_testing.csv' (3419 baris) berhasil diekspor ke '../data/csv/split_dataset/'
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="klasifikasi-random-forest-evaluasi-model">
-<h2>3. Klasifikasi Random Forest &amp; Evaluasi Model<a class="headerlink" href="#klasifikasi-random-forest-evaluasi-model" title="Link to this heading">#</a></h2>
-<p>Melatih model Random Forest menggunakan skema <em>GroupShuffleSplit</em> (70% Training / 30% Testing per Poligon) untuk menghindari <em>data leakage</em>.</p>
+</section>
+<section id="pemodelan-random-forest-evaluasi-performa-train-vs-test">
+<h2>3. Pemodelan Random Forest &amp; Evaluasi Performa (Train vs Test)<a class="headerlink" href="#pemodelan-random-forest-evaluasi-performa-train-vs-test" title="Link to this heading">#</a></h2>
+<p>Melatih model <strong>Random Forest Classifier</strong> menggunakan piksel dari <code class="docutils literal notranslate"><span class="pre">fitur_piksel_training.csv</span></code> (<strong>8.618 piksel / 70 poligon</strong>) dan mengevaluasi keandalannya secara ketat pada piksel dari <code class="docutils literal notranslate"><span class="pre">fitur_piksel_testing.csv</span></code> (<strong>3.419 piksel / 30 poligon</strong>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">rasterio</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="o">,</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.mask</span><span class="w"> </span><span class="kn">import</span> <span class="n">mask</span> <span class="k">as</span> <span class="n">rio_mask</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">GroupShuffleSplit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">cohen_kappa_score</span><span class="p">,</span> <span class="n">classification_report</span>
 
 <span class="n">TIF</span> <span class="o">=</span> <span class="s2">"../data/tif/sentinel2_area_studi.tif"</span>
 <span class="n">NAMA_FITUR</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"B02"</span><span class="p">,</span> <span class="s2">"B03"</span><span class="p">,</span> <span class="s2">"B04"</span><span class="p">,</span> <span class="s2">"B08"</span><span class="p">,</span> <span class="s2">"B11"</span><span class="p">,</span> <span class="s2">"NDVI"</span><span class="p">,</span> <span class="s2">"NDWI"</span><span class="p">,</span> <span class="s2">"NDBI"</span><span class="p">]</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">hitung_fitur</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="n">b02</span><span class="p">,</span> <span class="n">b03</span><span class="p">,</span> <span class="n">b04</span><span class="p">,</span> <span class="n">b08</span><span class="p">,</span> <span class="n">b11</span> <span class="o">=</span> <span class="n">a</span>
-    <span class="n">e</span> <span class="o">=</span> <span class="mf">1e-6</span>
-    <span class="n">ndvi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b08</span> <span class="o">-</span> <span class="n">b04</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b08</span> <span class="o">+</span> <span class="n">b04</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
-    <span class="n">ndwi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b03</span> <span class="o">-</span> <span class="n">b08</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b03</span> <span class="o">+</span> <span class="n">b08</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
-    <span class="n">ndbi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b11</span> <span class="o">-</span> <span class="n">b08</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b11</span> <span class="o">+</span> <span class="n">b08</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">b02</span><span class="p">,</span> <span class="n">b03</span><span class="p">,</span> <span class="n">b04</span><span class="p">,</span> <span class="n">b08</span><span class="p">,</span> <span class="n">b11</span><span class="p">,</span> <span class="n">ndvi</span><span class="p">,</span> <span class="n">ndwi</span><span class="p">,</span> <span class="n">ndbi</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">TIF</span><span class="p">):</span>
-    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">grp</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">X_tr_list</span><span class="p">,</span> <span class="n">y_tr_list</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">X_te_list</span><span class="p">,</span> <span class="n">y_te_list</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    
     <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">TIF</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
         <span class="n">smp</span> <span class="o">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">smp</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
@@ -493,61 +599,128 @@ Sawah      0.340569 -0.235186 -0.263561
                 <span class="n">m</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">rio_mask</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">geometry</span><span class="p">],</span> <span class="n">crop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_touched</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"float32"</span><span class="p">)</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="n">hitung_fitur</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="n">f</span><span class="p">[(</span><span class="n">f</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
-            <span class="n">X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">);</span> <span class="n">y</span> <span class="o">+=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">);</span> <span class="n">grp</span> <span class="o">+=</span> <span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">grp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grp</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total Piksel Ekstraksi: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="n">gss</span> <span class="o">=</span> <span class="n">GroupShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-    <span class="n">tr</span><span class="p">,</span> <span class="n">te</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">gss</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">grp</span><span class="p">))</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"float32"</span><span class="p">)</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
+            <span class="k">if</span> <span class="n">src</span><span class="o">.</span><span class="n">nodata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">arr</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">src</span><span class="o">.</span><span class="n">nodata</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">b02</span><span class="p">,</span> <span class="n">b03</span><span class="p">,</span> <span class="n">b04</span><span class="p">,</span> <span class="n">b08</span><span class="p">,</span> <span class="n">b11</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b04</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b08</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b03</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">b11</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">b04</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">b08</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ok</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">b02_v</span><span class="p">,</span> <span class="n">b03_v</span><span class="p">,</span> <span class="n">b04_v</span><span class="p">,</span> <span class="n">b08_v</span><span class="p">,</span> <span class="n">b11_v</span> <span class="o">=</span> <span class="n">b02</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b03</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b04</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b08</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">b11</span><span class="p">[</span><span class="n">ok</span><span class="p">]</span>
+            <span class="n">ndvi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b08_v</span> <span class="o">-</span> <span class="n">b04_v</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b08_v</span> <span class="o">+</span> <span class="n">b04_v</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+            <span class="n">ndwi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b03_v</span> <span class="o">-</span> <span class="n">b08_v</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b03_v</span> <span class="o">+</span> <span class="n">b08_v</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+            <span class="n">ndbi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b11_v</span> <span class="o">-</span> <span class="n">b08_v</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b11_v</span> <span class="o">+</span> <span class="n">b08_v</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+            
+            <span class="n">feats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">b02_v</span><span class="p">,</span> <span class="n">b03_v</span><span class="p">,</span> <span class="n">b04_v</span><span class="p">,</span> <span class="n">b08_v</span><span class="p">,</span> <span class="n">b11_v</span><span class="p">,</span> <span class="n">ndvi</span><span class="p">,</span> <span class="n">ndwi</span><span class="p">,</span> <span class="n">ndbi</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">"Status_Split"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"Training"</span><span class="p">:</span>
+                <span class="n">X_tr_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>
+                <span class="n">y_tr_list</span> <span class="o">+=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">X_te_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>
+                <span class="n">y_te_list</span> <span class="o">+=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s2">"Type"</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">feats</span><span class="p">)</span>
+
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">X_tr_list</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_tr_list</span><span class="p">)</span>
+    <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">X_te_list</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_te_list</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"=== EKSTRAKSI PIKSEL TRAIN vs TEST ==="</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah Piksel Training : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span><span class="si">}</span><span class="s2"> piksel (dari </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_ids</span><span class="p">)</span><span class="si">}</span><span class="s2"> poligon)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Jumlah Piksel Testing  : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span><span class="si">}</span><span class="s2"> piksel (dari </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">test_ids</span><span class="p">)</span><span class="si">}</span><span class="s2"> poligon)"</span><span class="p">)</span>
+    
+    <span class="c1"># Melatih Model Random Forest</span>
     <span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">class_weight</span><span class="o">=</span><span class="s2">"balanced"</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">tr</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">tr</span><span class="p">])</span>
-    <span class="n">pred</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">te</span><span class="p">])</span>
+    <span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+    <span class="c1"># Prediksi Data Training &amp; Testing</span>
+    <span class="n">pred_train</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+    <span class="n">pred_test</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
     <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Sawah"</span><span class="p">,</span> <span class="s2">"Pemukiman"</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== CONFUSION MATRIX ==="</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">te</span><span class="p">],</span> <span class="n">pred</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Overall Accuracy : </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">te</span><span class="p">],</span><span class="w"> </span><span class="n">pred</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cohen's Kappa    : </span><span class="si">{</span><span class="n">cohen_kappa_score</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">te</span><span class="p">],</span><span class="w"> </span><span class="n">pred</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== CLASSIFICATION REPORT ==="</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">te</span><span class="p">],</span> <span class="n">pred</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== EVALUASI PERFORMA MODEL ==="</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Akurasi Data Training : </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span><span class="w"> </span><span class="n">pred_train</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Akurasi Data Testing  : </span><span class="si">{</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">pred_test</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cohen's Kappa (Test)  : </span><span class="si">{</span><span class="n">cohen_kappa_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">pred_test</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== CONFUSION MATRIX (DATA TESTING) ==="</span><span class="p">)</span>
+    <span class="n">cm_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">pred_test</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">),</span>
+        <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">"Aktual_</span><span class="si">{</span><span class="n">l</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">],</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">"Prediksi_</span><span class="si">{</span><span class="n">l</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">cm_df</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== CLASSIFICATION REPORT (DATA TESTING) ==="</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">pred_test</span><span class="p">))</span>
+
     <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">=== FEATURE IMPORTANCES ==="</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">NAMA_FITUR</span><span class="p">,</span> <span class="n">rf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">5s</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># Menghasilkan &amp; Menyimpan Citra Raster Hasil Klasifikasi</span>
+    <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">TIF</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">"float32"</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10000</span>
+        <span class="n">b02</span><span class="p">,</span> <span class="n">b03</span><span class="p">,</span> <span class="n">b04</span><span class="p">,</span> <span class="n">b08</span><span class="p">,</span> <span class="n">b11</span> <span class="o">=</span> <span class="n">img</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+        <span class="n">ndvi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b08</span> <span class="o">-</span> <span class="n">b04</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b08</span> <span class="o">+</span> <span class="n">b04</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+        <span class="n">ndwi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b03</span> <span class="o">-</span> <span class="n">b08</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b03</span> <span class="o">+</span> <span class="n">b08</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+        <span class="n">ndbi</span> <span class="o">=</span> <span class="p">(</span><span class="n">b11</span> <span class="o">-</span> <span class="n">b08</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b11</span> <span class="o">+</span> <span class="n">b08</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="p">)</span>
+        
+        <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">b02</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">stacked</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">b02</span><span class="p">,</span> <span class="n">b03</span><span class="p">,</span> <span class="n">b04</span><span class="p">,</span> <span class="n">b08</span><span class="p">,</span> <span class="n">b11</span><span class="p">,</span> <span class="n">ndvi</span><span class="p">,</span> <span class="n">ndwi</span><span class="p">,</span> <span class="n">ndbi</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+        <span class="n">valid_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">stacked</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">stacked</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        
+        <span class="n">pred_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">h</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">valid_mask</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="n">pred_labels</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">stacked</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">])</span>
+            <span class="n">pred_map</span><span class="p">[</span><span class="n">valid_mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pred_labels</span> <span class="o">==</span> <span class="s2">"Sawah"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        
+        <span class="n">pred_map</span> <span class="o">=</span> <span class="n">pred_map</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"count"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"dtype"</span><span class="p">:</span> <span class="s2">"uint8"</span><span class="p">,</span> <span class="s2">"nodata"</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+        <span class="n">out_tif</span> <span class="o">=</span> <span class="s2">"../data/tif/klasifikasi_sawah_pemukiman.tif"</span>
+        <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">out_tif</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
+            <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pred_map</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">SUCCESS: Raster hasil klasifikasi disimpan di '../data/tif/klasifikasi_sawah_pemukiman.tif'"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total Piksel Ekstraksi: 12037
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== EKSTRAKSI PIKSEL TRAIN vs TEST ===
+Jumlah Piksel Training : 8618 piksel (dari 70 poligon)
+Jumlah Piksel Testing  : 3419 piksel (dari 30 poligon)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== CONFUSION MATRIX ===
-[[ 885   15]
- [   0 1719]]
-Overall Accuracy : 99.43%
-Cohen's Kappa    : 0.9873
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== EVALUASI PERFORMA MODEL ===
+Akurasi Data Training : 99.90%
+Akurasi Data Testing  : 99.65%
+Cohen's Kappa (Test)  : 0.9797
 
-=== CLASSIFICATION REPORT ===
+=== CONFUSION MATRIX (DATA TESTING) ===
+                  Prediksi_Sawah  Prediksi_Pemukiman
+Aktual_Sawah                 321                   9
+Aktual_Pemukiman               3                3086
+
+=== CLASSIFICATION REPORT (DATA TESTING) ===
               precision    recall  f1-score   support
 
-   Pemukiman       0.99      1.00      1.00      1719
-       Sawah       1.00      0.98      0.99       900
+   Pemukiman       1.00      1.00      1.00      3089
+       Sawah       0.99      0.97      0.98       330
 
-    accuracy                           0.99      2619
-   macro avg       1.00      0.99      0.99      2619
-weighted avg       0.99      0.99      0.99      2619
+    accuracy                           1.00      3419
+   macro avg       0.99      0.99      0.99      3419
+weighted avg       1.00      1.00      1.00      3419
 
 
 === FEATURE IMPORTANCES ===
-B11   : 0.372
-NDBI  : 0.210
-B04   : 0.163
-B08   : 0.107
-B02   : 0.074
-NDWI  : 0.034
-B03   : 0.023
-NDVI  : 0.017
+B11   : 0.355
+NDBI  : 0.198
+B08   : 0.161
+B04   : 0.130
+B02   : 0.062
+NDWI  : 0.054
+NDVI  : 0.022
+B03   : 0.018
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SUCCESS: Raster hasil klasifikasi disimpan di '../data/tif/klasifikasi_sawah_pemukiman.tif'
 </pre></div>
 </div>
 </div>
@@ -666,9 +839,13 @@ NDVI  : 0.017
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-masukan-bounding-box-geojson">1. Data Masukan &amp; Bounding Box GeoJSON</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-spektral-b02-b03-b04-b08-b11-ndvi-ndwi-ndbi">2. Ekstraksi Fitur Spektral (B02, B03, B04, B08, B11, NDVI, NDWI, NDBI)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#klasifikasi-random-forest-evaluasi-model">3. Klasifikasi Random Forest &amp; Evaluasi Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transparansi-pembagian-dataset-data-training-testing">📌 Transparansi Pembagian Dataset (Data Training &amp; Testing)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-masukan-pembagian-dataset-poligon-train-vs-test">1. Data Masukan &amp; Pembagian Dataset Poligon (Train vs Test)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-fitur-spektral-pembentukan-file-csv-piksel-latih-uji">2. Ekstraksi Fitur Spektral &amp; Pembentukan File CSV Piksel Latih/Uji</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perbedaan-berkas-csv-piksel-latih-uji">📊 Perbedaan Berkas CSV Piksel Latih &amp; Uji:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pemodelan-random-forest-evaluasi-performa-train-vs-test">3. Pemodelan Random Forest &amp; Evaluasi Performa (Train vs Test)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-peta-3d-interaktif-plotly-surface">4. Visualisasi Peta 3D Interaktif (Plotly Surface)</a></li>
 </ul>
   </nav></div>

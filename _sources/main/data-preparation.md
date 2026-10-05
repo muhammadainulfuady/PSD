@@ -14,7 +14,7 @@ kernelspec:
 
 # Data Preparation (Persiapan Data CO)
 
-Data Preparation adalah tahap ketiga dalam metodologi CRISP-DM yang bertujuan untuk **membersihkan**, **mengimputasi nilai kosong (*missing values*)**, **menangani pencilan (*outliers*)**, dan **merekayasa fitur (*feature engineering*)** dari deret waktu pengamatan kualitas udara polutan **Karbon Monoksida ($\text{CO}$)** pada skala geografis **Tingkat Kecamatan (Kecamatan Bungah)** selama 365 hari (24 Agustus 2025 – 23 Agustus 2026).
+Data Preparation adalah tahap ketiga dalam metodologi CRISP-DM yang bertujuan untuk **membersihkan**, **mengimputasi nilai kosong (_missing values_)**, **menangani pencilan (_outliers_)**, dan **merekayasa fitur (_feature engineering_)** dari deret waktu pengamatan kualitas udara polutan **Karbon Monoksida ($\text{CO}$)** pada skala geografis **Tingkat Kecamatan (Kecamatan Bungah)** selama 365 hari (24 Agustus 2025 – 23 Agustus 2026).
 
 ---
 
@@ -22,7 +22,7 @@ Data Preparation adalah tahap ketiga dalam metodologi CRISP-DM yang bertujuan un
 
 ### 1.1 Evaluasi Missing Values (Celah Data Mentah)
 
-Data pengamatan satelit Sentinel-5P dari Copernicus Data Space untuk polutan $\text{CO}$ harian selama 365 hari memiliki celah data (*missing values* / `NaN`) yang disebabkan oleh tutupan awan tebal, kendala jadwal orbit satelit, dan penyaringan validasi kualitas (*quality flag*).
+Data pengamatan satelit Sentinel-5P dari Copernicus Data Space untuk polutan $\text{CO}$ harian selama 365 hari memiliki celah data (_missing values_ / `NaN`) yang disebabkan oleh tutupan awan tebal, kendala jadwal orbit satelit, dan penyaringan validasi kualitas (_quality flag_).
 
 Evaluasi celah data dihitung secara **dinamis menggunakan kode Python** berikut:
 
@@ -51,7 +51,7 @@ print(f"Jumlah Missing (NaN)    : {nan_awal} hari ({nan_awal/total_rows*100:.2f}
 
 ### 1.2 Deteksi & Pengosongan Outlier (Metode IQR Dinamis Berbasis Kode)
 
-Sebelum dilakukan imputasi deret waktu, titik pencilan (*outliers*) dievaluasi terlebih dahulu pada populasi data valid agar lonjakan ekstrem tidak merusak bentuk kurva interpolasi.
+Sebelum dilakukan imputasi deret waktu, titik pencilan (_outliers_) dievaluasi terlebih dahulu pada populasi data valid agar lonjakan ekstrem tidak merusak bentuk kurva interpolasi.
 
 Metode **Interquartile Range (IQR)** dihitung secara presisi dengan pustaka Pandas/NumPy:
 
@@ -97,11 +97,11 @@ print(df_outliers.to_string(index=False))
 
 Selain metode statistik tradisional seperti IQR, dilakukan pula evaluasi perbandingan menggunakan **5 metode deteksi outlier berbasis Machine Learning & Probabilitas (PyOD)** dengan taksonomi algoritma yang berbeda:
 
-1. **Isolation Forest (`IForest`)** — *Tree-based Isolation*: Memisahkan data dengan memotong-motong ruang fitur secara acak.
-2. **k-Nearest Neighbors (`KNN`)** — *Distance-based*: Mengukur rata-rata jarak Euclidean ke $k$-tetangga terdekat.
-3. **Local Outlier Factor (`LOF`)** — *Density-based*: Membandingkan kerapatan lokal (*local density*) suatu titik terhadap tetangganya.
-4. **COPOD (Copula-Based Outlier Detection)** — *Probabilistic*: Menggunakan teori kopula *multivariate* untuk menghitung ekor probabilitas tanpa asumsi distribusi.
-5. **ECOD (Empirical Cumulative Distribution Functions)** — *Distribution-based*: Menghitung skor outlier berdasarkan ekor fungsi distribusi kumulatif empiris (*ECDF*).
+1. **Isolation Forest (`IForest`)** — _Tree-based Isolation_: Memisahkan data dengan memotong-motong ruang fitur secara acak.
+2. **k-Nearest Neighbors (`KNN`)** — _Distance-based_: Mengukur rata-rata jarak Euclidean ke $k$-tetangga terdekat.
+3. **Local Outlier Factor (`LOF`)** — _Density-based_: Membandingkan kerapatan lokal (_local density_) suatu titik terhadap tetangganya.
+4. **COPOD (Copula-Based Outlier Detection)** — _Probabilistic_: Menggunakan teori kopula _multivariate_ untuk menghitung ekor probabilitas tanpa asumsi distribusi.
+5. **ECOD (Empirical Cumulative Distribution Functions)** — _Distribution-based_: Menghitung skor outlier berdasarkan ekor fungsi distribusi kumulatif empiris (_ECDF_).
 
 Eksekusi kode Python berikut memproses ke-4 polutan ($\text{CH}_4$, $\text{CO}$, $\text{NO}_2$, dan $\text{SO}_2$) dengan 5 metode Machine Learning terpisah serta menampilkan rincian tanggal pencilan:
 
@@ -124,7 +124,7 @@ for pol in pollutants:
     df_p['date'] = pd.to_datetime(df_p['date'])
     df_valid_p = df_p.dropna(subset=[pol]).copy()
     X_p = df_valid_p[[pol]].values
-    
+
     models_p = {
         'Isolation Forest': IForest(contamination=contamination_rate, random_state=42),
         'KNN': KNN(contamination=contamination_rate),
@@ -132,12 +132,12 @@ for pol in pollutants:
         'COPOD': COPOD(contamination=contamination_rate),
         'ECOD': ECOD(contamination=contamination_rate)
     }
-    
+
     print("==========================================================================")
     print(f"         PERBANDINGAN 5 METODE OUTLIER MACHINE LEARNING — {pol}")
     print("==========================================================================")
     print(f"Total Data Valid {pol}: {len(df_valid_p)} hari\n")
-    
+
     for name, model in models_p.items():
         model.fit(X_p)
         df_valid_p[f'outlier_{name}'] = model.labels_
@@ -160,7 +160,7 @@ for pol in pollutants:
     df_p['date'] = pd.to_datetime(df_p['date'])
     df_valid_p = df_p.dropna(subset=[pol]).copy()
     X_p = df_valid_p[[pol]].values
-    
+
     models_p = {
         'Isolation Forest': IForest(contamination=contamination_rate, random_state=42),
         'KNN': KNN(contamination=contamination_rate),
@@ -168,15 +168,15 @@ for pol in pollutants:
         'COPOD': COPOD(contamination=contamination_rate),
         'ECOD': ECOD(contamination=contamination_rate)
     }
-    
+
     fig, axes = plt.subplots(5, 1, figsize=(12, 10), sharex=True, dpi=120)
-    
+
     for i, (name, model) in enumerate(models_p.items()):
         model.fit(X_p)
         labels = model.labels_
         normal_m = df_valid_p[labels == 0]
         outliers_m = df_valid_p[labels == 1]
-        
+
         ax = axes[i]
         ax.plot(df_valid_p['date'], df_valid_p[pol], color='#bdc3c7', linewidth=0.8, alpha=0.6)
         ax.scatter(normal_m['date'], normal_m[pol], color='#2980b9', s=18, alpha=0.7, label='Normal')
@@ -185,7 +185,7 @@ for pol in pollutants:
         ax.set_ylabel(pol, fontsize=8)
         ax.legend(loc='upper right', fontsize=8)
         ax.grid(True, linestyle=':', alpha=0.5)
-        
+
     plt.xlabel('Tanggal Observasi (24 Aug 2025 - 23 Aug 2026)', fontsize=9)
     plt.suptitle(f'Grafik Deteksi Outlier 5 Metode — Polutan {pol}', fontsize=12, fontweight='bold', y=1.01)
     plt.tight_layout()
@@ -293,11 +293,11 @@ plt.show()
 
 ### Tabel Ringkasan Perubahan Status Sinyal
 
-| Tahapan Data Preparation | Jumlah Data Valid | Jumlah Missing Values (`NaN`) | Jumlah Outliers | Keterangan Status |
-| :--- | :---: | :---: | :---: | :--- |
-| **1. Data Mentah (Raw)** | 192 hari | 173 hari (47.40%) | 11 hari | Ada celah `NaN` & pencilan |
-| **2. Pengosongan Outlier** | 181 hari | 184 hari (50.41%) | 0 hari | Outlier diubah menjadi `NaN` |
-| **3. Imputasi Akhir (Clean)** | **365 hari** | **0 hari (0.00%)** | **0 hari** | **Sinyal mulus 100% utuh** |
+| Tahapan Data Preparation      | Jumlah Data Valid | Jumlah Missing Values (`NaN`) | Jumlah Outliers | Keterangan Status            |
+| :---------------------------- | :---------------: | :---------------------------: | :-------------: | :--------------------------- |
+| **1. Data Mentah (Raw)**      |     192 hari      |       173 hari (47.40%)       |     11 hari     | Ada celah `NaN` & pencilan   |
+| **2. Pengosongan Outlier**    |     181 hari      |       184 hari (50.41%)       |     0 hari      | Outlier diubah menjadi `NaN` |
+| **3. Imputasi Akhir (Clean)** |   **365 hari**    |      **0 hari (0.00%)**       |   **0 hari**    | **Sinyal mulus 100% utuh**   |
 
 ```{figure} ../assets/editor/data_prep/1_co_raw_missing.png
 :width: 100%
@@ -333,13 +333,14 @@ Grafik 4: Sinyal CO Final Setelah Penanganan Outlier & Imputasi Polinomial (Clea
 
 ### 2.1 Konsep Rekayasa Fitur Time Series
 
-Untuk merepresentasikan karakteristik dinamika sinyal konsentrasi $\text{CO}$ selama 365 hari dalam bentuk vektor numerik yang siap diproses oleh algoritma *Machine Learning* dan analisis kemiripan (*similarity analysis*), digunakan pustaka **TSFEL (Time Series Feature Extraction Library)** mengacu pada dokumentasi resmi [TSFEL Feature List Documentation](https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html).
+Untuk merepresentasikan karakteristik dinamika sinyal konsentrasi $\text{CO}$ selama 365 hari dalam bentuk vektor numerik yang siap diproses oleh algoritma _Machine Learning_ dan analisis kemiripan (_similarity analysis_), digunakan pustaka **TSFEL (Time Series Feature Extraction Library)** mengacu pada dokumentasi resmi [TSFEL Feature List Documentation](https://tsfel.readthedocs.io/en/latest/descriptions/feature_list.html).
 
 Sesuai dengan daftar resmi 68 fitur TSFEL (`FEATURE_LIST`), ekstraksi fitur dikelompokkan ke dalam **4 domain utama**:
+
 1. **Domain Statistik**: Mengukur pemusatan, sebaran, kemiringan, ECDF, dan distribusi probabilitas sinyal.
 2. **Domain Temporal**: Mengukur sifat linier, autokorelasi, perlintasan nol, dan durasi fluktuasi dalam domain waktu.
 3. **Domain Spektral**: Mengukur distribusi energi spektrogram, MFCC, LPCC, Wavelet, dan frekuensi sinyal (FFT).
-4. **Domain Fraktal**: Menganalisis ketidakteraturan, kompleksitas *self-similarity* (DFA, Hurst Exponent, Higuchi, Petrosian, MSE).
+4. **Domain Fraktal**: Menganalisis ketidakteraturan, kompleksitas _self-similarity_ (DFA, Hurst Exponent, Higuchi, Petrosian, MSE).
 
 - **Output File CSV**: Matriks presisi 68 fitur TSFEL disimpan ke **`data/csv/features/CO_tsfel_features.csv`** dengan format header `f1_abs_energy` hingga `f68_zero_cross`.
 
@@ -349,417 +350,485 @@ Sesuai dengan daftar resmi 68 fitur TSFEL (`FEATURE_LIST`), ekstraksi fitur dike
 
 Berikut adalah penjelasan detail komprehensif untuk **seluruh 68 fitur TSFEL** yang diekstrak, mencakup **konsep fitur, alasan penggunaan pada sinyal CO, rumus matematis LaTeX, dan interpretasi hasil** yang dikelompokkan ke dalam **4 domain utama**:
 
-### 3.1 Domain Statistik (*Statistical Domain*) (22 Fitur)
+### 3.1 Domain Statistik (_Statistical Domain_) (22 Fitur)
 
 #### **f1**: `f1_abs_energy`
+
 - **Apa sebenarnya fitur ini?**: Akumulasi total energi mutlak sinyal CO.
 - **Kenapa fitur ini digunakan?**: Mengukur magnitudo keseluruhan akumulasi pencemaran CO selama kurun waktu pengamatan.
 - **Rumus Matematis LaTeX**: $E = \sum_{i=1}^{N} x_i^2$
 - **Interpretasi Hasil**: Nilai energi tinggi menunjukkan durasi konsentrasi CO tinggi yang berkelanjutan.
 
 #### **f4**: `f4_average_power`
+
 - **Apa sebenarnya fitur ini?**: Rata-rata daya kuadrat sinyal per satuan waktu harian.
 - **Kenapa fitur ini digunakan?**: Memberikan gambaran intensitas daya emisi polusi harian rata-rata tanpa terpengaruh jumlah hari.
 - **Rumus Matematis LaTeX**: $P = \frac{1}{N} \sum_{i=1}^{N} x_i^2$
 - **Interpretasi Hasil**: Indikator tingkat beban emisi rata-rata harian di Kecamatan Bungah.
 
 #### **f6**: `f6_calc_max`
+
 - **Apa sebenarnya fitur ini?**: Nilai konsentrasi CO tertinggi yang tercatat dalam 365 hari.
 - **Kenapa fitur ini digunakan?**: Menandai puncak ekstrem krisis kualitas udara tertinggi.
 - **Rumus Matematis LaTeX**: $x_{\max} = \max(x_1, x_2, \dots, x_N)$
 - **Interpretasi Hasil**: Menjadi batas atas paparan bahaya pencemaran CO.
 
 #### **f7**: `f7_calc_mean`
+
 - **Apa sebenarnya fitur ini?**: Rata-rata aritmatika konsentrasi CO harian.
 - **Kenapa fitur ini digunakan?**: Baseline standar polusi udara tahunan wilayah pengamatan.
 - **Rumus Matematis LaTeX**: $\bar{x} = \frac{1}{N} \sum_{i=1}^{N} x_i$
 - **Interpretasi Hasil**: Menggambarkan kualitas udara rata-rata sehari-hari.
 
 #### **f8**: `f8_calc_median`
+
 - **Apa sebenarnya fitur ini?**: Nilai tengah distribusi konsentrasi CO.
 - **Kenapa fitur ini digunakan?**: Tahan terhadap pencilan lonjakan singkat emisi industri.
 - **Rumus Matematis LaTeX**: $\tilde{x} = \text{median}(x_1, x_2, \dots, x_N)$
 - **Interpretasi Hasil**: Representasi posisi tengah data yang robus dari skewness.
 
 #### **f9**: `f9_calc_min`
+
 - **Apa sebenarnya fitur ini?**: Nilai konsentrasi CO terendah dalam 365 hari.
 - **Kenapa fitur ini digunakan?**: Menunjukkan kualitas udara paling bersih/baseline latar belakang alami.
 - **Rumus Matematis LaTeX**: $x_{\min} = \min(x_1, x_2, \dots, x_N)$
 - **Interpretasi Hasil**: Ambang minimum polusi lingkungan.
 
 #### **f10**: `f10_calc_std`
+
 - **Apa sebenarnya fitur ini?**: Standar deviasi penyebaran nilai CO dari rata-rata.
 - **Kenapa fitur ini digunakan?**: Mengukur tingkat variabilitas dan gejolak kestabilan polusi harian.
 - **Rumus Matematis LaTeX**: $s = \sqrt{\frac{1}{N-1}\sum_{i=1}^{N} (x_i - \bar{x})^2}$
 - **Interpretasi Hasil**: Semakin tinggi std, semakin tidak stabil kualitas udara.
 
 #### **f11**: `f11_calc_var`
+
 - **Apa sebenarnya fitur ini?**: Variansi atau kuadrat penyebaran data CO.
 - **Kenapa fitur ini digunakan?**: Memberikan bobot lebih besar pada variasi fluktuasi emisi ekstrem.
 - **Rumus Matematis LaTeX**: $s^2 = \frac{1}{N-1}\sum_{i=1}^{N} (x_i - \bar{x})^2$
 - **Interpretasi Hasil**: Ukuran dispersi kuadratik populasi sinyal.
 
 #### **f14**: `f14_ecdf`
+
 - **Apa sebenarnya fitur ini?**: Fungsi Distribusi Kumulatif Empiris sinyal CO.
 - **Kenapa fitur ini digunakan?**: Menjelaskan proporsi kumulatif hari yang berada di bawah ambang tertentu.
 - **Rumus Matematis LaTeX**: $F(x) = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(x_i \le x)$
 - **Interpretasi Hasil**: Vektor sebaran probabilitas kumulatif.
 
 #### **f15**: `f15_ecdf_percentile`
+
 - **Apa sebenarnya fitur ini?**: Nilai kuantil persentil spesifik dari ECDF.
 - **Kenapa fitur ini digunakan?**: Menentukan batas persentil polusi (misal persentil ke-50 atau ke-90).
 - **Rumus Matematis LaTeX**: $Q_p = \inf \{x : F(x) \ge p\}$
 - **Interpretasi Hasil**: Ambang batas konsentrasi CO pada persentil tertentu.
 
 #### **f16**: `f16_ecdf_percentile_count`
+
 - **Apa sebenarnya fitur ini?**: Jumlah hari yang konsentrasinya di bawah persentil ECDF.
 - **Kenapa fitur ini digunakan?**: Menghitung frekuensi hari dengan kategori kualitas udara tertentu.
 - **Rumus Matematis LaTeX**: $N_p = \sum_{i=1}^{N} \mathbb{I}(x_i \le Q_p)$
 - **Interpretasi Hasil**: Jumlah akumulasi sampel hari.
 
 #### **f17**: `f17_ecdf_slope`
+
 - **Apa sebenarnya fitur ini?**: Kemiringan kenaikan kumulatif ECDF antara dua persentil.
 - **Kenapa fitur ini digunakan?**: Mengukur kerapatan sebaran data pada interval konsentrasi tertentu.
 - **Rumus Matematis LaTeX**: $\text{Slope}_{\text{ECDF}} = \frac{F(p_2) - F(p_1)}{x_{p2} - x_{p1}}$
 - **Interpretasi Hasil**: Menunjukkan seberapa cepat akumulasi probabilitas naik.
 
 #### **f18**: `f18_entropy`
+
 - **Apa sebenarnya fitur ini?**: Entropi Shannon dari distribusi amplitudo sinyal.
 - **Kenapa fitur ini digunakan?**: Mengukur tingkat ketidakpastian / ketidakacakan distribusi konsentrasi CO.
 - **Rumus Matematis LaTeX**: $H(x) = -\sum_{i=1}^{K} p(x_i) \log_2 p(x_i)$
 - **Interpretasi Hasil**: Entropi tinggi berarti distribusi konsentrasi sangat acak dan tersebar.
 
 #### **f21**: `f21_hist_mode`
+
 - **Apa sebenarnya fitur ini?**: Nilai modus (nilai paling sering muncul) pada histogram CO.
 - **Kenapa fitur ini digunakan?**: Mengetahui tingkat konsentrasi CO yang paling dominan dirasakan sehari-hari.
 - **Rumus Matematis LaTeX**: $\text{Mode}(x) = \arg\max_b \text{count}(b)$
 - **Interpretasi Hasil**: Titik kerapatan puncak populasi sinyal.
 
 #### **f24**: `f24_interq_range`
+
 - **Apa sebenarnya fitur ini?**: Rentang antarkuartil ($Q_3 - Q_1$).
 - **Kenapa fitur ini digunakan?**: Ukuran sebaran 50% data tengah yang tahan terhadap outlier ekstrem.
 - **Rumus Matematis LaTeX**: $\text{IQR} = Q_3 - Q_1$
 - **Interpretasi Hasil**: Rentang variasi konsentrasi CO normal.
 
 #### **f25**: `f25_kurtosis`
+
 - **Apa sebenarnya fitur ini?**: Keruncingan distribusi data (ekor distribusi).
 - **Kenapa fitur ini digunakan?**: Mendeteksi seberapa berat ekor distribusi data CO akibat adanya spike pencilan emisi.
 - **Rumus Matematis LaTeX**: $K = \frac{\frac{1}{N}\sum (x_i - \bar{x})^4}{s^4} - 3$
 - **Interpretasi Hasil**: $K > 0$ (leptokurtik) menandakan frekuensi insiden lonjakan ekstrem tinggi.
 
 #### **f26**: `f26_lempel_ziv`
+
 - **Apa sebenarnya fitur ini?**: Kompleksitas kompresi Lempel-Ziv sinyal terbinarisasi.
 - **Kenapa fitur ini digunakan?**: Mengukur tingkat kerumitan urutan perubahan pola polusi.
 - **Rumus Matematis LaTeX**: $C_{LZ} = \frac{L_z}{N / \log_2 N}$
 - **Interpretasi Hasil**: Nilai mendekati 1 menunjukkan pola sinyal sangat bervariasi dan kompleks.
 
 #### **f31**: `f31_mean_abs_deviation`
+
 - **Apa sebenarnya fitur ini?**: Rata-rata deviasi mutlak sampel terhadap mean.
 - **Kenapa fitur ini digunakan?**: Mengukur sebaran data yang lebih stabil dibanding variansi kuadrat.
 - **Rumus Matematis LaTeX**: $\text{MAD} = \frac{1}{N}\sum_{i=1}^{N} |x_i - \bar{x}|$
 - **Interpretasi Hasil**: Rata-rata simpangan absolut dari nilai tengah.
 
 #### **f34**: `f34_median_abs_deviation`
+
 - **Apa sebenarnya fitur ini?**: Median deviasi mutlak dari nilai median.
 - **Kenapa fitur ini digunakan?**: Estimator sebaran data yang paling robus dari pencilan.
 - **Rumus Matematis LaTeX**: $\text{MAD}_{med} = \text{median}(|x_i - \tilde{x}|)$
 - **Interpretasi Hasil**: Tingkat simpangan robus populasi CO.
 
 #### **f43**: `f43_pk_pk_distance`
+
 - **Apa sebenarnya fitur ini?**: Jarak antara nilai maksimum dan minimum ($x_{\max} - x_{\min}$).
 - **Kenapa fitur ini digunakan?**: Mengukur rentang total rentang dinamis konsentrasi CO.
 - **Rumus Matematis LaTeX**: $\text{P2P} = x_{\max} - x_{\min}$
 - **Interpretasi Hasil**: Lebar jangkauan rentang pencemaran tahunan.
 
 #### **f46**: `f46_rms`
+
 - **Apa sebenarnya fitur ini?**: Root Mean Square (nilai efektif sinyal).
 - **Kenapa fitur ini digunakan?**: Mengukur kekuatan magnitudo sinyal secara konsisten.
 - **Rumus Matematis LaTeX**: $\text{RMS} = \sqrt{\frac{1}{N}\sum_{i=1}^{N} x_i^2}$
 - **Interpretasi Hasil**: Nilai konsentrasi efektif CO harian.
 
 #### **f47**: `f47_skewness`
+
 - **Apa sebenarnya fitur ini?**: Kemiringan asimetri distribusi data CO.
 - **Kenapa fitur ini digunakan?**: Mengetahui apakah data lebih sering melonjak tinggi (skewness positif).
 - **Rumus Matematis LaTeX**: $S = \frac{\frac{1}{N}\sum (x_i - \bar{x})^3}{s^3}$
 - **Interpretasi Hasil**: Skewness positif menandakan mayoritas hari bersih dengan sesekali spike tinggi.
 
-### 3.2 Domain Temporal (*Temporal Domain*) (14 Fitur)
+### 3.2 Domain Temporal (_Temporal Domain_) (14 Fitur)
 
 #### **f2**: `f2_auc`
+
 - **Apa sebenarnya fitur ini?**: Total luas di bawah kurva sinyal waktu CO menggunakan aturan trapesium.
 - **Kenapa fitur ini digunakan?**: Mengakumulasi total paparan polutan CO dalam kurun waktu 365 hari.
 - **Rumus Matematis LaTeX**: $\text{AUC} = \sum_{i=1}^{N-1} \frac{x_i + x_{i+1}}{2} \Delta t$
 - **Interpretasi Hasil**: Total kuantitas paparan emisi kumulatif.
 
 #### **f3**: `f3_autocorr`
+
 - **Apa sebenarnya fitur ini?**: Titik peluruhan autokorelasi sinyal ($1/e$ crossing).
 - **Kenapa fitur ini digunakan?**: Mengukur seberapa kuat konsentrasi hari ini mempengaruhi hari-hari berikutnya (memori temporal).
 - **Rumus Matematis LaTeX**: $R(\tau) = \sum_{i=1}^{N-\tau} x_i x_{i+\tau}$
 - **Interpretasi Hasil**: Menunjukkan durasi keberlanjutan pola polusi.
 
 #### **f5**: `f5_calc_centroid`
+
 - **Apa sebenarnya fitur ini?**: Pusat berat (pusat massa) sinyal pada sumbu waktu.
 - **Kenapa fitur ini digunakan?**: Mengetahui kapan puncak akumulasi emisi CO terjadi (di awal, tengah, atau akhir tahun).
 - **Rumus Matematis LaTeX**: $C_t = \frac{\sum_{i=1}^{N} i \cdot x_i}{\sum_{i=1}^{N} x_i}$
 - **Interpretasi Hasil**: Titik berat waktu konsentrasi emisi terbanyak.
 
 #### **f13**: `f13_distance`
+
 - **Apa sebenarnya fitur ini?**: Panjang lintasan Euclidean kurva sinyal dari waktu ke waktu.
 - **Kenapa fitur ini digunakan?**: Mengukur tingkat kerapatan dan gejolak dinamika perubahan harian sinyal.
 - **Rumus Matematis LaTeX**: $D = \sum_{i=1}^{N-1} \sqrt{1 + (x_{i+1} - x_i)^2}$
 - **Interpretasi Hasil**: Sinyal dengan grafik sangat bergigi/gejolak memiliki distance tinggi.
 
 #### **f32**: `f32_mean_abs_diff`
+
 - **Apa sebenarnya fitur ini?**: Rata-rata selisih mutlak antara hari $i+1$ dan hari $i$.
 - **Kenapa fitur ini digunakan?**: Mengukur laju perubahan laju polusi antar-hari.
 - **Rumus Matematis LaTeX**: $\overline{|\Delta x|} = \frac{1}{N-1}\sum_{i=1}^{N-1} |x_{i+1} - x_i|$
 - **Interpretasi Hasil**: Menggambarkan volatilitas transisi harian.
 
 #### **f33**: `f33_mean_diff`
+
 - **Apa sebenarnya fitur ini?**: Rata-rata selisih linier per pergerakan hari.
 - **Kenapa fitur ini digunakan?**: Mengukur tren arah pergerakan sinyal secara keseluruhan.
 - **Rumus Matematis LaTeX**: $\overline{\Delta x} = \frac{x_N - x_1}{N-1}$
 - **Interpretasi Hasil**: Positif berarti ada tren kenaikan emisi secara jangka panjang.
 
 #### **f35**: `f35_median_abs_diff`
+
 - **Apa sebenarnya fitur ini?**: Median selisih mutlak antar hari yang berurutan.
 - **Kenapa fitur ini digunakan?**: Laju pergeseran harian yang robus terhadap fluktuasi ekstrem sesaat.
 - **Rumus Matematis LaTeX**: $\widetilde{|\Delta x|} = \text{median}(|x_{i+1} - x_i|)$
 - **Interpretasi Hasil**: Variasi perubahan harian tipikal.
 
 #### **f36**: `f36_median_diff`
+
 - **Apa sebenarnya fitur ini?**: Median selisih linier antar hari.
 - **Kenapa fitur ini digunakan?**: Tren pergerakan harian yang paling umum terjadi.
 - **Rumus Matematis LaTeX**: $\widetilde{\Delta x} = \text{median}(x_{i+1} - x_i)$
 - **Interpretasi Hasil**: Arah tren harian tipikal.
 
 #### **f40**: `f40_negative_turning`
+
 - **Apa sebenarnya fitur ini?**: Jumlah titik lembah lokal ($x_i < x_{i-1} \land x_i < x_{i+1}$).
 - **Kenapa fitur ini digunakan?**: Menghitung berapa kali sinyal mengalami pemulihan/penurunan kualitas udara.
 - **Rumus Matematis LaTeX**: $N_- = \sum \mathbb{I}(x_i < x_{i-1} \land x_i < x_{i+1})$
 - **Interpretasi Hasil**: Frekuensi penurunan titik polusi.
 
 #### **f41**: `f41_neighbourhood_peaks`
+
 - **Apa sebenarnya fitur ini?**: Jumlah puncak lokal dalam jendela tetangga tertentu.
 - **Kenapa fitur ini digunakan?**: Mendeteksi berapa banyak episoda gelombang emisi tinggi yang terjadi.
 - **Rumus Matematis LaTeX**: $N_p = \sum \mathbb{I}(x_i > \text{tetangga})$
 - **Interpretasi Hasil**: Jumlah peristiwa lonjakan lokal.
 
 #### **f44**: `f44_positive_turning`
+
 - **Apa sebenarnya fitur ini?**: Jumlah titik puncak lokal ($x_i > x_{i-1} \land x_i > x_{i+1}$).
 - **Kenapa fitur ini digunakan?**: Menghitung frekuensi terjadinya titik balik kenaikan emisi.
 - **Rumus Matematis LaTeX**: $N_+ = \sum \mathbb{I}(x_i > x_{i-1} \land x_i > x_{i+1})$
 - **Interpretasi Hasil**: Jumlah puncak fluktuasi sinyal.
 
 #### **f48**: `f48_slope`
+
 - **Apa sebenarnya fitur ini?**: Kemiringan garis regresi linier sinyal terhadap waktu.
 - **Kenapa fitur ini digunakan?**: Mengetahui laju tren peningkatan atau penurunan CO per hari secara keseluruhan.
 - **Rumus Matematis LaTeX**: $\beta_1 = \frac{\sum (t_i - \bar{t})(x_i - \bar{x})}{\sum (t_i - \bar{t})^2}$
 - **Interpretasi Hasil**: Slope positif berarti polusi beresiko meningkat seiring waktu.
 
 #### **f62**: `f62_sum_abs_diff`
+
 - **Apa sebenarnya fitur ini?**: Total akumulasi perubahan mutlak antar-hari.
 - **Kenapa fitur ini digunakan?**: Mengukur total energi aktivitas dinamika pergerakan sinyal.
 - **Rumus Matematis LaTeX**: $\text{SAD} = \sum_{i=1}^{N-1} |x_{i+1} - x_i|$
 - **Interpretasi Hasil**: Total gejolak pergerakan sinyal sepanjang tahun.
 
 #### **f68**: `f68_zero_cross`
+
 - **Apa sebenarnya fitur ini?**: Laju perlintasan sinyal terhadap nilai rata-rata/nol.
 - **Kenapa fitur ini digunakan?**: Mengukur frekuensi sinyal berganti dari di atas rerata ke di bawah rerata.
 - **Rumus Matematis LaTeX**: $\text{ZCR} = \frac{1}{N-1}\sum \mathbb{I}((x_i - \bar{x})(x_{i+1} - \bar{x}) < 0)$
 - **Interpretasi Hasil**: Semakin tinggi ZCR, semakin sering sinyal bolak-balik menyeberangi rata-rata.
 
-### 3.3 Domain Spektral (*Spectral Domain*) (26 Fitur)
+### 3.3 Domain Spektral (_Spectral Domain_) (26 Fitur)
 
 #### **f19**: `f19_fundamental_frequency`
+
 - **Apa sebenarnya fitur ini?**: Frekuensi utama (komponen dasar) dengan energi terbesar.
 - **Kenapa fitur ini digunakan?**: Mendeteksi siklus polusi alami utama (misal siklus mingguan atau bulanan).
 - **Rumus Matematis LaTeX**: $f_0 = \arg\max_f |X(f)|$
 - **Interpretasi Hasil**: Frekuensi gelombang paling dominan.
 
 #### **f22**: `f22_human_range_energy`
+
 - **Apa sebenarnya fitur ini?**: Rasio energi spektral pada pita frekuensi aktivitas manusia.
 - **Kenapa fitur ini digunakan?**: Mengisolasi energi fluktuasi yang disebabkan oleh ritme aktivitas antropogenik/industri.
 - **Rumus Matematis LaTeX**: $E_{\text{human}} = \frac{\sum_{f \in \text{human}} |X(f)|^2}{\sum |X(f)|^2}$
 - **Interpretasi Hasil**: Persentase kontribusi fluktuasi aktivitas manusia.
 
 #### **f27**: `f27_lpcc`
+
 - **Apa sebenarnya fitur ini?**: Koefisien Cepstral Prediksi Linier (LPCC).
 - **Kenapa fitur ini digunakan?**: Memodelkan amplop spektral dari respons dinamika emisi.
 - **Rumus Matematis LaTeX**: $c_n = a_n + \sum_{k=1}^{n-1} \frac{k}{n} c_k a_{n-k}$
 - **Interpretasi Hasil**: Fitur representasi bentuk spektrum frekuensi.
 
 #### **f28**: `f28_max_frequency`
+
 - **Apa sebenarnya fitur ini?**: Frekuensi tertinggi yang masih memiliki kandungan daya spektral bermakna.
 - **Kenapa fitur ini digunakan?**: Menentukan batas frekuensi teratas dari komponen gelombang CO.
 - **Rumus Matematis LaTeX**: $f_{\max} = \sup \{f : |X(f)|^2 > \epsilon\}$
 - **Interpretasi Hasil**: Batas frekuensi atas sinyal.
 
 #### **f29**: `f29_max_power_spectrum`
+
 - **Apa sebenarnya fitur ini?**: Nilai kerapatan daya spektral (PSD) maksimum pada spektrum Fourier.
 - **Kenapa fitur ini digunakan?**: Mengetahui puncak intensitas energi frekuensi terbesar.
 - **Rumus Matematis LaTeX**: $P_{\max} = \max_f |X(f)|^2$
 - **Interpretasi Hasil**: Kekuatan maksimum gelombang frekuensi dominan.
 
 #### **f37**: `f37_median_frequency`
+
 - **Apa sebenarnya fitur ini?**: Frekuensi yang membagi total daya spektrum menjadi dua bagian sama besar.
 - **Kenapa fitur ini digunakan?**: Indikator posisi tengah distribusi energi spektral.
 - **Rumus Matematis LaTeX**: $\sum_{f=0}^{f_{med}} |X(f)|^2 = \frac{1}{2} \sum_{f=0}^{f_{nyq}} |X(f)|^2$
 - **Interpretasi Hasil**: Titik tengah pemisahan energi spektrum.
 
 #### **f38**: `f38_mfcc`
+
 - **Apa sebenarnya fitur ini?**: Mel-Frequency Cepstral Coefficients (MFCC).
 - **Kenapa fitur ini digunakan?**: Menangkap bentuk enveloped spektral non-linier dari fluktuasi sinyal.
 - **Rumus Matematis LaTeX**: $C_m = \sum_{k=1}^{K} \log(S_k) \cos\left[m \left(k - \frac{1}{2}\right) \frac{\pi}{K}\right]$
 - **Interpretasi Hasil**: Vektor karakteristik spektral halus sinyal.
 
 #### **f45**: `f45_power_bandwidth`
+
 - **Apa sebenarnya fitur ini?**: Lebar pita spektrum yang memuat mayoritas daya sinyal (misal 99%).
 - **Kenapa fitur ini digunakan?**: Mengukur seberapa luas rentang frekuensi yang aktif dalam dinamika CO.
 - **Rumus Matematis LaTeX**: $\text{BW} = f_{\text{high}} - f_{\text{low}}$
 - **Interpretasi Hasil**: Rentang lebar pita energi utama.
 
 #### **f49**: `f49_spectral_centroid`
+
 - **Apa sebenarnya fitur ini?**: Pusat massa (barycenter) spektrum frekuensi sinyal.
 - **Kenapa fitur ini digunakan?**: Menunjukkan apakah energi spektral lebih banyak terkonsentrasi di frekuensi rendah atau tinggi.
 - **Rumus Matematis LaTeX**: $f_c = \frac{\sum f \cdot |X(f)|^2}{\sum |X(f)|^2}$
 - **Interpretasi Hasil**: Centroid tinggi berarti sinyal didominasi fluktuasi cepat (frekuensi tinggi).
 
 #### **f50**: `f50_spectral_decrease`
+
 - **Apa sebenarnya fitur ini?**: Laju penurunan amplitudo spektral seiring bertambahnya frekuensi.
 - **Kenapa fitur ini digunakan?**: Mengukur seberapa cepat daya gelombang melemah pada frekuensi tinggi.
 - **Rumus Matematis LaTeX**: $\text{SD} = \frac{1}{\sum_{k=2}^{K} |X(f_k)|} \sum_{k=2}^{K} \frac{|X(f_k)| - |X(f_1)|}{k-1}$
 - **Interpretasi Hasil**: Menggambarkan kecenderungan peluruhan energi spektrum.
 
 #### **f51**: `f51_spectral_distance`
+
 - **Apa sebenarnya fitur ini?**: Jarak penyebaran spektral terhadap profil spektrum acak.
 - **Kenapa fitur ini digunakan?**: Mengukur kompleksitas struktur bentuk spektrum Fourier sinyal.
 - **Rumus Matematis LaTeX**: $D_{\text{spec}} = \sqrt{\sum (|X(f_k)| - \mu_{\text{spec}})^2}$
 - **Interpretasi Hasil**: Variasi bentuk spektrum frekuensi.
 
 #### **f52**: `f52_spectral_entropy`
+
 - **Apa sebenarnya fitur ini?**: Entropi Shannon dari kerapatan spektrum daya Fourier.
 - **Kenapa fitur ini digunakan?**: Mengukur tingkat keacakan distribusi energi frekuensi (apakah seperti noise atau bernada teratur).
 - **Rumus Matematis LaTeX**: $H_{\text{spec}} = -\sum P(f_k) \log_2 P(f_k)$
 - **Interpretasi Hasil**: Nilai tinggi berarti energi terbagi rata di banyak frekuensi (kompleks/noise).
 
 #### **f53**: `f53_spectral_kurtosis`
+
 - **Apa sebenarnya fitur ini?**: Keruncingan distribusi energi spektral di sekitar centroid.
 - **Kenapa fitur ini digunakan?**: Mendeteksi keberadaan lonjakan puncak frekuensi tajam terisolasi.
 - **Rumus Matematis LaTeX**: $K_{\text{spec}} = \frac{\sum (f - f_c)^4 |X(f)|^2}{\sigma_{\text{spec}}^4 \sum |X(f)|^2}$
 - **Interpretasi Hasil**: Kurtosis spektral tinggi menandakan adanya frekuensi periodik yang sangat kuat.
 
 #### **f54**: `f54_spectral_positive_turning`
+
 - **Apa sebenarnya fitur ini?**: Jumlah puncak lokal pada kurva spektrum daya Fourier.
 - **Kenapa fitur ini digunakan?**: Menghitung berapa banyak komponen frekuensi resonansi berlainan.
 - **Rumus Matematis LaTeX**: $N_{+\text{spec}} = \sum \mathbb{I}(|X(f_k)| > |X(f_{k-1})| \land |X(f_k)| > |X(f_{k+1})|)$
 - **Interpretasi Hasil**: Jumlah puncak harmonic spektrum.
 
 #### **f55**: `f55_spectral_roll_off`
+
 - **Apa sebenarnya fitur ini?**: Frekuensi di mana 85% akumulasi daya spektral terkonsentrasi.
 - **Kenapa fitur ini digunakan?**: Menentukan batas frekuensi yang menampung mayoritas energi sinyal.
 - **Rumus Matematis LaTeX**: $\sum_{f=0}^{f_{\text{roll}}} |X(f)|^2 = 0.85 \sum |X(f)|^2$
 - **Interpretasi Hasil**: Batas spektral 85% energi.
 
 #### **f56**: `f56_spectral_roll_on`
+
 - **Apa sebenarnya fitur ini?**: Frekuensi di mana 15% akumulasi daya spektral awal mulai terbentuk.
 - **Kenapa fitur ini digunakan?**: Menentukan batas frekuensi bawah pembentuk energi awal sinyal.
 - **Rumus Matematis LaTeX**: $\sum_{f=0}^{f_{\text{on}}} |X(f)|^2 = 0.15 \sum |X(f)|^2$
 - **Interpretasi Hasil**: Batas spektral 15% energi awal.
 
 #### **f57**: `f57_spectral_skewness`
+
 - **Apa sebenarnya fitur ini?**: Kemiringan asimetri distribusi spektral di sekitar centroid.
 - **Kenapa fitur ini digunakan?**: Mengetahui ke mana energi spektral lebih condong (ke frekuensi rendah atau tinggi).
 - **Rumus Matematis LaTeX**: $S_{\text{spec}} = \frac{\sum (f - f_c)^3 |X(f)|^2}{\sigma_{\text{spec}}^3 \sum |X(f)|^2}$
 - **Interpretasi Hasil**: Skewness spektral menggambarkan kemiringan spektrum daya.
 
 #### **f58**: `f58_spectral_slope`
+
 - **Apa sebenarnya fitur ini?**: Kemiringan garis regresi penurunan amplitudo spektrum frekuensi.
 - **Kenapa fitur ini digunakan?**: Mengukur laju redaman energi spektral seiring naik frekuensi.
 - **Rumus Matematis LaTeX**: $\beta_{\text{spec}} = \frac{\sum (f_k - \bar{f})(|X(f_k)| - \bar{|X|})}{\sum (f_k - \bar{f})^2}$
 - **Interpretasi Hasil**: Slope spektral negatif menggambarkan penurunan daya standar.
 
 #### **f59**: `f59_spectral_spread`
+
 - **Apa sebenarnya fitur ini?**: Penyebaran (deviasi standar) energi spektram di sekitar centroid.
 - **Kenapa fitur ini digunakan?**: Mengukur seberapa lebar spektrum frekuensi terdistribusi di sekitar titik beratnya.
 - **Rumus Matematis LaTeX**: $\sigma_{\text{spec}} = \sqrt{\frac{\sum (f - f_c)^2 |X(f)|^2}{\sum |X(f)|^2}}$
 - **Interpretasi Hasil**: Penyebaran energi spektral.
 
 #### **f60**: `f60_spectral_variation`
+
 - **Apa sebenarnya fitur ini?**: Fluktuasi variasi bentuk spektrum antar-segmen waktu.
 - **Kenapa fitur ini digunakan?**: Mengukur ketidakstabilan profil frekuensi sepanjang 365 hari.
 - **Rumus Matematis LaTeX**: $V_{\text{spec}} = 1 - \frac{\sum |X_t(f)| |X_{t+1}(f)|}{\sqrt{\sum |X_t(f)|^2 \sum |X_{t+1}(f)|^2}}$
 - **Interpretasi Hasil**: Perubahan kontur spektral seiring waktu.
 
 #### **f61**: `f61_spectrogram_mean_coeff`
+
 - **Apa sebenarnya fitur ini?**: Rata-rata daya spektrogram STFT pada pita frekuensi.
 - **Kenapa fitur ini digunakan?**: Mengukur intensitas rata-rata energi pada matriks waktu-frekuensi.
 - **Rumus Matematis LaTeX**: $\bar{S}(f_k) = \frac{1}{M}\sum_{m=1}^{M} |X(m, f_k)|^2$
 - **Interpretasi Hasil**: Koefisien daya rata-rata spektrogram.
 
 #### **f63**: `f63_wavelet_abs_mean`
+
 - **Apa sebenarnya fitur ini?**: Rata-rata mutlak koefisien Transformasi Wavelet Kontinu (CWT).
 - **Kenapa fitur ini digunakan?**: Mendeteksi energi lokal pada berbagai skala waktu-frekuensi secara presisi.
 - **Rumus Matematis LaTeX**: $\overline{|W(a, b)|} = \frac{1}{N}\sum |W(a, b)|$
 - **Interpretasi Hasil**: Magnitudo respons wavelet skala tertentu.
 
 #### **f64**: `f64_wavelet_energy`
+
 - **Apa sebenarnya fitur ini?**: Total energi kuadrat koefisien Transformasi Wavelet.
 - **Kenapa fitur ini digunakan?**: Mengukur total konsentrasi daya sinyal pada resolusi multiskala.
 - **Rumus Matematis LaTeX**: $E_{\text{wav}} = \sum |W(a, b)|^2$
 - **Interpretasi Hasil**: Kandungan energi wavelet multiresolusi.
 
 #### **f65**: `f65_wavelet_entropy`
+
 - **Apa sebenarnya fitur ini?**: Entropi Shannon dari distribusi energi koefisien Wavelet.
 - **Kenapa fitur ini digunakan?**: Mengukur kompleksitas alokasi energi pada skala waktu-frekuensi.
 - **Rumus Matematis LaTeX**: $H_{\text{wav}} = -\sum p_i \log_2 p_i$
 - **Interpretasi Hasil**: Derajat keacakan sub-band wavelet.
 
 #### **f66**: `f66_wavelet_std`
+
 - **Apa sebenarnya fitur ini?**: Standar deviasi koefisien Transformasi Wavelet.
 - **Kenapa fitur ini digunakan?**: Mengukur variabilitas respons gelombang pada skala wavelet tertentu.
 - **Rumus Matematis LaTeX**: $\sigma_{\text{wav}} = \sqrt{\frac{1}{N}\sum (W_i - \bar{W})^2}$
 - **Interpretasi Hasil**: Variabilitas koefisien wavelet.
 
 #### **f67**: `f67_wavelet_var`
+
 - **Apa sebenarnya fitur ini?**: Variansi kuadrat koefisien Transformasi Wavelet.
 - **Kenapa fitur ini digunakan?**: Mengukur penyebaran daya pada domain skala wavelet.
 - **Rumus Matematis LaTeX**: $\sigma_{\text{wav}}^2 = \frac{1}{N}\sum (W_i - \bar{W})^2$
 - **Interpretasi Hasil**: Dispersi energi wavelet.
 
-### 3.4 Domain Fraktal (*Fractal Domain*) (6 Fitur)
+### 3.4 Domain Fraktal (_Fractal Domain_) (6 Fitur)
 
 #### **f12**: `f12_dfa`
+
 - **Apa sebenarnya fitur ini?**: Detrended Fluctuation Analysis (DFA) sinyal CO.
-- **Kenapa fitur ini digunakan?**: Mengukur eksponen korelasi memori jangka panjang (*long-range temporal dependence*).
+- **Kenapa fitur ini digunakan?**: Mengukur eksponen korelasi memori jangka panjang (_long-range temporal dependence_).
 - **Rumus Matematis LaTeX**: $F(n) = \sqrt{\frac{1}{N}\sum (y(k) - y_n(k))^2} \sim n^\alpha$
 - **Interpretasi Hasil**: $\alpha \approx 0.5$ (white noise), $\alpha > 0.5$ (memori positif/persisten), $\alpha > 1$ (non-stasioner).
 
 #### **f20**: `f20_higuchi_fractal_dimension`
+
 - **Apa sebenarnya fitur ini?**: Dimensi fraktal linier metode Higuchi (HFD).
 - **Kenapa fitur ini digunakan?**: Mengukur tingkat kekasaran dan kompleksitas fraktal sinyal deret waktu non-linier.
 - **Rumus Matematis LaTeX**: $L(k) \sim k^{-D_H}$
 - **Interpretasi Hasil**: Mendekati 1 (sinyal mulus), mendekati 2 (sinyal sangat kasar dan bergejolak).
 
 #### **f23**: `f23_hurst_exponent`
+
 - **Apa sebenarnya fitur ini?**: Eksponen Hurst ($H$) melalui analisis Rescaled Range ($R/S$).
-- **Kenapa fitur ini digunakan?**: Mengetahui sifat keberlanjutan tren (*persistency*) atau pembalikan tren (*anti-persistency*).
+- **Kenapa fitur ini digunakan?**: Mengetahui sifat keberlanjutan tren (_persistency_) atau pembalikan tren (_anti-persistency_).
 - **Rumus Matematis LaTeX**: $\mathbb{E}[R(n)/S(n)] = C n^H$
 - **Interpretasi Hasil**: $H > 0.5$ (tren persisten/berlanjut), $H < 0.5$ (anti-persisten/mean-reverting).
 
 #### **f30**: `f30_maximum_fractal_length`
+
 - **Apa sebenarnya fitur ini?**: Panjang fraktal maksimum pada skala interval terkecil Higuchi.
 - **Kenapa fitur ini digunakan?**: Mengukur titik jenuh batas kompleksitas fraktal sinyal.
 - **Rumus Matematis LaTeX**: $\text{MFL} = \max(L(k))$
 - **Interpretasi Hasil**: Batas maksimum kekasaran skala fraktal.
 
 #### **f39**: `f39_mse`
+
 - **Apa sebenarnya fitur ini?**: Multiscale Entropy (MSE) sinyal.
 - **Kenapa fitur ini digunakan?**: Mengevaluasi kompleksitas dan keteraturan sinyal pada berbagai skala resolusi waktu.
 - **Rumus Matematis LaTeX**: $\text{MSE}(\tau) = \text{SampEn}(y^{(\tau)})$
 - **Interpretasi Hasil**: Tingkat kompleksitas dinamika sinyal antar-skala.
 
 #### **f42**: `f42_petrosian_fractal_dimension`
+
 - **Apa sebenarnya fitur ini?**: Dimensi fraktal metode Petrosian untuk sinyal terbinarisasi.
 - **Kenapa fitur ini digunakan?**: Estimasi cepat kompleksitas fraktal berdasarkan perubahan tanda turunan sinyal.
 - **Rumus Matematis LaTeX**: $D_P = \frac{\log_{10} N}{\log_{10} N + \log_{10} \frac{N}{N + 0.4 N_{\delta}}}$
@@ -768,19 +837,19 @@ Berikut adalah penjelasan detail komprehensif untuk **seluruh 68 fitur TSFEL** y
 ---
 
 > [!NOTE]
-> Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang diekstrak ke dalam file `data/csv/features/CO_tsfel_features.csv`, memberikan landasan analisis yang kuat untuk tahap pemodelan *Machine Learning* dan analisis kemiripan sinyal.
+> Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang diekstrak ke dalam file `data/csv/features/CO_tsfel_features.csv`, memberikan landasan analisis yang kuat untuk tahap pemodelan _Machine Learning_ dan analisis kemiripan sinyal.
 
 ---
 
 ## 4. Evaluasi Perbandingan Clustering K-Means ($k=2$ vs $k=5$) & Deteksi Outlier
 
-Setelah ekstraksi 272 fitur TSFEL dari 19 sampel daerah/mahasiswa dilakukan, pengelompokan (*clustering*) dievaluasi secara komprehensif menggunakan algoritma **K-Means** dalam dua skenario utama jumlah cluster: **$k=2$** (Pemisahan Biner Ekstrem) dan **$k=5$** (Segmentasi Granular Spesifik), baik dengan reduksi dimensi **PCA (19 Komponen Utama: PCA 0 s.d. PCA 18)** maupun **Tanpa PCA (Fitur Utuh)**.
+Setelah ekstraksi 272 fitur TSFEL dari 19 sampel daerah/mahasiswa dilakukan, pengelompokan (_clustering_) dievaluasi menggunakan algoritma **K-Means** dalam dua skenario jumlah cluster: **$k=2$** (pemisahan biner) dan **$k=5$** (segmentasi lebih granular), baik dengan reduksi dimensi **PCA (19 Komponen Utama: PCA 0 s.d. PCA 18)** maupun **Tanpa PCA (fitur utuh)**. Kualitas setiap hasil diukur dengan **Mean Silhouette Coefficient** per cluster dan secara keseluruhan (_overall_).
 
 ---
 
-### 4.1 Visualisasi Workflow KNIME & Scatter Plot Analytics Platform
+### 4.1 Visualisasi Workflow KNIME & Scatter Plot
 
-Proses ekstraksi, pra-pemrosesan, reduksi dimensi PCA, dan pengelompokan K-Means dijalankan menggunakan alur kerja (*workflow*) KNIME Analytics Platform:
+Proses ekstraksi, pra-pemrosesan, reduksi dimensi PCA, dan pengelompokan K-Means dijalankan menggunakan alur kerja (_workflow_) KNIME Analytics Platform:
 
 ```{figure} ../assets/editor/knime/cluster-workflow/workflow.png
 :width: 100%
@@ -789,7 +858,9 @@ Proses ekstraksi, pra-pemrosesan, reduksi dimensi PCA, dan pengelompokan K-Means
 Gambar 4.0: Workflow Clustering K-Means & Reduksi Dimensi PCA pada KNIME Analytics Platform (Imputasi Polinomial)
 ```
 
-Hasil pengelompokan dari alur KNIME berbasis imputasi polinomial disajikan dalam bentuk grafik **Scatter Plot KNIME** yang memetakan sebaran 19 mahasiswa/daerah terhadap label cluster masing-masing:
+Hasil pengelompokan disajikan dalam bentuk **Scatter Plot KNIME** yang memetakan 19 mahasiswa/daerah terhadap label cluster masing-masing, diikuti tabel **Mean Silhouette Coefficient** untuk setiap skenario.
+
+#### 4.1.1 K-Means $k=2$
 
 ```{figure} ../assets/editor/knime/cluster/clusterK2Pca.png
 :width: 100%
@@ -799,7 +870,10 @@ Gambar 4.1: KNIME Scatter Plot K-Means (k=2) Dengan Reduksi Dimensi PCA (19 Komp
 ```
 
 **Penjelasan Gambar 4.1 (K-Means $k=2$ dengan PCA):**
-Pada skenario $k=2$ menggunakan reduksi dimensi PCA 19 komponen (PCA 0 s.d. PCA 18), mayoritas 18 mahasiswa/daerah dikelompokkan ke dalam **`cluster_0`**. Hanya 1 mahasiswa, yaitu **Muhammad Fathul Iman Wahid (Burneh, Bangkalan)**, yang terpisah secara ekstrem ke dalam **`cluster_1`** sebagai pencilan (*outlier*).
+Data terbagi menjadi dua kelompok yang tidak seimbang:
+
+- **`cluster_1`** (kelompok mayoritas, **16 mahasiswa**): Achmad Saiful Fuadi, Ahmad Soleh Majid, Ahmad Ubaidillah Mappattiro, Alif Baiatur Ridhwan El Habibie, Intan Resti Haslindawati, Irwan Dwi Mukhlisin, Kevin Koligombowo Mangaraja, Mohammad Andri Firmansyah, Mohammad Waqidi, Muhammad Ainul Fuady, Muhammad Farhan, Muhammad Ilham, Muhammad Sirul Amin, Raihan Aryanova Narendra, Shofiatul Mahmudah, dan fikri mutawakkil.
+- **`cluster_0`** (kelompok pencilan, **3 mahasiswa**): **Aisya**, **Firman Candra Dwi Nugroho** (Kraton, Bangkalan), dan **Muhammad Fathul Iman Wahid** (Burneh, Bangkalan).
 
 ```{figure} ../assets/editor/knime/cluster/clusterK2TanpaPca.png
 :width: 100%
@@ -809,46 +883,113 @@ Gambar 4.2: KNIME Scatter Plot K-Means (k=2) Tanpa PCA (272 Fitur TSFEL Utuh)
 ```
 
 **Penjelasan Gambar 4.2 (K-Means $k=2$ tanpa PCA):**
-Pada skenario $k=2$ menggunakan 272 fitur TSFEL utuh ter-normalisasi tanpa PCA, hasil pengelompokan menunjukkan konsistensi 100% di mana 18 mahasiswa berada di **`cluster_0`** dan **Muhammad Fathul Iman Wahid (Burneh, Bangkalan)** tetap menjadi outlier tunggal di **`cluster_1`**.
+Dengan 272 fitur TSFEL utuh ter-normalisasi tanpa PCA, keanggotaan cluster sama dengan Gambar 4.1: 16 mahasiswa di kelompok mayoritas dan 3 mahasiswa (Aisya, Firman Candra Dwi Nugroho, Muhammad Fathul Iman Wahid) di kelompok pencilan.
+
+```{figure} ../assets/editor/knime/cluster/k2PCA.png
+:width: 60%
+:align: center
+
+Gambar 4.3: Mean Silhouette Coefficient K-Means (k=2) Dengan PCA
+```
+
+```{figure} ../assets/editor/knime/cluster/k2TanpaPCA.png
+:width: 60%
+:align: center
+
+Gambar 4.4: Mean Silhouette Coefficient K-Means (k=2) Tanpa PCA
+```
+
+**Penjelasan Gambar 4.3 & 4.4 (Silhouette $k=2$):**
+Kedua skenario menghasilkan nilai identik:
+
+| Kelompok                | Anggota | Mean Silhouette |
+| ----------------------- | ------- | --------------- |
+| `cluster_1` (mayoritas) | 16      | 1.000           |
+| `cluster_0` (pencilan)  | 3       | 0.689           |
+| **Overall**             | 19      | **0.951**       |
+
+Nilai _overall_ 0.951 sangat tinggi (mendekati 1), menandakan pemisahan dua kelompok sangat jelas.
+
+#### 4.1.2 K-Means $k=5$
 
 ```{figure} ../assets/editor/knime/cluster/clusterK5Pca.png
 :width: 100%
 :align: center
 
-Gambar 4.3: KNIME Scatter Plot K-Means (k=5) Dengan Reduksi Dimensi PCA
+Gambar 4.5: KNIME Scatter Plot K-Means (k=5) Dengan Reduksi Dimensi PCA
 ```
 
-**Penjelasan Gambar 4.3 (K-Means $k=5$ dengan PCA):**
-Ketika jumlah cluster ditingkatkan menjadi $k=5$ dengan PCA, kelompok mayoritas terurai secara granular menjadi 5 kelompok:
-- **`cluster_2`**: Kelompok utama terbanyak (14 mahasiswa/daerah).
-- **`cluster_4`**: **Firman Candra Dwi Nugroho** (Kraton, Bangkalan).
-- **`cluster_0`**: **Intan Resti Haslindawati** (Kadur, Pamekasan).
-- **`cluster_1`**: **Muhammad Fathul Iman Wahid** (Burneh, Bangkalan).
-- **`cluster_3`**: **Raihan Aryanova Narendra** (Sokobanah).
+**Penjelasan Gambar 4.5 (K-Means $k=5$ dengan PCA):**
+Ketika $k$ ditingkatkan menjadi 5, data terurai menjadi lima kelompok:
+
+| Cluster     | Jumlah | Anggota                                                                                                                                        |
+| ----------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cluster_4` | 6      | Achmad Saiful Fuadi, Ahmad Soleh Majid, Alif Baiatur Ridhwan El Habibie, Irwan Dwi Mukhlisin, Shofiatul Mahmudah, fikri mutawakkil             |
+| `cluster_0` | 6      | Ahmad Ubaidillah Mappattiro, Kevin Koligombowo Mangaraja, Mohammad Andri Firmansyah, Mohammad Waqidi, Muhammad Ilham, Raihan Aryanova Narendra |
+| `cluster_2` | 3      | Aisya, Firman Candra Dwi Nugroho, Muhammad Fathul Iman Wahid                                                                                   |
+| `cluster_3` | 2      | Intan Resti Haslindawati, Muhammad Sirul Amin                                                                                                  |
+| `cluster_1` | 2      | Muhammad Ainul Fuady, Muhammad Farhan                                                                                                          |
 
 ```{figure} ../assets/editor/knime/cluster/clusterK5TanpaPca.png
 :width: 100%
 :align: center
 
-Gambar 4.4: KNIME Scatter Plot K-Means (k=5) Tanpa PCA (272 Fitur TSFEL Utuh)
+Gambar 4.6: KNIME Scatter Plot K-Means (k=5) Tanpa PCA (272 Fitur TSFEL Utuh)
 ```
 
-**Penjelasan Gambar 4.4 (K-Means $k=5$ tanpa PCA):**
-Pengelompokan $k=5$ menggunakan 272 fitur TSFEL utuh tanpa PCA menghasilkan pemetaan yang serupa dengan variasi label cluster yang selaras, menguraikan 19 mahasiswa menjadi 1 kelompok utama dan 4 cluster pencilan spesifik.
+**Penjelasan Gambar 4.6 (K-Means $k=5$ tanpa PCA):**
+Pengelompokan $k=5$ tanpa PCA menghasilkan keanggotaan yang sama persis dengan Gambar 4.5 (6-6-3-2-2 mahasiswa), termasuk label cluster yang selaras.
+
+```{figure} ../assets/editor/knime/cluster/k5PCA.png
+:width: 60%
+:align: center
+
+Gambar 4.7: Mean Silhouette Coefficient K-Means (k=5) Dengan PCA
+```
+
+```{figure} ../assets/editor/knime/cluster/k5TanpaPCA.png
+:width: 60%
+:align: center
+
+Gambar 4.8: Mean Silhouette Coefficient K-Means (k=5) Tanpa PCA
+```
+
+**Penjelasan Gambar 4.7 & 4.8 (Silhouette $k=5$):**
+
+| Cluster     | Anggota | Silhouette (PCA) | Silhouette (Tanpa PCA) |
+| ----------- | ------- | ---------------- | ---------------------- |
+| `cluster_4` | 6       | 0.467            | 0.470                  |
+| `cluster_0` | 6       | -0.125           | -0.128                 |
+| `cluster_2` | 3       | 0.689            | 0.689                  |
+| `cluster_3` | 2       | 0.946            | 0.942                  |
+| `cluster_1` | 2       | 0.976            | 0.976                  |
+| **Overall** | 19      | **0.419**        | **0.419**              |
+
+Cluster kecil (`cluster_1`, `cluster_3`, `cluster_2`) terbentuk sangat kompak (silhouette 0.69-0.98). Sebaliknya, `cluster_0` memiliki silhouette **negatif**, artinya sebagian anggotanya sebenarnya lebih dekat ke cluster lain sehingga batasnya tumpang tindih.
 
 ---
 
-### 4.2 Kesimpulan Perbandingan (=2$ vs =5$) & Pengaruh Reduksi Dimensi PCA (19 Komponen)
+### 4.2 Kesimpulan Perbandingan ($k=2$ vs $k=5$) & Pengaruh Reduksi Dimensi PCA (19 Komponen)
 
-Berdasarkan hasil pemodelan K-Means dan analisis visual Scatter Plot:
+Berdasarkan hasil pemodelan K-Means, scatter plot, dan nilai Silhouette:
 
 1. **Efektivitas Skenario $k=2$**:
-   - Skenario $k=2$ berhasil mengisolasi anomali pencilan utama secara biner: **18 mahasiswa/daerah berada di kelompok mayoritas (`cluster_0`)**, sedangkan **Muhammad Fathul Iman Wahid (Burneh, Bangkalan)** terisolasi secara eksplisit di **`cluster_1`**.
+   - Memisahkan **16 mahasiswa** (kelompok mayoritas, `cluster_1`) dari **3 mahasiswa pencilan** (`cluster_0`): Aisya, Firman Candra Dwi Nugroho, dan Muhammad Fathul Iman Wahid.
+   - Silhouette _overall_ **0.951**: pemisahan sangat kuat dan jelas.
 
 2. **Dinamika Skenario $k=5$**:
-   - Peningkatan nilai $k$ dari 2 menjadi 5 menguraikan kelompok mayoritas menjadi segmentasi yang lebih kaya:
-     - 1 kelompok mayoritas (14 mahasiswa).
-     - 4 cluster pencilan spesifik beranggotakan 1 mahasiswa: **Firman Candra Dwi Nugroho**, **Intan Resti Haslindawati**, **Muhammad Fathul Iman Wahid**, dan **Raihan Aryanova Narendra**.
+   - Kelompok mayoritas terurai menjadi dua cluster berukuran 6 (`cluster_4` dan `cluster_0`), sementara kelompok pencilan $k=2$ tetap utuh sebagai `cluster_2` (3 anggota), ditambah dua pasangan (`cluster_3` dan `cluster_1`).
+   - Silhouette _overall_ turun menjadi **0.419**, terutama akibat `cluster_0` yang bernilai negatif (-0.125 / -0.128). Pemecahan lebih detail ini kurang didukung struktur data.
 
-3. **Peran Reduksi Dimensi PCA**:
-   - PCA (19 komponen utama: PCA 0 s.d. PCA 18) mampu menyerap 100% rasio varians dari 272 fitur TSFEL tanpa kehilangan informasi spasial maupun temporal, menghasilkan struktur cluster yang 100% selaras antara pemodelan dengan PCA dan tanpa PCA.
+3. **Perbandingan Ringkas**:
+
+   | Skenario | Overall Silhouette (PCA) | Overall Silhouette (Tanpa PCA) |
+   | -------- | ------------------------ | ------------------------------ |
+   | $k=2$    | 0.951                    | 0.951                          |
+   | $k=5$    | 0.419                    | 0.419                          |
+
+   Berdasarkan Silhouette, **$k=2$ merupakan pilihan yang lebih baik** untuk data 19 sampel ini; $k=5$ berguna bila diperlukan segmentasi yang lebih rinci, dengan catatan kualitas cluster tidak merata.
+
+4. **Peran Reduksi Dimensi PCA**:
+   - PCA 19 komponen (PCA 0 s.d. PCA 18) mempertahankan seluruh varians dari 272 fitur TSFEL, sehingga **keanggotaan cluster identik** antara skenario dengan PCA dan tanpa PCA, baik pada $k=2$ maupun $k=5$.
+   - Perbedaan hanya muncul pada nilai Silhouette per cluster di $k=5$ (selisih maksimal sekitar 0.004), sedangkan nilai _overall_ tetap sama (0.951 untuk $k=2$ dan 0.419 untuk $k=5$). Dengan demikian PCA tidak mengubah kesimpulan analisis.
