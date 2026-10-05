@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Panduan &amp; Spesifikasi Proyek Tugas Pengganti UTS &#8212; Proyek Sains Data IF 5B</title>
+    <title>Data Preparation — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur &#8212; Proyek Sains Data IF 5B</title>
   
   
   
@@ -60,11 +60,11 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'uts/tugas-uts';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'uts/data-preparation-uts';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Business Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur" href="business-understanding-uts.html" />
-    <link rel="prev" title="Pemetaan dan Klasifikasi Lahan Sawah dan Pemukiman Menggunakan Citra Sentinel-2A" href="../main/pemetaan-lahan.html" />
+    <link rel="next" title="Klasifikasi &amp; Pemetaan Land Use and Land Cover (LULC) Jawa Timur" href="code-klasifikasiLulcJatim.html" />
+    <link rel="prev" title="Data Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur" href="data-understanding-uts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -182,10 +182,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../main/pemetaan-lahan.html">Pemetaan dan Klasifikasi Lahan Sawah dan Pemukiman Menggunakan Citra Sentinel-2A</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Panduan &amp; Spesifikasi Proyek Tugas Pengganti UTS</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="tugas-uts.html">Panduan &amp; Spesifikasi Proyek Tugas Pengganti UTS</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="business-understanding-uts.html">Business Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data-understanding-uts.html">Data Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-preparation-uts.html">Data Preparation — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Data Preparation — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</a></li>
 <li class="toctree-l2"><a class="reference internal" href="code-klasifikasiLulcJatim.html">Klasifikasi &amp; Pemetaan Land Use and Land Cover (LULC) Jawa Timur</a></li>
 </ul>
 </details></li>
@@ -243,7 +243,7 @@
       
       
       
-      <li><a href="../_sources/uts/tugas-uts.md" target="_blank"
+      <li><a href="../_sources/uts/data-preparation-uts.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -327,7 +327,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Panduan & Spesifikasi Proyek Tugas Pengganti UTS</h1>
+    <h1>Data Preparation — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -337,20 +337,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-land-use-and-land-cover-lulc-menggunakan-citra-satelit-optik-streamlit-deployment">Analisis Land Use and Land Cover (LULC) Menggunakan Citra Satelit Optik &amp; Streamlit Deployment</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#business-understanding">1. Business Understanding</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#apakah-itu-land-use-and-land-cover-lulc">1.1 Apakah itu Land Use and Land Cover (LULC)?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-analisis">1.2 Tujuan Analisis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">3. Data Preparation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-nilai-spektral-rekayasa-fitur-feature-engineering">3.1 Ekstraksi Nilai Spektral &amp; Rekayasa Fitur (Feature Engineering)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-spektral-yang-diekstrak">Fitur Spektral yang Diekstrak:</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-tutupan-lahan-5-kelas-klasifikasi">2. Kelas Tutupan Lahan (5 Kelas Klasifikasi)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-understanding-ekstraksi-band-satelit">3. Data Understanding &amp; Ekstraksi Band Satelit</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pemilihan-band-spektral-kunci">3.1 Pemilihan Band Spektral Kunci</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pembagian-data-train-test-berbasis-polygon-polygon-level-split">3.2 Pembagian Data Train-Test Berbasis Polygon (Polygon-Level Split)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekspor-struktur-storage-csv">3.3 Ekspor &amp; Struktur Storage CSV</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tahapan-pengerjaan-proyek-crisp-dm-workflow">4. Tahapan Pengerjaan Proyek (CRISP-DM Workflow)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rencana-fitur-aplikasi-deployment-streamlit">5. Rencana &amp; Fitur Aplikasi Deployment Streamlit</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#peta-jalan-pengerjaan-bertahap-roadmap">6. Peta Jalan Pengerjaan Bertahap (Roadmap)</a></li>
 </ul>
             </nav>
         </div>
@@ -362,126 +357,66 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="panduan-spesifikasi-proyek-tugas-pengganti-uts">
-<h1>Panduan &amp; Spesifikasi Proyek Tugas Pengganti UTS<a class="headerlink" href="#panduan-spesifikasi-proyek-tugas-pengganti-uts" title="Link to this heading">#</a></h1>
-<section id="analisis-land-use-and-land-cover-lulc-menggunakan-citra-satelit-optik-streamlit-deployment">
-<h2>Analisis Land Use and Land Cover (LULC) Menggunakan Citra Satelit Optik &amp; Streamlit Deployment<a class="headerlink" href="#analisis-land-use-and-land-cover-lulc-menggunakan-citra-satelit-optik-streamlit-deployment" title="Link to this heading">#</a></h2>
-<p>Dokumen ini berisi rangkuman instruksi dosen, spesifikasi kebutuhan proyek, arsitektur alur kerja CRISP-DM, serta peta jalan pengerjaan bertahap untuk <strong>Tugas Pengganti Ujian Tengah Semester (UTS)</strong> mata kuliah Penambangan Data &amp; Sains Data (PSD).</p>
-</section>
+  <section class="tex2jax_ignore mathjax_ignore" id="data-preparation-klasifikasi-land-use-and-land-cover-lulc-jawa-timur">
+<h1>Data Preparation — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur<a class="headerlink" href="#data-preparation-klasifikasi-land-use-and-land-cover-lulc-jawa-timur" title="Link to this heading">#</a></h1>
+<p>Dokumen ini menjelaskan tahap <strong>Data Preparation</strong> dalam metodologi CRISP-DM untuk proyek UTS LULC Jawa Timur. Tahap ini mencakup ekstraksi fitur spektral, kalkulasi indeks spektral, pembersihan data, serta pembagian dataset (<em>train-test split</em>) berbasis polygon ID untuk menghindari <em>data leakage</em>.</p>
 <hr class="docutils" />
-<section id="business-understanding">
-<h2>1. Business Understanding<a class="headerlink" href="#business-understanding" title="Link to this heading">#</a></h2>
-<section id="apakah-itu-land-use-and-land-cover-lulc">
-<h3>1.1 Apakah itu Land Use and Land Cover (LULC)?<a class="headerlink" href="#apakah-itu-land-use-and-land-cover-lulc" title="Link to this heading">#</a></h3>
-<ul class="simple">
-<li><p><strong>Land Cover (Penutupan Lahan):</strong> Kenampakan fisik vegetasi, air, tanah, bangunan, atau material permukaan bumi yang terekam oleh sensor satelit (misal: Hutan Mangrove, Air, Bangunan).</p></li>
-<li><p><strong>Land Use (Penggunaan Lahan):</strong> Fungsi pemanfaatan lahan oleh aktivitas manusia (misal: Pertanian/Sawah, Pemukiman, Kawasan Industri).</p></li>
-</ul>
-</section>
-<section id="tujuan-analisis">
-<h3>1.2 Tujuan Analisis<a class="headerlink" href="#tujuan-analisis" title="Link to this heading">#</a></h3>
+<section id="data-preparation">
+<h2>3. Data Preparation<a class="headerlink" href="#data-preparation" title="Link to this heading">#</a></h2>
+<section id="ekstraksi-nilai-spektral-rekayasa-fitur-feature-engineering">
+<h3>3.1 Ekstraksi Nilai Spektral &amp; Rekayasa Fitur (Feature Engineering)<a class="headerlink" href="#ekstraksi-nilai-spektral-rekayasa-fitur-feature-engineering" title="Link to this heading">#</a></h3>
+<p>Data masukan (<em>input features</em>) diambil dari piksel citra satelit Sentinel-2 yang jatuh di dalam poligon sampel.</p>
+<section id="fitur-spektral-yang-diekstrak">
+<h4>Fitur Spektral yang Diekstrak:<a class="headerlink" href="#fitur-spektral-yang-diekstrak" title="Link to this heading">#</a></h4>
 <ol class="arabic simple">
-<li><p><strong>Identifikasi &amp; Pemetaan Otomatis:</strong> Memetakan dan mengklasifikasikan tutupan lahan di wilayah kajian (Provinsi Jawa Timur) secara akurat menggunakan citra satelit optik Sentinel-2.</p></li>
-<li><p><strong>Diferensiasi Khusus Hutan Mangrove:</strong> Membedakan secara spesifik vegetasi <strong>Hutan Mangrove</strong> dengan <strong>Hutan Non-Mangrove</strong> dan <strong>Pertanian</strong> berdasarkan perbedaan respon spektral pada band SWIR (B11), NIR (B08), dan Red (B04).</p></li>
-<li><p><strong>Verifikasi Visual Overlay:</strong> Menampilkan hasil klasifikasi lahan berupa <em>interactive layer overlay</em> di atas citra satelit dasar (<em>basemap</em>) untuk memvalidasi kebenaran label klasifikasi.</p></li>
-<li><p><strong>Deployment Aplikasi Interaktif:</strong> Membangun aplikasi web interaktif berbasis <strong>Streamlit</strong> untuk menyajikan hasil analisis tutupan lahan Jawa Timur secara mudah dan informatif bagi <em>stakeholder</em>.</p></li>
-</ol>
-</section>
-</section>
-<hr class="docutils" />
-<section id="kelas-tutupan-lahan-5-kelas-klasifikasi">
-<h2>2. Kelas Tutupan Lahan (5 Kelas Klasifikasi)<a class="headerlink" href="#kelas-tutupan-lahan-5-kelas-klasifikasi" title="Link to this heading">#</a></h2>
-<p>Digitasi sampel area dilakukan untuk 5 kelas lahan utama:</p>
-<ol class="arabic simple">
-<li><p><strong>Pertanian / Sawah:</strong> Lahan vegetasi musiman dan tanah bercocok tanam.</p></li>
-<li><p><strong>Bangunan / Pemukiman (Built-up):</strong> Area terbangun, perumahan, gedung, dan infrastruktur.</p></li>
-<li><p><strong>Air (Water Bodies):</strong> Sungai, waduk, laut, dan tambak air.</p></li>
-<li><p><strong>Hutan (Non-Mangrove):</strong> Vegetasi pepohonan daratan / hutan dataran tinggi.</p></li>
-<li><p><strong>Hutan Mangrove:</strong> Vegetasi khas pesisir pantai dan muara sungai.</p></li>
-</ol>
-</section>
-<hr class="docutils" />
-<section id="data-understanding-ekstraksi-band-satelit">
-<h2>3. Data Understanding &amp; Ekstraksi Band Satelit<a class="headerlink" href="#data-understanding-ekstraksi-band-satelit" title="Link to this heading">#</a></h2>
-<section id="pemilihan-band-spektral-kunci">
-<h3>3.1 Pemilihan Band Spektral Kunci<a class="headerlink" href="#pemilihan-band-spektral-kunci" title="Link to this heading">#</a></h3>
-<p>Untuk membedakan ke-5 kelas lahan (terutama Hutan Mangrove vs Hutan Darat vs Air vs Bangunan), band satelit yang dipilih adalah:</p>
+<li><p><strong>Raw Bands (5 Fitur):</strong></p>
 <ul class="simple">
-<li><p><strong>Band 11 (SWIR - Shortwave Infrared ~ 1610 nm):</strong> Sangat sensitif terhadap kelembapan tanah, kandungan air daun, serta pembeda tegas antara material bangunan/beton (NDBI tinggi) dan tanah/vegetasi.</p></li>
-<li><p><strong>Band 8 (NIR - Near Infrared ~ 842 nm):</strong> Memiliki reflektansi tinggi pada vegetasi sehat; sangat berguna membedakan vegetasi padat (hutan/mangrove) dengan air/bangunan.</p></li>
-<li><p><strong>Band 4 (Red ~ 665 nm):</strong> Menyerap klorofil tanaman; digunakan bersama NIR untuk menghitung Indeks Vegetasi (<strong>NDVI</strong>).</p></li>
-<li><p><strong>Band 3 (Green ~ 560 nm) &amp; Band 2 (Blue ~ 490 nm):</strong> Digunakan untuk komposit warna alami (<em>True Color</em>) dan perhitungan Indeks Kebasahan/Air (<strong>NDWI</strong>).</p></li>
-</ul>
-</section>
-</section>
-<hr class="docutils" />
-<section id="tahapan-pengerjaan-proyek-crisp-dm-workflow">
-<h2>4. Tahapan Pengerjaan Proyek (CRISP-DM Workflow)<a class="headerlink" href="#tahapan-pengerjaan-proyek-crisp-dm-workflow" title="Link to this heading">#</a></h2>
-<div class="highlight-mermaid notranslate"><div class="highlight"><pre><span></span>flowchart TD
-    A["1. Business Understanding&lt;br&gt;(Definisi LULC &amp; Tujuan Peta Jatim)"] --&gt; B["2. Data Understanding&lt;br&gt;(Digitasi 5 Kelas &amp; Seleksi Band B11, B8, B4)"]
-    B --&gt; C["3. Data Preparation&lt;br&gt;(Ekstraksi Piksel, Indeks NDVI/NDWI/NDBI &amp; Split 70:30)"]
-    C --&gt; D["4. Modeling&lt;br&gt;(Random Forest / Machine Learning Classifier)"]
-    D --&gt; E["5. Evaluation&lt;br&gt;(Confusion Matrix, Akurasi, Kappa &amp; Visual Check)"]
-    E --&gt; F["6. Deployment Streamlit&lt;br&gt;(Layer Toggle Klasifikasi &amp; Basemap Satelit)"]
-</pre></div>
-</div>
-</section>
-<hr class="docutils" />
-<section id="rencana-fitur-aplikasi-deployment-streamlit">
-<h2>5. Rencana &amp; Fitur Aplikasi Deployment Streamlit<a class="headerlink" href="#rencana-fitur-aplikasi-deployment-streamlit" title="Link to this heading">#</a></h2>
-<p>Aplikasi web <strong>Streamlit</strong> yang dibangun akan menyediakan fitur-fitur interaktif berikut:</p>
-<ol class="arabic simple">
-<li><p><strong>Interactive Layer Control (Tampilan Multi-Layer):</strong></p>
-<ul class="simple">
-<li><p><strong>Layer 1:</strong> Hasil Klasifikasi Lahan (Warna khusus per kelas lahan yang ditempel transparan di atas citra satelit).</p></li>
-<li><p><strong>Layer 2:</strong> Peta Satelit Dasar (<em>Basemap Satellite Image</em>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B02</span></code> (Blue)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B03</span></code> (Green)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B04</span></code> (Red)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B08</span></code> (Near-Infrared / NIR)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">B11</span></code> (Shortwave-Infrared / SWIR1)</p></li>
 </ul>
 </li>
-<li><p><strong>Filter Checklist Kelas Interaktif:</strong></p>
+<li><p><strong>Indeks Spektral Kunci (3 Fitur Turunan):</strong></p>
 <ul class="simple">
-<li><p>Pengguna dapat memilih/men-centang kelas lahan tertentu (misal: <em>Centang ‘Hutan Mangrove’ saja</em>).</p></li>
-<li><p>Peta hanya akan menampilkan overlay warna untuk kelas yang dicentang sehingga mudah diverifikasi.</p></li>
-</ul>
-</li>
-<li><p><strong>Dashboard Informasi LULC Jawa Timur:</strong></p>
-<ul class="simple">
-<li><p>Grafik persentase dan estimasi total luas lahan (<span class="math notranslate nohighlight">\(km^2\)</span>) per kelas tutupan lahan.</p></li>
-<li><p>Panel metrik evaluasi model (Akurasi, Cohen’s Kappa, Confusion Matrix).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NDVI</span></code> <span class="math notranslate nohighlight">\(= \frac{B08 - B04}{B08 + B04}\)</span> (Indeks Kerapatan Vegetasi)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NDWI</span></code> <span class="math notranslate nohighlight">\(= \frac{B03 - B08}{B03 + B08}\)</span> (Indeks Kebasahan Air)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NDBI</span></code> <span class="math notranslate nohighlight">\(= \frac{B11 - B08}{B11 + B08}\)</span> (Indeks Area Terbangun / Pemukiman)</p></li>
 </ul>
 </li>
 </ol>
 </section>
-<hr class="docutils" />
-<section id="peta-jalan-pengerjaan-bertahap-roadmap">
-<h2>6. Peta Jalan Pengerjaan Bertahap (Roadmap)<a class="headerlink" href="#peta-jalan-pengerjaan-bertahap-roadmap" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-center"><p>Tahap</p></th>
-<th class="head text-left"><p>Deskripsi Pekerjaan</p></th>
-<th class="head text-center"><p>Status</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-center"><p><strong>Tahap 1</strong></p></td>
-<td class="text-left"><p>Merapikan Spesifikasi &amp; Dokumen <code class="docutils literal notranslate"><span class="pre">uts/tugas-uts.md</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">_toc.yml</span></code></p></td>
-<td class="text-center"><p>Selesai</p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><strong>Tahap 2</strong></p></td>
-<td class="text-left"><p>Menyiapkan GeoJSON 5 Kelas (<code class="docutils literal notranslate"><span class="pre">Pertanian</span></code>, <code class="docutils literal notranslate"><span class="pre">Bangunan</span></code>, <code class="docutils literal notranslate"><span class="pre">Air</span></code>, <code class="docutils literal notranslate"><span class="pre">Hutan</span></code>, <code class="docutils literal notranslate"><span class="pre">Mangrove</span></code>)</p></td>
-<td class="text-center"><p>Selesai</p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><strong>Tahap 3</strong></p></td>
-<td class="text-left"><p>Membuat &amp; Eksekusi Notebook Klasifikasi 5 Kelas (<code class="docutils literal notranslate"><span class="pre">uts/code-klasifikasiLulcJatim.ipynb</span></code>)</p></td>
-<td class="text-center"><p>Selesai</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>| <strong>Tahap 4</strong> | Ekstraksi Band, Indeks Spektral (NDVI/NDWI/NDBI) &amp; Evaluasi Random Forest | Selesai |
-| <strong>Tahap 5</strong> | Pembuatan Aplikasi Streamlit Interaktif (<code class="docutils literal notranslate"><span class="pre">app.py</span></code>) dengan Toggle Layer | Berikutnya |</p>
 </section>
-<div class="toctree-wrapper compound">
-</div>
+<hr class="docutils" />
+<section id="pembagian-data-train-test-berbasis-polygon-polygon-level-split">
+<h3>3.2 Pembagian Data Train-Test Berbasis Polygon (Polygon-Level Split)<a class="headerlink" href="#pembagian-data-train-test-berbasis-polygon-polygon-level-split" title="Link to this heading">#</a></h3>
+<p>Untuk mencegah kebocoran data (<em>spatial autocorrelation data leakage</em>), pembagian data latih (70%) dan data uji (30%) dilakukan di tingkat <strong>Polygon ID</strong>, bukan di tingkat piksel individu.</p>
+<ul class="simple">
+<li><p><strong>Aturan Split:</strong> Stratified Group Split berdasarkan <code class="docutils literal notranslate"><span class="pre">polygon_id</span></code> dan kelas <code class="docutils literal notranslate"><span class="pre">Type</span></code>.</p></li>
+<li><p><strong>Proporsi Split:</strong></p>
+<ul>
+<li><p><strong>Data Latih (Train Set):</strong> 70% polygon (35 polygon per kelas = total 175 polygon).</p></li>
+<li><p><strong>Data Uji (Test Set):</strong> 30% polygon (15 polygon per kelas = total 75 polygon).</p></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<div><p>Piksel dari polygon yang sama <strong>tidak pernah</strong> dipisah ke dalam data latih dan data uji secara bersamaan. Hal ini menjamin evaluasi akurasi model benar-benar objektif pada wilayah yang belum pernah dilihat model (<em>unseen spatial area</em>).</p>
+</div></blockquote>
+</section>
+<hr class="docutils" />
+<section id="ekspor-struktur-storage-csv">
+<h3>3.3 Ekspor &amp; Struktur Storage CSV<a class="headerlink" href="#ekspor-struktur-storage-csv" title="Link to this heading">#</a></h3>
+<p>Hasil pra-pemrosesan data diekspor ke dalam folder <code class="docutils literal notranslate"><span class="pre">uts/data/csv/split_dataset/</span></code>:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">train_polygons.csv</span></code> — Daftar ID polygon latih.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test_polygons.csv</span></code> — Daftar ID polygon uji.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">train_pixels.csv</span></code> — Dataset tingkat piksel untuk pelatihan model Machine Learning.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">test_pixels.csv</span></code> — Dataset tingkat piksel untuk evaluasi performa model.</p></li>
+</ol>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -515,20 +450,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../main/pemetaan-lahan.html"
+       href="data-understanding-uts.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Pemetaan dan Klasifikasi Lahan Sawah dan Pemukiman Menggunakan Citra Sentinel-2A</p>
+        <p class="prev-next-title">Data Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</p>
       </div>
     </a>
     <a class="right-next"
-       href="business-understanding-uts.html"
+       href="code-klasifikasiLulcJatim.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Business Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</p>
+        <p class="prev-next-title">Klasifikasi &amp; Pemetaan Land Use and Land Cover (LULC) Jawa Timur</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -549,20 +484,15 @@ document.write(`
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-land-use-and-land-cover-lulc-menggunakan-citra-satelit-optik-streamlit-deployment">Analisis Land Use and Land Cover (LULC) Menggunakan Citra Satelit Optik &amp; Streamlit Deployment</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#business-understanding">1. Business Understanding</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#apakah-itu-land-use-and-land-cover-lulc">1.1 Apakah itu Land Use and Land Cover (LULC)?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-analisis">1.2 Tujuan Analisis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preparation">3. Data Preparation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-nilai-spektral-rekayasa-fitur-feature-engineering">3.1 Ekstraksi Nilai Spektral &amp; Rekayasa Fitur (Feature Engineering)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#fitur-spektral-yang-diekstrak">Fitur Spektral yang Diekstrak:</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-tutupan-lahan-5-kelas-klasifikasi">2. Kelas Tutupan Lahan (5 Kelas Klasifikasi)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-understanding-ekstraksi-band-satelit">3. Data Understanding &amp; Ekstraksi Band Satelit</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pemilihan-band-spektral-kunci">3.1 Pemilihan Band Spektral Kunci</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pembagian-data-train-test-berbasis-polygon-polygon-level-split">3.2 Pembagian Data Train-Test Berbasis Polygon (Polygon-Level Split)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ekspor-struktur-storage-csv">3.3 Ekspor &amp; Struktur Storage CSV</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tahapan-pengerjaan-proyek-crisp-dm-workflow">4. Tahapan Pengerjaan Proyek (CRISP-DM Workflow)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rencana-fitur-aplikasi-deployment-streamlit">5. Rencana &amp; Fitur Aplikasi Deployment Streamlit</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#peta-jalan-pengerjaan-bertahap-roadmap">6. Peta Jalan Pengerjaan Bertahap (Roadmap)</a></li>
 </ul>
   </nav></div>
 

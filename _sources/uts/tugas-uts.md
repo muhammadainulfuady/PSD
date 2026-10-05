@@ -5,7 +5,7 @@ Dokumen ini berisi rangkuman instruksi dosen, spesifikasi kebutuhan proyek, arsi
 
 ---
 
-## 📌 1. Business Understanding
+## 1. Business Understanding
 
 ### 1.1 Apakah itu Land Use and Land Cover (LULC)?
 - **Land Cover (Penutupan Lahan):** Kenampakan fisik vegetasi, air, tanah, bangunan, atau material permukaan bumi yang terekam oleh sensor satelit (misal: Hutan Mangrove, Air, Bangunan).
@@ -19,17 +19,18 @@ Dokumen ini berisi rangkuman instruksi dosen, spesifikasi kebutuhan proyek, arsi
 
 ---
 
-## 🏷️ 2. Kelas Tutupan Lahan (5 Kelas Klasifikasi)
+## 2. Kelas Tutupan Lahan (5 Kelas Klasifikasi)
 
 Digitasi sampel area dilakukan untuk 5 kelas lahan utama:
-1. 🌾 **Pertanian / Sawah:** Lahan vegetasi musiman dan tanah bercocok tanam.
-2. 🏠 **Bangunan / Pemukiman (Built-up):** Area terbangun, perumahan, gedung, dan infrastruktur.
-3. 💧 **Air (Water Bodies):** Sungai, waduk, laut, dan tambak air.
-4. 🌲 **Hutan (Non-Mangrove):** Vegetasi pepohonan daratan / hutan dataran tinggi.
-5. 🌊 **Hutan Mangrove:** Vegetasi khas pesisir pantai dan muara sungai.
+1. **Pertanian / Sawah:** Lahan vegetasi musiman dan tanah bercocok tanam.
+2. **Bangunan / Pemukiman (Built-up):** Area terbangun, perumahan, gedung, dan infrastruktur.
+3. **Air (Water Bodies):** Sungai, waduk, laut, dan tambak air.
+4. **Hutan (Non-Mangrove):** Vegetasi pepohonan daratan / hutan dataran tinggi.
+5. **Hutan Mangrove:** Vegetasi khas pesisir pantai dan muara sungai.
+
 ---
 
-## 🛰️ 3. Data Understanding & Ekstraksi Band Satelit
+## 3. Data Understanding & Ekstraksi Band Satelit
 
 ### 3.1 Pemilihan Band Spektral Kunci
 Untuk membedakan ke-5 kelas lahan (terutama Hutan Mangrove vs Hutan Darat vs Air vs Bangunan), band satelit yang dipilih adalah:
@@ -40,7 +41,7 @@ Untuk membedakan ke-5 kelas lahan (terutama Hutan Mangrove vs Hutan Darat vs Air
 
 ---
 
-## ⚙️ 4. Tahapan Pengerjaan Proyek (CRISP-DM Workflow)
+## 4. Tahapan Pengerjaan Proyek (CRISP-DM Workflow)
 
 ```mermaid
 flowchart TD
@@ -53,7 +54,7 @@ flowchart TD
 
 ---
 
-## 📊 5. Rencana & Fitur Aplikasi Deployment Streamlit
+## 5. Rencana & Fitur Aplikasi Deployment Streamlit
 
 Aplikasi web **Streamlit** yang dibangun akan menyediakan fitur-fitur interaktif berikut:
 1. **Interactive Layer Control (Tampilan Multi-Layer):**
@@ -68,12 +69,14 @@ Aplikasi web **Streamlit** yang dibangun akan menyediakan fitur-fitur interaktif
 
 ---
 
-## 🗓️ 6. Peta Jalan Pengerjaan Bertahap (Roadmap)
+## 6. Peta Jalan Pengerjaan Bertahap (Roadmap)
 
 | Tahap | Deskripsi Pekerjaan | Status |
 | :---: | :------------------ | :----: |
-| **Tahap 1** | Merapikan Spesifikasi & Dokumen `uts/tugas-uts.md` & `_toc.yml` | ✅ Selesai |
-| **Tahap 2** | Menyiapkan GeoJSON 5 Kelas (`Pertanian`, `Bangunan`, `Air`, `Hutan`, `Mangrove`) | ⏳ Berikutnya |
-| **Tahap 3** | Membuat Notebook Klasifikasi 5 Kelas (`uts/code-uts.ipynb`) | ⏳ Mendatang |
-| **Tahap 4** | Ekstraksi Band (B11, B08, B04 dll), Indeks Spektral & Evaluasi RF | ⏳ Mendatang |
-| **Tahap 5** | Pembuatan Aplikasi Streamlit Interaktif (`app.py`) dengan Toggle Layer | ⏳ Mendatang |
+| **Tahap 1** | Merapikan Spesifikasi & Dokumen `uts/tugas-uts.md` & `_toc.yml` | Selesai |
+| **Tahap 2** | Menyiapkan GeoJSON 5 Kelas (`Pertanian`, `Bangunan`, `Air`, `Hutan`, `Mangrove`) | Selesai |
+| **Tahap 3** | Membuat & Eksekusi Notebook Klasifikasi 5 Kelas (`uts/code-klasifikasiLulcJatim.ipynb`) | Selesai |
+
+| **Tahap 4** | Ekstraksi Band, Indeks Spektral (NDVI/NDWI/NDBI) & Evaluasi Random Forest | Selesai |
+| **Tahap 5** | Pembuatan Aplikasi Streamlit Interaktif (`app.py`) dengan Toggle Layer | Berikutnya |
+
