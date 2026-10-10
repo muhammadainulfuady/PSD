@@ -1,16 +1,11 @@
 """
 Dashboard Klasifikasi Spasial Tutupan Lahan (LULC) Jawa Timur
-Berbasis Sentinel-2A Level-2A & Algoritma Random Forest
+Berbasis Sentinel-2A Level-2A & Algoritma k-Nearest Neighbors (k-NN Scaled)
 
-Styling: Tailwind CSS Native (Scoped Pure CSS, Immune to Script Stripping & Markdown Code Indentation)
-Palet Warna: https://psd-interpolasi.basisdata2-c.my.id/
-  - ink:   #18232F
-  - paper: #F2F5F7
-  - teal:  { 600: #0F766E, 700: #0B5F58, 50: #E7F4F2 }
-  - slate: { 50: #F8FAFC, 100: #F1F5F9, 200: #E2E8F0, 500: #64748B, 600: #475569, 700: #334155 }
+Styling: Tailwind CSS Native (Scoped Pure CSS)
+Palet Warna: psd-interpolasi
 Typography: IBM Plex Sans
-Icons: Heroicons SVG (Strict Inline Sizing, Tanpa Emote)
-Visualisasi: Menampilkan KEDUA Peta Interaktif Secara Bersamaan
+Visualisasi: Peta Interaktif Spasial Tutupan Lahan
 """
 
 from pathlib import Path
@@ -31,13 +26,10 @@ st.set_page_config(
 
 
 # ==============================================================================
-# 2. HEROICONS SVG HELPER FUNCTION (Strict Width & Height, Anti-Overflow)
+# 2. HEROICONS SVG HELPER FUNCTION
 # ==============================================================================
 def heroicon(path_d: str, size: int = 20, color: str = "#0F766E", stroke_width: float = 2.0) -> str:
-    """
-    Menghasilkan tag SVG dengan atribut ukuran eksplisit (HTML & inline CSS),
-    mencegah browser merender SVG berukuran 100% saat kelas CSS terisolasi.
-    """
+    """Menghasilkan tag SVG dengan atribut ukuran eksplisit."""
     return (
         f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="{color}" '
         f'stroke-width="{stroke_width}" stroke-linecap="round" stroke-linejoin="round" '
@@ -65,13 +57,12 @@ D_ADJUST = "M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7
 
 
 # ==============================================================================
-# 3. SCOPED PURE CSS (Palet psd-interpolasi & Bebas Bug Indentasi Markdown)
+# 3. SCOPED PURE CSS
 # ==============================================================================
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
-    /* Global Layout & Typography */
     html, body, [data-testid="stAppViewContainer"], .stApp {
         background-color: #F2F5F7 !important;
         font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
@@ -87,12 +78,10 @@ st.markdown("""
         border-right: 1px solid #E2E8F0 !important;
     }
 
-    /* Strict Rule: Cegah semua SVG membengkak */
     svg {
         max-width: 100% !important;
     }
 
-    /* Card Styling */
     .psd-card {
         background-color: #FFFFFF;
         border: 1px solid #E2E8F0;
@@ -121,7 +110,6 @@ st.markdown("""
         margin: 0;
     }
 
-    /* Badges */
     .psd-badge-teal {
         background-color: #E7F4F2;
         color: #0F766E;
@@ -158,7 +146,6 @@ st.markdown("""
         gap: 0.35rem;
     }
 
-    /* Metric Box */
     .metric-box {
         background-color: #FFFFFF;
         border: 1px solid #E2E8F0;
@@ -202,7 +189,6 @@ st.markdown("""
         margin-top: 0.4rem;
     }
 
-    /* Button Styling */
     .stDownloadButton button, .stButton button {
         background-color: #0F766E !important;
         color: #FFFFFF !important;
@@ -218,7 +204,6 @@ st.markdown("""
         background-color: #0B5F58 !important;
     }
 
-    /* Banner Info */
     .info-banner {
         background-color: #E7F4F2;
         border: 1px solid #99F6E4;
@@ -239,15 +224,15 @@ st.markdown("""
 # 4. HELPER RESOLUSI FILE & CACHING
 # ==============================================================================
 def cari_file(nama_file: str) -> Path | None:
-    """Mencari file aset di berbagai kemungkinan folder."""
+    """Mencari file aset di berbagai lokasi relatif."""
     kandidat = [
         Path(nama_file),
-        Path("maps") / nama_file,
+        Path("deploy") / nama_file,
+        Path("code") / nama_file,
+        Path("../code") / nama_file,
+        Path("../data") / nama_file,
         Path("data") / nama_file,
-        Path("data/Klasifikasi") / nama_file,
-        Path("views/klasifikasi-spasial") / nama_file,
-        Path("data/Klasifikasi/hasil_rf") / nama_file,
-        Path("hasil_rf") / nama_file,
+        Path("maps") / nama_file,
         Path("_static") / nama_file,
     ]
     for path in kandidat:
@@ -280,44 +265,40 @@ with st.sidebar:
     st.markdown(f"""
     <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
         {heroicon(D_GLOBE, size=24, color="#0F766E")}
-        <h2 style="font-size:1.05rem; font-weight:700; color:#18232F; margin:0;">Spasial LULC</h2>
+        <h2 style="font-size:1.05rem; font-weight:700; color:#18232F; margin:0;">Spasial LULC Jawa Timur</h2>
     </div>
     <div style="font-size:0.8rem; color:#475569; padding-bottom:1rem; border-bottom:1px solid #E2E8F0; line-height:1.6;">
-        <p style="margin:0;"><b style="color:#18232F;">Model:</b> Random Forest Classifier</p>
-        <p style="margin:0;"><b style="color:#18232F;">Sensor:</b> Sentinel-2A MSI (ESA CDSE)</p>
-        <p style="margin:0;"><b style="color:#18232F;">Koleksi:</b> Level-2A BOA Surface Reflectance</p>
+        <p style="margin:0;"><b style="color:#18232F;">Model Utama:</b> k-Nearest Neighbors (k-NN Scaled, k=5)</p>
+        <p style="margin:0;"><b style="color:#18232F;">Sensor Satelit:</b> Sentinel-2A MSI (ESA CDSE)</p>
+        <p style="margin:0;"><b style="color:#18232F;">Produk Citra:</b> Level-2A BOA Surface Reflectance</p>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown(f"""
     <div style="margin-top:1rem; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#64748B;">
         {heroicon(D_TAG, size=16, color="#64748B")}
-        <span>6 Kelas Tutupan Lahan</span>
+        <span>5 Kelas Tutupan Lahan</span>
     </div>
     <div style="font-size:0.8rem; line-height:1.75; color:#334155;">
         <div style="display:flex; align-items:center; gap:0.5rem;">
-            <span style="width:11px; height:11px; border-radius:50%; background:#FFD92F; display:inline-block; border:1px solid #CBD5E1;"></span>
+            <span style="width:11px; height:11px; border-radius:50%; background:#1f77b4; display:inline-block; border:1px solid #CBD5E1;"></span>
+            <b>Air</b> <span style="color:#94A3B8; font-size:0.75rem;">(Laut, Sungai, Danau)</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+            <span style="width:11px; height:11px; border-radius:50%; background:#2ca02c; display:inline-block; border:1px solid #CBD5E1;"></span>
+            <b>Hutan Mangrove</b> <span style="color:#94A3B8; font-size:0.75rem;">(Bakau Pesisir)</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+            <span style="width:11px; height:11px; border-radius:50%; background:#006400; display:inline-block; border:1px solid #CBD5E1;"></span>
+            <b>Hutan Non-Mangrove</b> <span style="color:#94A3B8; font-size:0.75rem;">(Vegetasi Rapat)</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+            <span style="width:11px; height:11px; border-radius:50%; background:#d62728; display:inline-block; border:1px solid #CBD5E1;"></span>
+            <b>Pemukiman</b> <span style="color:#94A3B8; font-size:0.75rem;">(Kawasan Terbangun)</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+            <span style="width:11px; height:11px; border-radius:50%; background:#bcbd22; display:inline-block; border:1px solid #CBD5E1;"></span>
             <b>Sawah</b> <span style="color:#94A3B8; font-size:0.75rem;">(Lahan Pertanian)</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:0.5rem;">
-            <span style="width:11px; height:11px; border-radius:50%; background:#E41A1C; display:inline-block; border:1px solid #CBD5E1;"></span>
-            <b>Bangunan</b> <span style="color:#94A3B8; font-size:0.75rem;">(Kawasan Terbangun)</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:0.5rem;">
-            <span style="width:11px; height:11px; border-radius:50%; background:#2E7D32; display:inline-block; border:1px solid #CBD5E1;"></span>
-            <b>Hutan</b> <span style="color:#94A3B8; font-size:0.75rem;">(Lahan Hijau Rapat)</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:0.5rem;">
-            <span style="width:11px; height:11px; border-radius:50%; background:#4FC3F7; display:inline-block; border:1px solid #CBD5E1;"></span>
-            <b>Danau</b> <span style="color:#94A3B8; font-size:0.75rem;">(Air Pedalaman)</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:0.5rem;">
-            <span style="width:11px; height:11px; border-radius:50%; background:#0D47A1; display:inline-block; border:1px solid #CBD5E1;"></span>
-            <b>Laut</b> <span style="color:#94A3B8; font-size:0.75rem;">(Perairan Terbuka)</span>
-        </div>
-        <div style="display:flex; align-items:center; gap:0.5rem;">
-            <span style="width:11px; height:11px; border-radius:50%; background:#8E44AD; display:inline-block; border:1px solid #CBD5E1;"></span>
-            <b>Mangrove</b> <span style="color:#94A3B8; font-size:0.75rem;">(Bakau Pesisir)</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -334,21 +315,19 @@ with st.sidebar:
     mode_tampilan = st.radio(
         "Pilihan Tata Letak Peta:",
         options=[
+            "Tampilkan Peta Evaluasi Spasial",
             "Tampilkan Kedua Peta (Atas - Bawah)",
-            "Berdampingan (2 Kolom Bersisian)",
-            "Hanya Peta 1 (Evaluasi Poligon)",
-            "Hanya Peta 2 (Regional Jawa Timur)"
         ],
         index=0,
-        help="Pilih format penyajian peta interaktif."
+        help="Pilih format penyajikan peta interaktif."
     )
 
     tinggi_peta = st.slider(
         "Tinggi Frame Peta (px):",
-        min_value=450,
+        min_value=500,
         max_value=900,
-        value=650,
-        step=25,
+        value=680,
+        step=20,
         help="Sesuaikan tinggi vertikal tampilan peta."
     )
 
@@ -356,9 +335,9 @@ with st.sidebar:
     <div class="info-banner" style="margin-top:1.25rem;">
         {heroicon(D_INFO, size=18, color="#0F766E")}
         <div>
-            <b>Kedua Peta Aktif</b>
+            <b>Evaluasi Murni Data Uji</b>
             <div style="font-size:0.75rem; margin-top:0.25rem; line-height:1.4;">
-                Peta 1 menyajikan evaluasi sampel poligon, dan Peta 2 menyajikan hasil inferensi regional per piksel se-Jawa Timur.
+                Peta menyajikan evaluasi spasial pada 75 Poligon Data Testing (30%) secara independen.
             </div>
         </div>
     </div>
@@ -366,7 +345,7 @@ with st.sidebar:
 
 
 # ==============================================================================
-# 6. HEADER UTAMA & METRIK (Menggunakan st.columns Tanpa Indentasi Markdown)
+# 6. HEADER UTAMA & METRIK
 # ==============================================================================
 st.markdown(f"""
 <header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:1rem; margin-bottom:1.5rem;">
@@ -378,17 +357,17 @@ st.markdown(f"""
             </h1>
         </div>
         <p style="font-size:0.875rem; color:#475569; margin:0.35rem 0 0 0; max-width:48rem; line-height:1.5;">
-            Visualisasi spasial berbasis citra satelit Sentinel-2A Level-2A dan algoritma Random Forest untuk pemetaan 6 kelas tutupan lahan di seluruh wilayah Provinsi Jawa Timur.
+            Visualisasi spasial berbasis citra satelit Sentinel-2A Level-2A dan algoritma k-Nearest Neighbors (k-NN Scaled) untuk pemetaan 5 kelas tutupan lahan di seluruh wilayah Provinsi Jawa Timur.
         </p>
     </div>
     <div class="psd-badge-teal" style="font-size:0.8rem; padding:0.4rem 0.85rem;">
         {heroicon(D_SATELLITE, size=16, color="#0F766E")}
-        <span>Sentinel-2A MSI BOA &bull; Random Forest</span>
+        <span>Sentinel-2A MSI BOA &bull; k-NN Scaled (k=5)</span>
     </div>
 </header>
 """, unsafe_allow_html=True)
 
-# Muat Data Evaluasi
+# Muat Data Evaluasi Prediksi
 p_pred = cari_file("prediksi_data_uji.csv")
 df_pred = muat_data_csv(str(p_pred)) if p_pred else None
 
@@ -398,51 +377,51 @@ if df_pred is not None:
     n_salah = n_uji - n_benar
     akurasi = (n_benar / n_uji) * 100
 else:
-    n_uji = 83
-    n_benar = 80
-    n_salah = 3
-    akurasi = 96.4
+    n_uji = 75
+    n_benar = 60
+    n_salah = 15
+    akurasi = 80.0
 
-# Render 4 Kartu Metrik via st.columns (Mencegah Parse Codeblock Markdown)
+# Render 4 Kartu Metrik via st.columns
 col_m1, col_m2, col_m3, col_m4 = st.columns(4)
 
 with col_m1:
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
-<span class="metric-label">Akurasi Data Uji</span>
+<span class="metric-label">Akurasi Data Testing</span>
 <span style="background:#E7F4F2; border-radius:50%; padding:0.3rem; display:inline-flex;">{heroicon(D_CHECK_CIRCLE, size=18, color="#0F766E")}</span>
 </div>
 <div class="metric-val-row">
 <span class="metric-num">{akurasi:.1f}%</span>
 <span class="psd-badge-teal">{n_benar}/{n_uji} Poligon</span>
 </div>
-<div class="metric-sub">Evaluasi Stratified Test Set (Random Forest)</div>
+<div class="metric-sub">Evaluasi Stratified 30% Testing Set</div>
 </div>""", unsafe_allow_html=True)
 
 with col_m2:
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
-<span class="metric-label">F1-Score Macro</span>
+<span class="metric-label">Akurasi Data Training</span>
 <span style="background:#E7F4F2; border-radius:50%; padding:0.3rem; display:inline-flex;">{heroicon(D_SCALE, size=18, color="#0F766E")}</span>
 </div>
 <div class="metric-val-row">
-<span class="metric-num">0.963</span>
-<span class="psd-badge-teal">Seimbang</span>
+<span class="metric-num">86.3%</span>
+<span class="psd-badge-teal">Good Fit</span>
 </div>
-<div class="metric-sub">Rata-rata harmonik seluruh 6 kelas tutupan lahan</div>
+<div class="metric-sub">Evaluasi 70% Training Set (175 Poligon)</div>
 </div>""", unsafe_allow_html=True)
 
 with col_m3:
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
-<span class="metric-label">Poligon Ground Truth</span>
+<span class="metric-label">Total Sampel Poligon</span>
 <span style="background:#E7F4F2; border-radius:50%; padding:0.3rem; display:inline-flex;">{heroicon(D_LAYERS, size=18, color="#0F766E")}</span>
 </div>
 <div class="metric-val-row">
-<span class="metric-num">~300</span>
-<span class="psd-badge-slate">6 Kategori</span>
+<span class="metric-num">250</span>
+<span class="psd-badge-slate">5 Kategori</span>
 </div>
-<div class="metric-sub">Ekstraksi fitur tingkat poligon (bebas autokorelasi)</div>
+<div class="metric-sub">Agregasi Centroid Rata-rata Poligon</div>
 </div>""", unsafe_allow_html=True)
 
 with col_m4:
@@ -453,86 +432,46 @@ with col_m4:
 </div>
 <div class="metric-val-row">
 <span class="metric-num">{n_salah}</span>
-<span class="psd-badge-amber">Error 3.6%</span>
+<span class="psd-badge-amber">Error {100-akurasi:.1f}%</span>
 </div>
-<div class="metric-sub">Hanya pada kemiripan spektral air Danau/Laut</div>
+<div class="metric-sub">Prediksi Mismatch Data Testing (ORANGE)</div>
 </div>""", unsafe_allow_html=True)
 
 st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
 
 
 # ==============================================================================
-# 7. VISUALISASI KEDUA PETA INTERAKTIF
+# 7. VISUALISASI PETA INTERAKTIF
 # ==============================================================================
-file_peta1 = cari_file("peta_klasifikasi_rf.html")
-file_peta2 = cari_file("hasil_klasifikasi_random_forest.html")
-
+file_peta1 = cari_file("map_lulc_predicted.html") or cari_file("map_lulc.html") or cari_file("peta_klasifikasi_rf.html")
 konten_peta1 = muat_konten_html(str(file_peta1)) if file_peta1 else None
-konten_peta2 = muat_konten_html(str(file_peta2)) if file_peta2 else None
 
 
 def render_peta_1():
-    """Merender Peta 1: Evaluasi Poligon Ground Truth (Folium Vektor)"""
+    """Merender Peta Evaluasi Spasial Data Testing & Training Poligon"""
     st.markdown(f"""<div class="psd-card" style="margin-bottom:0.75rem;">
 <div class="psd-card-header">
 <h2 class="psd-card-title">
 {heroicon(D_MAP, size=20, color="#0F766E")}
-<span>Evaluasi Poligon Sampel & Prediksi Data Uji (Folium Vektor)</span>
+<span>Peta Spasial Evaluasi Data Testing & Training Poligon Jawa Timur</span>
 </h2>
-<span class="psd-badge-teal">83 Poligon Uji Terverifikasi</span>
+<span class="psd-badge-teal">Interactive Folium Map</span>
 </div>
 <div style="font-size:0.8rem; color:#475569; line-height:1.5;">
-Menampilkan seluruh poligon sampel dari 6 kelas tutupan lahan. 
-<b style="color:#0D47A1;">Garis tepi biru:</b> poligon data uji. 
-<b style="color:#D97706;">Garis putus-putus oranye + ikon seru:</b> poligon yang salah diprediksi. 
-Klik poligon untuk melihat nilai spektral NDVI, NDWI, dan keyakinan model.
+Menampilkan pembagian data spasial: 
+<b style="color:#0284c7;">🔷 Marker TRAIN + Garis Cyan Solid:</b> 175 Sampel Data Latih (70%). 
+<b style="color:#2ca02c;">💊 Marker TEST ✓:</b> 60 Sampel Uji Benar (Match). 
+<b style="color:#d62728;">⚠️ Marker SALAH (ORANYE):</b> 15 Sampel Uji Mismatch. 
+<b style="color:#c026d3;">🟪 Garis Magenta Putus:</b> Poligon Testing (30%).
 </div>
 </div>""", unsafe_allow_html=True)
     if konten_peta1:
         components.html(konten_peta1, height=tinggi_peta, scrolling=True)
     else:
-        st.error("File `peta_klasifikasi_rf.html` tidak ditemukan.")
+        st.error("File peta HTML tidak ditemukan (`map_lulc_predicted.html`).")
 
 
-def render_peta_2():
-    """Merender Peta 2: Klasifikasi Regional Jawa Timur (ImageOverlay Raster)"""
-    st.markdown(f"""<div class="psd-card" style="margin-bottom:0.75rem;">
-<div class="psd-card-header">
-<h2 class="psd-card-title">
-{heroicon(D_GLOBE, size=20, color="#0F766E")}
-<span>Klasifikasi Tutupan Lahan Skala Regional Jawa Timur (ImageOverlay)</span>
-</h2>
-<span class="psd-badge-teal">Resolusi Tinggi 1536 x 896 Piksel</span>
-</div>
-<div style="font-size:0.8rem; color:#475569; line-height:1.5;">
-Inferensi spasial per piksel (~200m/piksel) menutupi seluruh wilayah Jawa Timur berpadu dengan citra satelit 
-<b>Esri World Imagery (zoom level 10)</b> dengan opasitas 65% dan pembatasan batas daratan provinsi.
-</div>
-</div>""", unsafe_allow_html=True)
-    if konten_peta2:
-        components.html(konten_peta2, height=tinggi_peta, scrolling=True)
-    else:
-        st.error("File `hasil_klasifikasi_random_forest.html` tidak ditemukan.")
-
-
-# Logika Tata Letak Berdasarkan Pilihan Pengguna
-if mode_tampilan == "Tampilkan Kedua Peta (Atas - Bawah)":
-    render_peta_1()
-    st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
-    render_peta_2()
-
-elif mode_tampilan == "Berdampingan (2 Kolom Bersisian)":
-    col_kiri, col_kanan = st.columns(2)
-    with col_kiri:
-        render_peta_1()
-    with col_kanan:
-        render_peta_2()
-
-elif mode_tampilan == "Hanya Peta 1 (Evaluasi Poligon)":
-    render_peta_1()
-
-elif mode_tampilan == "Hanya Peta 2 (Regional Jawa Timur)":
-    render_peta_2()
+render_peta_1()
 
 
 # ==============================================================================
@@ -546,7 +485,7 @@ st.markdown(f"""<div class="psd-card" style="margin-bottom:1rem;">
 {heroicon(D_CHART_BAR, size=20, color="#0F766E")}
 <span>Evaluasi Kinerja Model & Kontribusi Fitur Spektral</span>
 </h2>
-<span class="psd-badge-teal">Random Forest Gini Importance</span>
+<span class="psd-badge-teal">k-NN Scaled (k=5) Performance</span>
 </div>
 </div>""", unsafe_allow_html=True)
 
@@ -554,13 +493,13 @@ col_cm, col_fi = st.columns(2)
 
 with col_cm:
     st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
-<h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">Confusion Matrix (Data Uji 83 Poligon)</h3>
-<p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Perbandingan kelas ground truth aktual vs hasil prediksi model.</p>
+<h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">Confusion Matrix (75 Poligon Data Testing)</h3>
+<p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Perbandingan kelas ground truth aktual vs hasil prediksi model k-NN.</p>
 </div>""", unsafe_allow_html=True)
 
     p_cm_img = cari_file("confusion_matrix.png")
     if p_cm_img:
-        st.image(Image.open(p_cm_img), caption="Confusion Matrix Data Uji", use_container_width=True)
+        st.image(Image.open(p_cm_img), caption="Confusion Matrix Data Testing (75 Poligon Uji)", use_container_width=True)
     else:
         p_cm_csv = cari_file("confusion_matrix.csv")
         if p_cm_csv:
@@ -569,18 +508,18 @@ with col_cm:
             st.info("File confusion matrix belum tersedia.")
 
     st.markdown("""<div class="psd-card" style="font-size:0.75rem; color:#64748B; margin-top:0.5rem; line-height:1.4;">
-<b>Analisis Matriks:</b> Akurasi mencapai 96.4%. Seluruh poligon Bangunan, Mangrove, dan Sawah terklasifikasi 100% sempurna tanpa salah.
+<b>Analisis Matriks:</b> Akurasi data testing mencapai 80.00%. Hutan Mangrove, Hutan Non-Mangrove, dan Pemukiman terklasifikasi sangat tinggi (93% - 100%).
 </div>""", unsafe_allow_html=True)
 
 with col_fi:
     st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
-<h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">Tingkat Kepentingan Fitur Spektral (Gini)</h3>
-<p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Kontribusi relatif band citra optik dan indeks spektral dalam memisahkan tutupan lahan.</p>
+<h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">Tingkat Kepentingan Fitur Spektral</h3>
+<p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Daya pembeda relatif band citra optik dan indeks spektral dalam memisahkan tutupan lahan.</p>
 </div>""", unsafe_allow_html=True)
 
     p_fi_img = cari_file("kepentingan_fitur.png")
     if p_fi_img:
-        st.image(Image.open(p_fi_img), caption="Feature Importance (Gini)", use_container_width=True)
+        st.image(Image.open(p_fi_img), caption="Feature Importance Spektral", use_container_width=True)
     else:
         p_fi_csv = cari_file("kepentingan_fitur.csv")
         if p_fi_csv:
@@ -589,7 +528,7 @@ with col_fi:
             st.info("File feature importance belum tersedia.")
 
     st.markdown("""<div class="psd-card" style="font-size:0.75rem; color:#64748B; margin-top:0.5rem; line-height:1.4;">
-<b>Temuan Fitur:</b> Band SWIR (B11) dan NDBI memegang peranan paling penting dalam membedakan kawasan terbangun beton dari vegetasi dan perairan.
+<b>Temuan Fitur:</b> Indeks NDVI, NDWI, MNDWI, NDBI, dan Band SWIR (B11) memegang peran paling krusial dalam memisahkan vegetasi rapat dari lahan terbangun dan perairan.
 </div>""", unsafe_allow_html=True)
 
 
@@ -641,7 +580,7 @@ if df_pred is not None:
     st.download_button(
         label="Unduh Data Hasil Prediksi (CSV)",
         data=csv_bytes,
-        file_name="prediksi_data_uji_rf.csv",
+        file_name="prediksi_data_uji_knn.csv",
         mime="text/csv"
     )
 else:
@@ -653,6 +592,6 @@ else:
 # ==============================================================================
 st.markdown("""
 <footer style="margin-top:3rem; padding-top:1.5rem; border-top:1px solid #E2E8F0; text-align:center; font-size:0.8rem; color:#64748B;">
-    Proyek Sains Data &mdash; Klasifikasi Spasial LULC Jawa Timur &bull; Sentinel-2A Level-2A & Random Forest
+    Proyek Sains Data &mdash; Klasifikasi Spasial LULC Jawa Timur &bull; Sentinel-2A Level-2A & k-NN Scaled (5 Kelas Tutupan Lahan)
 </footer>
 """, unsafe_allow_html=True)
