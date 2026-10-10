@@ -132,11 +132,11 @@ st.markdown("""
 st.markdown("""
 <div class="header-box">
     <h1>🛰️ Klasifikasi Land Use Land Cover (LULC) Sentinel-2 Jawa Timur</h1>
-    <p>Notebook Workflow: Digitasi Satelit, EDA Spektral, Model k-NN (StandardScaler) & Evaluasi Mismatch Oranye</p>
+    <p>Notebook Workflow: Digitasi Satelit (5 Kelas), EDA Spektral, Model k-NN & Evaluasi Mismatch Oranye</p>
 </div>
 """, unsafe_allow_html=True)
 
-# LULC Class Color Definitions
+# LULC Class Color Definitions for 5 Classes
 CLASS_COLORS = {
     'Air': '#1f77b4',                # Blue
     'Hutan Mangrove': '#2ca02c',     # Light Green (Flooded Veg)
@@ -193,6 +193,19 @@ def load_all_datasets():
     gdf_prov = gpd.read_file(p_path) if p_path else None
     gdf_samples = gpd.read_file(s_path) if s_path else None
     df_centroid = pd.read_csv(c_path) if c_path else None
+
+    # Clean GeoJSON Type field mapping to standard 5 class names
+    if gdf_samples is not None and 'Type' in gdf_samples.columns:
+        type_map = {
+            'Air': 'Air',
+            'Hutan_mangrove': 'Hutan Mangrove',
+            'Hutan Mangrove': 'Hutan Mangrove',
+            'Hutan_non_mangrove': 'Hutan Non-Mangrove',
+            'Hutan Non-Mangrove': 'Hutan Non-Mangrove',
+            'Pemukiman': 'Pemukiman',
+            'Sawah': 'Sawah'
+        }
+        gdf_samples['Type_Clean'] = gdf_samples['Type'].map(lambda x: type_map.get(x, x))
 
     return gdf_prov, gdf_samples, df_centroid
 
@@ -261,26 +274,26 @@ tab1, tab2, tab3, tab4 = st.tabs([
 ])
 
 # ---------------------------------------------------------
-# TAB 1: PETA DIGITASI SAMPEL (POLIGON & CENTROID)
+# TAB 1: PETA DIGITASI SAMPEL (POLIGON & CENTROID 5 KELAS)
 # ---------------------------------------------------------
 with tab1:
-    st.markdown("### 🗺️ Step 3: Visualisasi Peta Digitasi Poligon & Centroid Sampel (5 Kelas)")
-    st.caption("Visualisasi 250 sampel poligon tutupan lahan Jawa Timur di atas Basemap Satelit Esri World Imagery.")
+    st.markdown("### 🗺️ Step 3: Visualisasi Peta Digitasi Poligon & Centroid Sampel (5 Kelas Tutupan Lahan)")
+    st.caption("Visualisasi 250 sampel poligon digitasi (50 poligon per kelas) di atas Basemap Satelit Esri World Imagery.")
     
     col_a, col_b, col_c = st.columns(3)
-    col_a.metric("Total Poligon Sampel", f"{len(df_centroid) if df_centroid is not None else 0} Poligon")
-    col_b.metric("Jumlah Kelas LULC", "5 Kelas Tutupan Lahan")
+    col_a.metric("Total Poligon Sampel", f"{len(df_centroid) if df_centroid is not None else 0} Poligon (50 per Kelas)")
+    col_b.metric("Jumlah Kelas LULC", "5 Kelas Tutupan Lahan Lengkap")
     col_c.metric("Resolusi Citra Satelit", "10 Meter (Sentinel-2)")
 
     st.markdown("---")
     
-    # Layer Filter Checkboxes
+    # Layer Filter Checkboxes for 5 Classes
     col_f1, col_f2, col_f3, col_f4, col_f5 = st.columns(5)
-    show_air_d = col_f1.checkbox("🔵 Air", value=True, key="d_air_v2")
-    show_mangrove_d = col_f2.checkbox("🟢 Hutan Mangrove", value=True, key="d_mangrove_v2")
-    show_non_mangrove_d = col_f3.checkbox("🌲 Hutan Non-Mangrove", value=True, key="d_non_mangrove_v2")
-    show_pemukiman_d = col_f4.checkbox("🔴 Pemukiman", value=True, key="d_pemukiman_v2")
-    show_sawah_d = col_f5.checkbox("🌾 Sawah", value=True, key="d_sawah_v2")
+    show_air_d = col_f1.checkbox("🔵 Air (Water)", value=True, key="d_air_v3")
+    show_mangrove_d = col_f2.checkbox("🟢 Hutan Mangrove", value=True, key="d_mangrove_v3")
+    show_non_mangrove_d = col_f3.checkbox("🌲 Hutan Non-Mangrove", value=True, key="d_non_mangrove_v3")
+    show_pemukiman_d = col_f4.checkbox("🔴 Pemukiman (Built)", value=True, key="d_pemukiman_v3")
+    show_sawah_d = col_f5.checkbox("🌾 Sawah (Crops)", value=True, key="d_sawah_v3")
     
     active_d_classes = []
     if show_air_d: active_d_classes.append('Air')
@@ -289,7 +302,7 @@ with tab1:
     if show_pemukiman_d: active_d_classes.append('Pemukiman')
     if show_sawah_d: active_d_classes.append('Sawah')
 
-    # Build Map 1: Digitization Map
+    # Build Map 1: Digitization Map with Polygons & Centroid Markers for ALL 5 Classes
     m_dig = folium.Map(location=[-7.60, 112.60], zoom_start=9, tiles=None)
     
     folium.TileLayer(
@@ -302,6 +315,7 @@ with tab1:
     
     folium.TileLayer('openstreetmap', name='OpenStreetMap Standard').add_to(m_dig)
     
+    # Batas Provinsi
     if gdf_prov is not None:
         folium.GeoJson(
             gdf_prov,
@@ -309,12 +323,37 @@ with tab1:
             style_function=lambda x: {'color': '#FF6B00', 'weight': 2, 'fillOpacity': 0.03}
         ).add_to(m_dig)
 
+    # 1. Render GeoJSON Vector Polygons for 5 Classes
+    if gdf_samples is not None and 'Type_Clean' in gdf_samples.columns:
+        for cname in active_d_classes:
+            sub_poly = gdf_samples[gdf_samples['Type_Clean'] == cname]
+            if not sub_poly.empty:
+                color = CLASS_COLORS.get(cname, '#FF6B00')
+                fg_poly = folium.FeatureGroup(name=f"Poligon Vektor: {cname} ({len(sub_poly)})", show=True)
+                
+                folium.GeoJson(
+                    sub_poly,
+                    style_function=lambda x, col=color: {
+                        'fillColor': col,
+                        'color': col,
+                        'weight': 1.5,
+                        'fillOpacity': 0.55
+                    },
+                    tooltip=folium.GeoJsonTooltip(
+                        fields=['Type_Clean'],
+                        aliases=['Kelas LULC:']
+                    )
+                ).add_to(fg_poly)
+                
+                fg_poly.add_to(m_dig)
+
+    # 2. Render Centroid Markers for 5 Classes
     if df_centroid is not None:
         for cname in active_d_classes:
             sub = df_centroid[df_centroid['label_teks'] == cname]
             if not sub.empty:
                 color = CLASS_COLORS.get(cname, '#333')
-                fg = folium.FeatureGroup(name=f"Poligon Digitasi: {cname} ({len(sub)})", show=True)
+                fg_cen = folium.FeatureGroup(name=f"Titik Centroid: {cname} ({len(sub)})", show=True)
                 for idx, row in sub.iterrows():
                     tooltip_html = f"""
                     <div style="font-family: sans-serif; font-size: 12px; width: 220px;">
@@ -332,17 +371,17 @@ with tab1:
                     folium.CircleMarker(
                         location=[row['lat_centroid'], row['lon_centroid']],
                         radius=7,
-                        color=color,
+                        color='#ffffff',
                         fill=True,
                         fill_color=color,
-                        fill_opacity=0.85,
+                        fill_opacity=0.9,
                         weight=1.5,
                         popup=folium.Popup(tooltip_html, max_width=250),
-                        tooltip=f"Digitasi: {row['label_teks']} ({row['poligon_id']})"
-                    ).add_to(fg)
-                fg.add_to(m_dig)
+                        tooltip=f"Centroid: {row['label_teks']} ({row['poligon_id']})"
+                    ).add_to(fg_cen)
+                fg_cen.add_to(m_dig)
 
-    # Floating Legend Box
+    # Floating Legend Box for 5 Classes
     legend_dig_html = f'''
     <div style="
         position: fixed; 
@@ -352,8 +391,8 @@ with tab1:
         border-radius: 10px; font-family: sans-serif;
         box-shadow: 0 4px 15px rgba(255, 107, 0, 0.2);
     ">
-        <b style="font-size:14px; color:#FF6B00;">📌 Sampel Digitasi LULC</b><br>
-        <div style="font-size:11px; color:#666; margin-bottom:6px;">Ground Truth Centroid Poligon</div>
+        <b style="font-size:14px; color:#FF6B00;">📌 Sampel Digitasi 5 Kelas</b><br>
+        <div style="font-size:11px; color:#666; margin-bottom:6px;">Poligon Vektor & Centroid (Sentinel-2)</div>
         <hr style="margin:4px 0 6px 0;">
         <div style="display:flex; align-items:center; margin-bottom:5px;">
             <span style="background:{CLASS_COLORS['Air']}; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px;"></span>
@@ -421,7 +460,7 @@ with tab2:
         selected_feature = st.selectbox(
             "Pilih Indeks / Band Spektral untuk Diinspeksi:",
             ['NDVI', 'NDWI', 'MNDWI', 'NDBI', 'B11', 'B08', 'B04', 'B03', 'B02'],
-            key="eda_feature_v2"
+            key="eda_feature_v3"
         )
         
         fig3, ax3 = plt.subplots(figsize=(10, 4.5))
@@ -469,7 +508,7 @@ with tab3:
     st.markdown("---")
     
     # Layer Toggle for Mismatch
-    show_mismatch_only = st.checkbox("⚠️ Highlight Khusus Prediksi Salah (ORANGE)", value=True, key="mismatch_v2")
+    show_mismatch_only = st.checkbox("⚠️ Highlight Khusus Prediksi Salah (ORANGE)", value=True, key="mismatch_v3")
 
     # Map 2: ML Prediction Map (Step 9)
     m_pred = folium.Map(location=[-7.60, 112.60], zoom_start=9, tiles=None)
@@ -626,21 +665,21 @@ with tab3:
     st.markdown("#### 🔮 Simulasi Prediksi Nilai Spektral Tunggal (k-NN Model)")
     
     c_s1, c_s2, c_s3 = st.columns(3)
-    input_b04 = c_s1.number_input("Band 04 (Red)", value=0.08, key="b04_v2")
-    input_b08 = c_s2.number_input("Band 08 (NIR)", value=0.35, key="b08_v2")
-    input_b11 = c_s3.number_input("Band 11 (SWIR)", value=0.12, key="b11_v2")
+    input_b04 = c_s1.number_input("Band 04 (Red)", value=0.08, key="b04_v3")
+    input_b08 = c_s2.number_input("Band 08 (NIR)", value=0.35, key="b08_v3")
+    input_b11 = c_s3.number_input("Band 11 (SWIR)", value=0.12, key="b11_v3")
 
     c_s4, c_s5, c_s6 = st.columns(3)
-    input_b02 = c_s4.number_input("Band 02 (Blue)", value=0.05, key="b02_v2")
-    input_b03 = c_s5.number_input("Band 03 (Green)", value=0.09, key="b03_v2")
-    input_ndvi = c_s6.number_input("NDVI", value=(input_b08 - input_b04)/(input_b08 + input_b04 + 1e-6), key="ndvi_v2")
+    input_b02 = c_s4.number_input("Band 02 (Blue)", value=0.05, key="b02_v3")
+    input_b03 = c_s5.number_input("Band 03 (Green)", value=0.09, key="b03_v3")
+    input_ndvi = c_s6.number_input("NDVI", value=(input_b08 - input_b04)/(input_b08 + input_b04 + 1e-6), key="ndvi_v3")
 
     c_s7, c_s8, c_s9 = st.columns(3)
-    input_ndwi = c_s7.number_input("NDWI", value=(input_b03 - input_b08)/(input_b03 + input_b08 + 1e-6), key="ndwi_v2")
-    input_mndwi = c_s8.number_input("MNDWI", value=(input_b03 - input_b11)/(input_b03 + input_b11 + 1e-6), key="mndwi_v2")
-    input_ndbi = c_s9.number_input("NDBI", value=(input_b11 - input_b08)/(input_b11 + input_b08 + 1e-6), key="ndbi_v2")
+    input_ndwi = c_s7.number_input("NDWI", value=(input_b03 - input_b08)/(input_b03 + input_b08 + 1e-6), key="ndwi_v3")
+    input_mndwi = c_s8.number_input("MNDWI", value=(input_b03 - input_b11)/(input_b03 + input_b11 + 1e-6), key="mndwi_v3")
+    input_ndbi = c_s9.number_input("NDBI", value=(input_b11 - input_b08)/(input_b11 + input_b08 + 1e-6), key="ndbi_v3")
 
-    if st.button("🔮 Prediksi Tutupan Lahan", key="btn_pred_v2"):
+    if st.button("🔮 Prediksi Tutupan Lahan", key="btn_pred_v3"):
         if model_knn is not None:
             df_single = pd.DataFrame([[input_b02, input_b03, input_b04, input_b08, input_b11, input_ndvi, input_ndwi, input_mndwi, input_ndbi]], columns=FITUR_LIST)
             pred_res = model_knn.predict(df_single)[0]
