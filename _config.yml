@@ -22,6 +22,7 @@ execute:
     - "pertemuan-1/code-*.ipynb"
     - "main/code-crawling-polutan.ipynb"
     - "main/code-pemetaanLahanKlasifikasi.ipynb"
+    - "uts/code/*.ipynb"
     - "cek.ipynb"
 # Define the name of the latex output file for PDF builds
 latex:

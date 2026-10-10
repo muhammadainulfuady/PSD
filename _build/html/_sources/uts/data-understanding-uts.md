@@ -1,59 +1,59 @@
-# Data Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur
+# Data Understanding
 
-Dokumen ini menjelaskan tahap **Data Understanding** dalam metodologi CRISP-DM untuk proyek UTS LULC Jawa Timur. Tahap ini berfokus pada analisis sampel data vektor serta pemahaman mendalam mengenai karakteristik dan alasan penggunaan band spektral citra satelit Sentinel-2.
+## 1. Deskripsi Data
+Analisis klasifikasi LULC memanfaatkan dua sumber data utama:
+1. **Data Vektor Sampel (Ground Truth):** Data spasial poligon terverifikasi bertipe geometri *Polygon* dengan sistem koordinat EPSG:4326 (WGS84).
+2. **Data Raster Satelit Sentinel-2 (Level-2A):** Citra satelit optik multiband (*Surface Reflectance*) dengan resolusi spasial 10 m hingga 20 m.
 
----
+## 2. Karakteristik Sampel Lahan
+Data sampel terdiri dari **250 poligon** yang terbagi secara seimbang ke dalam 5 kelas tutupan lahan (masing-masing 50 sampel poligon):
 
-## 2. Data Understanding
+| No | Kelas Tutupan Lahan | Jumlah Sampel | Persentase | Tipe Geometri |
+| :-: | :--- | :-: | :-: | :-: |
+| 1 | Air | 50 | 20% | Polygon |
+| 2 | Hutan Mangrove | 50 | 20% | Polygon |
+| 3 | Hutan Non-Mangrove | 50 | 20% | Polygon |
+| 4 | Pemukiman | 50 | 20% | Polygon |
+| 5 | Sawah | 50 | 20% | Polygon |
+| **Total** | **5 Kelas** | **250** | **100%** | **Polygon** |
 
-### 2.1 Audit & Karakteristik Data Vektor (GeoJSON)
+## 3. Spesifikasi Band Satelit Sentinel-2
+Digunakan 5 band spektral kunci dari sensor MSI Sentinel-2 untuk klasifikasi:
 
-Data acuan (_ground truth_) berupa poligon sampel digitasi area tutupan lahan di wilayah Provinsi Jawa Timur yang terdiri dari 5 kelas tutupan lahan utama:
+| Band Satelit | Nama Spektrum | Panjang Gelombang | Resolusi | Peran Utama |
+| :--- | :--- | :---: | :---: | :--- |
+| **Band 2 (B02)** | Blue | $\sim 490\text{ nm}$ | 10 m | Komposisi warna alami dan analisis perairan. |
+| **Band 3 (B03)** | Green | $\sim 560\text{ nm}$ | 10 m | Pantulan klorofil dan komponen perhitungan NDWI. |
+| **Band 4 (B04)** | Red | $\sim 665\text{ nm}$ | 10 m | Penyerapan klorofil vegetasi dan komponen NDVI. |
+| **Band 8 (B08)** | NIR (Near-Infrared) | $\sim 842\text{ nm}$ | 10 m | Membedakan kerapatan vegetasi dari air/bangunan. |
+| **Band 11 (B11)** | SWIR1 (Shortwave-Infrared) | $\sim 1610\text{ nm}$ | 20 m | Peka kelembapan tanah/kanopi dan membedakan mangrove vs non-mangrove serta pemukiman. |
 
-- **Total Sampel Poligon:** 250 Poligon (Seimbang 50 poligon per kelas)
-  1. **Sawah / Pertanian:** 50 poligon
-  2. **Pemukiman / Built-Up:** 50 poligon
-  3. **Hutan Non-Mangrove:** 50 poligon
-  4. **Hutan Mangrove:** 50 poligon
-  5. **Air (Water Bodies):** 50 poligon
-- **Kualitas Geometri:** 100% valid tanpa duplikasi spasial.
+## 4. Indeks Spektral (Feature Engineering)
+Untuk memperkuat pemisahan antar kelas, dihitung 3 indeks spektral utama:
 
----
+### 4.1 Normalized Difference Vegetation Index (NDVI)
+$$\text{NDVI} = \frac{\text{B08 (NIR)} - \text{B04 (Red)}}{\text{B08 (NIR)} + \text{B04 (Red)}}$$
 
-### 2.2 Band Satelit Sentinel-2 yang Dibutuhkan & Alasan Penggunaannya
+Mengukur kerapatan dan tingkat kehijauan vegetasi.
 
-Untuk mengklasifikasikan 5 kelas tutupan lahan secara presisi, dibutuhkan **5 Band Spektral Kunci** dari sensor optik Sentinel-2 (Level-2A):
+### 4.2 Normalized Difference Water Index (NDWI)
+$$\text{NDWI} = \frac{\text{B03 (Green)} - \text{B08 (NIR)}}{\text{B03 (Green)} + \text{B08 (NIR)}}$$
 
-| Band Satelit      | Nama Gelombang             | Panjang Gelombang ($\lambda$) | Resolusi Spasial | Alasan Mengapa Band Ini Dibutuhkan                                                                                                                                                                                                                        |
-| :---------------- | :------------------------- | :---------------------------: | :--------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Band 2 (B02)**  | Blue (Biru)                |            ~490 nm            |     10 meter     | **Penetrasi Air & Komposit Warna:** Cahaya biru dapat menembus kolom air dan sangat baik membedakan fitur perairan dangkal/sedimentasi serta digunakan untuk komposit warna alami (RGB).                                                                  |
-| **Band 3 (B03)**  | Green (Hijau)              |            ~560 nm            |     10 meter     | **Deteksi Kebasahan & Air (NDWI):** Vegetasi dan air memantulkan cahaya hijau. Band ini dibutuhkan sebagai komponen utama formula **NDWI** untuk memisahkan badan air dari daratan.                                                                       |
-| **Band 4 (B04)**  | Red (Merah)                |            ~665 nm            |     10 meter     | **Penyerapan Klorofil (NDVI):** Klorofil tanaman menyerap kuat spektrum merah. Kombinasi Red dan NIR dibutuhkan untuk menghitung **NDVI** guna mengukur kelebatan vegetasi.                                                                               |
-| **Band 8 (B08)**  | NIR (Near-Infrared)        |            ~842 nm            |     10 meter     | **Diferensiasi Vegetasi vs Non-Vegetasi:** Struktur sel mesofil vegetasi sehat memantulkan NIR sangat tinggi, sedangkan air menyerap NIR sepenuhnya. Kunci memisahkan hutan dari pemukiman/air.                                                           |
-| **Band 11 (B11)** | SWIR1 (Shortwave-Infrared) |           ~1610 nm            |     20 meter     | **Diferensiasi Mangrove & Pemukiman (NDBI):** SWIR sangat sensitif terhadap kelembapan tanah/daun dan material bangunan (beton/atap). Kunci utama membedakan **Hutan Mangrove** (basah) vs **Hutan Darat** (kering) serta mengidentifikasi **Pemukiman**. |
+Mengisolasi dan mengidentifikasi badan air.
 
----
+### 4.3 Normalized Difference Built-up Index (NDBI)
+$$\text{NDBI} = \frac{\text{B11 (SWIR1)} - \text{B08 (NIR)}}{\text{B11 (SWIR1)} + \text{B08 (NIR)}}$$
 
-### 2.3 Mengapa Kombinasi Band Ini Sangat Krusial?
+Mengidentifikasi area terbangun dan pemukiman.
 
-1. **Membedakan Hutan Mangrove vs Hutan Non-Mangrove:**
-   Secara visual (RGB/Mata telanjang), kedua jenis hutan ini sama-sama berwarna hijau lebat. Namun pada **Band 11 (SWIR)**, Hutan Mangrove menunjukkan pantulan yang jauh lebih rendah dibanding Hutan Daratan karena substrat/tanah di bawah kanopi mangrove selalu basah atau tergenang air laut.
+## 5. Respon Spektral per Kelas
 
-2. **Membedakan Pemukiman (Built-Up) vs Tanah Olahan Sawah:**
-   Material buatan manusia (beton, semen, genteng) pada **Pemukiman** memiliki nilai pantulan **SWIR (B11)** yang sangat tinggi disertai nilai **NIR (B08)** sedang, sehingga menghasilkan nilai indeks **NDBI** bernilai positif.
+| Kelas | Respon NIR (B08) | Respon SWIR (B11) | NDVI | NDWI | NDBI |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Air** | Sangat Rendah | Sangat Rendah | Negatif | Positif Tinggi | Negatif |
+| **Hutan Mangrove** | Tinggi | Sedang (Lembap) | Positif Tinggi | Sedang | Negatif / Rendah |
+| **Hutan Non-Mangrove** | Sangat Tinggi | Rendah / Sedang | Positif Sangat Tinggi | Negatif | Negatif |
+| **Pemukiman** | Sedang | Sangat Tinggi | Rendah | Negatif | Positif |
+| **Sawah** | Bervariasi | Bervariasi | Positif Sedang | Bervariasi | Bervariasi |
 
-3. **Membedakan Badan Air vs Kelas Lainnya:**
-   Air menyerap hampir seluruh energi pada spektrum **NIR (B08)** dan **SWIR (B11)**, menjadikannya tampak sangat gelap (nilai mendekati 0), sementara pada **Band 3 (Green)** memiliki pantulan relatif tinggi. Hal ini membuat indeks **NDWI** sangat efektif memisahkan air secara mutlak.
-
----
-
-### 2.4 Indeks Spektral Tambahan (Feature Engineering)
-
-Dari 5 band di atas, dihitung 3 Indeks Spektral untuk memperkuat performa algoritma Machine Learning:
-
-$$\text{NDVI} = \frac{\text{B08} - \text{B04}}{\text{B08} + \text{B04}} \quad \text{(Indeks Kerapatan Vegetasi)}$$
-
-$$\text{NDWI} = \frac{\text{B03} - \text{B08}}{\text{B03} + \text{B08}} \quad \text{(Indeks Badan Air / Kebasahan)}$$
-
-$$\text{NDBI} = \frac{\text{B11} - \text{B08}}{\text{B11} + \text{B08}} \quad \text{(Indeks Bangunan / Pemukiman)}$$
 

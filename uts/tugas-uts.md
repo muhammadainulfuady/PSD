@@ -76,7 +76,7 @@ Aplikasi web **Streamlit** yang dibangun akan menyediakan fitur-fitur interaktif
 | **Tahap 1** | Merapikan Spesifikasi & Dokumen `uts/tugas-uts.md` & `_toc.yml` | Selesai |
 | **Tahap 2** | Menyiapkan GeoJSON 5 Kelas (`Pertanian`, `Bangunan`, `Air`, `Hutan`, `Mangrove`) | Selesai |
 | **Tahap 3** | Membuat & Eksekusi Notebook Klasifikasi 5 Kelas (`uts/code-klasifikasiLulcJatim.ipynb`) | Selesai |
-| **Tahap 4** | Ekstraksi Band, Indeks Spektral (NDVI/NDWI/NDBI) & Evaluasi Random Forest | Selesai |
+| **Tahap 4** | Ekstraksi Band, Indeks Spektral (NDVI/NDWI/MNDWI/NDBI/NDMI) & Evaluasi SVM | Selesai |
 | **Tahap 5** | Pembuatan Aplikasi Streamlit Interaktif (`uts/app.py`) dengan Toggle Layer | Selesai |
 
 
