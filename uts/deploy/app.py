@@ -16,7 +16,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
-from sklearn.pipeline import StandardScaler as PipelineScaler
+from sklearn.pipeline import make_pipeline
 import streamlit.components.v1 as components
 
 # Determine Base Directory of current script

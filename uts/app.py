@@ -16,6 +16,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
 import streamlit.components.v1 as components
 
 # Determine Base Directory of current script
@@ -224,7 +225,6 @@ def get_ml_model(model_type, _df):
             pass
             
     # Fallback dynamic training
-    from sklearn.pipeline import make_pipeline
     if model_type == "k-NN":
         clf = make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=5, weights='distance'))
     elif model_type == "Decision Tree":
