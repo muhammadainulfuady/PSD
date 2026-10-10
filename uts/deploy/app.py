@@ -419,7 +419,7 @@ with tab1:
     </div>
     '''
     m_dig.get_root().html.add_child(folium.Element(legend_dig_html))
-    folium.LayerControl(collapsed=False).add_to(m_dig)
+    folium.LayerControl(collapsed=True).add_to(m_dig)
     
     components.html(m_dig._repr_html_(), height=650, scrolling=False)
 
@@ -633,7 +633,7 @@ with tab3:
     </div>
     '''
     m_pred.get_root().html.add_child(folium.Element(legend_pred_html))
-    folium.LayerControl(collapsed=False).add_to(m_pred)
+    folium.LayerControl(collapsed=True).add_to(m_pred)
     
     components.html(m_pred._repr_html_(), height=650, scrolling=False)
 
