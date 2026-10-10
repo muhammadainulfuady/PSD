@@ -621,51 +621,50 @@ umpy: Pemrosesan data tabular dan pemrosesan matriks agregasi statistik.</p></li
             <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">fg</span><span class="p">)</span>
             <span class="n">fg</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
-<span class="c1"># 5. Tambahkan Legenda Interaktif (Custom HTML Floating Box)</span>
+<span class="c1"># 5. Tambahkan Legenda Interaktif Ringkas &amp; Kompak</span>
 <span class="n">legend_html</span> <span class="o">=</span> <span class="s1">'''</span>
 <span class="s1">&lt;div style="</span>
 <span class="s1">    position: fixed; </span>
-<span class="s1">    bottom: 30px; left: 30px; width: 230px; height: 195px; </span>
-<span class="s1">    border:2px solid #ccc; z-index:9999; font-size:13px;</span>
-<span class="s1">    background-color:white; opacity: 0.93; padding: 10px;</span>
-<span class="s1">    border-radius: 8px; font-family: sans-serif;</span>
-<span class="s1">    box-shadow: 2px 2px 6px rgba(0,0,0,0.3);</span>
+<span class="s1">    bottom: 15px; left: 15px; width: 195px; </span>
+<span class="s1">    border: 1px solid #cbd5e1; z-index: 99999; font-size: 11px;</span>
+<span class="s1">    background-color: rgba(255, 255, 255, 0.93); padding: 8px 10px;</span>
+<span class="s1">    border-radius: 6px; font-family: sans-serif;</span>
+<span class="s1">    box-shadow: 0 2px 6px rgba(0,0,0,0.25);</span>
 <span class="s1">"&gt;</span>
-<span class="s1">    &lt;b style="font-size:14px; color:#333;"&gt;Legenda Kelas LULC&lt;/b&gt;&lt;br&gt;</span>
-<span class="s1">    &lt;hr style="margin:5px 0;"&gt;</span>
-<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:5px;"&gt;</span>
-<span class="s1">        &lt;span style="background:#d62728; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px;"&gt;&lt;/span&gt;</span>
-<span class="s1">        &lt;b&gt;Merah&lt;/b&gt;: Pemukiman</span>
+<span class="s1">    &lt;b style="font-size: 12px; color: #1E3A8A;"&gt;Legenda 5 Kelas LULC&lt;/b&gt;</span>
+<span class="s1">    &lt;hr style="margin: 4px 0;"&gt;</span>
+<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:3px;"&gt;</span>
+<span class="s1">        &lt;span style="background:#d62728; width:12px; height:12px; display:inline-block; margin-right:6px; border-radius:2px;"&gt;&lt;/span&gt;</span>
+<span class="s1">        &lt;b&gt;Built Area (Pemukiman)&lt;/b&gt;</span>
 <span class="s1">    &lt;/div&gt;</span>
-<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:5px;"&gt;</span>
-<span class="s1">        &lt;span style="background:#1f77b4; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px;"&gt;&lt;/span&gt;</span>
-<span class="s1">        &lt;b&gt;Biru&lt;/b&gt;: Air</span>
+<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:3px;"&gt;</span>
+<span class="s1">        &lt;span style="background:#1f77b4; width:12px; height:12px; display:inline-block; margin-right:6px; border-radius:2px;"&gt;&lt;/span&gt;</span>
+<span class="s1">        &lt;b&gt;Water (Air)&lt;/b&gt;</span>
 <span class="s1">    &lt;/div&gt;</span>
-<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:5px;"&gt;</span>
-<span class="s1">        &lt;span style="background:#2ca02c; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px;"&gt;&lt;/span&gt;</span>
-<span class="s1">        &lt;b&gt;Hijau Terang&lt;/b&gt;: Hutan Mangrove</span>
+<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:3px;"&gt;</span>
+<span class="s1">        &lt;span style="background:#2ca02c; width:12px; height:12px; display:inline-block; margin-right:6px; border-radius:2px;"&gt;&lt;/span&gt;</span>
+<span class="s1">        &lt;b&gt;Flooded Veg (Mangrove)&lt;/b&gt;</span>
 <span class="s1">    &lt;/div&gt;</span>
-<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:5px;"&gt;</span>
-<span class="s1">        &lt;span style="background:#006400; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px;"&gt;&lt;/span&gt;</span>
-<span class="s1">        &lt;b&gt;Hijau Tua&lt;/b&gt;: Hutan Non-Mangrove</span>
+<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:3px;"&gt;</span>
+<span class="s1">        &lt;span style="background:#006400; width:12px; height:12px; display:inline-block; margin-right:6px; border-radius:2px;"&gt;&lt;/span&gt;</span>
+<span class="s1">        &lt;b&gt;Trees (Non-Mangrove)&lt;/b&gt;</span>
 <span class="s1">    &lt;/div&gt;</span>
-<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:5px;"&gt;</span>
-<span class="s1">        &lt;span style="background:#bcbd22; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px;"&gt;&lt;/span&gt;</span>
-<span class="s1">        &lt;b&gt;Kuning/Zaitun&lt;/b&gt;: Sawah</span>
+<span class="s1">    &lt;div style="display:flex; align-items:center;"&gt;</span>
+<span class="s1">        &lt;span style="background:#bcbd22; width:12px; height:12px; display:inline-block; margin-right:6px; border-radius:2px;"&gt;&lt;/span&gt;</span>
+<span class="s1">        &lt;b&gt;Crops (Sawah)&lt;/b&gt;</span>
 <span class="s1">    &lt;/div&gt;</span>
 <span class="s1">&lt;/div&gt;</span>
 <span class="s1">'''</span>
 <span class="n">m</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">legend_html</span><span class="p">))</span>
 
-<span class="c1"># 6. Layer Control Panel Interaktif</span>
-<span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">(</span><span class="n">collapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="c1"># 6. Layer Control Panel Interaktif (Collapsed=True agar ringkas &amp; tidak menutupi peta)</span>
+<span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">(</span><span class="n">collapsed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
-<span class="c1"># Simpan Peta ke File HTML untuk memastikan selalu dapat dibuka</span>
+<span class="c1"># Simpan Peta ke File HTML</span>
 <span class="n">html_file</span> <span class="o">=</span> <span class="s1">'map_lulc.html'</span>
 <span class="n">m</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">html_file</span><span class="p">)</span>
 
-<span class="c1"># Kembalikan objek peta m agar Jupyter Notebook merender secara inline</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">IFrame</span>
+<span class="c1"># Tampilkan peta</span>
 <span class="n">display</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2036,7 +2035,7 @@ Hutan Non-Mangrove       0.88      1.00      0.94        15
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Jalankan Inferensi Prediksi Model Machine Learning pada Seluruh Data Poligon Centroid</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Prediksi Seluruh Sampel Centroid Menggunakan Model k-NN Terlatih</span>
 <span class="n">cen</span><span class="p">[</span><span class="s1">'prediksi_ml'</span><span class="p">]</span> <span class="o">=</span> <span class="n">knn_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">cen</span><span class="p">[</span><span class="n">FITUR</span><span class="p">])</span>
 <span class="n">cen</span><span class="p">[</span><span class="s1">'is_correct'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cen</span><span class="p">[</span><span class="s1">'prediksi_ml'</span><span class="p">]</span> <span class="o">==</span> <span class="n">cen</span><span class="p">[</span><span class="s1">'label_teks'</span><span class="p">]</span>
 
@@ -2099,15 +2098,15 @@ Hutan Non-Mangrove       0.88      1.00      0.94        15
         
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">sub_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
             <span class="n">tooltip_html</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
-<span class="s2">            &lt;div style="font-family: sans-serif; font-size: 12px; width: 230px;"&gt;</span>
-<span class="s2">                &lt;b style="font-size: 13px; color: #1E3A8A;"&gt;Poligon ID: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'poligon_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/b&gt;&lt;br&gt;</span>
-<span class="s2">                &lt;hr style="margin: 3px 0;"&gt;</span>
+<span class="s2">            &lt;div style="font-family: sans-serif; font-size: 11px; width: 220px;"&gt;</span>
+<span class="s2">                &lt;b style="font-size: 12px; color: #1E3A8A;"&gt;Poligon ID: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'poligon_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/b&gt;&lt;br&gt;</span>
+<span class="s2">                &lt;hr style="margin: 2px 0;"&gt;</span>
 <span class="s2">                &lt;b&gt;Hasil Prediksi ML:&lt;/b&gt; &lt;span style="color: </span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s2">; font-weight: bold;"&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'prediksi_ml'</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/span&gt;&lt;br&gt;</span>
 <span class="s2">                &lt;b&gt;Label Ground Truth:&lt;/b&gt; </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'label_teks'</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;br&gt;</span>
 <span class="s2">                &lt;b style="color: #2ca02c;"&gt;Status: PREDIKSI BENAR (MATCH)&lt;/b&gt;&lt;br&gt;</span>
-<span class="s2">                &lt;hr style="margin: 3px 0;"&gt;</span>
+<span class="s2">                &lt;hr style="margin: 2px 0;"&gt;</span>
 <span class="s2">                &lt;b&gt;Nilai Spektral &amp; Indeks:&lt;/b&gt;&lt;br&gt;</span>
-<span class="s2">                - NDVI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDVI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt; | NDWI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDWI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt; | NDBI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDBI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt;</span>
+<span class="s2">                NDVI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDVI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt; | NDWI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDWI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt; | NDBI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDBI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt;</span>
 <span class="s2">            &lt;/div&gt;</span>
 <span class="s2">            """</span>
             
@@ -2119,7 +2118,7 @@ Hutan Non-Mangrove       0.88      1.00      0.94        15
                 <span class="n">fill_color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
                 <span class="n">fill_opacity</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>
                 <span class="n">weight</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-                <span class="n">popup</span><span class="o">=</span><span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">tooltip_html</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">260</span><span class="p">),</span>
+                <span class="n">popup</span><span class="o">=</span><span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">tooltip_html</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">250</span><span class="p">),</span>
                 <span class="n">tooltip</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Prediksi Benar: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'prediksi_ml'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">fg</span><span class="p">)</span>
             
@@ -2132,16 +2131,16 @@ Hutan Non-Mangrove       0.88      1.00      0.94        15
     
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_mismatch</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="n">tooltip_html</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
-<span class="s2">        &lt;div style="font-family: sans-serif; font-size: 12px; width: 250px; background-color: #FFF5EE; padding: 5px; border-radius: 5px;"&gt;</span>
-<span class="s2">            &lt;b style="font-size: 13px; color: #d62728;"&gt;⚠️ PREDIKSI SALAH (MISMATCH)&lt;/b&gt;&lt;br&gt;</span>
-<span class="s2">            &lt;hr style="margin: 3px 0;"&gt;</span>
+<span class="s2">        &lt;div style="font-family: sans-serif; font-size: 11px; width: 230px; background-color: #FFF5EE; padding: 4px; border-radius: 4px;"&gt;</span>
+<span class="s2">            &lt;b style="font-size: 12px; color: #d62728;"&gt;⚠️ PREDIKSI SALAH (MISMATCH)&lt;/b&gt;&lt;br&gt;</span>
+<span class="s2">            &lt;hr style="margin: 2px 0;"&gt;</span>
 <span class="s2">            &lt;b&gt;Poligon ID:&lt;/b&gt; </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'poligon_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;br&gt;</span>
 <span class="s2">            &lt;b&gt;Prediksi Model ML:&lt;/b&gt; &lt;span style="color: </span><span class="si">{</span><span class="n">COLOR_ORANGE</span><span class="si">}</span><span class="s2">; font-weight: bold;"&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'prediksi_ml'</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/span&gt;&lt;br&gt;</span>
 <span class="s2">            &lt;b&gt;Seharusnya (Ground Truth):&lt;/b&gt; &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'label_teks'</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/b&gt;&lt;br&gt;</span>
-<span class="s2">            &lt;hr style="margin: 3px 0;"&gt;</span>
+<span class="s2">            &lt;hr style="margin: 2px 0;"&gt;</span>
 <span class="s2">            &lt;b&gt;Nilai Spektral &amp; Indeks:&lt;/b&gt;&lt;br&gt;</span>
-<span class="s2">            - NDVI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDVI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt; | NDWI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDWI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt; | NDBI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDBI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt;&lt;br&gt;</span>
-<span class="s2">            - SWIR (B11): </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'B11'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> | NIR (B08): </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'B08'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> | Red (B04): </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'B04'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span>
+<span class="s2">            NDVI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDVI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt; | NDWI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDWI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt; | NDBI: &lt;b&gt;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'NDBI'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&lt;/b&gt;&lt;br&gt;</span>
+<span class="s2">            SWIR: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'B11'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> | NIR: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'B08'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> | Red: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'B04'</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span>
 <span class="s2">        &lt;/div&gt;</span>
 <span class="s2">        """</span>
         
@@ -2153,56 +2152,55 @@ Hutan Non-Mangrove       0.88      1.00      0.94        15
             <span class="n">fill_color</span><span class="o">=</span><span class="n">COLOR_ORANGE</span><span class="p">,</span>
             <span class="n">fill_opacity</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>
             <span class="n">weight</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
-            <span class="n">popup</span><span class="o">=</span><span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">tooltip_html</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">270</span><span class="p">),</span>
+            <span class="n">popup</span><span class="o">=</span><span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">tooltip_html</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">260</span><span class="p">),</span>
             <span class="n">tooltip</span><span class="o">=</span><span class="sa">f</span><span class="s2">"⚠️ PREDIKSI SALAH: Model=</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'prediksi_ml'</span><span class="p">]</span><span class="si">}</span><span class="s2"> | Aktual=</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'label_teks'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">fg_mismatch</span><span class="p">)</span>
         
     <span class="n">fg_mismatch</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_pred</span><span class="p">)</span>
 
-<span class="c1"># 5. Legenda Melayang Bergaya 10m Global Land Cover (Plus Warna Oranye Prediksi Salah)</span>
+<span class="c1"># 5. Legenda Melayang Bergaya 10m Global Land Cover (Ringkas &amp; Kompak)</span>
 <span class="n">legend_html</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''</span>
 <span class="s1">&lt;div style="</span>
 <span class="s1">    position: fixed; </span>
-<span class="s1">    bottom: 30px; left: 30px; width: 260px; height: auto; </span>
-<span class="s1">    border:2px solid #ccc; z-index:99999; font-size:13px;</span>
-<span class="s1">    background-color:white; opacity: 0.95; padding: 12px;</span>
-<span class="s1">    border-radius: 8px; font-family: sans-serif;</span>
-<span class="s1">    box-shadow: 0 4px 10px rgba(0,0,0,0.3);</span>
+<span class="s1">    bottom: 15px; left: 15px; width: 215px; </span>
+<span class="s1">    border: 1px solid #cbd5e1; z-index: 99999; font-size: 11px;</span>
+<span class="s1">    background-color: rgba(255, 255, 255, 0.93); padding: 8px 10px;</span>
+<span class="s1">    border-radius: 6px; font-family: sans-serif;</span>
+<span class="s1">    box-shadow: 0 2px 6px rgba(0,0,0,0.25);</span>
 <span class="s1">"&gt;</span>
-<span class="s1">    &lt;b style="font-size:14px; color:#1E3A8A;"&gt;10m Global Land Cover (ML Model)&lt;/b&gt;&lt;br&gt;</span>
-<span class="s1">    &lt;div style="font-size:11px; color:#666; margin-bottom:6px;"&gt;Hasil Klasifikasi Model Machine Learning&lt;/div&gt;</span>
-<span class="s1">    &lt;hr style="margin:4px 0 6px 0;"&gt;</span>
-<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:5px;"&gt;</span>
-<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">class_colors</span><span class="p">[</span><span class="s1">'Air'</span><span class="p">]</span><span class="si">}</span><span class="s1">; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px;"&gt;&lt;/span&gt;</span>
+<span class="s1">    &lt;b style="font-size: 12px; color: #1E3A8A;"&gt;10m Global Land Cover (ML)&lt;/b&gt;</span>
+<span class="s1">    &lt;hr style="margin: 4px 0;"&gt;</span>
+<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:3px;"&gt;</span>
+<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">class_colors</span><span class="p">[</span><span class="s1">'Air'</span><span class="p">]</span><span class="si">}</span><span class="s1">; width:11px; height:11px; display:inline-block; margin-right:6px; border-radius:2px;"&gt;&lt;/span&gt;</span>
 <span class="s1">        &lt;b&gt;Water (Air)&lt;/b&gt;</span>
 <span class="s1">    &lt;/div&gt;</span>
-<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:5px;"&gt;</span>
-<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">class_colors</span><span class="p">[</span><span class="s1">'Hutan Non-Mangrove'</span><span class="p">]</span><span class="si">}</span><span class="s1">; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px;"&gt;&lt;/span&gt;</span>
-<span class="s1">        &lt;b&gt;Trees (Hutan Non-Mangrove)&lt;/b&gt;</span>
+<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:3px;"&gt;</span>
+<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">class_colors</span><span class="p">[</span><span class="s1">'Hutan Non-Mangrove'</span><span class="p">]</span><span class="si">}</span><span class="s1">; width:11px; height:11px; display:inline-block; margin-right:6px; border-radius:2px;"&gt;&lt;/span&gt;</span>
+<span class="s1">        &lt;b&gt;Trees (Non-Mangrove)&lt;/b&gt;</span>
 <span class="s1">    &lt;/div&gt;</span>
-<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:5px;"&gt;</span>
-<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">class_colors</span><span class="p">[</span><span class="s1">'Hutan Mangrove'</span><span class="p">]</span><span class="si">}</span><span class="s1">; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px;"&gt;&lt;/span&gt;</span>
-<span class="s1">        &lt;b&gt;Flooded Vegetation (Hutan Mangrove)&lt;/b&gt;</span>
+<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:3px;"&gt;</span>
+<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">class_colors</span><span class="p">[</span><span class="s1">'Hutan Mangrove'</span><span class="p">]</span><span class="si">}</span><span class="s1">; width:11px; height:11px; display:inline-block; margin-right:6px; border-radius:2px;"&gt;&lt;/span&gt;</span>
+<span class="s1">        &lt;b&gt;Flooded Veg (Mangrove)&lt;/b&gt;</span>
 <span class="s1">    &lt;/div&gt;</span>
-<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:5px;"&gt;</span>
-<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">class_colors</span><span class="p">[</span><span class="s1">'Sawah'</span><span class="p">]</span><span class="si">}</span><span class="s1">; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px;"&gt;&lt;/span&gt;</span>
+<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:3px;"&gt;</span>
+<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">class_colors</span><span class="p">[</span><span class="s1">'Sawah'</span><span class="p">]</span><span class="si">}</span><span class="s1">; width:11px; height:11px; display:inline-block; margin-right:6px; border-radius:2px;"&gt;&lt;/span&gt;</span>
 <span class="s1">        &lt;b&gt;Crops (Sawah)&lt;/b&gt;</span>
 <span class="s1">    &lt;/div&gt;</span>
-<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:5px;"&gt;</span>
-<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">class_colors</span><span class="p">[</span><span class="s1">'Pemukiman'</span><span class="p">]</span><span class="si">}</span><span class="s1">; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px;"&gt;&lt;/span&gt;</span>
+<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:3px;"&gt;</span>
+<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">class_colors</span><span class="p">[</span><span class="s1">'Pemukiman'</span><span class="p">]</span><span class="si">}</span><span class="s1">; width:11px; height:11px; display:inline-block; margin-right:6px; border-radius:2px;"&gt;&lt;/span&gt;</span>
 <span class="s1">        &lt;b&gt;Built Area (Pemukiman)&lt;/b&gt;</span>
 <span class="s1">    &lt;/div&gt;</span>
-<span class="s1">    &lt;hr style="margin:4px 0 6px 0;"&gt;</span>
-<span class="s1">    &lt;div style="display:flex; align-items:center; margin-bottom:2px; color:#d62728;"&gt;</span>
-<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">COLOR_ORANGE</span><span class="si">}</span><span class="s1">; width:15px; height:15px; display:inline-block; margin-right:8px; border-radius:3px; border:1px solid #d62728;"&gt;&lt;/span&gt;</span>
-<span class="s1">        &lt;b&gt;⚠️ ORANYE: Prediksi Salah (</span><span class="si">{</span><span class="n">n_mismatch</span><span class="si">}</span><span class="s1">)&lt;/b&gt;</span>
+<span class="s1">    &lt;hr style="margin: 4px 0;"&gt;</span>
+<span class="s1">    &lt;div style="display:flex; align-items:center; color:#d62728;"&gt;</span>
+<span class="s1">        &lt;span style="background:</span><span class="si">{</span><span class="n">COLOR_ORANGE</span><span class="si">}</span><span class="s1">; width:11px; height:11px; display:inline-block; margin-right:6px; border-radius:2px; border:1px solid #d62728;"&gt;&lt;/span&gt;</span>
+<span class="s1">        &lt;b&gt;⚠️ ORANYE: Mismatch (</span><span class="si">{</span><span class="n">n_mismatch</span><span class="si">}</span><span class="s1">)&lt;/b&gt;</span>
 <span class="s1">    &lt;/div&gt;</span>
 <span class="s1">&lt;/div&gt;</span>
 <span class="s1">'''</span>
 <span class="n">m_pred</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">legend_html</span><span class="p">))</span>
 
-<span class="c1"># 6. Tambahkan Panel Layer Control Interaktif</span>
-<span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">(</span><span class="n">collapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_pred</span><span class="p">)</span>
+<span class="c1"># 6. Tambahkan Panel Layer Control Interaktif (Collapsed=True)</span>
+<span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">(</span><span class="n">collapsed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_pred</span><span class="p">)</span>
 
 <span class="c1"># Simpan Peta Hasil Klasifikasi ML ke File HTML</span>
 <span class="n">html_file_pred</span> <span class="o">=</span> <span class="s1">'map_lulc_predicted.html'</span>
