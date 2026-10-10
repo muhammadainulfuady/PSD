@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Data Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur &#8212; Proyek Sains Data IF 5B</title>
+    <title>Data Understanding &#8212; Proyek Sains Data IF 5B</title>
   
   
   
@@ -63,8 +63,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'uts/data-understanding-uts';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Data Preparation — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur" href="data-preparation-uts.html" />
-    <link rel="prev" title="Business Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur" href="business-understanding-uts.html" />
+    <link rel="next" title="Proyek Analisis dan Klasifikasi Tutupan Lahan (LULC) Satelit Sentinel-2 Jawa Timur" href="code/landuseCover.html" />
+    <link rel="prev" title="Business Understanding" href="business-understanding-uts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -183,10 +183,9 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="tugas-uts.html">Panduan &amp; Spesifikasi Proyek Tugas Pengganti UTS</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="business-understanding-uts.html">Business Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Data Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-preparation-uts.html">Data Preparation — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</a></li>
-<li class="toctree-l2"><a class="reference internal" href="code-klasifikasiLulcJatim.html">Klasifikasi &amp; Pemetaan Land Use and Land Cover (LULC) Jawa Timur</a></li>
+<li class="toctree-l2"><a class="reference internal" href="business-understanding-uts.html">Business Understanding</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Data Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code/landuseCover.html">Proyek Analisis dan Klasifikasi Tutupan Lahan (LULC) Satelit Sentinel-2 Jawa Timur</a></li>
 </ul>
 </details></li>
 </ul>
@@ -327,7 +326,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Data Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</h1>
+    <h1>Data Understanding</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -337,13 +336,16 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-understanding">2. Data Understanding</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#audit-karakteristik-data-vektor-geojson">2.1 Audit &amp; Karakteristik Data Vektor (GeoJSON)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#band-satelit-sentinel-2-yang-dibutuhkan-alasan-penggunaannya">2.2 Band Satelit Sentinel-2 yang Dibutuhkan &amp; Alasan Penggunaannya</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mengapa-kombinasi-band-ini-sangat-krusial">2.3 Mengapa Kombinasi Band Ini Sangat Krusial?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indeks-spektral-tambahan-feature-engineering">2.4 Indeks Spektral Tambahan (Feature Engineering)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deskripsi-data">1. Deskripsi Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#karakteristik-sampel-lahan">2. Karakteristik Sampel Lahan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spesifikasi-band-satelit-sentinel-2">3. Spesifikasi Band Satelit Sentinel-2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indeks-spektral-feature-engineering">4. Indeks Spektral (Feature Engineering)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalized-difference-vegetation-index-ndvi">4.1 Normalized Difference Vegetation Index (NDVI)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalized-difference-water-index-ndwi">4.2 Normalized Difference Water Index (NDWI)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalized-difference-built-up-index-ndbi">4.3 Normalized Difference Built-up Index (NDBI)</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#respon-spektral-per-kelas">5. Respon Spektral per Kelas</a></li>
 </ul>
             </nav>
         </div>
@@ -355,99 +357,189 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="data-understanding-klasifikasi-land-use-and-land-cover-lulc-jawa-timur">
-<h1>Data Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur<a class="headerlink" href="#data-understanding-klasifikasi-land-use-and-land-cover-lulc-jawa-timur" title="Link to this heading">#</a></h1>
-<p>Dokumen ini menjelaskan tahap <strong>Data Understanding</strong> dalam metodologi CRISP-DM untuk proyek UTS LULC Jawa Timur. Tahap ini berfokus pada analisis sampel data vektor serta pemahaman mendalam mengenai karakteristik dan alasan penggunaan band spektral citra satelit Sentinel-2.</p>
-<hr class="docutils" />
-<section id="data-understanding">
-<h2>2. Data Understanding<a class="headerlink" href="#data-understanding" title="Link to this heading">#</a></h2>
-<section id="audit-karakteristik-data-vektor-geojson">
-<h3>2.1 Audit &amp; Karakteristik Data Vektor (GeoJSON)<a class="headerlink" href="#audit-karakteristik-data-vektor-geojson" title="Link to this heading">#</a></h3>
-<p>Data acuan (<em>ground truth</em>) berupa poligon sampel digitasi area tutupan lahan di wilayah Provinsi Jawa Timur yang terdiri dari 5 kelas tutupan lahan utama:</p>
-<ul class="simple">
-<li><p><strong>Total Sampel Poligon:</strong> 250 Poligon (Seimbang 50 poligon per kelas)</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="data-understanding">
+<h1>Data Understanding<a class="headerlink" href="#data-understanding" title="Link to this heading">#</a></h1>
+<section id="deskripsi-data">
+<h2>1. Deskripsi Data<a class="headerlink" href="#deskripsi-data" title="Link to this heading">#</a></h2>
+<p>Analisis klasifikasi LULC memanfaatkan dua sumber data utama:</p>
 <ol class="arabic simple">
-<li><p><strong>Sawah / Pertanian:</strong> 50 poligon</p></li>
-<li><p><strong>Pemukiman / Built-Up:</strong> 50 poligon</p></li>
-<li><p><strong>Hutan Non-Mangrove:</strong> 50 poligon</p></li>
-<li><p><strong>Hutan Mangrove:</strong> 50 poligon</p></li>
-<li><p><strong>Air (Water Bodies):</strong> 50 poligon</p></li>
+<li><p><strong>Data Vektor Sampel (Ground Truth):</strong> Data spasial poligon terverifikasi bertipe geometri <em>Polygon</em> dengan sistem koordinat EPSG:4326 (WGS84).</p></li>
+<li><p><strong>Data Raster Satelit Sentinel-2 (Level-2A):</strong> Citra satelit optik multiband (<em>Surface Reflectance</em>) dengan resolusi spasial 10 m hingga 20 m.</p></li>
 </ol>
-</li>
-<li><p><strong>Kualitas Geometri:</strong> 100% valid tanpa duplikasi spasial.</p></li>
-</ul>
 </section>
-<hr class="docutils" />
-<section id="band-satelit-sentinel-2-yang-dibutuhkan-alasan-penggunaannya">
-<h3>2.2 Band Satelit Sentinel-2 yang Dibutuhkan &amp; Alasan Penggunaannya<a class="headerlink" href="#band-satelit-sentinel-2-yang-dibutuhkan-alasan-penggunaannya" title="Link to this heading">#</a></h3>
-<p>Untuk mengklasifikasikan 5 kelas tutupan lahan secara presisi, dibutuhkan <strong>5 Band Spektral Kunci</strong> dari sensor optik Sentinel-2 (Level-2A):</p>
+<section id="karakteristik-sampel-lahan">
+<h2>2. Karakteristik Sampel Lahan<a class="headerlink" href="#karakteristik-sampel-lahan" title="Link to this heading">#</a></h2>
+<p>Data sampel terdiri dari <strong>250 poligon</strong> yang terbagi secara seimbang ke dalam 5 kelas tutupan lahan (masing-masing 50 sampel poligon):</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head text-left"><p>Band Satelit</p></th>
-<th class="head text-left"><p>Nama Gelombang</p></th>
-<th class="head text-center"><p>Panjang Gelombang (<span class="math notranslate nohighlight">\(\lambda\)</span>)</p></th>
-<th class="head text-center"><p>Resolusi Spasial</p></th>
-<th class="head text-left"><p>Alasan Mengapa Band Ini Dibutuhkan</p></th>
+<tr class="row-odd"><th class="head text-center"><p>No</p></th>
+<th class="head text-left"><p>Kelas Tutupan Lahan</p></th>
+<th class="head text-center"><p>Jumlah Sampel</p></th>
+<th class="head text-center"><p>Persentase</p></th>
+<th class="head text-center"><p>Tipe Geometri</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-left"><p><strong>Band 2 (B02)</strong></p></td>
-<td class="text-left"><p>Blue (Biru)</p></td>
-<td class="text-center"><p>~490 nm</p></td>
-<td class="text-center"><p>10 meter</p></td>
-<td class="text-left"><p><strong>Penetrasi Air &amp; Komposit Warna:</strong> Cahaya biru dapat menembus kolom air dan sangat baik membedakan fitur perairan dangkal/sedimentasi serta digunakan untuk komposit warna alami (RGB).</p></td>
+<tr class="row-even"><td class="text-center"><p>1</p></td>
+<td class="text-left"><p>Air</p></td>
+<td class="text-center"><p>50</p></td>
+<td class="text-center"><p>20%</p></td>
+<td class="text-center"><p>Polygon</p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p><strong>Band 3 (B03)</strong></p></td>
-<td class="text-left"><p>Green (Hijau)</p></td>
-<td class="text-center"><p>~560 nm</p></td>
-<td class="text-center"><p>10 meter</p></td>
-<td class="text-left"><p><strong>Deteksi Kebasahan &amp; Air (NDWI):</strong> Vegetasi dan air memantulkan cahaya hijau. Band ini dibutuhkan sebagai komponen utama formula <strong>NDWI</strong> untuk memisahkan badan air dari daratan.</p></td>
+<tr class="row-odd"><td class="text-center"><p>2</p></td>
+<td class="text-left"><p>Hutan Mangrove</p></td>
+<td class="text-center"><p>50</p></td>
+<td class="text-center"><p>20%</p></td>
+<td class="text-center"><p>Polygon</p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p><strong>Band 4 (B04)</strong></p></td>
-<td class="text-left"><p>Red (Merah)</p></td>
-<td class="text-center"><p>~665 nm</p></td>
-<td class="text-center"><p>10 meter</p></td>
-<td class="text-left"><p><strong>Penyerapan Klorofil (NDVI):</strong> Klorofil tanaman menyerap kuat spektrum merah. Kombinasi Red dan NIR dibutuhkan untuk menghitung <strong>NDVI</strong> guna mengukur kelebatan vegetasi.</p></td>
+<tr class="row-even"><td class="text-center"><p>3</p></td>
+<td class="text-left"><p>Hutan Non-Mangrove</p></td>
+<td class="text-center"><p>50</p></td>
+<td class="text-center"><p>20%</p></td>
+<td class="text-center"><p>Polygon</p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p><strong>Band 8 (B08)</strong></p></td>
-<td class="text-left"><p>NIR (Near-Infrared)</p></td>
-<td class="text-center"><p>~842 nm</p></td>
-<td class="text-center"><p>10 meter</p></td>
-<td class="text-left"><p><strong>Diferensiasi Vegetasi vs Non-Vegetasi:</strong> Struktur sel mesofil vegetasi sehat memantulkan NIR sangat tinggi, sedangkan air menyerap NIR sepenuhnya. Kunci memisahkan hutan dari pemukiman/air.</p></td>
+<tr class="row-odd"><td class="text-center"><p>4</p></td>
+<td class="text-left"><p>Pemukiman</p></td>
+<td class="text-center"><p>50</p></td>
+<td class="text-center"><p>20%</p></td>
+<td class="text-center"><p>Polygon</p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p><strong>Band 11 (B11)</strong></p></td>
-<td class="text-left"><p>SWIR1 (Shortwave-Infrared)</p></td>
-<td class="text-center"><p>~1610 nm</p></td>
-<td class="text-center"><p>20 meter</p></td>
-<td class="text-left"><p><strong>Diferensiasi Mangrove &amp; Pemukiman (NDBI):</strong> SWIR sangat sensitif terhadap kelembapan tanah/daun dan material bangunan (beton/atap). Kunci utama membedakan <strong>Hutan Mangrove</strong> (basah) vs <strong>Hutan Darat</strong> (kering) serta mengidentifikasi <strong>Pemukiman</strong>.</p></td>
+<tr class="row-even"><td class="text-center"><p>5</p></td>
+<td class="text-left"><p>Sawah</p></td>
+<td class="text-center"><p>50</p></td>
+<td class="text-center"><p>20%</p></td>
+<td class="text-center"><p>Polygon</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong>Total</strong></p></td>
+<td class="text-left"><p><strong>5 Kelas</strong></p></td>
+<td class="text-center"><p><strong>250</strong></p></td>
+<td class="text-center"><p><strong>100%</strong></p></td>
+<td class="text-center"><p><strong>Polygon</strong></p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
-<hr class="docutils" />
-<section id="mengapa-kombinasi-band-ini-sangat-krusial">
-<h3>2.3 Mengapa Kombinasi Band Ini Sangat Krusial?<a class="headerlink" href="#mengapa-kombinasi-band-ini-sangat-krusial" title="Link to this heading">#</a></h3>
-<ol class="arabic simple">
-<li><p><strong>Membedakan Hutan Mangrove vs Hutan Non-Mangrove:</strong>
-Secara visual (RGB/Mata telanjang), kedua jenis hutan ini sama-sama berwarna hijau lebat. Namun pada <strong>Band 11 (SWIR)</strong>, Hutan Mangrove menunjukkan pantulan yang jauh lebih rendah dibanding Hutan Daratan karena substrat/tanah di bawah kanopi mangrove selalu basah atau tergenang air laut.</p></li>
-<li><p><strong>Membedakan Pemukiman (Built-Up) vs Tanah Olahan Sawah:</strong>
-Material buatan manusia (beton, semen, genteng) pada <strong>Pemukiman</strong> memiliki nilai pantulan <strong>SWIR (B11)</strong> yang sangat tinggi disertai nilai <strong>NIR (B08)</strong> sedang, sehingga menghasilkan nilai indeks <strong>NDBI</strong> bernilai positif.</p></li>
-<li><p><strong>Membedakan Badan Air vs Kelas Lainnya:</strong>
-Air menyerap hampir seluruh energi pada spektrum <strong>NIR (B08)</strong> dan <strong>SWIR (B11)</strong>, menjadikannya tampak sangat gelap (nilai mendekati 0), sementara pada <strong>Band 3 (Green)</strong> memiliki pantulan relatif tinggi. Hal ini membuat indeks <strong>NDWI</strong> sangat efektif memisahkan air secara mutlak.</p></li>
-</ol>
+<section id="spesifikasi-band-satelit-sentinel-2">
+<h2>3. Spesifikasi Band Satelit Sentinel-2<a class="headerlink" href="#spesifikasi-band-satelit-sentinel-2" title="Link to this heading">#</a></h2>
+<p>Digunakan 5 band spektral kunci dari sensor MSI Sentinel-2 untuk klasifikasi:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Band Satelit</p></th>
+<th class="head text-left"><p>Nama Spektrum</p></th>
+<th class="head text-center"><p>Panjang Gelombang</p></th>
+<th class="head text-center"><p>Resolusi</p></th>
+<th class="head text-left"><p>Peran Utama</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Band 2 (B02)</strong></p></td>
+<td class="text-left"><p>Blue</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\sim 490\text{ nm}\)</span></p></td>
+<td class="text-center"><p>10 m</p></td>
+<td class="text-left"><p>Komposisi warna alami dan analisis perairan.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Band 3 (B03)</strong></p></td>
+<td class="text-left"><p>Green</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\sim 560\text{ nm}\)</span></p></td>
+<td class="text-center"><p>10 m</p></td>
+<td class="text-left"><p>Pantulan klorofil dan komponen perhitungan NDWI.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Band 4 (B04)</strong></p></td>
+<td class="text-left"><p>Red</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\sim 665\text{ nm}\)</span></p></td>
+<td class="text-center"><p>10 m</p></td>
+<td class="text-left"><p>Penyerapan klorofil vegetasi dan komponen NDVI.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Band 8 (B08)</strong></p></td>
+<td class="text-left"><p>NIR (Near-Infrared)</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\sim 842\text{ nm}\)</span></p></td>
+<td class="text-center"><p>10 m</p></td>
+<td class="text-left"><p>Membedakan kerapatan vegetasi dari air/bangunan.</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Band 11 (B11)</strong></p></td>
+<td class="text-left"><p>SWIR1 (Shortwave-Infrared)</p></td>
+<td class="text-center"><p><span class="math notranslate nohighlight">\(\sim 1610\text{ nm}\)</span></p></td>
+<td class="text-center"><p>20 m</p></td>
+<td class="text-left"><p>Peka kelembapan tanah/kanopi dan membedakan mangrove vs non-mangrove serta pemukiman.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
-<hr class="docutils" />
-<section id="indeks-spektral-tambahan-feature-engineering">
-<h3>2.4 Indeks Spektral Tambahan (Feature Engineering)<a class="headerlink" href="#indeks-spektral-tambahan-feature-engineering" title="Link to this heading">#</a></h3>
-<p>Dari 5 band di atas, dihitung 3 Indeks Spektral untuk memperkuat performa algoritma Machine Learning:</p>
+<section id="indeks-spektral-feature-engineering">
+<h2>4. Indeks Spektral (Feature Engineering)<a class="headerlink" href="#indeks-spektral-feature-engineering" title="Link to this heading">#</a></h2>
+<p>Untuk memperkuat pemisahan antar kelas, dihitung 3 indeks spektral utama:</p>
+<section id="normalized-difference-vegetation-index-ndvi">
+<h3>4.1 Normalized Difference Vegetation Index (NDVI)<a class="headerlink" href="#normalized-difference-vegetation-index-ndvi" title="Link to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
-\[\text{NDVI} = \frac{\text{B08} - \text{B04}}{\text{B08} + \text{B04}} \quad \text{(Indeks Kerapatan Vegetasi)}\]</div>
-<div class="math notranslate nohighlight">
-\[\text{NDWI} = \frac{\text{B03} - \text{B08}}{\text{B03} + \text{B08}} \quad \text{(Indeks Badan Air / Kebasahan)}\]</div>
-<div class="math notranslate nohighlight">
-\[\text{NDBI} = \frac{\text{B11} - \text{B08}}{\text{B11} + \text{B08}} \quad \text{(Indeks Bangunan / Pemukiman)}\]</div>
+\[\text{NDVI} = \frac{\text{B08 (NIR)} - \text{B04 (Red)}}{\text{B08 (NIR)} + \text{B04 (Red)}}\]</div>
+<p>Mengukur kerapatan dan tingkat kehijauan vegetasi.</p>
 </section>
+<section id="normalized-difference-water-index-ndwi">
+<h3>4.2 Normalized Difference Water Index (NDWI)<a class="headerlink" href="#normalized-difference-water-index-ndwi" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\text{NDWI} = \frac{\text{B03 (Green)} - \text{B08 (NIR)}}{\text{B03 (Green)} + \text{B08 (NIR)}}\]</div>
+<p>Mengisolasi dan mengidentifikasi badan air.</p>
+</section>
+<section id="normalized-difference-built-up-index-ndbi">
+<h3>4.3 Normalized Difference Built-up Index (NDBI)<a class="headerlink" href="#normalized-difference-built-up-index-ndbi" title="Link to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\text{NDBI} = \frac{\text{B11 (SWIR1)} - \text{B08 (NIR)}}{\text{B11 (SWIR1)} + \text{B08 (NIR)}}\]</div>
+<p>Mengidentifikasi area terbangun dan pemukiman.</p>
+</section>
+</section>
+<section id="respon-spektral-per-kelas">
+<h2>5. Respon Spektral per Kelas<a class="headerlink" href="#respon-spektral-per-kelas" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Kelas</p></th>
+<th class="head text-center"><p>Respon NIR (B08)</p></th>
+<th class="head text-center"><p>Respon SWIR (B11)</p></th>
+<th class="head text-center"><p>NDVI</p></th>
+<th class="head text-center"><p>NDWI</p></th>
+<th class="head text-center"><p>NDBI</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Air</strong></p></td>
+<td class="text-center"><p>Sangat Rendah</p></td>
+<td class="text-center"><p>Sangat Rendah</p></td>
+<td class="text-center"><p>Negatif</p></td>
+<td class="text-center"><p>Positif Tinggi</p></td>
+<td class="text-center"><p>Negatif</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Hutan Mangrove</strong></p></td>
+<td class="text-center"><p>Tinggi</p></td>
+<td class="text-center"><p>Sedang (Lembap)</p></td>
+<td class="text-center"><p>Positif Tinggi</p></td>
+<td class="text-center"><p>Sedang</p></td>
+<td class="text-center"><p>Negatif / Rendah</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Hutan Non-Mangrove</strong></p></td>
+<td class="text-center"><p>Sangat Tinggi</p></td>
+<td class="text-center"><p>Rendah / Sedang</p></td>
+<td class="text-center"><p>Positif Sangat Tinggi</p></td>
+<td class="text-center"><p>Negatif</p></td>
+<td class="text-center"><p>Negatif</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Pemukiman</strong></p></td>
+<td class="text-center"><p>Sedang</p></td>
+<td class="text-center"><p>Sangat Tinggi</p></td>
+<td class="text-center"><p>Rendah</p></td>
+<td class="text-center"><p>Negatif</p></td>
+<td class="text-center"><p>Positif</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Sawah</strong></p></td>
+<td class="text-center"><p>Bervariasi</p></td>
+<td class="text-center"><p>Bervariasi</p></td>
+<td class="text-center"><p>Positif Sedang</p></td>
+<td class="text-center"><p>Bervariasi</p></td>
+<td class="text-center"><p>Bervariasi</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 </section>
 
@@ -487,15 +579,15 @@ Air menyerap hampir seluruh energi pada spektrum <strong>NIR (B08)</strong> dan 
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Business Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</p>
+        <p class="prev-next-title">Business Understanding</p>
       </div>
     </a>
     <a class="right-next"
-       href="data-preparation-uts.html"
+       href="code/landuseCover.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Data Preparation — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</p>
+        <p class="prev-next-title">Proyek Analisis dan Klasifikasi Tutupan Lahan (LULC) Satelit Sentinel-2 Jawa Timur</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -516,13 +608,16 @@ Air menyerap hampir seluruh energi pada spektrum <strong>NIR (B08)</strong> dan 
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-understanding">2. Data Understanding</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#audit-karakteristik-data-vektor-geojson">2.1 Audit &amp; Karakteristik Data Vektor (GeoJSON)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#band-satelit-sentinel-2-yang-dibutuhkan-alasan-penggunaannya">2.2 Band Satelit Sentinel-2 yang Dibutuhkan &amp; Alasan Penggunaannya</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mengapa-kombinasi-band-ini-sangat-krusial">2.3 Mengapa Kombinasi Band Ini Sangat Krusial?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indeks-spektral-tambahan-feature-engineering">2.4 Indeks Spektral Tambahan (Feature Engineering)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deskripsi-data">1. Deskripsi Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#karakteristik-sampel-lahan">2. Karakteristik Sampel Lahan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spesifikasi-band-satelit-sentinel-2">3. Spesifikasi Band Satelit Sentinel-2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indeks-spektral-feature-engineering">4. Indeks Spektral (Feature Engineering)</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalized-difference-vegetation-index-ndvi">4.1 Normalized Difference Vegetation Index (NDVI)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalized-difference-water-index-ndwi">4.2 Normalized Difference Water Index (NDWI)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalized-difference-built-up-index-ndbi">4.3 Normalized Difference Built-up Index (NDBI)</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#respon-spektral-per-kelas">5. Respon Spektral per Kelas</a></li>
 </ul>
   </nav></div>
 

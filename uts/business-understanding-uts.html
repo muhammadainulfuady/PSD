@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Business Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur &#8212; Proyek Sains Data IF 5B</title>
+    <title>Business Understanding &#8212; Proyek Sains Data IF 5B</title>
   
   
   
@@ -58,10 +58,12 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'uts/business-understanding-uts';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Data Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur" href="data-understanding-uts.html" />
+    <link rel="next" title="Data Understanding" href="data-understanding-uts.html" />
     <link rel="prev" title="Panduan &amp; Spesifikasi Proyek Tugas Pengganti UTS" href="tugas-uts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -181,10 +183,9 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="tugas-uts.html">Panduan &amp; Spesifikasi Proyek Tugas Pengganti UTS</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Business Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-understanding-uts.html">Data Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</a></li>
-<li class="toctree-l2"><a class="reference internal" href="data-preparation-uts.html">Data Preparation — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</a></li>
-<li class="toctree-l2"><a class="reference internal" href="code-klasifikasiLulcJatim.html">Klasifikasi &amp; Pemetaan Land Use and Land Cover (LULC) Jawa Timur</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Business Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-understanding-uts.html">Data Understanding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code/landuseCover.html">Proyek Analisis dan Klasifikasi Tutupan Lahan (LULC) Satelit Sentinel-2 Jawa Timur</a></li>
 </ul>
 </details></li>
 </ul>
@@ -325,7 +326,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Business Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</h1>
+    <h1>Business Understanding</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -335,13 +336,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#business-understanding">1. Business Understanding</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#apakah-itu-land-use-and-land-cover-lulc">1.1 Apakah itu Land Use and Land Cover (LULC)?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-analisis">1.2 Tujuan Analisis</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ruang-lingkup-5-kelas-tutupan-lahan">1.3 Ruang Lingkup &amp; 5 Kelas Tutupan Lahan</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pentingnya-diferensiasi-spektral-mangrove">1.4 Pentingnya Diferensiasi Spektral Mangrove</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang">1. Latar Belakang</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definisi-lulc">2. Definisi LULC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-proyek">3. Tujuan Proyek</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-tutupan-lahan">4. Kelas Tutupan Lahan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kriteria-keberhasilan-proyek">5. Kriteria Keberhasilan Proyek</a></li>
 </ul>
             </nav>
         </div>
@@ -353,93 +352,70 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="business-understanding-klasifikasi-land-use-and-land-cover-lulc-jawa-timur">
-<h1>Business Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur<a class="headerlink" href="#business-understanding-klasifikasi-land-use-and-land-cover-lulc-jawa-timur" title="Link to this heading">#</a></h1>
-<p>Dokumen ini menjelaskan secara mendalam tahap <strong>Business Understanding</strong> dalam metodologi CRISP-DM untuk proyek Tugas Pengganti UTS: <strong>Klasifikasi Land Use and Land Cover (LULC) Provinsi Jawa Timur</strong> berbasis Citra Satelit Optik Sentinel-2.</p>
-<hr class="docutils" />
-<section id="business-understanding">
-<h2>1. Business Understanding<a class="headerlink" href="#business-understanding" title="Link to this heading">#</a></h2>
-<section id="apakah-itu-land-use-and-land-cover-lulc">
-<h3>1.1 Apakah itu Land Use and Land Cover (LULC)?<a class="headerlink" href="#apakah-itu-land-use-and-land-cover-lulc" title="Link to this heading">#</a></h3>
-<p>Dalam penginderaan jauh (<em>remote sensing</em>) dan tata ruang wilayah, istilah <strong>Land Cover</strong> dan <strong>Land Use</strong> memiliki perbedaan mendasar yang saling melengkapi:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="business-understanding">
+<h1>Business Understanding<a class="headerlink" href="#business-understanding" title="Link to this heading">#</a></h1>
+<section id="latar-belakang">
+<h2>1. Latar Belakang<a class="headerlink" href="#latar-belakang" title="Link to this heading">#</a></h2>
+<p>Provinsi Jawa Timur memiliki lanskap geografis yang beragam, meliputi area pesisir pantai, pertanian, perkotaan/pemukiman, hingga pegunungan dan hutan. Pemantauan perubahan tutupan lahan (<em>Land Use and Land Cover</em> / LULC) secara berkala penting untuk perencanaan tata ruang, konservasi ekosistem pesisir (hutan mangrove), dan pemantauan ketahanan pangan (sawah).</p>
+</section>
+<section id="definisi-lulc">
+<h2>2. Definisi LULC<a class="headerlink" href="#definisi-lulc" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Land Cover (Penutupan Lahan):</strong>
-Mengacu pada kenampakan fisik biofisik permukaan bumi yang terekam langsung oleh sensor satelit tanpa mempertimbangkan fungsi ekonominya.
-<em>Contoh:</em> Tutupan vegetasi (Hutan Mangrove, Hutan Non-Mangrove), badan air (laut, sungai, waduk), atau material fisik permukaan bumi (bangunan, beton, tanah terbuka).</p></li>
-<li><p><strong>Land Use (Penggunaan Lahan):</strong>
-Mengacu pada pemanfaatan dan fungsi sosial-ekonomi permukaan bumi oleh aktivitas manusia untuk tujuan tertentu.
-<em>Contoh:</em> Area pertanian/sawah, permukiman warga, kawasan industri, pertambangan, dan area rekreasi.</p></li>
+<li><p><strong>Land Cover (Penutupan Lahan):</strong> Kenampakan fisik biofisik permukaan bumi yang terekam sensor satelit (contoh: vegetasi, badan air, bangunan).</p></li>
+<li><p><strong>Land Use (Penggunaan Lahan):</strong> Pemanfaatan permukaan bumi oleh aktivitas manusia (contoh: pertanian/sawah, permukiman, kawasan industri).</p></li>
 </ul>
 </section>
-<hr class="docutils" />
-<section id="tujuan-analisis">
-<h3>1.2 Tujuan Analisis<a class="headerlink" href="#tujuan-analisis" title="Link to this heading">#</a></h3>
-<p>Proyek analisis ini dirancang untuk mencapai 4 tujuan utama:</p>
+<section id="tujuan-proyek">
+<h2>3. Tujuan Proyek<a class="headerlink" href="#tujuan-proyek" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p><strong>Identifikasi &amp; Pemetaan Otomatis:</strong>
-Memetakan dan mengklasifikasikan tutupan lahan di wilayah kajian (Provinsi Jawa Timur) secara akurat dan otomatis menggunakan citra satelit optik Sentinel-2 multiband.</p></li>
-<li><p><strong>Diferensiasi Khusus Hutan Mangrove:</strong>
-Membedakan secara spesifik vegetasi <strong>Hutan Mangrove</strong> dengan <strong>Hutan Non-Mangrove</strong> dan <strong>Pertanian/Sawah</strong> berdasarkan respon pantulan spektral khas pada gelombang Shortwave Infrared (<strong>SWIR / B11</strong>), Near Infrared (<strong>NIR / B08</strong>), dan Red (<strong>B04</strong>).</p></li>
-<li><p><strong>Verifikasi Visual Overlay:</strong>
-Menampilkan hasil klasifikasi lahan dalam bentuk <em>interactive layer overlay</em> (transparan) di atas citra satelit dasar (<em>basemap</em> Google Satellite / Terrain) untuk memverifikasi secara visual kebenaran label klasifikasi di lapangan.</p></li>
-<li><p><strong>Deployment Aplikasi Interaktif:</strong>
-Membangun aplikasi web interaktif berbasis <strong>Streamlit</strong> untuk menyajikan peta klasifikasi LULC Jawa Timur, statistik luas area, dan evaluasi performa model secara intuitif bagi pemangku kepentingan (<em>stakeholders</em>).</p></li>
+<li><p><strong>Pemetaan Otomatis:</strong> Memetakan dan mengklasifikasikan tutupan lahan di Jawa Timur menggunakan citra satelit optik Sentinel-2.</p></li>
+<li><p><strong>Diferensiasi Hutan Mangrove:</strong> Membedakan vegetasi Hutan Mangrove dari Hutan Non-Mangrove dan Sawah berdasarkan respon spektral band SWIR (B11), NIR (B08), dan Red (B04).</p></li>
+<li><p><strong>Verifikasi Visual Overlay:</strong> Menampilkan hasil klasifikasi dalam bentuk <em>layer overlay</em> interaktif di atas citra satelit dasar (<em>basemap</em>).</p></li>
+<li><p><strong>Deployment Aplikasi Web:</strong> Membangun aplikasi web interaktif menggunakan Streamlit untuk menampilkan hasil peta, metrik evaluasi model, dan statistik luas area.</p></li>
 </ol>
 </section>
-<hr class="docutils" />
-<section id="ruang-lingkup-5-kelas-tutupan-lahan">
-<h3>1.3 Ruang Lingkup &amp; 5 Kelas Tutupan Lahan<a class="headerlink" href="#ruang-lingkup-5-kelas-tutupan-lahan" title="Link to this heading">#</a></h3>
-<p>Untuk memodelkan kondisi fisiografis Jawa Timur, proyek ini mengklasifikasikan 5 kelas tutupan lahan utama (masing-masing 50 sampel polygon terverifikasi):</p>
+<section id="kelas-tutupan-lahan">
+<h2>4. Kelas Tutupan Lahan<a class="headerlink" href="#kelas-tutupan-lahan" title="Link to this heading">#</a></h2>
+<p>Klasifikasi dilakukan pada 5 kelas tutupan lahan utama dengan total 250 sampel poligon (50 sampel per kelas):</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head text-center"><p>No</p></th>
-<th class="head text-left"><p>Kelas LULC</p></th>
-<th class="head text-left"><p>Deskripsi Karakteristik Fisikal</p></th>
-<th class="head text-left"><p>Respon Spektral Kunci</p></th>
+<th class="head text-left"><p>Kelas Tutupan Lahan</p></th>
+<th class="head text-left"><p>Deskripsi &amp; Respon Spektral</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td class="text-center"><p>1</p></td>
-<td class="text-left"><p><strong>Sawah / Pertanian</strong></p></td>
-<td class="text-left"><p>Area bercocok tanam musiman dan tanah olahan pertanian</p></td>
-<td class="text-left"><p>Fluktuasi kelembapan tanah &amp; pantulan vegetasi sedang</p></td>
+<td class="text-left"><p><strong>Air</strong></p></td>
+<td class="text-left"><p>Laut, sungai, waduk, dan tambak. Penyerapan kuat pada NIR dan SWIR (NDWI tinggi).</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p>2</p></td>
-<td class="text-left"><p><strong>Pemukiman / Built-Up</strong></p></td>
-<td class="text-left"><p>Bangunan perumahan, gedung, jalan, dan material buatan</p></td>
-<td class="text-left"><p>Respon SWIR &amp; NDBI tinggi, NIR relatif rendah</p></td>
+<td class="text-left"><p><strong>Hutan Mangrove</strong></p></td>
+<td class="text-left"><p>Vegetasi pesisir dan muara sungai. NIR tinggi dan SWIR (B11) peka kelembapan.</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p>3</p></td>
 <td class="text-left"><p><strong>Hutan Non-Mangrove</strong></p></td>
-<td class="text-left"><p>Vegetasi pepohonan dataran tinggi dan daratan</p></td>
-<td class="text-left"><p>Reflektansi NIR (B08) sangat tinggi, SWIR rendah</p></td>
+<td class="text-left"><p>Vegetasi daratan/pepohonan tinggi. Reflektansi NIR (B08) sangat tinggi.</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p>4</p></td>
-<td class="text-left"><p><strong>Hutan Mangrove</strong></p></td>
-<td class="text-left"><p>Vegetasi pesisir dan muara yang terpengaruh pasang surut</p></td>
-<td class="text-left"><p>NIR tinggi namun SWIR/NDVI terpengaruh kelembapan air laut</p></td>
+<td class="text-left"><p><strong>Pemukiman</strong></p></td>
+<td class="text-left"><p>Perumahan, gedung, dan infrastruktur. Respon SWIR (B11) dan NDBI tinggi.</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p>5</p></td>
-<td class="text-left"><p><strong>Air (Water Bodies)</strong></p></td>
-<td class="text-left"><p>Laut, sungai, waduk, dan tambak air</p></td>
-<td class="text-left"><p>Penyerapan kuat pada NIR/SWIR, NDWI tinggi</p></td>
+<td class="text-left"><p><strong>Sawah</strong></p></td>
+<td class="text-left"><p>Lahan vegetasi musiman dan tanah pertanian. NDVI bervariasi sesuai fase tanam.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
-<hr class="docutils" />
-<section id="pentingnya-diferensiasi-spektral-mangrove">
-<h3>1.4 Pentingnya Diferensiasi Spektral Mangrove<a class="headerlink" href="#pentingnya-diferensiasi-spektral-mangrove" title="Link to this heading">#</a></h3>
-<p>Hutan Mangrove memiliki peran ekologis vital sebagai benteng alami dari abrasi pantai dan penyerap karbon (<em>carbon sink</em>). Namun secara spektral pada komposit warna visual (RGB), mangrove sering kali terlihat mirip dengan hutan daratan (Non-Mangrove) atau lahan pertanian subur.</p>
-<p>Dengan memanfaatkan citra <strong>Sentinel-2</strong>, perbedaan ini dapat diselesaikan melalui kombinasi band spektral:</p>
+<section id="kriteria-keberhasilan-proyek">
+<h2>5. Kriteria Keberhasilan Proyek<a class="headerlink" href="#kriteria-keberhasilan-proyek" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Band 11 (SWIR1):</strong> Sensitif terhadap tingkat kebasahan (<em>moisture</em>) tanah di bawah kanopi mangrove.</p></li>
-<li><p><strong>Band 8 (NIR):</strong> Membedakan kerapatan sel mesofil daun vegetasi sehat.</p></li>
-<li><p><strong>Indeks Spektral (NDVI, NDWI, NDBI):</strong> Memperkuat marjin pemisah (<em>decision boundary</em>) antar kelas pada algoritma Machine Learning (seperti Random Forest).</p></li>
+<li><p><strong>Akurasi Model:</strong> Mencapai <em>Overall Accuracy</em> (OA) dan <em>Kappa Index</em> yang memadai.</p></li>
+<li><p><strong>Kualitas Visualisasi:</strong> Overlay transparan yang dapat di-toggle interaktif di atas basemap satelit.</p></li>
+<li><p><strong>Analisis Luas Area:</strong> Menyajikan estimasi persentase dan luas area (<span class="math notranslate nohighlight">\(km^2\)</span>) untuk setiap kelas lahan.</p></li>
 </ul>
-<hr class="docutils" />
-</section>
 </section>
 </section>
 
@@ -487,7 +463,7 @@ Membangun aplikasi web interaktif berbasis <strong>Streamlit</strong> untuk meny
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Data Understanding — Klasifikasi Land Use and Land Cover (LULC) Jawa Timur</p>
+        <p class="prev-next-title">Data Understanding</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -508,13 +484,11 @@ Membangun aplikasi web interaktif berbasis <strong>Streamlit</strong> untuk meny
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#business-understanding">1. Business Understanding</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#apakah-itu-land-use-and-land-cover-lulc">1.1 Apakah itu Land Use and Land Cover (LULC)?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-analisis">1.2 Tujuan Analisis</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ruang-lingkup-5-kelas-tutupan-lahan">1.3 Ruang Lingkup &amp; 5 Kelas Tutupan Lahan</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pentingnya-diferensiasi-spektral-mangrove">1.4 Pentingnya Diferensiasi Spektral Mangrove</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latar-belakang">1. Latar Belakang</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#definisi-lulc">2. Definisi LULC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan-proyek">3. Tujuan Proyek</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kelas-tutupan-lahan">4. Kelas Tutupan Lahan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kriteria-keberhasilan-proyek">5. Kriteria Keberhasilan Proyek</a></li>
 </ul>
   </nav></div>
 
