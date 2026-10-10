@@ -22,7 +22,7 @@ APP_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Streamlit Page Configuration with Modern Orange & White Theme
 st.set_page_config(
-    page_title="Peta & Model k-NN LULC Jawa Timur - Sentinel-2",
+    page_title="Proyek LULC Jawa Timur - Sentinel-2 k-NN",
     page_icon="🛰️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -51,7 +51,7 @@ st.markdown("""
     .header-box h1 {
         color: #FFFFFF !important;
         font-weight: 800;
-        font-size: 2.2rem;
+        font-size: 2.1rem;
         margin-bottom: 0.4rem;
         letter-spacing: -0.5px;
     }
@@ -131,8 +131,8 @@ st.markdown("""
 # Header Display
 st.markdown("""
 <div class="header-box">
-    <h1>🛰️ Peta Klasifikasi Land Use Land Cover (LULC) Jawa Timur</h1>
-    <p>Visualisasi Digitasi Satelit Sentinel-2, EDA Spektral, Pemodelan k-Nearest Neighbors (k-NN) & Evaluasi Mismatch</p>
+    <h1>🛰️ Klasifikasi Land Use Land Cover (LULC) Sentinel-2 Jawa Timur</h1>
+    <p>Notebook Workflow: Digitasi Satelit, EDA Spektral, Model k-NN (StandardScaler) & Evaluasi Mismatch Oranye</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -150,18 +150,18 @@ COLOR_ORANGE = '#FF6B00'  # Dedicated color for Misclassified / Mismatch samples
 FITUR_LIST = ['B02', 'B03', 'B04', 'B08', 'B11', 'NDVI', 'NDWI', 'MNDWI', 'NDBI']
 
 # Sidebar Controls & Information
-st.sidebar.markdown("### ⚙️ Kontrol & Parameter Model")
+st.sidebar.markdown("### ⚙️ Kontrol & Data Notebook")
 st.sidebar.markdown("""
 <div style="background-color: #FFF0E6; padding: 10px; border-radius: 8px; border-left: 4px solid #FF6B00; font-size: 13px;">
     <b>🤖 Model Terpasang:</b><br>
     <b>k-Nearest Neighbors (k-NN)</b><br>
     - Preprocessing: <code>StandardScaler()</code><br>
     - K-Neighbors: <b>k = 5</b><br>
-    - Distance Metric: <b>Euclidean</b>
+    - Metric: <b>Euclidean Distance</b>
 </div>
 """, unsafe_allow_html=True)
 
-# Data Loader Function
+# Data Loader Function (Matching Notebook Steps 1-2)
 @st.cache_data
 def load_all_datasets():
     prov_search = [
@@ -198,7 +198,7 @@ def load_all_datasets():
 
 gdf_prov, gdf_samples, df_centroid = load_all_datasets()
 
-# Model Loader & Evaluation Helper
+# Model Loader & Evaluation Helper (Matching Notebook Steps 5-8)
 @st.cache_resource
 def get_knn_model_and_eval(_df):
     if _df is None or _df.empty:
@@ -207,7 +207,7 @@ def get_knn_model_and_eval(_df):
     X = _df[FITUR_LIST]
     y = _df['label_teks']
 
-    # Train-test split (80% train, 20% test, random_state=42) matching Notebook
+    # Train-test split matching Notebook (80% train, 20% test, random_state=42, stratify=y)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
     model_files = ["model_lulc_knn.pkl"]
@@ -244,7 +244,7 @@ def get_knn_model_and_eval(_df):
 
 model_knn, eval_data, test_acc, test_kappa = get_knn_model_and_eval(df_centroid)
 
-# Compute Full Dataset Predictions for Spatial Visualization
+# Compute Full Dataset Predictions for Spatial Map (Notebook Step 9)
 if df_centroid is not None and model_knn is not None:
     df_centroid['prediksi_ml'] = model_knn.predict(df_centroid[FITUR_LIST])
     df_centroid['is_correct'] = df_centroid['prediksi_ml'] == df_centroid['label_teks']
@@ -252,20 +252,20 @@ if df_centroid is not None and model_knn is not None:
 else:
     n_mismatch = 0
 
-# Main Navigation Tabs (Orange Theme)
+# Main Navigation Tabs (Notebook Workflow Steps)
 tab1, tab2, tab3, tab4 = st.tabs([
-    "🗺️ Peta Digitasi Sampel", 
-    "📊 EDA (Analisis Spektral)", 
-    "🤖 Prediksi k-NN & Mismatch", 
-    "📌 Kesimpulan & Deploy"
+    "🗺️ Step 3: Peta Digitasi Sampel", 
+    "📊 Step 4: EDA Spektral", 
+    "🤖 Step 5-9: Model k-NN & Mismatch", 
+    "📌 Kesimpulan & Ringkasan"
 ])
 
 # ---------------------------------------------------------
 # TAB 1: PETA DIGITASI SAMPEL (POLIGON & CENTROID)
 # ---------------------------------------------------------
 with tab1:
-    st.markdown("### 🗺️ Peta Digitasi Poligon & Centroid Sampel Tutupan Lahan (5 Kelas)")
-    st.caption("Visualisasi hasil digitasi 250 sampel poligon di Jawa Timur di atas Basemap Satelit Esri World Imagery.")
+    st.markdown("### 🗺️ Step 3: Visualisasi Peta Digitasi Poligon & Centroid Sampel (5 Kelas)")
+    st.caption("Visualisasi 250 sampel poligon tutupan lahan Jawa Timur di atas Basemap Satelit Esri World Imagery.")
     
     col_a, col_b, col_c = st.columns(3)
     col_a.metric("Total Poligon Sampel", f"{len(df_centroid) if df_centroid is not None else 0} Poligon")
@@ -274,13 +274,13 @@ with tab1:
 
     st.markdown("---")
     
-    # Layer Filter Checkboxes for Digitization Map
+    # Layer Filter Checkboxes
     col_f1, col_f2, col_f3, col_f4, col_f5 = st.columns(5)
-    show_air_d = col_f1.checkbox("🔵 Air", value=True, key="d_air_deploy")
-    show_mangrove_d = col_f2.checkbox("🟢 Hutan Mangrove", value=True, key="d_mangrove_deploy")
-    show_non_mangrove_d = col_f3.checkbox("🌲 Hutan Non-Mangrove", value=True, key="d_non_mangrove_deploy")
-    show_pemukiman_d = col_f4.checkbox("🔴 Pemukiman", value=True, key="d_pemukiman_deploy")
-    show_sawah_d = col_f5.checkbox("🌾 Sawah", value=True, key="d_sawah_deploy")
+    show_air_d = col_f1.checkbox("🔵 Air", value=True, key="d_air_v2")
+    show_mangrove_d = col_f2.checkbox("🟢 Hutan Mangrove", value=True, key="d_mangrove_v2")
+    show_non_mangrove_d = col_f3.checkbox("🌲 Hutan Non-Mangrove", value=True, key="d_non_mangrove_v2")
+    show_pemukiman_d = col_f4.checkbox("🔴 Pemukiman", value=True, key="d_pemukiman_v2")
+    show_sawah_d = col_f5.checkbox("🌾 Sawah", value=True, key="d_sawah_v2")
     
     active_d_classes = []
     if show_air_d: active_d_classes.append('Air')
@@ -387,7 +387,7 @@ with tab1:
 # TAB 2: EXPLORATORY DATA ANALYSIS (EDA)
 # ---------------------------------------------------------
 with tab2:
-    st.markdown("### 📊 Exploratory Data Analysis (EDA) Fitur Spektral Satelit")
+    st.markdown("### 📊 Step 4: Exploratory Data Analysis (EDA) Fitur Spektral Satelit")
     st.write("Analisis statistik dan separabilitas spektral untuk membedakan 5 kelas tutupan lahan di Jawa Timur.")
     
     if df_centroid is not None:
@@ -421,7 +421,7 @@ with tab2:
         selected_feature = st.selectbox(
             "Pilih Indeks / Band Spektral untuk Diinspeksi:",
             ['NDVI', 'NDWI', 'MNDWI', 'NDBI', 'B11', 'B08', 'B04', 'B03', 'B02'],
-            key="eda_feature_deploy"
+            key="eda_feature_v2"
         )
         
         fig3, ax3 = plt.subplots(figsize=(10, 4.5))
@@ -429,6 +429,8 @@ with tab2:
             data=df_centroid, 
             x='label_teks', 
             y=selected_feature, 
+            hue='label_teks',
+            legend=False,
             palette=CLASS_COLORS,
             ax=ax3,
             boxprops=dict(alpha=0.85)
@@ -455,21 +457,21 @@ with tab2:
 # TAB 3: PREDIKSI MODEL k-NN & MISMATCH ORANGE
 # ---------------------------------------------------------
 with tab3:
-    st.markdown("### 🤖 Pemodelan k-Nearest Neighbors (k-NN) & Highlight Mismatch Oranye")
+    st.markdown("### 🤖 Step 5-9: Pemodelan k-NN & Visualisasi Mismatch Oranye")
     st.write("Hasil prediksi klasifikasi spasial tutupan lahan menggunakan algoritma **k-NN (k=5)** dan penandaan titik misklasifikasi dalam **Warna Oranye**.")
 
-    # Metric summary card matching notebook results exactly
+    # Metric summary card matching notebook results exactly (80.00% Accuracy, 0.7500 Kappa)
     col_m1, col_m2, col_m3 = st.columns(3)
     col_m1.metric("Model Algorithm", "k-NN (StandardScaler)")
-    col_m2.metric("Overall Accuracy (Test Set)", "80.00%")
-    col_m3.metric("Cohen's Kappa Score", "0.7500")
+    col_m2.metric("Overall Accuracy (Test Set)", f"{test_acc * 100:.2f}%")
+    col_m3.metric("Cohen's Kappa Score", f"{test_kappa:.4f}")
 
     st.markdown("---")
     
     # Layer Toggle for Mismatch
-    show_mismatch_only = st.checkbox("⚠️ Highlight Khusus Prediksi Salah (ORANGE)", value=True, key="mismatch_deploy")
+    show_mismatch_only = st.checkbox("⚠️ Highlight Khusus Prediksi Salah (ORANGE)", value=True, key="mismatch_v2")
 
-    # Map 2: ML Prediction Map
+    # Map 2: ML Prediction Map (Step 9)
     m_pred = folium.Map(location=[-7.60, 112.60], zoom_start=9, tiles=None)
     
     folium.TileLayer(
@@ -624,21 +626,21 @@ with tab3:
     st.markdown("#### 🔮 Simulasi Prediksi Nilai Spektral Tunggal (k-NN Model)")
     
     c_s1, c_s2, c_s3 = st.columns(3)
-    input_b04 = c_s1.number_input("Band 04 (Red)", value=0.08, key="b04_dep")
-    input_b08 = c_s2.number_input("Band 08 (NIR)", value=0.35, key="b08_dep")
-    input_b11 = c_s3.number_input("Band 11 (SWIR)", value=0.12, key="b11_dep")
+    input_b04 = c_s1.number_input("Band 04 (Red)", value=0.08, key="b04_v2")
+    input_b08 = c_s2.number_input("Band 08 (NIR)", value=0.35, key="b08_v2")
+    input_b11 = c_s3.number_input("Band 11 (SWIR)", value=0.12, key="b11_v2")
 
     c_s4, c_s5, c_s6 = st.columns(3)
-    input_b02 = c_s4.number_input("Band 02 (Blue)", value=0.05, key="b02_dep")
-    input_b03 = c_s5.number_input("Band 03 (Green)", value=0.09, key="b03_dep")
-    input_ndvi = c_s6.number_input("NDVI", value=(input_b08 - input_b04)/(input_b08 + input_b04 + 1e-6), key="ndvi_dep")
+    input_b02 = c_s4.number_input("Band 02 (Blue)", value=0.05, key="b02_v2")
+    input_b03 = c_s5.number_input("Band 03 (Green)", value=0.09, key="b03_v2")
+    input_ndvi = c_s6.number_input("NDVI", value=(input_b08 - input_b04)/(input_b08 + input_b04 + 1e-6), key="ndvi_v2")
 
     c_s7, c_s8, c_s9 = st.columns(3)
-    input_ndwi = c_s7.number_input("NDWI", value=(input_b03 - input_b08)/(input_b03 + input_b08 + 1e-6), key="ndwi_dep")
-    input_mndwi = c_s8.number_input("MNDWI", value=(input_b03 - input_b11)/(input_b03 + input_b11 + 1e-6), key="mndwi_dep")
-    input_ndbi = c_s9.number_input("NDBI", value=(input_b11 - input_b08)/(input_b11 + input_b08 + 1e-6), key="ndbi_dep")
+    input_ndwi = c_s7.number_input("NDWI", value=(input_b03 - input_b08)/(input_b03 + input_b08 + 1e-6), key="ndwi_v2")
+    input_mndwi = c_s8.number_input("MNDWI", value=(input_b03 - input_b11)/(input_b03 + input_b11 + 1e-6), key="mndwi_v2")
+    input_ndbi = c_s9.number_input("NDBI", value=(input_b11 - input_b08)/(input_b11 + input_b08 + 1e-6), key="ndbi_v2")
 
-    if st.button("🔮 Prediksi Tutupan Lahan", key="btn_pred_dep"):
+    if st.button("🔮 Prediksi Tutupan Lahan", key="btn_pred_v2"):
         if model_knn is not None:
             df_single = pd.DataFrame([[input_b02, input_b03, input_b04, input_b08, input_b11, input_ndvi, input_ndwi, input_mndwi, input_ndbi]], columns=FITUR_LIST)
             pred_res = model_knn.predict(df_single)[0]
