@@ -198,8 +198,10 @@ def load_all_datasets():
     if gdf_samples is not None and 'Type' in gdf_samples.columns:
         type_map = {
             'Air': 'Air',
+            'Hutan mangrove': 'Hutan Mangrove',
             'Hutan_mangrove': 'Hutan Mangrove',
             'Hutan Mangrove': 'Hutan Mangrove',
+            'Hutan non mangrove': 'Hutan Non-Mangrove',
             'Hutan_non_mangrove': 'Hutan Non-Mangrove',
             'Hutan Non-Mangrove': 'Hutan Non-Mangrove',
             'Pemukiman': 'Pemukiman',
