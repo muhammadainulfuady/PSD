@@ -352,7 +352,18 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matriks-korelasi-fitur-spektral">4. Matriks Korelasi Fitur Spektral</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-inspeksi-data-training-dan-data-testing">Step 5: Inspeksi Data Training dan Data Testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-inspeksi-data-training-data-testing-dan-penjelasan-fitur-spektral">Step 5: Inspeksi Data Training, Data Testing, dan Penjelasan Fitur Spektral</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rincian-9-fitur-spektral-yang-digunakan-fitur">Rincian 9 Fitur Spektral yang Digunakan (<code class="docutils literal notranslate"><span class="pre">FITUR</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#band-spektral-satelit-sentinel-2-5-fitur">1. Band Spektral Satelit Sentinel-2 (5 Fitur)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indeks-spektral-terhitung-4-fitur">2. Indeks Spektral Terhitung (4 Fitur)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-ndvi-normalized-difference-vegetation-index">A. NDVI (Normalized Difference Vegetation Index)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b-ndwi-normalized-difference-water-index">B. NDWI (Normalized Difference Water Index)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#c-mndwi-modified-normalized-difference-water-index">C. MNDWI (Modified Normalized Difference Water Index)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#d-ndbi-normalized-difference-built-up-index">D. NDBI (Normalized Difference Built-up Index)</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-6-pemodelan-machine-learning-k-nearest-neighbors-k-nn">Step 6: Pemodelan Machine Learning (k-Nearest Neighbors - k-NN)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-dasar-k-nn">Konsep Dasar k-NN</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#peran-penting-preprocessing-standardscaler">Peran Penting Preprocessing StandardScaler</a></li>
@@ -1270,9 +1281,94 @@ Kandungan air dalam kanopi pohon dan badan air menyerap gelombang SWIR (B11), se
 </div>
 </section>
 </section>
-<section id="step-5-inspeksi-data-training-dan-data-testing">
-<h2>Step 5: Inspeksi Data Training dan Data Testing<a class="headerlink" href="#step-5-inspeksi-data-training-dan-data-testing" title="Link to this heading">#</a></h2>
-<p>Cell ini menampilkan 5 baris data teratas (head()) dari hasil pemisahan <strong>Data Latih (Training Set)</strong> dan <strong>Data Uji (Testing Set)</strong> untuk memverifikasi kesiapan data sebelum masuk ke tahap pemodelan.</p>
+<section id="step-5-inspeksi-data-training-data-testing-dan-penjelasan-fitur-spektral">
+<h2>Step 5: Inspeksi Data Training, Data Testing, dan Penjelasan Fitur Spektral<a class="headerlink" href="#step-5-inspeksi-data-training-data-testing-dan-penjelasan-fitur-spektral" title="Link to this heading">#</a></h2>
+<p>Cell ini menampilkan 5 baris data teratas (<code class="docutils literal notranslate"><span class="pre">head()</span></code>) dari hasil pemisahan <strong>Data Latih (Training Set)</strong> dan <strong>Data Uji (Testing Set)</strong> untuk memverifikasi kesiapan data sebelum masuk ke tahap pemodelan.</p>
+<section id="rincian-9-fitur-spektral-yang-digunakan-fitur">
+<h3>Rincian 9 Fitur Spektral yang Digunakan (<code class="docutils literal notranslate"><span class="pre">FITUR</span></code>)<a class="headerlink" href="#rincian-9-fitur-spektral-yang-digunakan-fitur" title="Link to this heading">#</a></h3>
+<p>Dalam alur klasifikasi tutupan lahan (LULC), digunakan 9 fitur spektral yang dideklarasikan sebagai berikut:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">FITUR</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'B02'</span><span class="p">,</span> <span class="s1">'B03'</span><span class="p">,</span> <span class="s1">'B04'</span><span class="p">,</span> <span class="s1">'B08'</span><span class="p">,</span> <span class="s1">'B11'</span><span class="p">,</span> <span class="s1">'NDVI'</span><span class="p">,</span> <span class="s1">'NDWI'</span><span class="p">,</span> <span class="s1">'MNDWI'</span><span class="p">,</span> <span class="s1">'NDBI'</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Berikut adalah rincian 5 band spektral satelit Sentinel-2 dan 4 indeks spektral terhitung beserta alasan pemilihan, formula matematika, dan kegunaannya:</p>
+</section>
+<hr class="docutils" />
+<section id="band-spektral-satelit-sentinel-2-5-fitur">
+<h3>1. Band Spektral Satelit Sentinel-2 (5 Fitur)<a class="headerlink" href="#band-spektral-satelit-sentinel-2-5-fitur" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">B02</span></code> (Blue - Panjang Gelombang ~490 nm):</strong></p>
+<ul class="simple">
+<li><p><strong>Alasan Penggunaan:</strong> Mengukur pantulan gelombang tampak biru. Band ini sensitif terhadap penyerapan atmosfer, pemetaan perairan dangkal, serta pembeda tanah terbuka.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">B03</span></code> (Green - Panjang Gelombang ~560 nm):</strong></p>
+<ul class="simple">
+<li><p><strong>Alasan Penggunaan:</strong> Mengukur puncak pantulan gelombang hijau pada kanopi tumbuhan dan air jernih. Digunakan sebagai komponen penyusun utama indeks kebasahan air NDWI dan MNDWI.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">B04</span></code> (Red - Panjang Gelombang ~665 nm):</strong></p>
+<ul class="simple">
+<li><p><strong>Alasan Penggunaan:</strong> Mengukur pita penyerapan utama klorofil <span class="math notranslate nohighlight">\(a\)</span> pada tanaman untuk fotosintesis. Digunakan sebagai pembagi utama pada perhitungan indeks vegetasi NDVI.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">B08</span></code> (NIR / Near Infrared - Panjang Gelombang ~842 nm):</strong></p>
+<ul class="simple">
+<li><p><strong>Alasan Penggunaan:</strong> Memiliki tingkat reflektansi sangat tinggi pada struktur selular daun vegetasi sehat dan diserap hampir sempurna oleh badan air. Sangat krusial untuk memisahkan vegetasi dari air dan lahan terbangun.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">B11</span></code> (SWIR / Shortwave Infrared - Panjang Gelombang ~1610 nm):</strong></p>
+<ul class="simple">
+<li><p><strong>Alasan Penggunaan:</strong> Memiliki daya pantul tinggi pada material buatan (beton, atap seng, aspal) dan tanah kering, namun diserap kuat oleh kandungan air pada kanopi daun dan perairan. Digunakan sebagai komponen utama NDBI dan MNDWI.</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="indeks-spektral-terhitung-4-fitur">
+<h3>2. Indeks Spektral Terhitung (4 Fitur)<a class="headerlink" href="#indeks-spektral-terhitung-4-fitur" title="Link to this heading">#</a></h3>
+<section id="a-ndvi-normalized-difference-vegetation-index">
+<h4>A. NDVI (Normalized Difference Vegetation Index)<a class="headerlink" href="#a-ndvi-normalized-difference-vegetation-index" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Formulasi Matematika:</strong></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{NDVI} = \frac{\text{B08} - \text{B04}}{\text{B08} + \text{B04}}\]</div>
+<ul class="simple">
+<li><p><strong>Kegunaan &amp; Alasan Penggunaan:</strong> Mengukur kerapatan dan tingkat kehijauan vegetasi. Memisahkan kelas Hutan Non-Mangrove dan Hutan Mangrove (NDVI bernilai positif tinggi, <span class="math notranslate nohighlight">\(0.6 - 0.8\)</span>) dari kelas non-vegetasi seperti Pemukiman dan Air (NDVI mendekati 0 atau negatif).</p></li>
+</ul>
+</section>
+<section id="b-ndwi-normalized-difference-water-index">
+<h4>B. NDWI (Normalized Difference Water Index)<a class="headerlink" href="#b-ndwi-normalized-difference-water-index" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Formulasi Matematika:</strong></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{NDWI} = \frac{\text{B03} - \text{B08}}{\text{B03} + \text{B08}}\]</div>
+<ul class="simple">
+<li><p><strong>Kegunaan &amp; Alasan Penggunaan:</strong> Memetakan keberadaan badan air (sungai, laut, waduk, tambak). Air memantulkan gelombang Hijau (B03) dan menyerap gelombang NIR (B08), sehingga kelas Air menghasilkan nilai NDWI positif paling tinggi (<span class="math notranslate nohighlight">\(&gt; 0.3\)</span>).</p></li>
+</ul>
+</section>
+<section id="c-mndwi-modified-normalized-difference-water-index">
+<h4>C. MNDWI (Modified Normalized Difference Water Index)<a class="headerlink" href="#c-mndwi-modified-normalized-difference-water-index" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Formulasi Matematika:</strong></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{MNDWI} = \frac{\text{B03} - \text{B11}}{\text{B03} + \text{B11}}\]</div>
+<ul class="simple">
+<li><p><strong>Kegunaan &amp; Alasan Penggunaan:</strong> Modifikasi NDWI dengan menggantikan NIR menjadi SWIR (B11) untuk menekan <em>noise</em> dari area pemukiman/bangunan, sehingga perairan di sekitar wilayah perkotaan terpisahkan secara jauh lebih presisi.</p></li>
+</ul>
+</section>
+<section id="d-ndbi-normalized-difference-built-up-index">
+<h4>D. NDBI (Normalized Difference Built-up Index)<a class="headerlink" href="#d-ndbi-normalized-difference-built-up-index" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><strong>Formulasi Matematika:</strong></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{NDBI} = \frac{\text{B11} - \text{B08}}{\text{B11} + \text{B08}}\]</div>
+<ul class="simple">
+<li><p><strong>Kegunaan &amp; Alasan Penggunaan:</strong> Memetakan area terbangun / pemukiman. Material bangunan (beton, atap, aspal) memiliki reflektansi SWIR (B11) yang melebihi NIR (B08), membuat NDBI menjadi pembeda utama kelas Pemukiman (<span class="math notranslate nohighlight">\(&gt; 0.1\)</span>) dari kelas vegetasi dan air (NDBI negatif).</p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">" === PREVIEW 5 DATA TRAINING TERATAS (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_cen</span><span class="p">)</span><span class="si">}</span><span class="s2"> Poligon) ==="</span><span class="p">)</span>
@@ -1549,6 +1645,8 @@ Kandungan air dalam kanopi pohon dan badan air menyerap gelombang SWIR (B11), se
 </div></div></div>
 </div>
 </section>
+</section>
+</section>
 <section id="step-6-pemodelan-machine-learning-k-nearest-neighbors-k-nn">
 <h2>Step 6: Pemodelan Machine Learning (k-Nearest Neighbors - k-NN)<a class="headerlink" href="#step-6-pemodelan-machine-learning-k-nearest-neighbors-k-nn" title="Link to this heading">#</a></h2>
 <p>Pada tahap ini digunakan algoritma Machine Learning <strong>k-Nearest Neighbors (k-NN)</strong> untuk mengklasifikasikan 5 kelas tutupan lahan berbasis fitur spektral satelit Sentinel-2.</p>
@@ -1804,7 +1902,18 @@ Hutan Non-Mangrove       0.88      1.00      0.94        15
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#matriks-korelasi-fitur-spektral">4. Matriks Korelasi Fitur Spektral</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-inspeksi-data-training-dan-data-testing">Step 5: Inspeksi Data Training dan Data Testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-inspeksi-data-training-data-testing-dan-penjelasan-fitur-spektral">Step 5: Inspeksi Data Training, Data Testing, dan Penjelasan Fitur Spektral</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rincian-9-fitur-spektral-yang-digunakan-fitur">Rincian 9 Fitur Spektral yang Digunakan (<code class="docutils literal notranslate"><span class="pre">FITUR</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#band-spektral-satelit-sentinel-2-5-fitur">1. Band Spektral Satelit Sentinel-2 (5 Fitur)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#indeks-spektral-terhitung-4-fitur">2. Indeks Spektral Terhitung (4 Fitur)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-ndvi-normalized-difference-vegetation-index">A. NDVI (Normalized Difference Vegetation Index)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#b-ndwi-normalized-difference-water-index">B. NDWI (Normalized Difference Water Index)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#c-mndwi-modified-normalized-difference-water-index">C. MNDWI (Modified Normalized Difference Water Index)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#d-ndbi-normalized-difference-built-up-index">D. NDBI (Normalized Difference Built-up Index)</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-6-pemodelan-machine-learning-k-nearest-neighbors-k-nn">Step 6: Pemodelan Machine Learning (k-Nearest Neighbors - k-NN)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#konsep-dasar-k-nn">Konsep Dasar k-NN</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#peran-penting-preprocessing-standardscaler">Peran Penting Preprocessing StandardScaler</a></li>
