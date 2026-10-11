@@ -713,12 +713,12 @@ with col_cm:
         fig_cm, ax_cm = plt.subplots(figsize=(6.5, 5.2), facecolor='white')
         sns.heatmap(df_cm, annot=True, fmt='d', cmap='Oranges', ax=ax_cm,
                     cbar=True, linewidths=1.5, linecolor='#FFF7ED',
-                    annot_kws={'fontsize': 11.5, 'fontweight': 'bold', 'color': '#7C2D12'})
+                    annot_kws={'fontsize': 12, 'fontweight': 'bold'})
         ax_cm.set_title('Confusion Matrix Klasifikasi LULC (k-NN Scaled)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
         ax_cm.set_xlabel('Prediksi Model k-NN', fontsize=10, fontweight='bold', color='#18232F')
         ax_cm.set_ylabel('Ground Truth (Kelas Aktual)', fontsize=10, fontweight='bold', color='#18232F')
-        plt.xticks(rotation=20, ha='right', fontsize=9)
-        plt.yticks(rotation=0, fontsize=9)
+        plt.xticks(rotation=20, ha='right', fontsize=9.5)
+        plt.yticks(rotation=0, fontsize=9.5)
         plt.tight_layout()
         st.pyplot(fig_cm, use_container_width=True)
         plt.close(fig_cm)
