@@ -1,0 +1,10 @@
+Metrik,Nilai,Format
+Overall Accuracy Testing,80.0,80.00%
+Accuracy Training,100.0,100.00%
+Cohen Kappa Index,0.75,0.7500
+Total Sampel Poligon,250.0,250 Poligon
+Jumlah Data Latih (70%),175.0,175 Poligon
+Jumlah Data Uji (30%),75.0,75 Poligon
+Jumlah Prediksi Benar,60.0,60 Poligon
+Jumlah Prediksi Salah,15.0,15 Poligon
+Nilai k Optimal,5.0,k = 5

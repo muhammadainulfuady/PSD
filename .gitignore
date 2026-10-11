@@ -1,1 +1,5 @@
 uts/data/csv/hasil_s2_piksel
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
