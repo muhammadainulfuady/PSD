@@ -29,39 +29,19 @@ st.set_page_config(
 
 
 # ==============================================================================
-# 2. HEROICONS SVG HELPER FUNCTION (AKSEN ORANYE)
+# 2. FONT AWESOME & BOOTSTRAP ICONS CDN HELPER (AKSEN ORANYE)
 # ==============================================================================
-def heroicon(path_d: str, size: int = 20, color: str = "#EA580C", stroke_width: float = 2.0) -> str:
-    """Menghasilkan tag SVG dengan atribut ukuran eksplisit dan warna oranye."""
-    return (
-        f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="{color}" '
-        f'stroke-width="{stroke_width}" stroke-linecap="round" stroke-linejoin="round" '
-        f'style="width:{size}px; height:{size}px; min-width:{size}px; max-width:{size}px; '
-        f'min-height:{size}px; max-height:{size}px; display:inline-block; vertical-align:middle; flex-shrink:0;" '
-        f'aria-hidden="true">'
-        f'<path d="{path_d}"/>'
-        f'</svg>'
-    )
-
-
-# Definisi Path SVG Heroicons
-D_GLOBE = "M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-.778.099-1.533.284-2.253"
-D_MAP = "M9 6.75V15m6-6v8.25m.503 3.046 4.84-2.42A1.125 1.125 0 0 0 21 16.883V5.86a1.125 1.125 0 0 0-.623-1.006l-4.82-2.41a1.125 1.125 0 0 0-.96.002l-5.195 2.597a1.125 1.125 0 0 1-.96 0L3.623 2.633A1.125 1.125 0 0 0 3 3.639v11.023a1.125 1.125 0 0 0 .623 1.006l4.82 2.41a1.125 1.125 0 0 0 .96-.002l5.195-2.597a1.125 1.125 0 0 1 .96 0l-.062-.033Z"
-D_LAYERS = "M6.429 9.75 2.25 12l4.179 2.25m0-4.5 5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21 12l-4.179 2.25m0 0 4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0-5.571 3-5.571-3"
-D_CHECK_CIRCLE = "M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-D_SCALE = "M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52v2.62a3.75 3.75 0 0 1-2.25 3.44l-.84.37m-7.41-6.43c-.99.203-1.99.377-3 .52m3-.52v2.62a3.75 3.75 0 0 0 2.25 3.44l.84.37"
-D_EXCLAMATION = "M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
-D_CHART_BAR = "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"
-D_TABLE = "M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0 1 12 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M12 10.875v7.5m0-7.5a1.125 1.125 0 0 1 1.125-1.125h7.125"
-D_TAG = "M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"
-D_INFO = "m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-D_SATELLITE = "m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
+def fa_icon(icon_class: str, size_rem: float = 1.0, color: str = "#EA580C") -> str:
+    """Helper untuk merender icon Font Awesome / Bootstrap Icons CDN secara konsisten."""
+    return f'<i class="{icon_class}" style="font-size: {size_rem}rem; color: {color}; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle;"></i>'
 
 
 # ==============================================================================
-# 3. SCOPED PURE CSS (TEMA PALET WARNA ORANGE)
+# 3. SCOPED PURE CSS (TEMA PALET WARNA ORANGE & CDN ICONS)
 # ==============================================================================
 st.markdown("""
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <style>
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
@@ -423,7 +403,7 @@ else:
 with st.sidebar:
     st.markdown(f"""
     <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
-        {heroicon(D_GLOBE, size=24, color="#EA580C")}
+        {fa_icon("fa-solid fa-earth-asia", size_rem=1.25, color="#EA580C")}
         <h2 style="font-size:1.05rem; font-weight:700; color:#18232F; margin:0;">Spasial LULC Jawa Timur</h2>
     </div>
     <div style="font-size:0.8rem; color:#475569; padding-bottom:1rem; border-bottom:1px solid #E2E8F0; line-height:1.6;">
@@ -436,8 +416,8 @@ with st.sidebar:
 
     # 1. Legenda 5 Kelas Tutupan Lahan
     st.markdown(f"""
-    <div style="margin-top:1rem; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#EA580C;">
-        {heroicon(D_TAG, size=16, color="#EA580C")}
+    <div style="margin-top:1rem; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color="#EA580C;">
+        {fa_icon("fa-solid fa-layer-group", size_rem=0.85, color="#EA580C")}
         <span>5 Kelas Tutupan Lahan</span>
     </div>
     <div style="font-size:0.8rem; line-height:1.8; color:#334155; background:#FAFAFA; border:1px solid #E2E8F0; border-radius:0.5rem; padding:0.6rem 0.75rem;">
@@ -466,8 +446,8 @@ with st.sidebar:
 
     # 2. Legenda Simbol Marker Spasial
     st.markdown(f"""
-    <div style="margin-top:1.1rem; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#EA580C;">
-        {heroicon(D_MAP, size=16, color="#EA580C")}
+    <div style="margin-top:1.1rem; margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color="#EA580C;">
+        {fa_icon("fa-solid fa-map-location-dot", size_rem=0.85, color="#EA580C")}
         <span>Legenda Marker Evaluasi Spasial</span>
     </div>
     <div style="font-size:0.8rem; line-height:1.8; color:#334155; background:#FAFAFA; border:1px solid #E2E8F0; border-radius:0.5rem; padding:0.6rem 0.75rem;">
@@ -492,7 +472,7 @@ with st.sidebar:
 
     st.markdown(f"""
     <div class="info-banner" style="margin-top:1.25rem;">
-        {heroicon(D_INFO, size=18, color="#EA580C")}
+        {fa_icon("fa-solid fa-circle-info", size_rem=1.1, color="#EA580C")}
         <div>
             <b>Single Source of Truth</b>
             <div style="font-size:0.75rem; margin-top:0.25rem; line-height:1.4;">
@@ -510,7 +490,7 @@ st.markdown(f"""
 <header style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-end; gap:1rem; margin-bottom:1.5rem;">
     <div>
         <div style="display:flex; align-items:center; gap:0.6rem;">
-            {heroicon(D_GLOBE, size=28, color="#EA580C")}
+            {fa_icon("fa-solid fa-earth-asia", size_rem=1.6, color="#EA580C")}
             <h1 style="font-size:1.85rem; font-weight:700; letter-spacing:-0.02em; color:#18232F; margin:0;">
                 Klasifikasi Spasial Tutupan Lahan Jawa Timur
             </h1>
@@ -520,7 +500,7 @@ st.markdown(f"""
         </p>
     </div>
     <div class="psd-badge-orange" style="font-size:0.8rem; padding:0.4rem 0.85rem;">
-        {heroicon(D_SATELLITE, size=16, color="#EA580C")}
+        {fa_icon("fa-solid fa-satellite", size_rem=0.85, color="#EA580C")}
         <span>Sentinel-2A MSI BOA &bull; k-NN Scaled (k=5)</span>
     </div>
 </header>
@@ -532,7 +512,7 @@ with col_m1:
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
 <span class="metric-label">Akurasi Data Testing</span>
-<span style="background:#FFF7ED; border-radius:50%; padding:0.35rem; display:inline-flex;">{heroicon(D_CHECK_CIRCLE, size=18, color="#EA580C")}</span>
+<span style="background:#FFF7ED; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-circle-check", size_rem=1.0, color="#EA580C")}</span>
 </div>
 <div class="metric-val-row">
 <span class="metric-num">{akurasi_test:.1f}%</span>
@@ -545,7 +525,7 @@ with col_m2:
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
 <span class="metric-label">Total Sampel Poligon</span>
-<span style="background:#FFF7ED; border-radius:50%; padding:0.35rem; display:inline-flex;">{heroicon(D_LAYERS, size=18, color="#EA580C")}</span>
+<span style="background:#FFF7ED; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-draw-polygon", size_rem=1.0, color="#EA580C")}</span>
 </div>
 <div class="metric-val-row">
 <span class="metric-num">{total_poligon}</span>
@@ -558,7 +538,7 @@ with col_m3:
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
 <span class="metric-label">Salah Klasifikasi</span>
-<span style="background:#FEF3C7; border-radius:50%; padding:0.35rem; display:inline-flex;">{heroicon(D_EXCLAMATION, size=18, color="#B45309")}</span>
+<span style="background:#FEF3C7; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-triangle-exclamation", size_rem=1.0, color="#B45309")}</span>
 </div>
 <div class="metric-val-row">
 <span class="metric-num">{n_salah}</span>
@@ -630,7 +610,7 @@ def patch_leaflet_html(html_content: str) -> str:
 st.markdown(f"""<div class="psd-card" style="margin-bottom:0.75rem;">
 <div class="psd-card-header">
 <h2 class="psd-card-title">
-{heroicon(D_MAP, size=20, color="#EA580C")}
+{fa_icon("fa-solid fa-map-location-dot", size_rem=1.1, color="#EA580C")}
 <span>Visualisasi Geospasial Tutupan Lahan (LULC) Jawa Timur</span>
 </h2>
 <span class="psd-badge-orange">Interactive Folium Maps</span>
@@ -688,7 +668,7 @@ st.markdown("<div style='height: 2rem;'></div>", unsafe_allow_html=True)
 st.markdown(f"""<div class="psd-card" style="margin-bottom:1rem;">
 <div class="psd-card-header" style="margin-bottom:0.25rem; padding-bottom:0.65rem;">
 <h2 class="psd-card-title">
-{heroicon(D_CHART_BAR, size=20, color="#EA580C")}
+{fa_icon("fa-solid fa-chart-pie", size_rem=1.1, color="#EA580C")}
 <span>Evaluasi Kinerja Model, Analisis Aktual, dan Kontribusi Fitur Spektral</span>
 </h2>
 <span class="psd-badge-orange">Dihasilkan Dinamis dari File CSV</span>
@@ -888,7 +868,7 @@ st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
 st.markdown(f"""<div class="psd-card" style="margin-bottom:1rem;">
 <div class="psd-card-header" style="margin-bottom:0.5rem;">
 <h2 class="psd-card-title">
-{heroicon(D_TABLE, size=20, color="#EA580C")}
+{fa_icon("fa-solid fa-table-list", size_rem=1.1, color="#EA580C")}
 <span>Eksplorasi Data Prediksi Poligon Uji (Tabel Dinamis)</span>
 </h2>
 <span class="psd-badge-orange">Format Tabular Interaktif</span>
