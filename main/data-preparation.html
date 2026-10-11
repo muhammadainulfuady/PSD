@@ -29,10 +29,10 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=a0f4a700" />
@@ -47,7 +47,7 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -281,7 +281,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  class="btn btn-sm btn-fullscreen-button"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -313,7 +313,7 @@ document.write(`
   </button>
 `);
 </script>
-<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -1065,25 +1065,29 @@ Dataset bersih disimpan ke '../data/csv/clean/CO_clean.csv'
 </table>
 </div>
 <figure class="align-center" id="id1">
-<a class="reference internal image-reference" href="../_images/1_co_raw_missing.png"><img alt="../_images/1_co_raw_missing.png" src="../_images/1_co_raw_missing.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/1_co_raw_missing.png"><img alt="../_images/1_co_raw_missing.png" src="../_images/1_co_raw_missing.png" style="width: 100%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 7 </span><span class="caption-text">Grafik 1: Sinyal CO Mentah dengan Celah Missing Values (173 Hari Kosong / NaN)</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id2">
-<a class="reference internal image-reference" href="../_images/2_co_imputed_missing.png"><img alt="../_images/2_co_imputed_missing.png" src="../_images/2_co_imputed_missing.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/2_co_imputed_missing.png"><img alt="../_images/2_co_imputed_missing.png" src="../_images/2_co_imputed_missing.png" style="width: 100%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 8 </span><span class="caption-text">Grafik 2: Sinyal CO Setelah Imputasi Missing Values (Polynomial Interpolation)</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id3">
-<a class="reference internal image-reference" href="../_images/3_co_outlier_detection.png"><img alt="../_images/3_co_outlier_detection.png" src="../_images/3_co_outlier_detection.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/3_co_outlier_detection.png"><img alt="../_images/3_co_outlier_detection.png" src="../_images/3_co_outlier_detection.png" style="width: 100%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 9 </span><span class="caption-text">Grafik 3: Deteksi 11 Outlier CO Menggunakan Metode Interquartile Range (IQR)</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id4">
-<a class="reference internal image-reference" href="../_images/4_co_final_clean.png"><img alt="../_images/4_co_final_clean.png" src="../_images/4_co_final_clean.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/4_co_final_clean.png"><img alt="../_images/4_co_final_clean.png" src="../_images/4_co_final_clean.png" style="width: 100%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 10 </span><span class="caption-text">Grafik 4: Sinyal CO Final Setelah Penanganan Outlier &amp; Imputasi Polinomial (Clean Dataset)</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
 </figcaption>
@@ -1751,7 +1755,8 @@ Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang die
 <h3>4.1 Visualisasi Workflow KNIME &amp; Scatter Plot<a class="headerlink" href="#visualisasi-workflow-knime-scatter-plot" title="Link to this heading">#</a></h3>
 <p>Proses ekstraksi, pra-pemrosesan, reduksi dimensi PCA, dan pengelompokan K-Means dijalankan menggunakan alur kerja (<em>workflow</em>) KNIME Analytics Platform:</p>
 <figure class="align-center" id="id5">
-<a class="reference internal image-reference" href="../_images/workflow.png"><img alt="../_images/workflow.png" src="../_images/workflow.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/workflow.png"><img alt="../_images/workflow.png" src="../_images/workflow.png" style="width: 100%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 11 </span><span class="caption-text">Gambar 4.0: Workflow Clustering K-Means &amp; Reduksi Dimensi PCA pada KNIME Analytics Platform (Imputasi Polinomial)</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
 </figcaption>
@@ -1760,7 +1765,8 @@ Katalog 68 fitur di atas menjelaskan secara presisi seluruh fitur TSFEL yang die
 <section id="k-means-k-2">
 <h4>4.1.1 K-Means <span class="math notranslate nohighlight">\(k=2\)</span><a class="headerlink" href="#k-means-k-2" title="Link to this heading">#</a></h4>
 <figure class="align-center" id="id6">
-<a class="reference internal image-reference" href="../_images/clusterK2Pca.png"><img alt="../_images/clusterK2Pca.png" src="../_images/clusterK2Pca.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/clusterK2Pca.png"><img alt="../_images/clusterK2Pca.png" src="../_images/clusterK2Pca.png" style="width: 100%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 12 </span><span class="caption-text">Gambar 4.1: KNIME Scatter Plot K-Means (k=2) Dengan Reduksi Dimensi PCA (19 Komponen)</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
 </figcaption>
@@ -1772,7 +1778,8 @@ Data terbagi menjadi dua kelompok yang tidak seimbang:</p>
 <li><p><strong><code class="docutils literal notranslate"><span class="pre">cluster_0</span></code></strong> (kelompok pencilan, <strong>3 mahasiswa</strong>): <strong>Aisya</strong>, <strong>Firman Candra Dwi Nugroho</strong> (Kraton, Bangkalan), dan <strong>Muhammad Fathul Iman Wahid</strong> (Burneh, Bangkalan).</p></li>
 </ul>
 <figure class="align-center" id="id7">
-<a class="reference internal image-reference" href="../_images/clusterK2TanpaPca.png"><img alt="../_images/clusterK2TanpaPca.png" src="../_images/clusterK2TanpaPca.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/clusterK2TanpaPca.png"><img alt="../_images/clusterK2TanpaPca.png" src="../_images/clusterK2TanpaPca.png" style="width: 100%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 13 </span><span class="caption-text">Gambar 4.2: KNIME Scatter Plot K-Means (k=2) Tanpa PCA (272 Fitur TSFEL Utuh)</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
 </figcaption>
@@ -1780,13 +1787,15 @@ Data terbagi menjadi dua kelompok yang tidak seimbang:</p>
 <p><strong>Penjelasan Gambar 4.2 (K-Means <span class="math notranslate nohighlight">\(k=2\)</span> tanpa PCA):</strong>
 Dengan 272 fitur TSFEL utuh ter-normalisasi tanpa PCA, keanggotaan cluster sama dengan Gambar 4.1: 16 mahasiswa di kelompok mayoritas dan 3 mahasiswa (Aisya, Firman Candra Dwi Nugroho, Muhammad Fathul Iman Wahid) di kelompok pencilan.</p>
 <figure class="align-center" id="id8">
-<a class="reference internal image-reference" href="../_images/k2PCA.png"><img alt="../_images/k2PCA.png" src="../_images/k2PCA.png" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="../_images/k2PCA.png"><img alt="../_images/k2PCA.png" src="../_images/k2PCA.png" style="width: 60%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 14 </span><span class="caption-text">Gambar 4.3: Mean Silhouette Coefficient K-Means (k=2) Dengan PCA</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id9">
-<a class="reference internal image-reference" href="../_images/k2TanpaPCA.png"><img alt="../_images/k2TanpaPCA.png" src="../_images/k2TanpaPCA.png" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="../_images/k2TanpaPCA.png"><img alt="../_images/k2TanpaPCA.png" src="../_images/k2TanpaPCA.png" style="width: 60%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 15 </span><span class="caption-text">Gambar 4.4: Mean Silhouette Coefficient K-Means (k=2) Tanpa PCA</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
 </figcaption>
@@ -1821,7 +1830,8 @@ Kedua skenario menghasilkan nilai identik:</p>
 <section id="k-means-k-5">
 <h4>4.1.2 K-Means <span class="math notranslate nohighlight">\(k=5\)</span><a class="headerlink" href="#k-means-k-5" title="Link to this heading">#</a></h4>
 <figure class="align-center" id="id10">
-<a class="reference internal image-reference" href="../_images/clusterK5Pca.png"><img alt="../_images/clusterK5Pca.png" src="../_images/clusterK5Pca.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/clusterK5Pca.png"><img alt="../_images/clusterK5Pca.png" src="../_images/clusterK5Pca.png" style="width: 100%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 16 </span><span class="caption-text">Gambar 4.5: KNIME Scatter Plot K-Means (k=5) Dengan Reduksi Dimensi PCA</span><a class="headerlink" href="#id10" title="Link to this image">#</a></p>
 </figcaption>
@@ -1860,7 +1870,8 @@ Ketika <span class="math notranslate nohighlight">\(k\)</span> ditingkatkan menj
 </table>
 </div>
 <figure class="align-center" id="id11">
-<a class="reference internal image-reference" href="../_images/clusterK5TanpaPca.png"><img alt="../_images/clusterK5TanpaPca.png" src="../_images/clusterK5TanpaPca.png" style="width: 100%;" /></a>
+<a class="reference internal image-reference" href="../_images/clusterK5TanpaPca.png"><img alt="../_images/clusterK5TanpaPca.png" src="../_images/clusterK5TanpaPca.png" style="width: 100%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 17 </span><span class="caption-text">Gambar 4.6: KNIME Scatter Plot K-Means (k=5) Tanpa PCA (272 Fitur TSFEL Utuh)</span><a class="headerlink" href="#id11" title="Link to this image">#</a></p>
 </figcaption>
@@ -1868,13 +1879,15 @@ Ketika <span class="math notranslate nohighlight">\(k\)</span> ditingkatkan menj
 <p><strong>Penjelasan Gambar 4.6 (K-Means <span class="math notranslate nohighlight">\(k=5\)</span> tanpa PCA):</strong>
 Pengelompokan <span class="math notranslate nohighlight">\(k=5\)</span> tanpa PCA menghasilkan keanggotaan yang sama persis dengan Gambar 4.5 (6-6-3-2-2 mahasiswa), termasuk label cluster yang selaras.</p>
 <figure class="align-center" id="id12">
-<a class="reference internal image-reference" href="../_images/k5PCA.png"><img alt="../_images/k5PCA.png" src="../_images/k5PCA.png" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="../_images/k5PCA.png"><img alt="../_images/k5PCA.png" src="../_images/k5PCA.png" style="width: 60%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 18 </span><span class="caption-text">Gambar 4.7: Mean Silhouette Coefficient K-Means (k=5) Dengan PCA</span><a class="headerlink" href="#id12" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id13">
-<a class="reference internal image-reference" href="../_images/k5TanpaPCA.png"><img alt="../_images/k5TanpaPCA.png" src="../_images/k5TanpaPCA.png" style="width: 60%;" /></a>
+<a class="reference internal image-reference" href="../_images/k5TanpaPCA.png"><img alt="../_images/k5TanpaPCA.png" src="../_images/k5TanpaPCA.png" style="width: 60%;" />
+</a>
 <figcaption>
 <p><span class="caption-number">Fig. 19 </span><span class="caption-text">Gambar 4.8: Mean Silhouette Coefficient K-Means (k=5) Tanpa PCA</span><a class="headerlink" href="#id13" title="Link to this image">#</a></p>
 </figcaption>
@@ -2033,12 +2046,11 @@ Pengelompokan <span class="math notranslate nohighlight">\(k=5\)</span> tanpa PC
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item"><div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+  <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#penanganan-missing-values-outliers-data-cleaning-terpadu">1. Penanganan Missing Values &amp; Outliers (Data Cleaning Terpadu)</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluasi-missing-values-celah-data-mentah">1.1 Evaluasi Missing Values (Celah Data Mentah)</a></li>
