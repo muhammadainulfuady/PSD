@@ -870,6 +870,40 @@ Dengan menghitung nilai rata-rata (<em>mean</em>) dari seluruh piksel di dalam s
 <span class="n">m</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">legend_html</span><span class="p">))</span>
 
 <span class="c1"># 6. Layer Control Panel Interaktif</span>
+<span class="c1"># Style penyesuaian agar LayerControl tidak tertutup header Streamlit Cloud</span>
+<span class="n">leaflet_css_fix</span> <span class="o">=</span> <span class="s1">'''</span>
+<span class="s1">&lt;style&gt;</span>
+<span class="s1">.leaflet-top.leaflet-right {</span>
+<span class="s1">    top: 72px !important;</span>
+<span class="s1">    right: 20px !important;</span>
+<span class="s1">    z-index: 1000 !important;</span>
+<span class="s1">}</span>
+<span class="s1">.leaflet-control-layers {</span>
+<span class="s1">    border: 2px solid #EA580C !important;</span>
+<span class="s1">    border-radius: 10px !important;</span>
+<span class="s1">    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22) !important;</span>
+<span class="s1">    background: #ffffff !important;</span>
+<span class="s1">    padding: 8px 12px !important;</span>
+<span class="s1">}</span>
+<span class="s1">.leaflet-control-layers-base label,</span>
+<span class="s1">.leaflet-control-layers-overlays label {</span>
+<span class="s1">    cursor: pointer !important;</span>
+<span class="s1">    padding: 3px 0 !important;</span>
+<span class="s1">    font-size: 13px !important;</span>
+<span class="s1">    font-weight: 500 !important;</span>
+<span class="s1">    color: #1E293B !important;</span>
+<span class="s1">    display: flex !important;</span>
+<span class="s1">    align-items: center !important;</span>
+<span class="s1">}</span>
+<span class="s1">.leaflet-control-layers-base input,</span>
+<span class="s1">.leaflet-control-layers-overlays input {</span>
+<span class="s1">    cursor: pointer !important;</span>
+<span class="s1">    margin-right: 8px !important;</span>
+<span class="s1">    transform: scale(1.2) !important;</span>
+<span class="s1">}</span>
+<span class="s1">&lt;/style&gt;</span>
+<span class="s1">'''</span>
+<span class="n">m</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">leaflet_css_fix</span><span class="p">))</span>
 <span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">(</span><span class="n">collapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
 <span class="c1"># Simpan Peta ke File HTML</span>
@@ -3290,6 +3324,40 @@ Bukan berarti NDVI tidak berguna, melainkan karena informasi biomassa vegetasi d
 <span class="s1">&lt;/div&gt;</span>
 <span class="s1">'''</span>
 <span class="n">m_eval</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">legend_html</span><span class="p">))</span>
+<span class="c1"># Style penyesuaian agar LayerControl tidak tertutup header Streamlit Cloud</span>
+<span class="n">leaflet_css_fix</span> <span class="o">=</span> <span class="s1">'''</span>
+<span class="s1">&lt;style&gt;</span>
+<span class="s1">.leaflet-top.leaflet-right {</span>
+<span class="s1">    top: 72px !important;</span>
+<span class="s1">    right: 20px !important;</span>
+<span class="s1">    z-index: 1000 !important;</span>
+<span class="s1">}</span>
+<span class="s1">.leaflet-control-layers {</span>
+<span class="s1">    border: 2px solid #EA580C !important;</span>
+<span class="s1">    border-radius: 10px !important;</span>
+<span class="s1">    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22) !important;</span>
+<span class="s1">    background: #ffffff !important;</span>
+<span class="s1">    padding: 8px 12px !important;</span>
+<span class="s1">}</span>
+<span class="s1">.leaflet-control-layers-base label,</span>
+<span class="s1">.leaflet-control-layers-overlays label {</span>
+<span class="s1">    cursor: pointer !important;</span>
+<span class="s1">    padding: 3px 0 !important;</span>
+<span class="s1">    font-size: 13px !important;</span>
+<span class="s1">    font-weight: 500 !important;</span>
+<span class="s1">    color: #1E293B !important;</span>
+<span class="s1">    display: flex !important;</span>
+<span class="s1">    align-items: center !important;</span>
+<span class="s1">}</span>
+<span class="s1">.leaflet-control-layers-base input,</span>
+<span class="s1">.leaflet-control-layers-overlays input {</span>
+<span class="s1">    cursor: pointer !important;</span>
+<span class="s1">    margin-right: 8px !important;</span>
+<span class="s1">    transform: scale(1.2) !important;</span>
+<span class="s1">}</span>
+<span class="s1">&lt;/style&gt;</span>
+<span class="s1">'''</span>
+<span class="n">m_eval</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">leaflet_css_fix</span><span class="p">))</span>
 <span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">(</span><span class="n">collapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_eval</span><span class="p">)</span>
 
 <span class="c1"># Simpan ke File HTML</span>
