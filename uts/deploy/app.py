@@ -367,9 +367,31 @@ df_fi = muat_data_csv(str(p_fi)) if p_fi else None
 p_k = cari_file("kurva_validasi_k.csv")
 df_k = muat_data_csv(str(p_k)) if p_k else None
 
-# 6. Classification Report Per-Kelas
+# 6. Classification Report Per-Kelas (Poligon)
 p_met = cari_file("metrik_evaluasi_knn.csv")
 df_met = muat_data_csv(str(p_met)) if p_met else None
+
+# 7. Confusion Matrix Piksel (Testing Set 54.164 Piksel)
+p_cm_pixel = cari_file("confusion_matrix_pixel.csv")
+df_cm_pixel = muat_data_csv(str(p_cm_pixel)) if p_cm_pixel else None
+if df_cm_pixel is not None:
+    if "Kelas Aktual" in df_cm_pixel.columns:
+        df_cm_pixel = df_cm_pixel.set_index("Kelas Aktual")
+    elif df_cm_pixel.columns[0] == "Unnamed: 0":
+        df_cm_pixel = df_cm_pixel.set_index("Unnamed: 0")
+
+# 8. Classification Report Per-Kelas (Piksel)
+p_met_pixel = cari_file("metrik_evaluasi_knn_pixel.csv")
+df_met_pixel = muat_data_csv(str(p_met_pixel)) if p_met_pixel else None
+
+# 9. Permutation Feature Importance (Piksel)
+p_fi_pixel = cari_file("kepentingan_fitur_pixel.csv")
+df_fi_pixel = muat_data_csv(str(p_fi_pixel)) if p_fi_pixel else None
+
+# 10. Rekapitulasi Luas Tutupan Lahan Raster Se-Jawa Timur
+p_raster_csv = cari_file("rekapitulasi_lulc_jatim_raster.csv")
+df_raster_rekap = muat_data_csv(str(p_raster_csv)) if p_raster_csv else None
+
 
 
 # Ekstraksi Metrik Kunci dari CSV (Bukan Hardcoded)
@@ -585,8 +607,6 @@ file_peta_raster = (
 )
 konten_peta_raster = muat_konten_html(str(file_peta_raster)) if file_peta_raster else None
 
-p_raster_csv = cari_file("rekapitulasi_lulc_jatim_raster.csv")
-df_raster_rekap = muat_data_csv(str(p_raster_csv)) if p_raster_csv else None
 
 
 def patch_leaflet_html(html_content: str) -> str:
@@ -634,20 +654,27 @@ st.markdown(f"""<div class="psd-card" style="margin-bottom:0.75rem;">
 <div class="psd-card-header">
 <h2 class="psd-card-title">
 {fa_icon("fa-solid fa-map-location-dot", size_rem=1.1, color="#EA580C")}
-<span>Visualisasi Geospasial Tutupan Lahan (LULC) Jawa Timur</span>
+<span>Sistem Klasifikasi Tutupan Lahan (LULC) Jawa Timur: Versi Poligon & Versi Piksel</span>
 </h2>
-<span class="psd-badge-orange">Peta Interaktif Folium (Versi Poligon & Versi Piksel)</span>
+<span class="psd-badge-orange">Peta Interaktif Folium & Analisis Grafik Terpadu</span>
 </div>
 </div>""", unsafe_allow_html=True)
 
-tab_raster, tab_digitasi, tab_evaluasi, tab_komparasi = st.tabs([
-    "🛰️ Versi 2 (Piksel): Peta Folium Sentinel-2 (10,2 Juta Piksel Se-Jawa Timur)",
-    "🗺️ Versi 1 (Poligon): Peta Folium Ground Truth (250 Poligon Acuan)",
-    "🎯 Versi 1 (Poligon): Peta Folium Evaluasi Prediksi k-NN (Train vs Test)",
+# Setting font plot agar konsisten di seluruh grafik
+plt.rcParams['font.family'] = 'sans-serif'
+plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial']
+
+tab_piksel, tab_poligon, tab_komparasi = st.tabs([
+    "🛰️ Versi 2: Tingkat Piksel (Peta Folium & Grafik Analisis 10,2 Juta Piksel)",
+    "🗺️ Versi 1: Tingkat Poligon (Peta Folium & Grafik Analisis Centroid 250 Poligon)",
     "⚖️ Komparasi Sains: Versi Poligon vs Versi Piksel"
 ])
 
-with tab_raster:
+
+# ==============================================================================
+# TAB 1: VERSI 2 (TINGKAT PIKSEL) - PETA FOLIUM & GRAFIK LENGKAP PIKSEL
+# ==============================================================================
+with tab_piksel:
     st.markdown("""<div class="legend-box" style="margin-bottom:0.75rem;">
     <b>Peta Folium Hasil Inferensi Tutupan Lahan Se-Jawa Timur (Sentinel-2 Full Scene Raster):</b>
     <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem; font-size:0.78rem;">
@@ -661,6 +688,7 @@ with tab_raster:
         💡 <i>Peta Folium ini menampilkan hasil inferensi klasifikasi <b>10.206.960 piksel valid se-Jawa Timur</b> menggunakan model k-NN piksel terlatih dengan penyeimbangan sampel (Stratified Class Balancing). Gunakan panel layer kanan atas untuk toggle masing-masing kelas LULC atau membandingkannya dengan poligon acuan ground truth.</i>
     </div>
     </div>""", unsafe_allow_html=True)
+
     if konten_peta_raster:
         components.html(patch_leaflet_html(konten_peta_raster), height=740, scrolling=False)
     else:
@@ -670,444 +698,774 @@ with tab_raster:
         with st.expander("📊 Lihat Tabel Rekapitulasi Luas Tutupan Lahan Full Jawa Timur (Data Raster)"):
             st.dataframe(df_raster_rekap, use_container_width=True)
 
-with tab_digitasi:
-    st.markdown("""<div class="legend-box" style="margin-bottom:0.75rem;">
-    <b>Peta Folium Sampel Acuan Ground Truth Hasil Digitasi:</b>
-    <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem; font-size:0.78rem;">
-        <span><b style="color:#1f77b4;">🔵 Air:</b> 50 Poligon Sampel</span>
-        <span><b style="color:#2ca02c;">🟢 Hutan Mangrove:</b> 50 Poligon Sampel</span>
-        <span><b style="color:#006400;">🌲 Hutan Non-Mangrove:</b> 50 Poligon Sampel</span>
-        <span><b style="color:#d62728;">🔴 Pemukiman:</b> 50 Poligon Sampel</span>
-        <span><b style="color:#bcbd22;">🟡 Sawah:</b> 50 Poligon Sampel</span>
-    </div>
-    <div style="font-size:0.75rem; color:#64748B; margin-top:0.35rem;">
-        💡 <i>Peta Folium ini menampilkan 250 poligon hasil digitasi asli dari file <code>jawatimur_5kelas.geojson</code>. Gunakan panel layer kanan atas untuk memilih basemap satelit/hybrid dan mengaktifkan/mematikan poligon per kelas.</i>
+    st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
+
+    # Header Bagian Grafik & Analisis Piksel
+    st.markdown(f"""<div class="psd-card" style="margin-bottom:1rem;">
+    <div class="psd-card-header" style="margin-bottom:0.25rem; padding-bottom:0.65rem;">
+    <h2 class="psd-card-title">
+    {fa_icon("fa-solid fa-chart-column", size_rem=1.1, color="#EA580C")}
+    <span>Grafik & Analisis Evaluasi Model Tingkat Piksel (10,2 Juta Piksel)</span>
+    </h2>
+    <span class="psd-badge-orange">Evaluasi Testing Set 54.164 Piksel & Full Scene</span>
     </div>
     </div>""", unsafe_allow_html=True)
-    if konten_peta_digitasi:
-        components.html(patch_leaflet_html(konten_peta_digitasi), height=720, scrolling=False)
-    else:
-        st.error("File peta Folium digitasi `map_lulc.html` tidak ditemukan.")
 
-with tab_evaluasi:
+    # --- BARIS 1 PIKSEL: Confusion Matrix & Sampel Aktual vs Prediksi ---
+    col_px_cm, col_px_act = st.columns(2)
+
+    with col_px_cm:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">1. Confusion Matrix Piksel (54.164 Piksel Data Testing)</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihitung dari data <code>confusion_matrix_pixel.csv</code> (Akurasi: <b>91.0%</b>).</p>
+        </div>""", unsafe_allow_html=True)
+
+        if df_cm_pixel is not None:
+            fig_cm_px, ax_cm_px = plt.subplots(figsize=(6.5, 5.2), facecolor='white')
+            sns.heatmap(df_cm_pixel, annot=True, fmt='d', cmap='Blues', ax=ax_cm_px,
+                        cbar=True, linewidths=1.5, linecolor='#EFF6FF',
+                        annot_kws={'fontsize': 10, 'fontweight': 'bold'})
+            ax_cm_px.set_title('Confusion Matrix Klasifikasi Piksel (k-NN, 54.164 Px)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+            ax_cm_px.set_xlabel('Prediksi Model k-NN (Piksel)', fontsize=10, fontweight='bold', color='#18232F')
+            ax_cm_px.set_ylabel('Ground Truth (Kelas Aktual)', fontsize=10, fontweight='bold', color='#18232F')
+            plt.xticks(rotation=20, ha='right', fontsize=9)
+            plt.yticks(rotation=0, fontsize=9)
+            plt.tight_layout()
+            st.pyplot(fig_cm_px, use_container_width=True)
+            plt.close(fig_cm_px)
+
+            with st.expander("Lihat Data Mentah Confusion Matrix Piksel (CSV)"):
+                st.dataframe(df_cm_pixel, use_container_width=True)
+        else:
+            st.warning("Data `confusion_matrix_pixel.csv` belum ditemukan.")
+
+        st.markdown("""<div class="psd-card" style="font-size:0.78rem; color:#475569; margin-top:0.5rem; line-height:1.5;">
+        <b>Analisis Temuan Confusion Matrix Piksel:</b>
+        <ul style="margin:0.25rem 0 0 1rem; padding:0;">
+        <li><b>Hutan Non-Mangrove (31.380 px / 93.0% Benar):</b> Akurasi sangat tinggi karena pantulan inframerah dekat kanopi hutan daratan stabil dan homogen.</li>
+        <li><b>Air (12.903 px / 87.1% Benar):</b> Pemisahan badan air laut dan danau sangat tajam dengan nilai MNDWI tinggi, meskipun ada 821 piksel muara yang menyentuh zona transisi mangrove.</li>
+        <li><b>Hutan Mangrove (2.748 px / 94.0% Benar):</b> Sangat akurat dalam mengidentifikasi vegetasi pesisir payau.</li>
+        <li><b>Tantangan Sawah (141 px Benar):</b> Terjadi dispersi prediksi karena siklus fenologi tanaman padi yang dinamis (lahan berair vs tanaman hijau vs bera kering).</li>
+        </ul>
+        </div>""", unsafe_allow_html=True)
+
+    with col_px_act:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">2. Komparasi Sampel Piksel: Aktual (Ground Truth) vs Prediksi</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Perbandingan distribusi total piksel uji aktual terhadap hasil inferensi model.</p>
+        </div>""", unsafe_allow_html=True)
+
+        if df_cm_pixel is not None:
+            classes_px = df_cm_pixel.index.tolist()
+            act_counts = df_cm_pixel.sum(axis=1).values
+            pred_counts = df_cm_pixel.sum(axis=0).values
+            df_comp_px = pd.DataFrame({
+                'Kelas': classes_px,
+                'Aktual (Ground Truth)': act_counts,
+                'Prediksi k-NN': pred_counts
+            })
+            df_comp_px_melt = df_comp_px.melt(id_vars='Kelas', var_name='Kategori', value_name='Jumlah Piksel')
+
+            fig_act_px, ax_act_px = plt.subplots(figsize=(7.5, 4.8), facecolor='white')
+            sns.barplot(data=df_comp_px_melt, x='Kelas', y='Jumlah Piksel', hue='Kategori',
+                        palette=['#0284C7', '#475569'], ax=ax_act_px)
+            for p in ax_act_px.patches:
+                h = p.get_height()
+                if h > 0:
+                    ax_act_px.annotate(f'{int(h):,}', (p.get_x() + p.get_width() / 2., h + 400),
+                                       ha='center', va='bottom', fontsize=8, fontweight='bold', color='#18232F')
+
+            ax_act_px.set_title('Perbandingan Sampel Piksel: Aktual vs Prediksi Model', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+            ax_act_px.set_xlabel('Kelas Tutupan Lahan', fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_act_px.set_ylabel('Jumlah Piksel Uji', fontsize=9.5, fontweight='bold', color='#18232F')
+            plt.xticks(rotation=15, ha='right', fontsize=9)
+            plt.legend(frameon=True, facecolor='#F0F9FF', edgecolor='#BAE6FD')
+            plt.grid(axis='y', linestyle=':', alpha=0.6, color='#E2E8F0')
+            plt.tight_layout()
+            st.pyplot(fig_act_px, use_container_width=True)
+            plt.close(fig_act_px)
+
+            with st.expander("Lihat Data Tabel Perbandingan Sampel Piksel"):
+                st.dataframe(df_comp_px, use_container_width=True)
+        else:
+            st.warning("Data `confusion_matrix_pixel.csv` belum ditemukan.")
+
+        st.markdown("""<div class="psd-card" style="font-size:0.78rem; color:#475569; margin-top:0.5rem; line-height:1.5;">
+        <b>Analisis Distribusi Sampel Piksel:</b>
+        <ul style="margin:0.25rem 0 0 1rem; padding:0;">
+        <li><b>Representasi Alami Wilayah:</b> Data uji piksel merefleksikan komposisi tutupan lahan alami di mana Hutan Non-Mangrove dan Air memiliki tutupan terluas di poligon sampel.</li>
+        <li><b>Ketahanan Model:</b> Berkat <i>Stratified Class Balancing</i> pada data latih (2.000 px/kelas), model tidak mengalami bias mayoritas dan tetap mempertahankan daya deteksi kelas sempit seperti Mangrove.</li>
+        </ul>
+        </div>""", unsafe_allow_html=True)
+
+    # --- BARIS 2 PIKSEL: Feature Importance Piksel & Metrik Evaluasi per Kelas Piksel ---
+    st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
+    col_px_fi, col_px_met = st.columns(2)
+
+    with col_px_fi:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">3. Permutation Feature Importance Piksel (9 Fitur Spektral)</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihasilkan langsung dari <code>kepentingan_fitur_pixel.csv</code>.</p>
+        </div>""", unsafe_allow_html=True)
+
+        if df_fi_pixel is not None and "Importance" in df_fi_pixel.columns and "Fitur Spektral" in df_fi_pixel.columns:
+            fig_fi_px, ax_fi_px = plt.subplots(figsize=(7.2, 5.0), facecolor='white')
+            colors_px = sns.color_palette('Blues_r', len(df_fi_pixel))
+            sns.barplot(data=df_fi_pixel, x='Importance', y='Fitur Spektral', palette=colors_px, ax=ax_fi_px)
+            for p in ax_fi_px.patches:
+                width = p.get_width()
+                ax_fi_px.annotate(f'{width*100:.1f}% ({width:.4f})', (width + 0.0015, p.get_y() + p.get_height() / 2.),
+                                  va='center', fontsize=8.5, fontweight='bold', color='#0369A1')
+
+            ax_fi_px.set_title('Permutation Feature Importance (Tingkat Piksel)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+            ax_fi_px.set_xlabel('Penurunan Akurasi Model saat Fitur Diacak', fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_fi_px.set_ylabel('Fitur Spektral', fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_fi_px.set_xlim(0, max(df_fi_pixel['Importance']) * 1.25)
+            plt.grid(axis='x', linestyle=':', alpha=0.6, color='#BAE6FD')
+            plt.tight_layout()
+            st.pyplot(fig_fi_px, use_container_width=True)
+            plt.close(fig_fi_px)
+
+            with st.expander("Lihat Data Tabel Feature Importance Piksel (CSV)"):
+                st.dataframe(df_fi_pixel, use_container_width=True)
+        else:
+            st.warning("Data `kepentingan_fitur_pixel.csv` belum ditemukan.")
+
+        st.markdown("""<div class="psd-card" style="font-size:0.78rem; color:#475569; margin-top:0.5rem; line-height:1.5;">
+        <b>Penjelasan Kontribusi Fitur Tingkat Piksel:</b>
+        <ul style="margin:0.25rem 0 0 1rem; padding:0;">
+        <li><b>MNDWI (8.3%) & NDWI (6.1%):</b> Indeks air mendominasi signifikansi pada skala piksel karena efektif memisahkan badan air tenang, sedimen, dan vegetasi basah mangrove.</li>
+        <li><b>NDBI (4.5%):</b> Menjaga diskriminasi kawasan terbangun (pemukiman padat vs terbuka).</li>
+        <li><b>Band Spektral B08 & B11:</b> Kanal NIR dan SWIR memberikan kontribusi tinggi pada struktur kanopi vegetasi dan respon kadar air.</li>
+        </ul>
+        </div>""", unsafe_allow_html=True)
+
+    with col_px_met:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">4. Metrik Evaluasi Klasifikasi Piksel per Kelas</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihasilkan dinamis dari file <code>metrik_evaluasi_knn_pixel.csv</code>.</p>
+        </div>""", unsafe_allow_html=True)
+
+        if df_met_pixel is not None and "Kelas Tutupan Lahan" in df_met_pixel.columns:
+            df_melt_px = df_met_pixel.melt(
+                id_vars="Kelas Tutupan Lahan",
+                value_vars=["Precision", "Recall", "F1-Score"],
+                var_name="Metrik",
+                value_name="Skor"
+            )
+
+            fig_rep_px, ax_rep_px = plt.subplots(figsize=(7.5, 5.0), facecolor='white')
+            sns.barplot(
+                data=df_melt_px,
+                x="Kelas Tutupan Lahan",
+                y="Skor",
+                hue="Metrik",
+                palette=['#0284C7', '#EA580C', '#10B981'],
+                ax=ax_rep_px
+            )
+
+            for p in ax_rep_px.patches:
+                h = p.get_height()
+                if h > 0:
+                    ax_rep_px.annotate(f"{h:.2f}", (p.get_x() + p.get_width() / 2., h + 0.02),
+                                       ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#1E293B')
+
+            ax_rep_px.set_title("Perbandingan Skor Precision, Recall, & F1-Score Piksel", fontsize=11, fontweight='bold', pad=10, color='#18232F')
+            ax_rep_px.set_xlabel("Kelas Tutupan Lahan", fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_rep_px.set_ylabel("Skor Metrik (0.00 - 1.00)", fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_rep_px.set_ylim(0, 1.15)
+            plt.xticks(rotation=15, ha='right', fontsize=9)
+            plt.legend(frameon=True, facecolor='#F8FAFC', edgecolor='#CBD5E1', loc='upper right')
+            plt.grid(axis='y', linestyle=':', alpha=0.6, color='#E2E8F0')
+            plt.tight_layout()
+            st.pyplot(fig_rep_px, use_container_width=True)
+            plt.close(fig_rep_px)
+
+            with st.expander("Lihat Data Tabel Classification Report Piksel"):
+                st.dataframe(df_met_pixel, use_container_width=True)
+        else:
+            st.warning("Data `metrik_evaluasi_knn_pixel.csv` belum ditemukan.")
+
+        st.markdown("""<div class="psd-card" style="font-size:0.78rem; color:#475569; margin-top:0.5rem; line-height:1.5;">
+        <b>Karakteristik Metrik per Kelas Piksel:</b>
+        <ul style="margin:0.25rem 0 0 1rem; padding:0;">
+        <li><b>Hutan Non-Mangrove (F1-Score 0.96):</b> Presisi 99% dan Recall 93%, performa terkuat secara luas spasial.</li>
+        <li><b>Air (F1-Score 0.91):</b> Presisi 96% dan Recall 87%, diskriminasi perairan laut/danau sangat baik.</li>
+        <li><b>Hutan Mangrove (F1-Score 0.85):</b> Recall 94% menunjukkan hampir seluruh kanopi mangrove terdeteksi tanpa terlewat.</li>
+        <li><b>Pemukiman (F1-Score 0.83):</b> Presisi 81% dan Recall 85%, stabil memetakan kawasan perkotaan/pedesaan.</li>
+        </ul>
+        </div>""", unsafe_allow_html=True)
+
+    # --- BARIS 3 PIKSEL: Komposisi Tutupan Lahan Full Jawa Timur (Bar & Donut) ---
+    st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
+    col_px_comp1, col_px_comp2 = st.columns(2)
+
+    with col_px_comp1:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">5. Komposisi Luas Tutupan Lahan Se-Jawa Timur (Bar Chart)</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Persentase tutupan lahan dari total 10.206.960 piksel raster Sentinel-2.</p>
+        </div>""", unsafe_allow_html=True)
+
+        if df_raster_rekap is not None:
+            fig_bar_rk, ax_bar_rk = plt.subplots(figsize=(7.2, 4.8), facecolor='white')
+            warna_map = {
+                'Air': '#1f77b4',
+                'Hutan Non-Mangrove': '#006400',
+                'Pemukiman': '#d62728',
+                'Sawah': '#bcbd22',
+                'Hutan Mangrove': '#2ca02c'
+            }
+            colors_rk = [warna_map.get(k, '#EA580C') for k in df_raster_rekap['Kelas Tutupan Lahan']]
+            sns.barplot(data=df_raster_rekap, x='Kelas Tutupan Lahan', y='Persentase (%)', palette=colors_rk, ax=ax_bar_rk)
+            for p in ax_bar_rk.patches:
+                h = p.get_height()
+                ax_bar_rk.annotate(f"{h:.1f}%", (p.get_x() + p.get_width() / 2., h + 0.8),
+                                   ha='center', va='bottom', fontsize=9, fontweight='bold', color='#18232F')
+
+            ax_bar_rk.set_title('Persentase Luas Tutupan Lahan Se-Jawa Timur', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+            ax_bar_rk.set_xlabel('Kelas Tutupan Lahan', fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_bar_rk.set_ylabel('Persentase (%)', fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_bar_rk.set_ylim(0, max(df_raster_rekap['Persentase (%)']) + 7)
+            plt.xticks(rotation=15, ha='right', fontsize=9)
+            plt.grid(axis='y', linestyle=':', alpha=0.6, color='#CBD5E1')
+            plt.tight_layout()
+            st.pyplot(fig_bar_rk, use_container_width=True)
+            plt.close(fig_bar_rk)
+        else:
+            st.warning("Data `rekapitulasi_lulc_jatim_raster.csv` belum ditemukan.")
+
+    with col_px_comp2:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">6. Distribusi Proporsi Luas Tutupan Lahan (Donut Chart)</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Distribusi proporsional 5 kelas tutupan lahan Jawa Timur.</p>
+        </div>""", unsafe_allow_html=True)
+
+        if df_raster_rekap is not None:
+            fig_pie, ax_pie = plt.subplots(figsize=(6.5, 4.8), facecolor='white')
+            warna_map = {
+                'Air': '#1f77b4',
+                'Hutan Non-Mangrove': '#006400',
+                'Pemukiman': '#d62728',
+                'Sawah': '#bcbd22',
+                'Hutan Mangrove': '#2ca02c'
+            }
+            colors_pie = [warna_map.get(k, '#EA580C') for k in df_raster_rekap['Kelas Tutupan Lahan']]
+            wedges, texts, autotexts = ax_pie.pie(
+                df_raster_rekap['Persentase (%)'],
+                labels=df_raster_rekap['Kelas Tutupan Lahan'],
+                autopct='%1.1f%%',
+                pctdistance=0.75,
+                colors=colors_pie,
+                wedgeprops=dict(width=0.4, edgecolor='white', linewidth=2),
+                startangle=140
+            )
+            for autotext in autotexts:
+                autotext.set_color('white')
+                autotext.set_fontsize(8.5)
+                autotext.set_weight('bold')
+            for text in texts:
+                text.set_fontsize(8.5)
+                text.set_color('#18232F')
+
+            ax_pie.set_title('Proporsi Tutupan Lahan Full Scene Jawa Timur', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+            plt.tight_layout()
+            st.pyplot(fig_pie, use_container_width=True)
+            plt.close(fig_pie)
+        else:
+            st.warning("Data `rekapitulasi_lulc_jatim_raster.csv` belum ditemukan.")
+
+    st.markdown(f"""<div class="psd-card" style="margin-top:1rem; font-size:0.82rem; color:#334155; line-height:1.6; border-left:4px solid #0284C7;">
+    <b style="color:#0369A1; font-size:0.9rem;">Sintesis Ilmiah Model Klasifikasi Tingkat Piksel:</b>
+    <p style="margin:0.35rem 0 0 0;">
+    Pendekatan tingkat piksel mengevaluasi <b>180.544 piksel ground truth</b> dan memprediksi <b>10.206.960 piksel kontinu</b> beresolusi 10 meter. Penggunaan strategi penyeimbangan sampel (<i>Stratified Class Balancing</i>) terbukti sangat efektif mencegah bias kelas mayoritas (Air dan Hutan), sehingga kelas dengan luasan sempit seperti Hutan Mangrove (1.70%) tetap terpetakan dengan F1-Score tinggi (85%) pada pesisir Jawa Timur.
+    </p>
+    </div>""", unsafe_allow_html=True)
+
+
+# ==============================================================================
+# TAB 2: VERSI 1 (TINGKAT POLIGON) - PETA FOLIUM & GRAFIK LENGKAP POLIGON
+# ==============================================================================
+with tab_poligon:
     st.markdown("""<div class="legend-box" style="margin-bottom:0.75rem;">
-    <b>Peta Folium Evaluasi Prediksi Spasial Model k-NN:</b>
-    <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem; font-size:0.78rem;">
-        <span><b style="color:#0284c7;">🔷 Marker TRAIN:</b> 175 Sampel Latih (70%)</span>
-        <span><b style="color:#16a34a;">💊 Marker TEST ✓:</b> 60 Sampel Uji Benar / Match (80.0%)</span>
-        <span><b style="color:#ea580c;">⚠️ Marker SALAH:</b> 15 Sampel Uji Mismatch / Error (20.0%)</span>
-        <span><b style="color:#c026d3;">🟪 Garis Ungu Putus:</b> Poligon Testing (30%)</span>
-    </div>
+    <b>Peta Folium Versi 1: Klasifikasi Berbasis 250 Poligon Acuan Ground Truth & Evaluasi Spasial k-NN</b>
     <div style="font-size:0.75rem; color:#64748B; margin-top:0.35rem;">
-        💡 <i>Peta Folium ini mengevaluasi performa model k-NN pada 75 poligon testing set, menandai secara visual prediksi yang cocok (hijau) vs salah klasifikasi (oranye).</i>
+        💡 <i>Pilih sub-tab di bawah untuk beralih antara Peta Folium Sampel Ground Truth (250 poligon acuan) dan Peta Folium Evaluasi Prediksi Spasial (175 training vs 75 testing).</i>
     </div>
     </div>""", unsafe_allow_html=True)
-    if konten_peta_evaluasi:
-        components.html(patch_leaflet_html(konten_peta_evaluasi), height=720, scrolling=False)
-    else:
-        st.error("File peta Folium evaluasi `map_lulc_predicted.html` tidak ditemukan.")
 
+    sub_poly_gt, sub_poly_eval = st.tabs([
+        "🗺️ Peta Folium Ground Truth (250 Poligon Acuan)",
+        "🎯 Peta Folium Evaluasi Prediksi k-NN (Train vs Test)"
+    ])
+
+    with sub_poly_gt:
+        st.markdown("""<div style="margin-bottom:0.5rem; font-size:0.8rem; color:#475569;">
+        Menampilkan 250 poligon hasil digitasi asli dari file <code>jawatimur_5kelas.geojson</code> (50 poligon per kelas LULC).
+        </div>""", unsafe_allow_html=True)
+        if konten_peta_digitasi:
+            components.html(patch_leaflet_html(konten_peta_digitasi), height=720, scrolling=False)
+        else:
+            st.error("File peta Folium digitasi `map_lulc.html` tidak ditemukan.")
+
+    with sub_poly_eval:
+        st.markdown("""<div style="margin-bottom:0.5rem; font-size:0.8rem; color:#475569;">
+        Menampilkan evaluasi spasial model k-NN: 175 sampel latih (TRAIN), 60 sampel uji benar (TEST ✓), dan 15 sampel salah prediksi (SALAH).
+        </div>""", unsafe_allow_html=True)
+        if konten_peta_evaluasi:
+            components.html(patch_leaflet_html(konten_peta_evaluasi), height=720, scrolling=False)
+        else:
+            st.error("File peta Folium evaluasi `map_lulc_predicted.html` tidak ditemukan.")
+
+    st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
+
+    # Header Bagian Grafik & Analisis Poligon
+    st.markdown(f"""<div class="psd-card" style="margin-bottom:1rem;">
+    <div class="psd-card-header" style="margin-bottom:0.25rem; padding-bottom:0.65rem;">
+    <h2 class="psd-card-title">
+    {fa_icon("fa-solid fa-chart-pie", size_rem=1.1, color="#EA580C")}
+    <span>Grafik & Analisis Evaluasi Model Tingkat Poligon (Centroid 250 Poligon)</span>
+    </h2>
+    <span class="psd-badge-orange">Evaluasi Testing Set 75 Poligon (k-NN Scaled, k=5)</span>
+    </div>
+    </div>""", unsafe_allow_html=True)
+
+    # --- BARIS 1 POLIGON: Confusion Matrix & Sampel Aktual vs Prediksi ---
+    col_cm, col_act = st.columns(2)
+
+    with col_cm:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">1. Confusion Matrix Poligon (75 Poligon Data Testing)</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihitung dari data <code>confusion_matrix.csv</code> (Akurasi: <b>80.0%</b>).</p>
+        </div>""", unsafe_allow_html=True)
+
+        if df_cm is not None:
+            fig_cm, ax_cm = plt.subplots(figsize=(6.5, 5.2), facecolor='white')
+            sns.heatmap(df_cm, annot=True, fmt='d', cmap='Oranges', ax=ax_cm,
+                        cbar=True, linewidths=1.5, linecolor='#FFF7ED',
+                        annot_kws={'fontsize': 12, 'fontweight': 'bold'})
+            ax_cm.set_title('Confusion Matrix Klasifikasi Poligon (k-NN Scaled)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+            ax_cm.set_xlabel('Prediksi Model k-NN', fontsize=10, fontweight='bold', color='#18232F')
+            ax_cm.set_ylabel('Ground Truth (Kelas Aktual)', fontsize=10, fontweight='bold', color='#18232F')
+            plt.xticks(rotation=20, ha='right', fontsize=9.5)
+            plt.yticks(rotation=0, fontsize=9.5)
+            plt.tight_layout()
+            st.pyplot(fig_cm, use_container_width=True)
+            plt.close(fig_cm)
+
+            with st.expander("Lihat Data Mentah Confusion Matrix Poligon (CSV)"):
+                st.dataframe(df_cm, use_container_width=True)
+                if df_met is not None:
+                    st.markdown("<b style='font-size:0.85rem;'>Classification Report per Kelas:</b>", unsafe_allow_html=True)
+                    st.dataframe(df_met, use_container_width=True)
+        else:
+            st.warning("Data `confusion_matrix.csv` belum ditemukan.")
+
+        st.markdown("""<div class="psd-card" style="font-size:0.78rem; color:#475569; margin-top:0.5rem; line-height:1.5;">
+        <b>Analisis Temuan Confusion Matrix Poligon:</b>
+        <ul style="margin:0.25rem 0 0 1rem; padding:0;">
+        <li><b>Hutan Non-Mangrove (100%):</b> 15 dari 15 sampel terklasifikasi sempurna tanpa satupun kesalahan prediksi.</li>
+        <li><b>Hutan Mangrove & Pemukiman (93.3%):</b> Masing-masing 14 dari 15 poligon terprediksi akurat dengan daya pisah spektral sangat tinggi.</li>
+        <li><b>Penyebab Mismatch (Air vs Sawah):</b> Terdapat 7 sampel Air yang terklasifikasi sebagai Sawah karena reflektansi air tambak/muara dangkal bercampur sedimen menyerupai fase sawah berair.</li>
+        </ul>
+        </div>""", unsafe_allow_html=True)
+
+    with col_act:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">2. Analisis Sampel Poligon: Aktual vs Prediksi</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihitung secara real-time dari data <code>prediksi_data_uji.csv</code>.</p>
+        </div>""", unsafe_allow_html=True)
+
+        if df_pred is not None and "kelas_asli" in df_pred.columns and "prediksi_knn" in df_pred.columns:
+            classes = sorted(df_pred["kelas_asli"].unique())
+            df_comp = pd.DataFrame({
+                'Kelas': classes,
+                'Aktual (Ground Truth)': [sum(df_pred['kelas_asli'] == c) for c in classes],
+                'Prediksi k-NN': [sum(df_pred['prediksi_knn'] == c) for c in classes]
+            })
+            df_comp_melt = df_comp.melt(id_vars='Kelas', var_name='Kategori', value_name='Jumlah Poligon')
+
+            fig_act, ax_act = plt.subplots(figsize=(7.5, 4.8), facecolor='white')
+            sns.barplot(data=df_comp_melt, x='Kelas', y='Jumlah Poligon', hue='Kategori',
+                        palette=['#EA580C', '#475569'], ax=ax_act)
+            for p in ax_act.patches:
+                h = p.get_height()
+                if h > 0:
+                    ax_act.annotate(f'{int(h)}', (p.get_x() + p.get_width() / 2., h + 0.3),
+                                    ha='center', va='bottom', fontsize=9, fontweight='bold', color='#18232F')
+
+            ax_act.set_title('Perbandingan Jumlah Sampel Poligon: Aktual vs Prediksi Model', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+            ax_act.set_xlabel('Kelas Tutupan Lahan', fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_act.set_ylabel('Jumlah Poligon Uji', fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_act.set_ylim(0, max(df_comp_melt['Jumlah Poligon']) + 4)
+            plt.xticks(rotation=15, ha='right', fontsize=9)
+            plt.legend(frameon=True, facecolor='#FFF7ED', edgecolor='#FED7AA')
+            plt.grid(axis='y', linestyle=':', alpha=0.6, color='#FED7AA')
+            plt.tight_layout()
+            st.pyplot(fig_act, use_container_width=True)
+            plt.close(fig_act)
+
+            with st.expander("Lihat Data Tabel Perbandingan Sampel Poligon"):
+                st.dataframe(df_comp, use_container_width=True)
+        else:
+            st.warning("Data `prediksi_data_uji.csv` belum ditemukan.")
+
+        st.markdown("""<div class="psd-card" style="font-size:0.78rem; color:#475569; margin-top:0.5rem; line-height:1.5;">
+        <b>Analisis Distribusi Aktual vs Prediksi Poligon:</b>
+        <ul style="margin:0.25rem 0 0 1rem; padding:0;">
+        <li><b>Keseimbangan Data Aktual:</b> Setiap kelas pengujian memiliki kuota stratified yang seimbang tepat 15 poligon uji per kelas.</li>
+        <li><b>Kecenderungan Model (Over-Prediction):</b> Model cenderung memprediksi kelas Sawah lebih banyak (19 poligon) dibanding aktualnya (15 poligon), menyerap perairan keruh dan transisi vegetasi.</li>
+        <li><b>Stabilitas Vegetasi:</b> Prediksi kelas Hutan Non-Mangrove sangat presisi (17 diprediksi vs 15 aktual).</li>
+        </ul>
+        </div>""", unsafe_allow_html=True)
+
+    # --- BARIS 2 POLIGON: Feature Importance & Kurva Validasi Nilai k ---
+    st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
+    col_fi, col_k = st.columns(2)
+
+    with col_fi:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">3. Permutation Feature Importance Poligon</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihasilkan langsung dari <code>kepentingan_fitur.csv</code>.</p>
+        </div>""", unsafe_allow_html=True)
+
+        if df_fi is not None and "Importance" in df_fi.columns and "Fitur" in df_fi.columns:
+            fig_fi, ax_fi = plt.subplots(figsize=(7.2, 5.0), facecolor='white')
+            colors = sns.color_palette('Oranges_r', len(df_fi))
+            sns.barplot(data=df_fi, x='Importance', y='Fitur', palette=colors, ax=ax_fi)
+            for p in ax_fi.patches:
+                width = p.get_width()
+                ax_fi.annotate(f'{width*100:.1f}% ({width:.4f})', (width + 0.003, p.get_y() + p.get_height() / 2.),
+                               va='center', fontsize=9, fontweight='bold', color='#7C2D12')
+
+            ax_fi.set_title('Permutation Feature Importance (Tingkat Poligon)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+            ax_fi.set_xlabel('Penurunan Akurasi Model saat Fitur Diacak', fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_fi.set_ylabel('Fitur Spektral', fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_fi.set_xlim(0, max(df_fi['Importance']) * 1.25)
+            plt.grid(axis='x', linestyle=':', alpha=0.6, color='#FED7AA')
+            plt.tight_layout()
+            st.pyplot(fig_fi, use_container_width=True)
+            plt.close(fig_fi)
+
+            with st.expander("Lihat Data Tabel Feature Importance Poligon (CSV)"):
+                st.dataframe(df_fi, use_container_width=True)
+        else:
+            st.warning("Data `kepentingan_fitur.csv` belum ditemukan.")
+
+        st.markdown("""<div class="psd-card" style="font-size:0.78rem; color:#475569; margin-top:0.5rem; line-height:1.5;">
+        <b>Penjelasan Kontribusi Fitur Poligon:</b>
+        <ul style="margin:0.25rem 0 0 1rem; padding:0;">
+        <li><b>NDBI (18.5%):</b> Fitur paling dominan; hilangnya NDBI menurunkan akurasi terbesar karena krusial memisahkan kawasan terbangun (pemukiman) dari alam terbuka.</li>
+        <li><b>Band SWIR B11 (15.4%):</b> Sangat sensitif terhadap kelembaban air tanah, mencegah ketertukaran lahan basah vs kering.</li>
+        <li><b>MNDWI (11.0%):</b> Indeks air termodifikasi yang memisahkan badan air dan ekosistem mangrove pesisir.</li>
+        </ul>
+        </div>""", unsafe_allow_html=True)
+
+    with col_k:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">4. Kurva Validasi Nilai k (Hyperparameter Tuning)</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihasilkan langsung dari <code>kurva_validasi_k.csv</code>.</p>
+        </div>""", unsafe_allow_html=True)
+
+        if df_k is not None and "k" in df_k.columns and "Akurasi_Testing" in df_k.columns:
+            fig_k, ax_k = plt.subplots(figsize=(7.2, 4.6), facecolor='white')
+            ax_k.plot(df_k['k'], df_k['Akurasi_Testing'], marker='o', markersize=6.5, color='#EA580C',
+                      linestyle='-', linewidth=2.3, label='Akurasi Testing (%)')
+            ax_k.axvline(x=5, color='#B45309', linestyle='--', linewidth=1.5, label='k=5 Terpilih (80.0%)')
+
+            ax_k.set_title('Kurva Validasi Pemilihan Nilai Hyperparameter k (k-NN)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+            ax_k.set_xlabel('Jumlah Tetangga Terdekat (k)', fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_k.set_ylabel('Akurasi Data Testing (%)', fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_k.set_xticks(df_k['k'])
+            ax_k.set_ylim(min(df_k['Akurasi_Testing']) - 5, max(df_k['Akurasi_Testing']) + 5)
+
+            for _, row in df_k.iterrows():
+                ax_k.annotate(f"{row['Akurasi_Testing']:.1f}%", (row['k'], row['Akurasi_Testing'] + 0.8),
+                              ha='center', fontsize=8, fontweight='bold', color='#7C2D12')
+
+            plt.legend(frameon=True, facecolor='#FFF7ED', edgecolor='#FED7AA')
+            plt.grid(True, linestyle=':', alpha=0.6, color='#FED7AA')
+            plt.tight_layout()
+            st.pyplot(fig_k, use_container_width=True)
+            plt.close(fig_k)
+
+            with st.expander("Lihat Data Tabel Kurva Validasi Nilai k (CSV)"):
+                st.dataframe(df_k, use_container_width=True)
+        else:
+            st.warning("Data `kurva_validasi_k.csv` belum ditemukan.")
+
+        st.markdown("""<div class="psd-card" style="font-size:0.8rem; color:#334155; margin-top:0.5rem; line-height:1.55;">
+        <b style="color:#C2410C; font-size:0.85rem;">Justifikasi Ilmiah Pemilihan Nilai k = 5:</b>
+        <ul style="margin:0.35rem 0 0 1rem; padding:0;">
+        <li><b>Meredam Overfitting & Noise Spektral:</b> Pada k=1 (85.33%), model hanya melihat 1 tetangga terdekat sehingga sangat rentan terhadap piksel campuran (<i>mixed pixels</i>).</li>
+        <li><b>Aturan Paritas Ilmiah:</b> Nilai k genap (2, 4) dihindari untuk mencegah suara imbang (<i>tie vote</i>) dalam multi-kelas.</li>
+        <li><b>Dataran Stabilitas (k=5 s/d k=8 Konsisten di 80.00%):</b> Sesuai prinsip <i>Occam's Razor</i> dan <i>Bias-Variance Trade-off</i>, titik optimal adalah nilai ganjil terkecil pertama (k=5).</li>
+        </ul>
+        </div>""", unsafe_allow_html=True)
+
+    # --- BARIS 3 POLIGON: Metrik Klasifikasi per Kelas & Analisis Fisis ---
+    st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
+    col_rep_chart, col_rep_desc = st.columns([1.1, 0.9])
+
+    with col_rep_chart:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">5. Metrik Evaluasi Poligon per Kelas (Precision, Recall, F1-Score)</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihasilkan dinamis dari file <code>metrik_evaluasi_knn.csv</code>.</p>
+        </div>""", unsafe_allow_html=True)
+
+        if df_met is not None and "Kategori" in df_met.columns:
+            kelas_target = ["Air", "Hutan Mangrove", "Hutan Non-Mangrove", "Pemukiman", "Sawah"]
+            df_filtered = df_met[df_met["Kategori"].isin(kelas_target)].copy()
+
+            df_melt = df_filtered.melt(
+                id_vars="Kategori",
+                value_vars=["Precision", "Recall", "F1_Score"],
+                var_name="Metrik",
+                value_name="Skor"
+            )
+            df_melt["Metrik"] = df_melt["Metrik"].replace({"F1_Score": "F1-Score"})
+
+            fig_rep, ax_rep = plt.subplots(figsize=(7.8, 5.0), facecolor='white')
+            sns.barplot(
+                data=df_melt,
+                x="Kategori",
+                y="Skor",
+                hue="Metrik",
+                palette=['#0284C7', '#EA580C', '#10B981'],
+                ax=ax_rep
+            )
+
+            for p in ax_rep.patches:
+                h = p.get_height()
+                if h > 0:
+                    ax_rep.annotate(f"{h:.2f}", (p.get_x() + p.get_width() / 2., h + 0.02),
+                                    ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#1E293B')
+
+            ax_rep.set_title("Perbandingan Skor Precision, Recall, & F1-Score Poligon", fontsize=11, fontweight='bold', pad=10, color='#18232F')
+            ax_rep.set_xlabel("Kelas Tutupan Lahan", fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_rep.set_ylabel("Skor Metrik (0.00 - 1.00)", fontsize=9.5, fontweight='bold', color='#18232F')
+            ax_rep.set_ylim(0, 1.15)
+            plt.xticks(rotation=15, ha='right', fontsize=9)
+            plt.legend(frameon=True, facecolor='#F8FAFC', edgecolor='#CBD5E1', loc='upper right')
+            plt.grid(axis='y', linestyle=':', alpha=0.6, color='#E2E8F0')
+            plt.tight_layout()
+            st.pyplot(fig_rep, use_container_width=True)
+            plt.close(fig_rep)
+        else:
+            st.warning("Data `metrik_evaluasi_knn.csv` belum ditemukan.")
+
+    with col_rep_desc:
+        st.markdown("""<div class="psd-card" style="font-size:0.8rem; color:#334155; line-height:1.55; height:100%;">
+        <b style="color:#C2410C; font-size:0.85rem;">Analisis Fisis Penginderaan Jauh:</b>
+        <div style="margin-top:0.4rem;">
+        <p style="margin:0 0 0.5rem 0;">
+        <b>🟢 Hutan Mangrove (Precision 100%, Recall 93%, F1 97%):</b><br>
+        <span style="color:#475569;">Precision 100% sempurna karena profil gabungan NDVI tinggi & MNDWI basah estuari sangat khas di pesisir Jawa Timur (<i>zero false positives</i>).</span>
+        </p>
+        <p style="margin:0 0 0.5rem 0;">
+        <b>🌲 Hutan Non-Mangrove (Precision 88%, Recall 100%, F1 94%):</b><br>
+        <span style="color:#475569;">Recall 100% sempurna karena kanopi tebal pegunungan memantulkan NIR stabil tanpa terlewat satu pun.</span>
+        </p>
+        <p style="margin:0 0 0.5rem 0;">
+        <b>🔴 Pemukiman (Precision 93%, Recall 93%, F1 93%):</b><br>
+        <span style="color:#475569;">Nilai NDBI positif & SWIR-1 (B11) membedakan material genteng/aspal/beton secara tajam dari tutupan alam.</span>
+        </p>
+        <p style="margin:0 0 0.5rem 0;">
+        <b>🔵 Air (Precision 70%, Recall 47%, F1 56%):</b><br>
+        <span style="color:#475569;">Recall 47% karena 7 sampel air keliru tertebak Sawah akibat sedimen lumpur/tambak dangkal yang spektralnya tumpang tindih.</span>
+        </p>
+        <p style="margin:0;">
+        <b>🟡 Sawah (Precision 53%, Recall 67%, F1 59%):</b><br>
+        <span style="color:#475569;">Precision 53% akibat over-prediction karena dinamika fenologi sawah (berair &rarr; padi hijau &rarr; bera kering).</span>
+        </p>
+        </div>
+        </div>""", unsafe_allow_html=True)
+
+    # --- TABEL EKSPLORASI POLIGON UJI ---
+    st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
+    st.markdown(f"""<div class="psd-card" style="margin-bottom:1rem;">
+    <div class="psd-card-header" style="margin-bottom:0.5rem;">
+    <h2 class="psd-card-title">
+    {fa_icon("fa-solid fa-table-list", size_rem=1.1, color="#EA580C")}
+    <span>Eksplorasi Data Prediksi Poligon Uji (Tabel Dinamis)</span>
+    </h2>
+    <span class="psd-badge-orange">Format Tabular Interaktif</span>
+    </div>
+    </div>""", unsafe_allow_html=True)
+
+    if df_pred is not None:
+        c1, c2 = st.columns([1, 1])
+        with c1:
+            pilihan_kelas = st.multiselect(
+                "Filter Kelas Asli (Ground Truth):",
+                options=sorted(df_pred["kelas_asli"].unique()),
+                default=sorted(df_pred["kelas_asli"].unique())
+            )
+        with c2:
+            status_filter = st.radio(
+                "Filter Status Hasil Prediksi:",
+                options=["Semua Data (75)", "Prediksi Benar (60)", "Salah Klasifikasi (15)"],
+                horizontal=True
+            )
+
+        df_tampil = df_pred[df_pred["kelas_asli"].isin(pilihan_kelas)].copy()
+        if "Benar" in status_filter:
+            df_tampil = df_tampil[df_tampil["benar"] == True]
+        elif "Salah" in status_filter:
+            df_tampil = df_tampil[df_tampil["benar"] == False]
+
+        st.markdown(
+            f"<p style='font-size:0.8rem; color:#475569; margin:0.5rem 0 0.75rem 0;'>"
+            f"Menampilkan <b style='color:#18232F;'>{len(df_tampil)}</b> dari total <b style='color:#18232F;'>{len(df_pred)}</b> poligon uji:"
+            f"</p>",
+            unsafe_allow_html=True
+        )
+        st.dataframe(df_tampil, use_container_width=True, height=360)
+
+        csv_bytes = df_tampil.to_csv(index=False).encode("utf-8")
+        st.download_button(
+            label="Unduh Data Hasil Prediksi (CSV)",
+            data=csv_bytes,
+            file_name="prediksi_data_uji_knn.csv",
+            mime="text/csv"
+        )
+    else:
+        st.warning("File `prediksi_data_uji.csv` tidak ditemukan di folder data.")
+
+
+# ==============================================================================
+# TAB 3: KOMPARASI SAINS (VERSI POLIGON VS VERSI PIKSEL)
+# ==============================================================================
 with tab_komparasi:
     st.markdown(f"""<div class="psd-card">
-<h3 style="font-size:1.05rem; font-weight:600; color:#18232F; margin:0 0 0.5rem 0;">
-{fa_icon("fa-solid fa-scale-balanced", size_rem=1.1, color="#EA580C")}
-<span>Perbandingan Metodologis & Hasil: Versi Poligon vs Versi Piksel</span>
-</h3>
-<p style="font-size:0.85rem; color:#475569; margin:0 0 1rem 0; line-height:1.6;">
-Penelitian ini mengembangkan <b>dua pendekatan klasifikasi spasial</b> berbasis citra satelit Sentinel-2A dan algoritma <i>k-Nearest Neighbors (k-NN Scaled)</i>. Seluruh visualisasi spasial dirender secara interaktif menggunakan pustaka <b>Folium</b>:
-</p>
+    <h3 style="font-size:1.05rem; font-weight:600; color:#18232F; margin:0 0 0.5rem 0;">
+    {fa_icon("fa-solid fa-scale-balanced", size_rem=1.1, color="#EA580C")}
+    <span>Perbandingan Metodologis & Hasil: Versi Poligon vs Versi Piksel</span>
+    </h3>
+    <p style="font-size:0.85rem; color:#475569; margin:0 0 1rem 0; line-height:1.6;">
+    Penelitian ini menyajikan <b>dua pendekatan sains data spasial</b> berbasis citra Sentinel-2A dan algoritma <i>k-Nearest Neighbors (k-NN Scaled)</i>. Seluruh visualisasi spasial dirender secara interaktif menggunakan pustaka <b>Folium</b>:
+    </p>
 
-<table style="width:100%; border-collapse:collapse; font-size:0.83rem; text-align:left;">
-    <thead>
-        <tr style="background:#FFF7ED; border-bottom:2px solid #FFEDD5; color:#C2410C;">
-            <th style="padding:0.6rem 0.8rem;">Parameter Evaluasi</th>
-            <th style="padding:0.6rem 0.8rem;">Versi 1: Tingkat Poligon (Centroid)</th>
-            <th style="padding:0.6rem 0.8rem;">Versi 2: Tingkat Piksel (Raster Scene)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr style="border-bottom:1px solid #E2E8F0;">
-            <td style="padding:0.6rem 0.8rem; font-weight:600;">Notebook Analisis</td>
-            <td style="padding:0.6rem 0.8rem;"><code>uts/code/landuseCover.ipynb</code></td>
-            <td style="padding:0.6rem 0.8rem;"><code>uts/code/crawlingPixel.ipynb</code></td>
-        </tr>
-        <tr style="border-bottom:1px solid #E2E8F0;">
-            <td style="padding:0.6rem 0.8rem; font-weight:600;">Unit Analisis Spasial</td>
-            <td style="padding:0.6rem 0.8rem;">Titik koordinat centroid dari 250 poligon</td>
-            <td style="padding:0.6rem 0.8rem;">Piksel individual 10m &times; 10m citra Sentinel-2</td>
-        </tr>
-        <tr style="border-bottom:1px solid #E2E8F0;">
-            <td style="padding:0.6rem 0.8rem; font-weight:600;">Jumlah Sampel Ground Truth</td>
-            <td style="padding:0.6rem 0.8rem;">250 Sampel (50 poligon / kelas)</td>
-            <td style="padding:0.6rem 0.8rem;">180.544 Piksel terekstraksi dari 250 poligon</td>
-        </tr>
-        <tr style="border-bottom:1px solid #E2E8F0;">
-            <td style="padding:0.6rem 0.8rem; font-weight:600;">Data Training Model</td>
-            <td style="padding:0.6rem 0.8rem;">175 Poligon (35 per kelas, seimbang)</td>
-            <td style="padding:0.6rem 0.8rem;">10.000 Piksel (2.000 / kelas, stratified sampling)</td>
-        </tr>
-        <tr style="border-bottom:1px solid #E2E8F0;">
-            <td style="padding:0.6rem 0.8rem; font-weight:600;">Data Testing Model</td>
-            <td style="padding:0.6rem 0.8rem;">75 Poligon (15 per kelas, seimbang)</td>
-            <td style="padding:0.6rem 0.8rem;">54.164 Piksel testing ground truth</td>
-        </tr>
-        <tr style="border-bottom:1px solid #E2E8F0;">
-            <td style="padding:0.6rem 0.8rem; font-weight:600;">Akurasi Testing (k-NN)</td>
-            <td style="padding:0.6rem 0.8rem; color:#C2410C; font-weight:700;">80.0% (60 / 75 poligon benar)</td>
-            <td style="padding:0.6rem 0.8rem; color:#16A34A; font-weight:700;">91.0% (49.336 / 54.164 piksel benar)</td>
-        </tr>
-        <tr style="border-bottom:1px solid #E2E8F0;">
-            <td style="padding:0.6rem 0.8rem; font-weight:600;">Output Geospasial</td>
-            <td style="padding:0.6rem 0.8rem;">Marker titik & poligon GeoJSON</td>
-            <td style="padding:0.6rem 0.8rem;">Raster GeoTIFF 10,2 Juta Piksel (9.76 MB)</td>
-        </tr>
-        <tr>
-            <td style="padding:0.6rem 0.8rem; font-weight:600;">Visualisasi Peta Folium</td>
-            <td style="padding:0.6rem 0.8rem;"><code>map_lulc.html</code> & <code>map_lulc_predicted.html</code></td>
-            <td style="padding:0.6rem 0.8rem;"><code>peta_crawling_lulc_jatim.html</code> (5 layer per kelas)</td>
-        </tr>
-    </tbody>
-</table>
+    <table style="width:100%; border-collapse:collapse; font-size:0.83rem; text-align:left;">
+        <thead>
+            <tr style="background:#FFF7ED; border-bottom:2px solid #FFEDD5; color:#C2410C;">
+                <th style="padding:0.6rem 0.8rem;">Parameter Evaluasi</th>
+                <th style="padding:0.6rem 0.8rem;">Versi 1: Tingkat Poligon (Centroid)</th>
+                <th style="padding:0.6rem 0.8rem;">Versi 2: Tingkat Piksel (Raster Scene)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="border-bottom:1px solid #E2E8F0;">
+                <td style="padding:0.6rem 0.8rem; font-weight:600;">Notebook Analisis</td>
+                <td style="padding:0.6rem 0.8rem;"><code>uts/code/landuseCover.ipynb</code></td>
+                <td style="padding:0.6rem 0.8rem;"><code>uts/code/crawlingPixel.ipynb</code></td>
+            </tr>
+            <tr style="border-bottom:1px solid #E2E8F0;">
+                <td style="padding:0.6rem 0.8rem; font-weight:600;">Unit Analisis Spasial</td>
+                <td style="padding:0.6rem 0.8rem;">Titik koordinat centroid dari 250 poligon</td>
+                <td style="padding:0.6rem 0.8rem;">Piksel individual 10m &times; 10m citra Sentinel-2</td>
+            </tr>
+            <tr style="border-bottom:1px solid #E2E8F0;">
+                <td style="padding:0.6rem 0.8rem; font-weight:600;">Jumlah Sampel Ground Truth</td>
+                <td style="padding:0.6rem 0.8rem;">250 Sampel (50 poligon / kelas)</td>
+                <td style="padding:0.6rem 0.8rem;">180.544 Piksel terekstraksi dari 250 poligon</td>
+            </tr>
+            <tr style="border-bottom:1px solid #E2E8F0;">
+                <td style="padding:0.6rem 0.8rem; font-weight:600;">Data Training Model</td>
+                <td style="padding:0.6rem 0.8rem;">175 Poligon (35 per kelas, seimbang)</td>
+                <td style="padding:0.6rem 0.8rem;">10.000 Piksel (2.000 / kelas, stratified balancing)</td>
+            </tr>
+            <tr style="border-bottom:1px solid #E2E8F0;">
+                <td style="padding:0.6rem 0.8rem; font-weight:600;">Data Testing Model</td>
+                <td style="padding:0.6rem 0.8rem;">75 Poligon (15 per kelas, seimbang)</td>
+                <td style="padding:0.6rem 0.8rem;">54.164 Piksel testing ground truth</td>
+            </tr>
+            <tr style="border-bottom:1px solid #E2E8F0;">
+                <td style="padding:0.6rem 0.8rem; font-weight:600;">Akurasi Testing (k-NN)</td>
+                <td style="padding:0.6rem 0.8rem; color:#C2410C; font-weight:700;">80.0% (60 / 75 poligon benar)</td>
+                <td style="padding:0.6rem 0.8rem; color:#16A34A; font-weight:700;">91.0% (49.055 / 54.164 piksel benar)</td>
+            </tr>
+            <tr style="border-bottom:1px solid #E2E8F0;">
+                <td style="padding:0.6rem 0.8rem; font-weight:600;">Output Geospasial</td>
+                <td style="padding:0.6rem 0.8rem;">Marker titik & poligon GeoJSON</td>
+                <td style="padding:0.6rem 0.8rem;">Raster GeoTIFF 10,2 Juta Piksel (9.76 MB)</td>
+            </tr>
+            <tr>
+                <td style="padding:0.6rem 0.8rem; font-weight:600;">Visualisasi Peta Folium</td>
+                <td style="padding:0.6rem 0.8rem;"><code>map_lulc.html</code> & <code>map_lulc_predicted.html</code></td>
+                <td style="padding:0.6rem 0.8rem;"><code>peta_crawling_lulc_jatim.html</code> (5 layer per kelas)</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>""", unsafe_allow_html=True)
 
-<div style="margin-top:1rem; padding:0.75rem; background:#F8FAFC; border-radius:0.5rem; font-size:0.8rem; color:#64748B; border-left:3px solid #EA580C;">
-<b>Kesimpulan Ilmiah:</b> Versi Poligon sangat unggul untuk verifikasi akurasi spasial makro dengan komputasi sangat ringan, sedangkan Versi Piksel menghasilkan pemetaan kontinu detail beresolusi 10 meter yang mampu mendeteksi variasi dan transisi tutupan lahan se-Provinsi Jawa Timur secara komprehensif. Keduanya disajikan secara interaktif menggunakan <b>Peta Folium</b>.
-</div>
-</div>""", unsafe_allow_html=True)
+    st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
 
+    # Grafik Komparasi F1-Score & Akurasi
+    col_cmp_f1, col_cmp_acc = st.columns(2)
 
-# ==============================================================================
-# 9. VISUALISASI DINAMIS DARI FILE CSV (SINGLE SOURCE OF TRUTH)
-# ==============================================================================
-st.markdown("<div style='height: 2rem;'></div>", unsafe_allow_html=True)
+    with col_cmp_f1:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">Perbandingan F1-Score per Kelas: Poligon vs Piksel</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Perbandingan daya pisah model pada masing-masing kelas tutupan lahan.</p>
+        </div>""", unsafe_allow_html=True)
 
-st.markdown(f"""<div class="psd-card" style="margin-bottom:1rem;">
-<div class="psd-card-header" style="margin-bottom:0.25rem; padding-bottom:0.65rem;">
-<h2 class="psd-card-title">
-{fa_icon("fa-solid fa-chart-pie", size_rem=1.1, color="#EA580C")}
-<span>Evaluasi Kinerja Model, Analisis Aktual, dan Kontribusi Fitur Spektral</span>
-</h2>
-<span class="psd-badge-orange">Dihasilkan Dinamis dari File CSV</span>
-</div>
-</div>""", unsafe_allow_html=True)
-
-# Setting font plot agar konsisten
-plt.rcParams['font.family'] = 'sans-serif'
-plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial']
-
-
-# --- BARIS 1: Confusion Matrix & Analisis Distribusi Sampel Aktual vs Prediksi ---
-col_cm, col_act = st.columns(2)
-
-with col_cm:
-    st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
-<h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">1. Confusion Matrix (75 Poligon Data Testing)</h3>
-<p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihitung dari data <code>confusion_matrix.csv</code>.</p>
-</div>""", unsafe_allow_html=True)
-
-    if df_cm is not None:
-        fig_cm, ax_cm = plt.subplots(figsize=(6.5, 5.2), facecolor='white')
-        sns.heatmap(df_cm, annot=True, fmt='d', cmap='Oranges', ax=ax_cm,
-                    cbar=True, linewidths=1.5, linecolor='#FFF7ED',
-                    annot_kws={'fontsize': 12, 'fontweight': 'bold'})
-        ax_cm.set_title('Confusion Matrix Klasifikasi LULC (k-NN Scaled)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
-        ax_cm.set_xlabel('Prediksi Model k-NN', fontsize=10, fontweight='bold', color='#18232F')
-        ax_cm.set_ylabel('Ground Truth (Kelas Aktual)', fontsize=10, fontweight='bold', color='#18232F')
-        plt.xticks(rotation=20, ha='right', fontsize=9.5)
-        plt.yticks(rotation=0, fontsize=9.5)
-        plt.tight_layout()
-        st.pyplot(fig_cm, use_container_width=True)
-        plt.close(fig_cm)
-    else:
-        st.warning("Data `confusion_matrix.csv` belum ditemukan.")
-
-    with st.expander("Lihat Data Mentah Confusion Matrix (CSV)"):
-        if df_cm is not None:
-            st.dataframe(df_cm, use_container_width=True)
-        if df_met is not None:
-            st.markdown("<b style='font-size:0.85rem;'>Classification Report per Kelas:</b>", unsafe_allow_html=True)
-            st.dataframe(df_met, use_container_width=True)
-
-    st.markdown("""<div class="psd-card" style="font-size:0.78rem; color:#475569; margin-top:0.5rem; line-height:1.5;">
-<b>Analisis Temuan Confusion Matrix:</b>
-<ul style="margin:0.25rem 0 0 1rem; padding:0;">
-<li><b>Hutan Non-Mangrove (100%):</b> 15 dari 15 sampel terklasifikasi sempurna tanpa satupun kesalahan prediksi.</li>
-<li><b>Hutan Mangrove & Pemukiman (93.3%):</b> Masing-masing 14 dari 15 poligon terprediksi akurat dengan daya pisah spektral sangat tinggi.</li>
-<li><b>Penyebab Mismatch (Air vs Sawah):</b> Terdapat 7 sampel Air yang terklasifikasi sebagai Sawah karena reflektansi air tambak/muara dangkal bercampur sedimen menyerupai fase sawah berair.</li>
-</ul>
-</div>""", unsafe_allow_html=True)
-
-with col_act:
-    st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
-<h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">2. Analisis Sampel: Aktual (Ground Truth) vs Prediksi</h3>
-<p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihitung secara real-time dari data <code>prediksi_data_uji.csv</code>.</p>
-</div>""", unsafe_allow_html=True)
-
-    if df_pred is not None and "kelas_asli" in df_pred.columns and "prediksi_knn" in df_pred.columns:
-        classes = sorted(df_pred["kelas_asli"].unique())
-        df_comp = pd.DataFrame({
-            'Kelas': classes,
-            'Aktual (Ground Truth)': [sum(df_pred['kelas_asli'] == c) for c in classes],
-            'Prediksi k-NN': [sum(df_pred['prediksi_knn'] == c) for c in classes]
+        df_comp_f1 = pd.DataFrame({
+            'Kelas': ['Air', 'Hutan Mangrove', 'Hutan Non-Mangrove', 'Pemukiman', 'Sawah'],
+            'Versi Poligon (Centroid)': [0.56, 0.97, 0.94, 0.93, 0.59],
+            'Versi Piksel (Raster)': [0.91, 0.85, 0.96, 0.83, 0.28]
         })
-        df_comp_melt = df_comp.melt(id_vars='Kelas', var_name='Kategori', value_name='Jumlah Poligon')
+        df_comp_f1_melt = df_comp_f1.melt(id_vars='Kelas', var_name='Versi Model', value_name='F1-Score')
 
-        fig_act, ax_act = plt.subplots(figsize=(7.5, 4.8), facecolor='white')
-        sns.barplot(data=df_comp_melt, x='Kelas', y='Jumlah Poligon', hue='Kategori',
-                    palette=['#EA580C', '#475569'], ax=ax_act)
-        for p in ax_act.patches:
+        fig_f1_cmp, ax_f1_cmp = plt.subplots(figsize=(7.5, 4.6), facecolor='white')
+        sns.barplot(data=df_comp_f1_melt, x='Kelas', y='F1-Score', hue='Versi Model',
+                    palette=['#EA580C', '#0284C7'], ax=ax_f1_cmp)
+        for p in ax_f1_cmp.patches:
             h = p.get_height()
             if h > 0:
-                ax_act.annotate(f'{int(h)}', (p.get_x() + p.get_width() / 2., h + 0.3),
-                                ha='center', va='bottom', fontsize=9, fontweight='bold', color='#18232F')
-
-        ax_act.set_title('Perbandingan Jumlah Sampel: Aktual vs Prediksi Model', fontsize=11, fontweight='bold', pad=10, color='#18232F')
-        ax_act.set_xlabel('Kelas Tutupan Lahan', fontsize=9.5, fontweight='bold', color='#18232F')
-        ax_act.set_ylabel('Jumlah Poligon Uji', fontsize=9.5, fontweight='bold', color='#18232F')
-        ax_act.set_ylim(0, max(df_comp_melt['Jumlah Poligon']) + 4)
+                ax_f1_cmp.annotate(f'{h:.2f}', (p.get_x() + p.get_width() / 2., h + 0.02),
+                                   ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#18232F')
+        ax_f1_cmp.set_title('Perbandingan F1-Score: Versi Poligon vs Versi Piksel', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+        ax_f1_cmp.set_xlabel('Kelas Tutupan Lahan', fontsize=9.5, fontweight='bold', color='#18232F')
+        ax_f1_cmp.set_ylabel('F1-Score (0.00 - 1.00)', fontsize=9.5, fontweight='bold', color='#18232F')
+        ax_f1_cmp.set_ylim(0, 1.15)
         plt.xticks(rotation=15, ha='right', fontsize=9)
         plt.legend(frameon=True, facecolor='#FFF7ED', edgecolor='#FED7AA')
         plt.grid(axis='y', linestyle=':', alpha=0.6, color='#FED7AA')
         plt.tight_layout()
-        st.pyplot(fig_act, use_container_width=True)
-        plt.close(fig_act)
-    else:
-        st.warning("Data `prediksi_data_uji.csv` belum ditemukan.")
+        st.pyplot(fig_f1_cmp, use_container_width=True)
+        plt.close(fig_f1_cmp)
 
-    with st.expander("Lihat Data Tabel Perbandingan Sampel (CSV)"):
-        if 'df_comp' in locals():
-            st.dataframe(df_comp, use_container_width=True)
+    with col_cmp_acc:
+        st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">Perbandingan Akurasi Global & Volume Data</h3>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Akurasi testing dan skala komputasi antara kedua versi.</p>
+        </div>""", unsafe_allow_html=True)
 
-    st.markdown("""<div class="psd-card" style="font-size:0.78rem; color:#475569; margin-top:0.5rem; line-height:1.5;">
-<b>Analisis Distribusi Aktual vs Prediksi:</b>
-<ul style="margin:0.25rem 0 0 1rem; padding:0;">
-<li><b>Keseimbangan Data Aktual:</b> Setiap kelas pengujian memiliki kuota stratified yang seimbang tepat 15 poligon uji per kelas.</li>
-<li><b>Kecenderungan Model (Over-Prediction):</b> Model cenderung memprediksi kelas Sawah lebih banyak (19 poligon) dibanding aktualnya (15 poligon), menyerap perairan keruh dan transisi vegetasi.</li>
-<li><b>Stabilitas Vegetasi:</b> Prediksi kelas Hutan Non-Mangrove sangat presisi (17 diprediksi vs 15 aktual).</li>
-</ul>
-</div>""", unsafe_allow_html=True)
+        fig_acc, ax_acc = plt.subplots(figsize=(7.5, 4.6), facecolor='white')
+        versi_names = ['Versi 1 (Poligon)', 'Versi 2 (Piksel)']
+        akurasi_vals = [80.0, 91.0]
+        bars = ax_acc.bar(versi_names, akurasi_vals, color=['#EA580C', '#0284C7'], width=0.45)
+        for bar in bars:
+            y = bar.get_height()
+            ax_acc.annotate(f'{y:.1f}%', (bar.get_x() + bar.get_width() / 2., y + 1.5),
+                            ha='center', va='bottom', fontsize=11, fontweight='bold', color='#18232F')
 
-
-# --- BARIS 2: Permutation Feature Importance & Kurva Validasi Nilai k ---
-st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
-col_fi, col_k = st.columns(2)
-
-with col_fi:
-    st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
-<h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">3. Permutation Feature Importance (Data Testing)</h3>
-<p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihasilkan langsung dari <code>kepentingan_fitur.csv</code>.</p>
-</div>""", unsafe_allow_html=True)
-
-    if df_fi is not None and "Importance" in df_fi.columns and "Fitur" in df_fi.columns:
-        fig_fi, ax_fi = plt.subplots(figsize=(7.2, 5.0), facecolor='white')
-        colors = sns.color_palette('Oranges_r', len(df_fi))
-        sns.barplot(data=df_fi, x='Importance', y='Fitur', palette=colors, ax=ax_fi)
-        for p in ax_fi.patches:
-            width = p.get_width()
-            ax_fi.annotate(f'{width*100:.1f}% ({width:.4f})', (width + 0.003, p.get_y() + p.get_height() / 2.),
-                           va='center', fontsize=9, fontweight='bold', color='#7C2D12')
-
-        ax_fi.set_title('Permutation Feature Importance (Data Testing - k-NN)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
-        ax_fi.set_xlabel('Penurunan Akurasi Model saat Fitur Diacak', fontsize=9.5, fontweight='bold', color='#18232F')
-        ax_fi.set_ylabel('Fitur Spektral', fontsize=9.5, fontweight='bold', color='#18232F')
-        ax_fi.set_xlim(0, max(df_fi['Importance']) * 1.25)
-        plt.grid(axis='x', linestyle=':', alpha=0.6, color='#FED7AA')
+        ax_acc.set_title('Overall Accuracy Testing: Poligon (80.0%) vs Piksel (91.0%)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+        ax_acc.set_ylabel('Akurasi (%)', fontsize=9.5, fontweight='bold', color='#18232F')
+        ax_acc.set_ylim(0, 110)
+        plt.grid(axis='y', linestyle=':', alpha=0.6, color='#CBD5E1')
         plt.tight_layout()
-        st.pyplot(fig_fi, use_container_width=True)
-        plt.close(fig_fi)
-    else:
-        st.warning("Data `kepentingan_fitur.csv` belum ditemukan.")
+        st.pyplot(fig_acc, use_container_width=True)
+        plt.close(fig_acc)
 
-    with st.expander("Lihat Data Tabel Feature Importance (CSV)"):
-        if df_fi is not None:
-            st.dataframe(df_fi, use_container_width=True)
-
-    st.markdown("""<div class="psd-card" style="font-size:0.78rem; color:#475569; margin-top:0.5rem; line-height:1.5;">
-<b>Penjelasan Kontribusi Fitur:</b>
-<ul style="margin:0.25rem 0 0 1rem; padding:0;">
-<li><b>NDBI (18.5%):</b> Fitur paling dominan; hilangnya NDBI menurunkan akurasi terbesar karena krusial memisahkan kawasan terbangun (pemukiman) dari alam terbuka.</li>
-<li><b>Band SWIR B11 (15.4%):</b> Sangat sensitif terhadap kelembaban air tanah, mencegah ketertukaran lahan basah vs kering.</li>
-<li><b>MNDWI (11.0%):</b> Indeks air termodifikasi yang memisahkan badan air dan ekosistem mangrove pesisir.</li>
-</ul>
-</div>""", unsafe_allow_html=True)
-
-with col_k:
-    st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
-<h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">4. Kurva Validasi Nilai k (Hyperparameter Tuning)</h3>
-<p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihasilkan langsung dari <code>kurva_validasi_k.csv</code>.</p>
-</div>""", unsafe_allow_html=True)
-
-    if df_k is not None and "k" in df_k.columns and "Akurasi_Testing" in df_k.columns:
-        fig_k, ax_k = plt.subplots(figsize=(7.2, 4.6), facecolor='white')
-        ax_k.plot(df_k['k'], df_k['Akurasi_Testing'], marker='o', markersize=6.5, color='#EA580C',
-                  linestyle='-', linewidth=2.3, label='Akurasi Testing (%)')
-        ax_k.axvline(x=5, color='#B45309', linestyle='--', linewidth=1.5, label='k=5 Terpilih (80.0%)')
-
-        ax_k.set_title('Kurva Validasi Pemilihan Nilai Hyperparameter k (k-NN)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
-        ax_k.set_xlabel('Jumlah Tetangga Terdekat (k)', fontsize=9.5, fontweight='bold', color='#18232F')
-        ax_k.set_ylabel('Akurasi Data Testing (%)', fontsize=9.5, fontweight='bold', color='#18232F')
-        ax_k.set_xticks(df_k['k'])
-        ax_k.set_ylim(min(df_k['Akurasi_Testing']) - 5, max(df_k['Akurasi_Testing']) + 5)
-
-        for _, row in df_k.iterrows():
-            ax_k.annotate(f"{row['Akurasi_Testing']:.1f}%", (row['k'], row['Akurasi_Testing'] + 0.8),
-                          ha='center', fontsize=8, fontweight='bold', color='#7C2D12')
-
-        plt.legend(frameon=True, facecolor='#FFF7ED', edgecolor='#FED7AA')
-        plt.grid(True, linestyle=':', alpha=0.6, color='#FED7AA')
-        plt.tight_layout()
-        st.pyplot(fig_k, use_container_width=True)
-        plt.close(fig_k)
-    else:
-        st.warning("Data `kurva_validasi_k.csv` belum ditemukan.")
-
-    with st.expander("Lihat Data Tabel Kurva Validasi Nilai k (CSV)"):
-        if df_k is not None:
-            st.dataframe(df_k, use_container_width=True)
-
-    st.markdown("""<div class="psd-card" style="font-size:0.8rem; color:#334155; margin-top:0.5rem; line-height:1.55;">
-<b style="color:#C2410C; font-size:0.85rem;">Justifikasi Ilmiah Pemilihan Nilai k = 5:</b>
-<ul style="margin:0.35rem 0 0 1rem; padding:0;">
-<li><b>Meredam Overfitting & Noise Spektral (Mengapa Bukan k=1 di 85.33%?):</b> Pada k=1, model hanya melihat 1 tetangga terdekat sehingga sangat rentan terhadap piksel campuran (<i>mixed pixels</i>) dan variasi spektral mikro Sentinel-2 (<i>High Variance</i>). Angka 85.33% adalah artefak sampling; jika digeneralisasi ke jutaan piksel Jawa Timur, batas kelas akan bergerigi tajam (*salt-and-pepper noise*).</li>
-<li><b>Aturan Paritas Ilmiah (Mengapa Bukan Nilai Genap k=2 atau k=4?):</b> Dalam klasifikasi multi-kelas, nilai k genap dihindari karena berisiko memicu suara imbang (<i>tie vote</i>, misal 1 Air vs 1 Sawah), memaksa scikit-learn memilih kelas secara arbitrer/acak.</li>
-<li><b>Dataran Stabilitas & Occam's Razor (k=5 s/d k=8 Konsisten di 80.00%):</b> Model memasuki zona stabilitas (<i>plateau of stability</i>) di angka 80.00% mulai k=5 hingga k=8. Berdasarkan prinsip <i>Occam's Razor</i> dan <i>Bias-Variance Trade-off</i>, titik optimal adalah nilai ganjil terkecil pertama (k=5). Lonjakan di k=9 (81.33%) hanyalah fluktuasi lokal selisih 1 poligon (61 vs 60) sebelum anjlok ke 77.33% di k=13 (<i>underfitting</i>).</li>
-<li><b>Harmonisasi 5 Kelas Tutupan Lahan:</b> Nilai k=5 selaras dengan 5 kelas target (Air, Mangrove, Non-Mangrove, Pemukiman, Sawah) sehingga kelas sempit seperti Mangrove pesisir tidak kalah voting oleh kelas mayoritas luas (<i>neighborhood dilution</i>).</li>
-</ul>
-</div>""", unsafe_allow_html=True)
-
-
-# --- BARIS 3: Visualisasi Metrik Klasifikasi per Kelas (Classification Report) ---
-st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
-
-col_rep_chart, col_rep_desc = st.columns([1.1, 0.9])
-
-with col_rep_chart:
-    st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
-<h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">5. Metrik Evaluasi Klasifikasi per Kelas (Precision, Recall, F1-Score)</h3>
-<p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihasilkan dinamis dari file <code>metrik_evaluasi_knn.csv</code>.</p>
-</div>""", unsafe_allow_html=True)
-
-    if df_met is not None and "Kategori" in df_met.columns:
-        kelas_target = ["Air", "Hutan Mangrove", "Hutan Non-Mangrove", "Pemukiman", "Sawah"]
-        df_filtered = df_met[df_met["Kategori"].isin(kelas_target)].copy()
-
-        df_melt = df_filtered.melt(
-            id_vars="Kategori",
-            value_vars=["Precision", "Recall", "F1_Score"],
-            var_name="Metrik",
-            value_name="Skor"
-        )
-        df_melt["Metrik"] = df_melt["Metrik"].replace({"F1_Score": "F1-Score"})
-
-        fig_rep, ax_rep = plt.subplots(figsize=(7.8, 5.0), facecolor='white')
-        sns.barplot(
-            data=df_melt,
-            x="Kategori",
-            y="Skor",
-            hue="Metrik",
-            palette=['#0284C7', '#EA580C', '#10B981'],
-            ax=ax_rep
-        )
-
-        for p in ax_rep.patches:
-            h = p.get_height()
-            if h > 0:
-                ax_rep.annotate(f"{h:.2f}", (p.get_x() + p.get_width() / 2., h + 0.02),
-                                ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#1E293B')
-
-        ax_rep.set_title("Perbandingan Skor Precision, Recall, & F1-Score per Kelas", fontsize=11, fontweight='bold', pad=10, color='#18232F')
-        ax_rep.set_xlabel("Kelas Tutupan Lahan", fontsize=9.5, fontweight='bold', color='#18232F')
-        ax_rep.set_ylabel("Skor Metrik (0.00 - 1.00)", fontsize=9.5, fontweight='bold', color='#18232F')
-        ax_rep.set_ylim(0, 1.15)
-        plt.xticks(rotation=15, ha='right', fontsize=9)
-        plt.legend(frameon=True, facecolor='#F8FAFC', edgecolor='#CBD5E1', loc='upper right')
-        plt.grid(axis='y', linestyle=':', alpha=0.6, color='#E2E8F0')
-        plt.tight_layout()
-        st.pyplot(fig_rep, use_container_width=True)
-        plt.close(fig_rep)
-    else:
-        st.warning("Data `metrik_evaluasi_knn.csv` belum ditemukan.")
-
-with col_rep_desc:
-    st.markdown("""<div class="psd-card" style="font-size:0.8rem; color:#334155; line-height:1.55; height:100%;">
-<b style="color:#C2410C; font-size:0.85rem;">Analisis Fisis Penginderaan Jauh: Mengapa Nilainya Seperti Itu?</b>
-<div style="margin-top:0.4rem;">
-<p style="margin:0 0 0.5rem 0;">
-<b>🟢 Hutan Mangrove (Precision 100%, Recall 93%, F1 97%):</b><br>
-<span style="color:#475569;">Precision 100% (sempurna) karena profil gabungan NDVI tinggi & MNDWI basah estuari sangat khas di pesisir Jawa Timur, sehingga tidak ada kelas daratan lain yang tertukar menjadi mangrove (<i>zero false positives</i>).</span>
-</p>
-<p style="margin:0 0 0.5rem 0;">
-<b>🌲 Hutan Non-Mangrove (Precision 88%, Recall 100%, F1 94%):</b><br>
-<span style="color:#475569;">Recall 100% (sempurna) karena kanopi tebal cagar alam & pegunungan memantulkan NIR (B08) sangat stabil tanpa terlewat satu pun. Sedikit penurunan precision (88%) karena sawah lebat menjelang panen menyerupai vegetasi semak/hutan.</span>
-</p>
-<p style="margin:0 0 0.5rem 0;">
-<b>🔴 Pemukiman (Precision 93%, Recall 93%, F1 93%):</b><br>
-<span style="color:#475569;">Kinerja harmonis sangat tinggi karena nilai NDBI positif & SWIR-1 (B11) membedakan material genteng/aspal/beton secara tajam dari tutupan alam.</span>
-</p>
-<p style="margin:0 0 0.5rem 0;">
-<b>🔵 Air (Precision 70%, Recall 47%, F1 56%):</b><br>
-<span style="color:#475569;">Recall terendah (47%) karena 7 sampel air keliru tertebak Sawah. Hal ini disebabkan perairan tambak & muara dangkal sarat sedimen lumpur/alga mikro (TSS tinggi) yang spektralnya tumpang tindih (<i>spectral overlapping</i>) dengan sawah basah tergenang irigasi.</span>
-</p>
-<p style="margin:0;">
-<b>🟡 Sawah (Precision 53%, Recall 67%, F1 59%):</b><br>
-<span style="color:#475569;">Precision rendah (53%) akibat fenomena <i>over-prediction</i> (19 prediksi vs 15 aktual). Siklus fenologi sawah yang dinamis (lumpur berair &rarr; padi hijau &rarr; bera kering) membuat klusternya menempati ruang transisi di tengah fitur k-NN, menarik poligon perbatasan dari kelas lain.</span>
-</p>
-</div>
-</div>""", unsafe_allow_html=True)
-
-
-# ==============================================================================
-# 10. TABEL EKSPLORASI DATA UJI & EKSPOR CSV
-# ==============================================================================
-st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
-
-st.markdown(f"""<div class="psd-card" style="margin-bottom:1rem;">
-<div class="psd-card-header" style="margin-bottom:0.5rem;">
-<h2 class="psd-card-title">
-{fa_icon("fa-solid fa-table-list", size_rem=1.1, color="#EA580C")}
-<span>Eksplorasi Data Prediksi Poligon Uji (Tabel Dinamis)</span>
-</h2>
-<span class="psd-badge-orange">Format Tabular Interaktif</span>
-</div>
-</div>""", unsafe_allow_html=True)
-
-if df_pred is not None:
-    c1, c2 = st.columns([1, 1])
-    with c1:
-        pilihan_kelas = st.multiselect(
-            "Filter Kelas Asli (Ground Truth):",
-            options=sorted(df_pred["kelas_asli"].unique()),
-            default=sorted(df_pred["kelas_asli"].unique())
-        )
-    with c2:
-        status_filter = st.radio(
-            "Filter Status Hasil Prediksi:",
-            options=["Semua Data (75)", "Prediksi Benar (60)", "Salah Klasifikasi (15)"],
-            horizontal=True
-        )
-
-    df_tampil = df_pred[df_pred["kelas_asli"].isin(pilihan_kelas)].copy()
-    if "Benar" in status_filter:
-        df_tampil = df_tampil[df_tampil["benar"] == True]
-    elif "Salah" in status_filter:
-        df_tampil = df_tampil[df_tampil["benar"] == False]
-
-    st.markdown(
-        f"<p style='font-size:0.8rem; color:#475569; margin:0.5rem 0 0.75rem 0;'>"
-        f"Menampilkan <b style='color:#18232F;'>{len(df_tampil)}</b> dari total <b style='color:#18232F;'>{len(df_pred)}</b> poligon uji:"
-        f"</p>",
-        unsafe_allow_html=True
-    )
-    st.dataframe(df_tampil, use_container_width=True, height=360)
-
-    csv_bytes = df_tampil.to_csv(index=False).encode("utf-8")
-    st.download_button(
-        label="Unduh Data Hasil Prediksi (CSV)",
-        data=csv_bytes,
-        file_name="prediksi_data_uji_knn.csv",
-        mime="text/csv"
-    )
-else:
-    st.warning("File `prediksi_data_uji.csv` tidak ditemukan di folder data.")
+    st.markdown(f"""<div class="psd-card" style="margin-top:1rem; padding:1rem; font-size:0.83rem; color:#334155; line-height:1.6; border-left:4px solid #EA580C;">
+    <b style="color:#C2410C; font-size:0.9rem;">Kesimpulan & Sintesis Ilmiah Komprehensif:</b>
+    <ul style="margin:0.35rem 0 0 1rem; padding:0;">
+    <li><b>Trade-Off Komputasi vs Resolusi:</b> Versi Poligon sangat ringan dan cepat dijalankan, cocok untuk validasi cepat berbasis poligon centroid. Versi Piksel membutuhkan pemrosesan raster intensif tetapi mampu mendeteksi gradasi piksel kontinu se-Jawa Timur.</li>
+    <li><b>Peningkatan Akurasi Badan Air:</b> Pada versi piksel, F1-Score kelas Air melonjak tajam dari 56% ke 91% karena perairan laut Jawa Timur memiliki volume jutaan piksel homogen yang sangat konsisten di indeks MNDWI & NDWI.</li>
+    <li><b>Keunggulan Peta Folium:</b> Pustaka <b>Folium</b> memungkinkan interaktivitas penuh dengan visualisasi layer overlay, kontrol basemap, dan popup informatif yang dapat diakses langsung melalui dashboard Streamlit.</li>
+    </ul>
+    </div>""", unsafe_allow_html=True)
 
 
 # ==============================================================================
