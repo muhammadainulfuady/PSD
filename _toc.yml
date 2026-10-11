@@ -15,4 +15,5 @@ chapters:
       - file: uts/business-understanding-uts
       - file: uts/data-understanding-uts
       - file: uts/code/landuseCover
+      - file: uts/code/crawlingPixel
       - file: uts/deployment-guide
