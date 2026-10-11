@@ -526,7 +526,7 @@ st.markdown(f"""
 </header>
 """, unsafe_allow_html=True)
 
-col_m1, col_m2, col_m3, col_m4 = st.columns(4)
+col_m1, col_m2, col_m3 = st.columns(3)
 
 with col_m1:
     st.markdown(f"""<div class="metric-box">
@@ -544,30 +544,17 @@ with col_m1:
 with col_m2:
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
-<span class="metric-label">Akurasi Data Training</span>
-<span style="background:#FFF7ED; border-radius:50%; padding:0.35rem; display:inline-flex;">{heroicon(D_SCALE, size=18, color="#EA580C")}</span>
-</div>
-<div class="metric-val-row">
-<span class="metric-num">{akurasi_train:.1f}%</span>
-<span class="psd-badge-orange">Good Fit</span>
-</div>
-<div class="metric-sub">Evaluasi 70% Training Set (175 Poligon)</div>
-</div>""", unsafe_allow_html=True)
-
-with col_m3:
-    st.markdown(f"""<div class="metric-box">
-<div class="metric-box-top">
 <span class="metric-label">Total Sampel Poligon</span>
 <span style="background:#FFF7ED; border-radius:50%; padding:0.35rem; display:inline-flex;">{heroicon(D_LAYERS, size=18, color="#EA580C")}</span>
 </div>
 <div class="metric-val-row">
 <span class="metric-num">{total_poligon}</span>
-<span class="psd-badge-slate">5 Kategori</span>
+<span class="psd-badge-slate">5 Kategori Seimbang</span>
 </div>
-<div class="metric-sub">Agregasi Centroid Rata-rata Poligon</div>
+<div class="metric-sub">50 Poligon per Kelas Tutupan Lahan Jawa Timur</div>
 </div>""", unsafe_allow_html=True)
 
-with col_m4:
+with col_m3:
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
 <span class="metric-label">Salah Klasifikasi</span>
@@ -584,84 +571,113 @@ st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
 
 
 # ==============================================================================
-# 8. VISUALISASI PETA INTERAKTIF
+# 8. VISUALISASI PETA INTERAKTIF (PETA DIGITASI & PETA EVALUASI)
 # ==============================================================================
-file_peta1 = (
+file_peta_digitasi = (
+    cari_file("map_lulc.html")
+    or cari_file("../code/map_lulc.html")
+)
+konten_peta_digitasi = muat_konten_html(str(file_peta_digitasi)) if file_peta_digitasi else None
+
+file_peta_evaluasi = (
     cari_file("map_lulc_predicted.html")
     or cari_file("../code/map_lulc_predicted.html")
-    or cari_file("map_lulc.html")
 )
-konten_peta1 = muat_konten_html(str(file_peta1)) if file_peta1 else None
+konten_peta_evaluasi = muat_konten_html(str(file_peta_evaluasi)) if file_peta_evaluasi else None
 
 
-def render_peta_1():
-    """Merender Peta Evaluasi Spasial Data Testing & Training Poligon"""
-    st.markdown(f"""<div class="psd-card" style="margin-bottom:0.75rem;">
+def patch_leaflet_html(html_content: str) -> str:
+    """Memastikan CSS patch Leaflet terpasang agar tidak bertabrakan dengan tombol header."""
+    css_patch = """
+    <style>
+    .leaflet-top.leaflet-right {
+        top: 72px !important;
+        right: 20px !important;
+        z-index: 1000 !important;
+    }
+    .leaflet-control-layers {
+        border: 2px solid #EA580C !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22) !important;
+        background: #ffffff !important;
+        padding: 8px 12px !important;
+    }
+    .leaflet-control-layers-base label,
+    .leaflet-control-layers-overlays label {
+        cursor: pointer !important;
+        padding: 3px 0 !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        color: #1E293B !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+    .leaflet-control-layers-base input,
+    .leaflet-control-layers-overlays input {
+        cursor: pointer !important;
+        margin-right: 8px !important;
+        transform: scale(1.2) !important;
+    }
+    </style>
+    """
+    if "LEAFLET CONTROL FIX FOR STREAMLIT CLOUD" not in html_content:
+        if "</head>" in html_content:
+            return html_content.replace("</head>", f"{css_patch}</head>")
+        return f"{css_patch}{html_content}"
+    return html_content
+
+
+st.markdown(f"""<div class="psd-card" style="margin-bottom:0.75rem;">
 <div class="psd-card-header">
 <h2 class="psd-card-title">
 {heroicon(D_MAP, size=20, color="#EA580C")}
-<span>Peta Spasial Evaluasi Data Testing & Training Poligon Jawa Timur</span>
+<span>Visualisasi Geospasial Tutupan Lahan (LULC) Jawa Timur</span>
 </h2>
-<span class="psd-badge-orange">Interactive Folium Map</span>
-</div>
-<div class="legend-box">
-<b>Panduan Visualisasi Spasial:</b>
-<div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem; font-size:0.78rem;">
-    <span><b style="color:#0284c7;">🔷 Marker TRAIN:</b> 175 Sampel Latih (70%)</span>
-    <span><b style="color:#16a34a;">💊 Marker TEST ✓:</b> 60 Sampel Uji Benar / Match (80.0%)</span>
-    <span><b style="color:#ea580c;">⚠️ Marker SALAH:</b> 15 Sampel Uji Mismatch / Error (20.0%)</span>
-    <span><b style="color:#c026d3;">🟪 Garis Ungu Putus:</b> Poligon Testing (30%)</span>
-</div>
+<span class="psd-badge-orange">Interactive Folium Maps</span>
 </div>
 </div>""", unsafe_allow_html=True)
 
-    if konten_peta1:
-        css_patch = """
-        <style>
-        /* LEAFLET CONTROL FIX FOR STREAMLIT CLOUD */
-        .leaflet-top.leaflet-right {
-            top: 72px !important;
-            right: 20px !important;
-            z-index: 1000 !important;
-        }
-        .leaflet-control-layers {
-            border: 2px solid #EA580C !important;
-            border-radius: 10px !important;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22) !important;
-            background: #ffffff !important;
-            padding: 8px 12px !important;
-        }
-        .leaflet-control-layers-base label,
-        .leaflet-control-layers-overlays label {
-            cursor: pointer !important;
-            padding: 3px 0 !important;
-            font-size: 13px !important;
-            font-weight: 500 !important;
-            color: #1E293B !important;
-            display: flex !important;
-            align-items: center !important;
-        }
-        .leaflet-control-layers-base input,
-        .leaflet-control-layers-overlays input {
-            cursor: pointer !important;
-            margin-right: 8px !important;
-            transform: scale(1.2) !important;
-        }
-        </style>
-        """
-        html_mod = konten_peta1
-        if "LEAFLET CONTROL FIX FOR STREAMLIT CLOUD" not in html_mod:
-            if "</head>" in html_mod:
-                html_mod = html_mod.replace("</head>", f"{css_patch}</head>")
-            else:
-                html_mod = f"{css_patch}{html_mod}"
+tab_digitasi, tab_evaluasi = st.tabs([
+    "🗺️ Peta Poligon Sampel Hasil Digitasi (5 Kelas LULC)",
+    "🎯 Peta Evaluasi Prediksi Model k-NN (Train vs Test)"
+])
 
-        components.html(html_mod, height=720, scrolling=False)
+with tab_digitasi:
+    st.markdown("""<div class="legend-box" style="margin-bottom:0.75rem;">
+    <b>Panduan Peta Poligon Hasil Digitasi:</b>
+    <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem; font-size:0.78rem;">
+        <span><b style="color:#1f77b4;">🔵 Air:</b> 50 Poligon Sampel</span>
+        <span><b style="color:#2ca02c;">🟢 Hutan Mangrove:</b> 50 Poligon Sampel</span>
+        <span><b style="color:#006400;">🌲 Hutan Non-Mangrove:</b> 50 Poligon Sampel</span>
+        <span><b style="color:#d62728;">🔴 Pemukiman:</b> 50 Poligon Sampel</span>
+        <span><b style="color:#bcbd22;">🟡 Sawah:</b> 50 Poligon Sampel</span>
+    </div>
+    <div style="font-size:0.75rem; color:#64748B; margin-top:0.35rem;">
+        💡 <i>Peta ini menampilkan 250 poligon hasil digitasi asli dari file <code>jawatimur_5kelas.geojson</code>. Gunakan panel layer kanan atas untuk memilih basemap satelit/hybrid dan mengaktifkan/mematikan poligon per kelas.</i>
+    </div>
+    </div>""", unsafe_allow_html=True)
+    if konten_peta_digitasi:
+        components.html(patch_leaflet_html(konten_peta_digitasi), height=720, scrolling=False)
     else:
-        st.error("File peta HTML tidak ditemukan (`map_lulc_predicted.html`).")
+        st.error("File peta digitasi `map_lulc.html` tidak ditemukan.")
 
-
-render_peta_1()
+with tab_evaluasi:
+    st.markdown("""<div class="legend-box" style="margin-bottom:0.75rem;">
+    <b>Panduan Evaluasi Prediksi Spasial:</b>
+    <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem; font-size:0.78rem;">
+        <span><b style="color:#0284c7;">🔷 Marker TRAIN:</b> 175 Sampel Latih (70%)</span>
+        <span><b style="color:#16a34a;">💊 Marker TEST ✓:</b> 60 Sampel Uji Benar / Match (80.0%)</span>
+        <span><b style="color:#ea580c;">⚠️ Marker SALAH:</b> 15 Sampel Uji Mismatch / Error (20.0%)</span>
+        <span><b style="color:#c026d3;">🟪 Garis Ungu Putus:</b> Poligon Testing (30%)</span>
+    </div>
+    <div style="font-size:0.75rem; color:#64748B; margin-top:0.35rem;">
+        💡 <i>Peta ini mengevaluasi performa model k-NN pada 75 poligon testing set, menandai secara visual prediksi yang cocok (hijau) vs salah klasifikasi (oranye).</i>
+    </div>
+    </div>""", unsafe_allow_html=True)
+    if konten_peta_evaluasi:
+        components.html(patch_leaflet_html(konten_peta_evaluasi), height=720, scrolling=False)
+    else:
+        st.error("File peta evaluasi `map_lulc_predicted.html` tidak ditemukan.")
 
 
 # ==============================================================================
