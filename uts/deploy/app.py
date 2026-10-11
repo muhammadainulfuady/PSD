@@ -869,12 +869,13 @@ with col_k:
         if df_k is not None:
             st.dataframe(df_k, use_container_width=True)
 
-    st.markdown("""<div class="psd-card" style="font-size:0.78rem; color:#475569; margin-top:0.5rem; line-height:1.5;">
-<b>Penjelasan Pemilihan Nilai k:</b>
-<ul style="margin:0.25rem 0 0 1rem; padding:0;">
-<li><b>Optimal pada k=5:</b> Nilai <b>k=5</b> menghasilkan akurasi puncak <b>80.00%</b>, memberikan keseimbangan voting spasial yang stabil.</li>
-<li><b>Mencegah Overfitting:</b> Nilai k yang terlalu kecil (k=1 hingga k=3) rentan terhadap noise piksel terisolasi di batas poligon.</li>
-<li><b>Mencegah Underfitting:</b> Nilai k yang terlalu besar (k>7) mengaburkan batas spasial kelas minoritas karena dominasi tetangga mayoritas.</li>
+    st.markdown("""<div class="psd-card" style="font-size:0.8rem; color:#334155; margin-top:0.5rem; line-height:1.55;">
+<b style="color:#C2410C; font-size:0.85rem;">Justifikasi Ilmiah Pemilihan Nilai k = 5:</b>
+<ul style="margin:0.35rem 0 0 1rem; padding:0;">
+<li><b>Meredam Overfitting & Noise Spektral (Mengapa Bukan k=1 di 85.33%?):</b> Pada k=1, model hanya melihat 1 tetangga terdekat sehingga sangat rentan terhadap piksel campuran (<i>mixed pixels</i>) dan variasi spektral mikro Sentinel-2 (<i>High Variance</i>). Angka 85.33% adalah artefak sampling; jika digeneralisasi ke jutaan piksel Jawa Timur, batas kelas akan bergerigi tajam (*salt-and-pepper noise*).</li>
+<li><b>Aturan Paritas Ilmiah (Mengapa Bukan Nilai Genap k=2 atau k=4?):</b> Dalam klasifikasi multi-kelas, nilai k genap dihindari karena berisiko memicu suara imbang (<i>tie vote</i>, misal 1 Air vs 1 Sawah), memaksa scikit-learn memilih kelas secara arbitrer/acak.</li>
+<li><b>Dataran Stabilitas & Occam's Razor (k=5 s/d k=8 Konsisten di 80.00%):</b> Model memasuki zona stabilitas (<i>plateau of stability</i>) di angka 80.00% mulai k=5 hingga k=8. Berdasarkan prinsip <i>Occam's Razor</i> dan <i>Bias-Variance Trade-off</i>, titik optimal adalah nilai ganjil terkecil pertama (k=5). Lonjakan di k=9 (81.33%) hanyalah fluktuasi lokal selisih 1 poligon (61 vs 60) sebelum anjlok ke 77.33% di k=13 (<i>underfitting</i>).</li>
+<li><b>Harmonisasi 5 Kelas Tutupan Lahan:</b> Nilai k=5 selaras dengan 5 kelas target (Air, Mangrove, Non-Mangrove, Pemukiman, Sawah) sehingga kelas sempit seperti Mangrove pesisir tidak kalah voting oleh kelas mayoritas luas (<i>neighborhood dilution</i>).</li>
 </ul>
 </div>""", unsafe_allow_html=True)
 
