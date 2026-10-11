@@ -73,6 +73,12 @@ st.markdown("""
 
     [data-testid="stHeader"] {
         background-color: transparent !important;
+        pointer-events: none !important;
+    }
+
+    [data-testid="stHeader"] button,
+    [data-testid="stHeader"] a {
+        pointer-events: auto !important;
     }
 
     [data-testid="stSidebar"] {
@@ -545,7 +551,47 @@ def render_peta_1():
 </div>""", unsafe_allow_html=True)
 
     if konten_peta1:
-        components.html(konten_peta1, height=680, scrolling=True)
+        css_patch = """
+        <style>
+        /* LEAFLET CONTROL FIX FOR STREAMLIT CLOUD */
+        .leaflet-top.leaflet-right {
+            top: 72px !important;
+            right: 20px !important;
+            z-index: 1000 !important;
+        }
+        .leaflet-control-layers {
+            border: 2px solid #EA580C !important;
+            border-radius: 10px !important;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22) !important;
+            background: #ffffff !important;
+            padding: 8px 12px !important;
+        }
+        .leaflet-control-layers-base label,
+        .leaflet-control-layers-overlays label {
+            cursor: pointer !important;
+            padding: 3px 0 !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            color: #1E293B !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+        .leaflet-control-layers-base input,
+        .leaflet-control-layers-overlays input {
+            cursor: pointer !important;
+            margin-right: 8px !important;
+            transform: scale(1.2) !important;
+        }
+        </style>
+        """
+        html_mod = konten_peta1
+        if "LEAFLET CONTROL FIX FOR STREAMLIT CLOUD" not in html_mod:
+            if "</head>" in html_mod:
+                html_mod = html_mod.replace("</head>", f"{css_patch}</head>")
+            else:
+                html_mod = f"{css_patch}{html_mod}"
+
+        components.html(html_mod, height=720, scrolling=False)
     else:
         st.error("File peta HTML tidak ditemukan (`map_lulc_predicted.html`).")
 
