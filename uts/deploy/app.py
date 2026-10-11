@@ -565,6 +565,16 @@ file_peta_evaluasi = (
 )
 konten_peta_evaluasi = muat_konten_html(str(file_peta_evaluasi)) if file_peta_evaluasi else None
 
+file_peta_raster = (
+    cari_file("peta_crawling_lulc_jatim.html")
+    or cari_file("../data/peta_crawling_lulc_jatim.html")
+    or cari_file("data/peta_crawling_lulc_jatim.html")
+)
+konten_peta_raster = muat_konten_html(str(file_peta_raster)) if file_peta_raster else None
+
+p_raster_csv = cari_file("rekapitulasi_lulc_jatim_raster.csv")
+df_raster_rekap = muat_data_csv(str(p_raster_csv)) if p_raster_csv else None
+
 
 def patch_leaflet_html(html_content: str) -> str:
     """Memastikan CSS patch Leaflet terpasang agar tidak bertabrakan dengan tombol header."""
@@ -613,14 +623,38 @@ st.markdown(f"""<div class="psd-card" style="margin-bottom:0.75rem;">
 {fa_icon("fa-solid fa-map-location-dot", size_rem=1.1, color="#EA580C")}
 <span>Visualisasi Geospasial Tutupan Lahan (LULC) Jawa Timur</span>
 </h2>
-<span class="psd-badge-orange">Interactive Folium Maps</span>
+<span class="psd-badge-orange">Interactive Folium Maps & Raster Satellite</span>
 </div>
 </div>""", unsafe_allow_html=True)
 
-tab_digitasi, tab_evaluasi = st.tabs([
-    "🗺️ Peta Poligon Sampel Hasil Digitasi (5 Kelas LULC)",
+tab_raster, tab_digitasi, tab_evaluasi = st.tabs([
+    "🛰️ Peta Klasifikasi Citra Sentinel-2 Full Jawa Timur (Raster WebGIS 10,2 Juta Piksel)",
+    "🗺️ Peta Poligon Sampel Hasil Digitasi (250 Poligon Acuan)",
     "🎯 Peta Evaluasi Prediksi Model k-NN (Train vs Test)"
 ])
+
+with tab_raster:
+    st.markdown("""<div class="legend-box" style="margin-bottom:0.75rem;">
+    <b>Peta Hasil Inferensi Klasifikasi Tutupan Lahan Se-Jawa Timur (Sentinel-2 Full Scene):</b>
+    <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem; font-size:0.78rem;">
+        <span><b style="color:#1f77b4;">🔵 Air:</b> 45.79% (4.673.525 px)</span>
+        <span><b style="color:#006400;">🌲 Hutan Non-Mangrove:</b> 34.19% (3.490.143 px)</span>
+        <span><b style="color:#d62728;">🔴 Pemukiman:</b> 15.28% (1.559.565 px)</span>
+        <span><b style="color:#bcbd22;">🟡 Sawah:</b> 3.04% (310.602 px)</span>
+        <span><b style="color:#2ca02c;">🟢 Hutan Mangrove:</b> 1.70% (173.125 px)</span>
+    </div>
+    <div style="font-size:0.75rem; color:#64748B; margin-top:0.35rem;">
+        💡 <i>Peta ini menampilkan hasil inferensi klasifikasi <b>10.206.960 piksel valid se-Jawa Timur</b> menggunakan model k-NN piksel terlatih dengan penyeimbangan sampel (Stratified Class Balancing). Gunakan panel layer kanan atas untuk toggle masing-masing kelas LULC atau membandingkannya dengan poligon acuan ground truth.</i>
+    </div>
+    </div>""", unsafe_allow_html=True)
+    if konten_peta_raster:
+        components.html(patch_leaflet_html(konten_peta_raster), height=740, scrolling=False)
+    else:
+        st.error("File peta raster `peta_crawling_lulc_jatim.html` tidak ditemukan.")
+
+    if df_raster_rekap is not None:
+        with st.expander("📊 Lihat Tabel Rekapitulasi Luas Tutupan Lahan Full Jawa Timur (Data Raster)"):
+            st.dataframe(df_raster_rekap, use_container_width=True)
 
 with tab_digitasi:
     st.markdown("""<div class="legend-box" style="margin-bottom:0.75rem;">
