@@ -186,6 +186,7 @@
 <li class="toctree-l2"><a class="reference internal" href="business-understanding-uts.html">Business Understanding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="data-understanding-uts.html">Data Understanding</a></li>
 <li class="toctree-l2"><a class="reference internal" href="code/landuseCover.html">Proyek Analisis dan Klasifikasi Tutupan Lahan (LULC) Satelit Sentinel-2 Jawa Timur</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deployment-guide.html">Panduan Deployment Aplikasi Streamlit: Klasifikasi LULC Jawa Timur</a></li>
 </ul>
 </details></li>
 </ul>
@@ -350,6 +351,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tahapan-pengerjaan-proyek-crisp-dm-workflow">4. Tahapan Pengerjaan Proyek (CRISP-DM Workflow)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rencana-fitur-aplikasi-deployment-streamlit">5. Rencana &amp; Fitur Aplikasi Deployment Streamlit</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#peta-jalan-pengerjaan-bertahap-roadmap">6. Peta Jalan Pengerjaan Bertahap (Roadmap)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tautan-aplikasi-terverifikasi-live-deployment">7. Tautan Aplikasi Terverifikasi (Live Deployment)</a></li>
 </ul>
             </nav>
         </div>
@@ -470,20 +472,37 @@ document.write(`
 <td class="text-center"><p>Selesai</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong>Tahap 3</strong></p></td>
-<td class="text-left"><p>Membuat &amp; Eksekusi Notebook Klasifikasi 5 Kelas (<code class="docutils literal notranslate"><span class="pre">uts/code-klasifikasiLulcJatim.ipynb</span></code>)</p></td>
+<td class="text-left"><p>Eksplorasi Data Analitik &amp; Pemodelan k-NN Scaled (<code class="docutils literal notranslate"><span class="pre">uts/code/landuseCover.ipynb</span></code>)</p></td>
 <td class="text-center"><p>Selesai</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><strong>Tahap 4</strong></p></td>
-<td class="text-left"><p>Ekstraksi Band, Indeks Spektral (NDVI/NDWI/MNDWI/NDBI/NDMI) &amp; Evaluasi SVM</p></td>
+<td class="text-left"><p>Ekstraksi Indeks Spektral (NDVI, NDWI, NDBI, MNDWI, NDMI) &amp; Evaluasi Metrik</p></td>
 <td class="text-center"><p>Selesai</p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><strong>Tahap 5</strong></p></td>
-<td class="text-left"><p>Pembuatan Aplikasi Streamlit Interaktif (<code class="docutils literal notranslate"><span class="pre">uts/app.py</span></code>) dengan Toggle Layer</p></td>
+<td class="text-left"><p>Ekspor Single Source of Truth (6 CSV) ke <code class="docutils literal notranslate"><span class="pre">uts/deploy/</span></code></p></td>
+<td class="text-center"><p>Selesai</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong>Tahap 6</strong></p></td>
+<td class="text-left"><p>Pembuatan Aplikasi Streamlit Interaktif (<code class="docutils literal notranslate"><span class="pre">uts/deploy/app.py</span></code>) &amp; Folium Overlay</p></td>
+<td class="text-center"><p>Selesai</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong>Tahap 7</strong></p></td>
+<td class="text-left"><p>Deployment Publik ke Streamlit Cloud &amp; GitHub Sync</p></td>
 <td class="text-center"><p>Selesai</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+</section>
+<hr class="docutils" />
+<section id="tautan-aplikasi-terverifikasi-live-deployment">
+<h2>7. Tautan Aplikasi Terverifikasi (Live Deployment)<a class="headerlink" href="#tautan-aplikasi-terverifikasi-live-deployment" title="Link to this heading">#</a></h2>
+<p>Aplikasi telah berhasil di-<em>deploy</em> secara publik di platform <strong>Streamlit Community Cloud</strong>:</p>
+<ul class="simple">
+<li><p>🔗 <strong>URL Aplikasi:</strong> <a class="reference external" href="https://lulc-jatim.streamlit.app/">https://lulc-jatim.streamlit.app/</a></p></li>
+<li><p>📖 <strong>Panduan Deployment:</strong> [Panduan Lengkap Deployment](file:///d:/SEMESTER%205%20TIF%202026/PSD/mynewbook/uts/deployment-guide.md)</p></li>
+</ul>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -567,6 +586,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tahapan-pengerjaan-proyek-crisp-dm-workflow">4. Tahapan Pengerjaan Proyek (CRISP-DM Workflow)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rencana-fitur-aplikasi-deployment-streamlit">5. Rencana &amp; Fitur Aplikasi Deployment Streamlit</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#peta-jalan-pengerjaan-bertahap-roadmap">6. Peta Jalan Pengerjaan Bertahap (Roadmap)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tautan-aplikasi-terverifikasi-live-deployment">7. Tautan Aplikasi Terverifikasi (Live Deployment)</a></li>
 </ul>
   </nav></div>
 

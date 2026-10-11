@@ -75,8 +75,19 @@ Aplikasi web **Streamlit** yang dibangun akan menyediakan fitur-fitur interaktif
 | :---: | :------------------ | :----: |
 | **Tahap 1** | Merapikan Spesifikasi & Dokumen `uts/tugas-uts.md` & `_toc.yml` | Selesai |
 | **Tahap 2** | Menyiapkan GeoJSON 5 Kelas (`Pertanian`, `Bangunan`, `Air`, `Hutan`, `Mangrove`) | Selesai |
-| **Tahap 3** | Membuat & Eksekusi Notebook Klasifikasi 5 Kelas (`uts/code-klasifikasiLulcJatim.ipynb`) | Selesai |
-| **Tahap 4** | Ekstraksi Band, Indeks Spektral (NDVI/NDWI/MNDWI/NDBI/NDMI) & Evaluasi SVM | Selesai |
-| **Tahap 5** | Pembuatan Aplikasi Streamlit Interaktif (`uts/app.py`) dengan Toggle Layer | Selesai |
+| **Tahap 3** | Eksplorasi Data Analitik & Pemodelan k-NN Scaled (`uts/code/landuseCover.ipynb`) | Selesai |
+| **Tahap 4** | Ekstraksi Indeks Spektral (NDVI, NDWI, NDBI, MNDWI, NDMI) & Evaluasi Metrik | Selesai |
+| **Tahap 5** | Ekspor Single Source of Truth (6 CSV) ke `uts/deploy/` | Selesai |
+| **Tahap 6** | Pembuatan Aplikasi Streamlit Interaktif (`uts/deploy/app.py`) & Folium Overlay | Selesai |
+| **Tahap 7** | Deployment Publik ke Streamlit Cloud & GitHub Sync | Selesai |
+
+---
+
+## 7. Tautan Aplikasi Terverifikasi (Live Deployment)
+
+Aplikasi telah berhasil di-*deploy* secara publik di platform **Streamlit Community Cloud**:
+- 🔗 **URL Aplikasi:** [https://lulc-jatim.streamlit.app/](https://lulc-jatim.streamlit.app/)
+- 📖 **Panduan Deployment:** [Panduan Lengkap Deployment](file:///d:/SEMESTER%205%20TIF%202026/PSD/mynewbook/uts/deployment-guide.md)
+
 
 
