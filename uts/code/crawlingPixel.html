@@ -352,7 +352,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-7-ekspor-model-terlatih-k-nn-piksel">Step 7: Ekspor Model Terlatih k-NN Piksel</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-8-inspeksi-citra-satelit-sentinel-2-full-jawa-timur">Step 8: Inspeksi Citra Satelit Sentinel-2 Full Jawa Timur</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-9-inferensi-klasifikasi-tutupan-lahan-lulc-raster-se-jawa-timur">Step 9: Inferensi Klasifikasi Tutupan Lahan (LULC) Raster Se-Jawa Timur</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-10-ekspor-geotiff-hasil-klasifikasi-peta-interaktif-webgis-folium">Step 10: Ekspor GeoTIFF Hasil Klasifikasi &amp; Peta Interaktif WebGIS Folium</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-10-ekspor-geotiff-hasil-klasifikasi-peta-interaktif-folium">Step 10: Ekspor GeoTIFF Hasil Klasifikasi &amp; Peta Interaktif Folium</a></li>
 </ul>
             </nav>
         </div>
@@ -694,7 +694,7 @@ Total Sampel Piksel    : 180,544 piksel
 <hr class="docutils" />
 <section id="step-3-visualisasi-peta-interaktif-sampel-acuan-lulc-jawa-timur-folium">
 <h2>Step 3: Visualisasi Peta Interaktif Sampel Acuan LULC Jawa Timur (Folium)<a class="headerlink" href="#step-3-visualisasi-peta-interaktif-sampel-acuan-lulc-jawa-timur-folium" title="Link to this heading">#</a></h2>
-<p>Peta interaktif berbasis WebGIS menampilkan 250 poligon sampel acuan (<em>ground truth</em>) di wilayah Jawa Timur dengan basemap citra satelit Google Hybrid dan Esri World Imagery.</p>
+<p>Peta interaktif berbasis Folium menampilkan 250 poligon sampel acuan (<em>ground truth</em>) di wilayah Jawa Timur dengan basemap citra satelit Google Hybrid dan Esri World Imagery.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Peta Interaktif Sampel Poligon Acuan di Jawa Timur</span>
@@ -12068,9 +12068,9 @@ Total Piksel Valid  : 10,206,960 piksel se-Jawa Timur (99.92%)
 </div>
 </section>
 <hr class="docutils" />
-<section id="step-10-ekspor-geotiff-hasil-klasifikasi-peta-interaktif-webgis-folium">
-<h2>Step 10: Ekspor GeoTIFF Hasil Klasifikasi &amp; Peta Interaktif WebGIS Folium<a class="headerlink" href="#step-10-ekspor-geotiff-hasil-klasifikasi-peta-interaktif-webgis-folium" title="Link to this heading">#</a></h2>
-<p>Mengekspor peta raster klasifikasi ke format standar geospasial <strong>GeoTIFF</strong> (<code class="docutils literal notranslate"><span class="pre">uts/data/hasil_klasifikasi_lulc_jatim.tif</span></code>) dan membangun <strong>Peta Interaktif WebGIS</strong> berbasis Folium (<code class="docutils literal notranslate"><span class="pre">uts/data/peta_crawling_lulc_jatim.html</span></code>) lengkap dengan layer toggleable per kelas, legenda interaktif, dan sampel poligon acuan.</p>
+<section id="step-10-ekspor-geotiff-hasil-klasifikasi-peta-interaktif-folium">
+<h2>Step 10: Ekspor GeoTIFF Hasil Klasifikasi &amp; Peta Interaktif Folium<a class="headerlink" href="#step-10-ekspor-geotiff-hasil-klasifikasi-peta-interaktif-folium" title="Link to this heading">#</a></h2>
+<p>Mengekspor peta raster klasifikasi ke format standar geospasial <strong>GeoTIFF</strong> (<code class="docutils literal notranslate"><span class="pre">uts/data/hasil_klasifikasi_lulc_jatim.tif</span></code>) dan membangun <strong>Peta Interaktif Folium</strong> berbasis Folium (<code class="docutils literal notranslate"><span class="pre">uts/data/peta_crawling_lulc_jatim.html</span></code>) lengkap dengan layer toggleable per kelas, legenda interaktif, dan sampel poligon acuan.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Ekspor Hasil Klasifikasi Raster ke GeoTIFF</span>
@@ -12102,18 +12102,18 @@ Total Piksel Valid  : 10,206,960 piksel se-Jawa Timur (99.92%)
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"[BERHASIL] File GeoTIFF hasil klasifikasi diekspor ke: </span><span class="si">{</span><span class="n">OUT_TIF</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Ukuran GeoTIFF: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">OUT_TIF</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
 
-<span class="c1"># 2. Pembuatan Peta WebGIS Folium Se-Jawa Timur</span>
+<span class="c1"># 2. Pembuatan Peta Interaktif Folium Se-Jawa Timur</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">hex_ke_rgb</span><span class="p">(</span><span class="n">h</span><span class="p">):</span>
     <span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">'#'</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 
-<span class="c1"># Downsample raster layer untuk responsivitas WebGIS peta</span>
+<span class="c1"># Downsample raster layer untuk responsivitas peta Folium</span>
 <span class="n">scale_down</span> <span class="o">=</span> <span class="mi">4</span>
 <span class="n">small_h</span><span class="p">,</span> <span class="n">small_w</span> <span class="o">=</span> <span class="n">raster_h</span> <span class="o">//</span> <span class="n">scale_down</span><span class="p">,</span> <span class="n">raster_w</span> <span class="o">//</span> <span class="n">scale_down</span>
 <span class="n">img_down</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">pred_int_2d</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="n">small_w</span><span class="p">,</span> <span class="n">small_h</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">NEAREST</span><span class="p">)</span>
 <span class="n">pred_down</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">img_down</span><span class="p">)</span>
 
-<span class="n">m_webgis</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span>
+<span class="n">m_folium</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span>
     <span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">],</span>
     <span class="n">zoom_start</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
     <span class="n">tiles</span><span class="o">=</span><span class="kc">None</span>
@@ -12125,7 +12125,7 @@ Total Piksel Valid  : 10,206,960 piksel se-Jawa Timur (99.92%)
     <span class="n">name</span><span class="o">=</span><span class="s1">'Google Satellite'</span><span class="p">,</span>
     <span class="n">overlay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">control</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_webgis</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_folium</span><span class="p">)</span>
 
 <span class="n">folium</span><span class="o">.</span><span class="n">TileLayer</span><span class="p">(</span>
     <span class="n">tiles</span><span class="o">=</span><span class="s1">'https://mt1.google.com/vt/lyrs=y&amp;x=</span><span class="si">{x}</span><span class="s1">&amp;y=</span><span class="si">{y}</span><span class="s1">&amp;z=</span><span class="si">{z}</span><span class="s1">'</span><span class="p">,</span>
@@ -12133,7 +12133,7 @@ Total Piksel Valid  : 10,206,960 piksel se-Jawa Timur (99.92%)
     <span class="n">name</span><span class="o">=</span><span class="s1">'Google Hybrid (Label)'</span><span class="p">,</span>
     <span class="n">overlay</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">control</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_webgis</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_folium</span><span class="p">)</span>
 
 <span class="c1"># Tambahkan ImageOverlay Transparan untuk Masing-masing Kelas LULC</span>
 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">cid</span> <span class="ow">in</span> <span class="n">CLASS_ID</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -12154,7 +12154,7 @@ Total Piksel Valid  : 10,206,960 piksel se-Jawa Timur (99.92%)
             <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">"LULC: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">pct_c</span><span class="si">}</span><span class="s2">%)"</span><span class="p">,</span>
             <span class="n">overlay</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">control</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_webgis</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_folium</span><span class="p">)</span>
 
 <span class="c1"># Tambahkan Poligon Sampel Acuan (250 Poligon)</span>
 <span class="k">if</span> <span class="n">GEOJSON_SAMPEL</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -12189,7 +12189,7 @@ Total Piksel Valid  : 10,206,960 piksel se-Jawa Timur (99.92%)
             <span class="p">},</span>
             <span class="n">tooltip</span><span class="o">=</span><span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="sa">f</span><span class="s2">"&lt;b&gt;Kelas:&lt;/b&gt; </span><span class="si">{</span><span class="n">kls</span><span class="si">}</span><span class="s2">&lt;br&gt;&lt;b&gt;ID:&lt;/b&gt; </span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'poligon_id'</span><span class="p">,</span><span class="w"> </span><span class="s1">''</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">fg_poly</span><span class="p">)</span>
-    <span class="n">fg_poly</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_webgis</span><span class="p">)</span>
+    <span class="n">fg_poly</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_folium</span><span class="p">)</span>
 
 <span class="c1"># Legenda Floating HTML</span>
 <span class="n">legend_code</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'''</span>
@@ -12229,13 +12229,13 @@ Total Piksel Valid  : 10,206,960 piksel se-Jawa Timur (99.92%)
 <span class="s1">    &lt;/div&gt;</span>
 <span class="s1">&lt;/div&gt;</span>
 <span class="s1">'''</span>
-<span class="n">m_webgis</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">legend_code</span><span class="p">))</span>
-<span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="s1">'topright'</span><span class="p">,</span> <span class="n">collapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_webgis</span><span class="p">)</span>
+<span class="n">m_folium</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">folium</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="n">legend_code</span><span class="p">))</span>
+<span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="s1">'topright'</span><span class="p">,</span> <span class="n">collapsed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m_folium</span><span class="p">)</span>
 
 <span class="n">OUT_HTML</span> <span class="o">=</span> <span class="n">DATA_DIR</span> <span class="o">/</span> <span class="s1">'peta_crawling_lulc_jatim.html'</span>
-<span class="n">m_webgis</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">OUT_HTML</span><span class="p">))</span>
+<span class="n">m_folium</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">OUT_HTML</span><span class="p">))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"[BERHASIL] Peta Interaktif WebGIS disimpan di: </span><span class="si">{</span><span class="n">OUT_HTML</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"[BERHASIL] Peta Interaktif Folium disimpan di: </span><span class="si">{</span><span class="n">OUT_HTML</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Ukuran File HTML: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">OUT_HTML</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> KB"</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -12245,7 +12245,7 @@ Total Piksel Valid  : 10,206,960 piksel se-Jawa Timur (99.92%)
 Ukuran GeoTIFF: 9.76 MB
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[BERHASIL] Peta Interaktif WebGIS disimpan di: D:\SEMESTER 5 TIF 2026\PSD\mynewbook\uts\data\peta_crawling_lulc_jatim.html
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[BERHASIL] Peta Interaktif Folium disimpan di: D:\SEMESTER 5 TIF 2026\PSD\mynewbook\uts\data\peta_crawling_lulc_jatim.html
 Ukuran File HTML: 694.31 KB
 </pre></div>
 </div>
@@ -12315,7 +12315,7 @@ Ukuran File HTML: 694.31 KB
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-7-ekspor-model-terlatih-k-nn-piksel">Step 7: Ekspor Model Terlatih k-NN Piksel</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-8-inspeksi-citra-satelit-sentinel-2-full-jawa-timur">Step 8: Inspeksi Citra Satelit Sentinel-2 Full Jawa Timur</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-9-inferensi-klasifikasi-tutupan-lahan-lulc-raster-se-jawa-timur">Step 9: Inferensi Klasifikasi Tutupan Lahan (LULC) Raster Se-Jawa Timur</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-10-ekspor-geotiff-hasil-klasifikasi-peta-interaktif-webgis-folium">Step 10: Ekspor GeoTIFF Hasil Klasifikasi &amp; Peta Interaktif WebGIS Folium</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-10-ekspor-geotiff-hasil-klasifikasi-peta-interaktif-folium">Step 10: Ekspor GeoTIFF Hasil Klasifikasi &amp; Peta Interaktif Folium</a></li>
 </ul>
   </nav></div>
 
