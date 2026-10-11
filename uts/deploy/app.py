@@ -506,52 +506,65 @@ st.markdown(f"""
 </header>
 """, unsafe_allow_html=True)
 
-col_m1, col_m2, col_m3 = st.columns(3)
+col_m1, col_m2, col_m3, col_m4 = st.columns(4)
 
 with col_m1:
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
-<span class="metric-label">Akurasi Data Testing</span>
-<span style="background:#FFF7ED; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-circle-check", size_rem=1.0, color="#EA580C")}</span>
+<span class="metric-label">Versi 1: Akurasi Poligon</span>
+<span style="background:#FFF7ED; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-draw-polygon", size_rem=1.0, color="#EA580C")}</span>
 </div>
 <div class="metric-val-row">
 <span class="metric-num">{akurasi_test:.1f}%</span>
-<span class="psd-badge-orange">{n_benar}/{n_uji} Poligon</span>
+<span class="psd-badge-orange">{n_benar}/{n_uji} Uji</span>
 </div>
-<div class="metric-sub">Evaluasi Stratified 30% Testing Set</div>
+<div class="metric-sub">Evaluasi 75 Poligon Testing (k-NN, k=5)</div>
 </div>""", unsafe_allow_html=True)
 
 with col_m2:
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
-<span class="metric-label">Total Sampel Poligon</span>
-<span style="background:#FFF7ED; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-draw-polygon", size_rem=1.0, color="#EA580C")}</span>
+<span class="metric-label">Versi 2: Akurasi Piksel</span>
+<span style="background:#FFF7ED; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-border-all", size_rem=1.0, color="#EA580C")}</span>
 </div>
 <div class="metric-val-row">
-<span class="metric-num">{total_poligon}</span>
-<span class="psd-badge-slate">5 Kategori Seimbang</span>
+<span class="metric-num">91.0%</span>
+<span class="psd-badge-orange">49.336/54.164 Px</span>
 </div>
-<div class="metric-sub">50 Poligon per Kelas Tutupan Lahan Jawa Timur</div>
+<div class="metric-sub">Evaluasi Testing Set Piksel Seimbang</div>
 </div>""", unsafe_allow_html=True)
 
 with col_m3:
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
-<span class="metric-label">Salah Klasifikasi</span>
-<span style="background:#FEF3C7; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-triangle-exclamation", size_rem=1.0, color="#B45309")}</span>
+<span class="metric-label">Sampel Ground Truth</span>
+<span style="background:#FFF7ED; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-layer-group", size_rem=1.0, color="#EA580C")}</span>
 </div>
 <div class="metric-val-row">
-<span class="metric-num">{n_salah}</span>
-<span class="psd-badge-amber">Error {100-akurasi_test:.1f}%</span>
+<span class="metric-num">250</span>
+<span class="psd-badge-slate">180.544 Px</span>
 </div>
-<div class="metric-sub">Prediksi Mismatch Data Testing (ORANGE)</div>
+<div class="metric-sub">50 Poligon Acuan per Kelas LULC</div>
+</div>""", unsafe_allow_html=True)
+
+with col_m4:
+    st.markdown(f"""<div class="metric-box">
+<div class="metric-box-top">
+<span class="metric-label">Inferensi Full Scene</span>
+<span style="background:#FFF7ED; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-satellite", size_rem=1.0, color="#EA580C")}</span>
+</div>
+<div class="metric-val-row">
+<span class="metric-num">10,2 M</span>
+<span class="psd-badge-amber">GeoTIFF 9.8MB</span>
+</div>
+<div class="metric-sub">10.206.960 Piksel Valid Se-Jawa Timur</div>
 </div>""", unsafe_allow_html=True)
 
 st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
 
 
 # ==============================================================================
-# 8. VISUALISASI PETA INTERAKTIF (PETA DIGITASI & PETA EVALUASI)
+# 8. VISUALISASI PETA INTERAKTIF FOLIUM (VERSI POLIGON & VERSI PIKSEL)
 # ==============================================================================
 file_peta_digitasi = (
     cari_file("map_lulc.html")
@@ -623,19 +636,20 @@ st.markdown(f"""<div class="psd-card" style="margin-bottom:0.75rem;">
 {fa_icon("fa-solid fa-map-location-dot", size_rem=1.1, color="#EA580C")}
 <span>Visualisasi Geospasial Tutupan Lahan (LULC) Jawa Timur</span>
 </h2>
-<span class="psd-badge-orange">Interactive Folium Maps & Raster Satellite</span>
+<span class="psd-badge-orange">Peta Interaktif Folium (Versi Poligon & Versi Piksel)</span>
 </div>
 </div>""", unsafe_allow_html=True)
 
-tab_raster, tab_digitasi, tab_evaluasi = st.tabs([
-    "🛰️ Peta Klasifikasi Citra Sentinel-2 Full Jawa Timur (Raster WebGIS 10,2 Juta Piksel)",
-    "🗺️ Peta Poligon Sampel Hasil Digitasi (250 Poligon Acuan)",
-    "🎯 Peta Evaluasi Prediksi Model k-NN (Train vs Test)"
+tab_raster, tab_digitasi, tab_evaluasi, tab_komparasi = st.tabs([
+    "🛰️ Versi 2 (Piksel): Peta Folium Sentinel-2 (10,2 Juta Piksel Se-Jawa Timur)",
+    "🗺️ Versi 1 (Poligon): Peta Folium Ground Truth (250 Poligon Acuan)",
+    "🎯 Versi 1 (Poligon): Peta Folium Evaluasi Prediksi k-NN (Train vs Test)",
+    "⚖️ Komparasi Sains: Versi Poligon vs Versi Piksel"
 ])
 
 with tab_raster:
     st.markdown("""<div class="legend-box" style="margin-bottom:0.75rem;">
-    <b>Peta Hasil Inferensi Klasifikasi Tutupan Lahan Se-Jawa Timur (Sentinel-2 Full Scene):</b>
+    <b>Peta Folium Hasil Inferensi Tutupan Lahan Se-Jawa Timur (Sentinel-2 Full Scene Raster):</b>
     <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem; font-size:0.78rem;">
         <span><b style="color:#1f77b4;">🔵 Air:</b> 45.79% (4.673.525 px)</span>
         <span><b style="color:#006400;">🌲 Hutan Non-Mangrove:</b> 34.19% (3.490.143 px)</span>
@@ -644,13 +658,13 @@ with tab_raster:
         <span><b style="color:#2ca02c;">🟢 Hutan Mangrove:</b> 1.70% (173.125 px)</span>
     </div>
     <div style="font-size:0.75rem; color:#64748B; margin-top:0.35rem;">
-        💡 <i>Peta ini menampilkan hasil inferensi klasifikasi <b>10.206.960 piksel valid se-Jawa Timur</b> menggunakan model k-NN piksel terlatih dengan penyeimbangan sampel (Stratified Class Balancing). Gunakan panel layer kanan atas untuk toggle masing-masing kelas LULC atau membandingkannya dengan poligon acuan ground truth.</i>
+        💡 <i>Peta Folium ini menampilkan hasil inferensi klasifikasi <b>10.206.960 piksel valid se-Jawa Timur</b> menggunakan model k-NN piksel terlatih dengan penyeimbangan sampel (Stratified Class Balancing). Gunakan panel layer kanan atas untuk toggle masing-masing kelas LULC atau membandingkannya dengan poligon acuan ground truth.</i>
     </div>
     </div>""", unsafe_allow_html=True)
     if konten_peta_raster:
         components.html(patch_leaflet_html(konten_peta_raster), height=740, scrolling=False)
     else:
-        st.error("File peta raster `peta_crawling_lulc_jatim.html` tidak ditemukan.")
+        st.error("File peta Folium raster `peta_crawling_lulc_jatim.html` tidak ditemukan.")
 
     if df_raster_rekap is not None:
         with st.expander("📊 Lihat Tabel Rekapitulasi Luas Tutupan Lahan Full Jawa Timur (Data Raster)"):
@@ -658,7 +672,7 @@ with tab_raster:
 
 with tab_digitasi:
     st.markdown("""<div class="legend-box" style="margin-bottom:0.75rem;">
-    <b>Panduan Peta Poligon Hasil Digitasi:</b>
+    <b>Peta Folium Sampel Acuan Ground Truth Hasil Digitasi:</b>
     <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem; font-size:0.78rem;">
         <span><b style="color:#1f77b4;">🔵 Air:</b> 50 Poligon Sampel</span>
         <span><b style="color:#2ca02c;">🟢 Hutan Mangrove:</b> 50 Poligon Sampel</span>
@@ -667,17 +681,17 @@ with tab_digitasi:
         <span><b style="color:#bcbd22;">🟡 Sawah:</b> 50 Poligon Sampel</span>
     </div>
     <div style="font-size:0.75rem; color:#64748B; margin-top:0.35rem;">
-        💡 <i>Peta ini menampilkan 250 poligon hasil digitasi asli dari file <code>jawatimur_5kelas.geojson</code>. Gunakan panel layer kanan atas untuk memilih basemap satelit/hybrid dan mengaktifkan/mematikan poligon per kelas.</i>
+        💡 <i>Peta Folium ini menampilkan 250 poligon hasil digitasi asli dari file <code>jawatimur_5kelas.geojson</code>. Gunakan panel layer kanan atas untuk memilih basemap satelit/hybrid dan mengaktifkan/mematikan poligon per kelas.</i>
     </div>
     </div>""", unsafe_allow_html=True)
     if konten_peta_digitasi:
         components.html(patch_leaflet_html(konten_peta_digitasi), height=720, scrolling=False)
     else:
-        st.error("File peta digitasi `map_lulc.html` tidak ditemukan.")
+        st.error("File peta Folium digitasi `map_lulc.html` tidak ditemukan.")
 
 with tab_evaluasi:
     st.markdown("""<div class="legend-box" style="margin-bottom:0.75rem;">
-    <b>Panduan Evaluasi Prediksi Spasial:</b>
+    <b>Peta Folium Evaluasi Prediksi Spasial Model k-NN:</b>
     <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem; font-size:0.78rem;">
         <span><b style="color:#0284c7;">🔷 Marker TRAIN:</b> 175 Sampel Latih (70%)</span>
         <span><b style="color:#16a34a;">💊 Marker TEST ✓:</b> 60 Sampel Uji Benar / Match (80.0%)</span>
@@ -685,13 +699,80 @@ with tab_evaluasi:
         <span><b style="color:#c026d3;">🟪 Garis Ungu Putus:</b> Poligon Testing (30%)</span>
     </div>
     <div style="font-size:0.75rem; color:#64748B; margin-top:0.35rem;">
-        💡 <i>Peta ini mengevaluasi performa model k-NN pada 75 poligon testing set, menandai secara visual prediksi yang cocok (hijau) vs salah klasifikasi (oranye).</i>
+        💡 <i>Peta Folium ini mengevaluasi performa model k-NN pada 75 poligon testing set, menandai secara visual prediksi yang cocok (hijau) vs salah klasifikasi (oranye).</i>
     </div>
     </div>""", unsafe_allow_html=True)
     if konten_peta_evaluasi:
         components.html(patch_leaflet_html(konten_peta_evaluasi), height=720, scrolling=False)
     else:
-        st.error("File peta evaluasi `map_lulc_predicted.html` tidak ditemukan.")
+        st.error("File peta Folium evaluasi `map_lulc_predicted.html` tidak ditemukan.")
+
+with tab_komparasi:
+    st.markdown(f"""<div class="psd-card">
+<h3 style="font-size:1.05rem; font-weight:600; color:#18232F; margin:0 0 0.5rem 0;">
+{fa_icon("fa-solid fa-scale-balanced", size_rem=1.1, color="#EA580C")}
+<span>Perbandingan Metodologis & Hasil: Versi Poligon vs Versi Piksel</span>
+</h3>
+<p style="font-size:0.85rem; color:#475569; margin:0 0 1rem 0; line-height:1.6;">
+Penelitian ini mengembangkan <b>dua pendekatan klasifikasi spasial</b> berbasis citra satelit Sentinel-2A dan algoritma <i>k-Nearest Neighbors (k-NN Scaled)</i>. Seluruh visualisasi spasial dirender secara interaktif menggunakan pustaka <b>Folium</b>:
+</p>
+
+<table style="width:100%; border-collapse:collapse; font-size:0.83rem; text-align:left;">
+    <thead>
+        <tr style="background:#FFF7ED; border-bottom:2px solid #FFEDD5; color:#C2410C;">
+            <th style="padding:0.6rem 0.8rem;">Parameter Evaluasi</th>
+            <th style="padding:0.6rem 0.8rem;">Versi 1: Tingkat Poligon (Centroid)</th>
+            <th style="padding:0.6rem 0.8rem;">Versi 2: Tingkat Piksel (Raster Scene)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom:1px solid #E2E8F0;">
+            <td style="padding:0.6rem 0.8rem; font-weight:600;">Notebook Analisis</td>
+            <td style="padding:0.6rem 0.8rem;"><code>uts/code/landuseCover.ipynb</code></td>
+            <td style="padding:0.6rem 0.8rem;"><code>uts/code/crawlingPixel.ipynb</code></td>
+        </tr>
+        <tr style="border-bottom:1px solid #E2E8F0;">
+            <td style="padding:0.6rem 0.8rem; font-weight:600;">Unit Analisis Spasial</td>
+            <td style="padding:0.6rem 0.8rem;">Titik koordinat centroid dari 250 poligon</td>
+            <td style="padding:0.6rem 0.8rem;">Piksel individual 10m &times; 10m citra Sentinel-2</td>
+        </tr>
+        <tr style="border-bottom:1px solid #E2E8F0;">
+            <td style="padding:0.6rem 0.8rem; font-weight:600;">Jumlah Sampel Ground Truth</td>
+            <td style="padding:0.6rem 0.8rem;">250 Sampel (50 poligon / kelas)</td>
+            <td style="padding:0.6rem 0.8rem;">180.544 Piksel terekstraksi dari 250 poligon</td>
+        </tr>
+        <tr style="border-bottom:1px solid #E2E8F0;">
+            <td style="padding:0.6rem 0.8rem; font-weight:600;">Data Training Model</td>
+            <td style="padding:0.6rem 0.8rem;">175 Poligon (35 per kelas, seimbang)</td>
+            <td style="padding:0.6rem 0.8rem;">10.000 Piksel (2.000 / kelas, stratified sampling)</td>
+        </tr>
+        <tr style="border-bottom:1px solid #E2E8F0;">
+            <td style="padding:0.6rem 0.8rem; font-weight:600;">Data Testing Model</td>
+            <td style="padding:0.6rem 0.8rem;">75 Poligon (15 per kelas, seimbang)</td>
+            <td style="padding:0.6rem 0.8rem;">54.164 Piksel testing ground truth</td>
+        </tr>
+        <tr style="border-bottom:1px solid #E2E8F0;">
+            <td style="padding:0.6rem 0.8rem; font-weight:600;">Akurasi Testing (k-NN)</td>
+            <td style="padding:0.6rem 0.8rem; color:#C2410C; font-weight:700;">80.0% (60 / 75 poligon benar)</td>
+            <td style="padding:0.6rem 0.8rem; color:#16A34A; font-weight:700;">91.0% (49.336 / 54.164 piksel benar)</td>
+        </tr>
+        <tr style="border-bottom:1px solid #E2E8F0;">
+            <td style="padding:0.6rem 0.8rem; font-weight:600;">Output Geospasial</td>
+            <td style="padding:0.6rem 0.8rem;">Marker titik & poligon GeoJSON</td>
+            <td style="padding:0.6rem 0.8rem;">Raster GeoTIFF 10,2 Juta Piksel (9.76 MB)</td>
+        </tr>
+        <tr>
+            <td style="padding:0.6rem 0.8rem; font-weight:600;">Visualisasi Peta Folium</td>
+            <td style="padding:0.6rem 0.8rem;"><code>map_lulc.html</code> & <code>map_lulc_predicted.html</code></td>
+            <td style="padding:0.6rem 0.8rem;"><code>peta_crawling_lulc_jatim.html</code> (5 layer per kelas)</td>
+        </tr>
+    </tbody>
+</table>
+
+<div style="margin-top:1rem; padding:0.75rem; background:#F8FAFC; border-radius:0.5rem; font-size:0.8rem; color:#64748B; border-left:3px solid #EA580C;">
+<b>Kesimpulan Ilmiah:</b> Versi Poligon sangat unggul untuk verifikasi akurasi spasial makro dengan komputasi sangat ringan, sedangkan Versi Piksel menghasilkan pemetaan kontinu detail beresolusi 10 meter yang mampu mendeteksi variasi dan transisi tutupan lahan se-Provinsi Jawa Timur secara komprehensif. Keduanya disajikan secara interaktif menggunakan <b>Peta Folium</b>.
+</div>
+</div>""", unsafe_allow_html=True)
 
 
 # ==============================================================================
