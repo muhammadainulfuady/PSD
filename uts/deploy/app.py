@@ -103,6 +103,8 @@ st.markdown("""
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
         padding-bottom: 0.85rem;
         border-bottom: 1px solid #E2E8F0;
         margin-bottom: 0.75rem;
@@ -243,6 +245,69 @@ st.markdown("""
         font-size: 0.8rem;
         color: #431407;
         margin-top: 0.5rem;
+    }
+
+    /* =========================================================================
+       STREAMLIT LIGHT THEME GUARANTEES (Anti-Dark Mode Text Collision)
+       ========================================================================= */
+    h1, h2, h3, h4, p, span, label, div {
+        color: #18232F;
+    }
+
+    .stMarkdown, [data-testid="stMarkdownContainer"] p {
+        color: #18232F !important;
+    }
+
+    /* Pastikan seluruh label widget radio terbaca tajam dengan warna gelap */
+    [data-testid="stRadio"] label,
+    [data-testid="stRadio"] div[role="radiogroup"] label,
+    [data-testid="stRadio"] div[role="radiogroup"] label p,
+    [data-testid="stRadio"] div[role="radiogroup"] span,
+    [data-testid="stRadio"] div[role="radiogroup"] p {
+        color: #18232F !important;
+        font-weight: 600 !important;
+        font-size: 0.85rem !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    /* Radio button: Aksen Oranye */
+    [data-testid="stRadio"] div[role="radiogroup"] label[data-checked="true"] > div:first-child {
+        border-color: #EA580C !important;
+    }
+    [data-testid="stRadio"] div[role="radiogroup"] label[data-checked="true"] > div:first-child > div {
+        background-color: #EA580C !important;
+    }
+
+    /* Multiselect Tag Pill: Oranye Elegan (Bukan Merah Gelap) */
+    [data-testid="stMultiSelect"] span[data-baseweb="tag"] {
+        background-color: #EA580C !important;
+        color: #FFFFFF !important;
+        border-radius: 6px !important;
+        font-weight: 600 !important;
+        border: none !important;
+    }
+    [data-testid="stMultiSelect"] span[data-baseweb="tag"] span {
+        color: #FFFFFF !important;
+    }
+    [data-testid="stMultiSelect"] span[data-baseweb="tag"] svg {
+        fill: #FFFFFF !important;
+    }
+
+    /* Multiselect Input Box & Dropdown */
+    [data-testid="stMultiSelect"] div[data-baseweb="select"] > div {
+        background-color: #FFFFFF !important;
+        border-color: #CBD5E1 !important;
+        color: #18232F !important;
+        border-radius: 0.5rem !important;
+    }
+
+    /* Dataframe Table: Bersih, Terang, Modern (Bukan Hitam Pekat) */
+    [data-testid="stDataFrame"], [data-testid="stDataFrame"] > div {
+        background-color: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 0.75rem !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -814,24 +879,24 @@ st.markdown(f"""<div class="psd-card" style="margin-bottom:1rem;">
 </div>""", unsafe_allow_html=True)
 
 if df_pred is not None:
-    c1, c2 = st.columns([2, 1])
+    c1, c2 = st.columns([1, 1])
     with c1:
         pilihan_kelas = st.multiselect(
-            "Filter Kelas Asli:",
+            "Filter Kelas Asli (Ground Truth):",
             options=sorted(df_pred["kelas_asli"].unique()),
             default=sorted(df_pred["kelas_asli"].unique())
         )
     with c2:
         status_filter = st.radio(
             "Filter Status Hasil Prediksi:",
-            options=["Semua Data", "Hanya Prediksi Benar", "Hanya Salah Klasifikasi"],
+            options=["Semua Data (75)", "Prediksi Benar (60)", "Salah Klasifikasi (15)"],
             horizontal=True
         )
 
     df_tampil = df_pred[df_pred["kelas_asli"].isin(pilihan_kelas)].copy()
-    if status_filter == "Hanya Prediksi Benar":
+    if "Benar" in status_filter:
         df_tampil = df_tampil[df_tampil["benar"] == True]
-    elif status_filter == "Hanya Salah Klasifikasi":
+    elif "Salah" in status_filter:
         df_tampil = df_tampil[df_tampil["benar"] == False]
 
     st.markdown(
