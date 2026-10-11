@@ -860,6 +860,86 @@ with col_k:
 </div>""", unsafe_allow_html=True)
 
 
+# --- BARIS 3: Visualisasi Metrik Klasifikasi per Kelas (Classification Report) ---
+st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
+
+col_rep_chart, col_rep_desc = st.columns([1.1, 0.9])
+
+with col_rep_chart:
+    st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
+<h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">5. Metrik Evaluasi Klasifikasi per Kelas (Precision, Recall, F1-Score)</h3>
+<p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihasilkan dinamis dari file <code>metrik_evaluasi_knn.csv</code>.</p>
+</div>""", unsafe_allow_html=True)
+
+    if df_met is not None and "Kategori" in df_met.columns:
+        kelas_target = ["Air", "Hutan Mangrove", "Hutan Non-Mangrove", "Pemukiman", "Sawah"]
+        df_filtered = df_met[df_met["Kategori"].isin(kelas_target)].copy()
+
+        df_melt = df_filtered.melt(
+            id_vars="Kategori",
+            value_vars=["Precision", "Recall", "F1_Score"],
+            var_name="Metrik",
+            value_name="Skor"
+        )
+        df_melt["Metrik"] = df_melt["Metrik"].replace({"F1_Score": "F1-Score"})
+
+        fig_rep, ax_rep = plt.subplots(figsize=(7.8, 5.0), facecolor='white')
+        sns.barplot(
+            data=df_melt,
+            x="Kategori",
+            y="Skor",
+            hue="Metrik",
+            palette=['#0284C7', '#EA580C', '#10B981'],
+            ax=ax_rep
+        )
+
+        for p in ax_rep.patches:
+            h = p.get_height()
+            if h > 0:
+                ax_rep.annotate(f"{h:.2f}", (p.get_x() + p.get_width() / 2., h + 0.02),
+                                ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#1E293B')
+
+        ax_rep.set_title("Perbandingan Skor Precision, Recall, & F1-Score per Kelas", fontsize=11, fontweight='bold', pad=10, color='#18232F')
+        ax_rep.set_xlabel("Kelas Tutupan Lahan", fontsize=9.5, fontweight='bold', color='#18232F')
+        ax_rep.set_ylabel("Skor Metrik (0.00 - 1.00)", fontsize=9.5, fontweight='bold', color='#18232F')
+        ax_rep.set_ylim(0, 1.15)
+        plt.xticks(rotation=15, ha='right', fontsize=9)
+        plt.legend(frameon=True, facecolor='#F8FAFC', edgecolor='#CBD5E1', loc='upper right')
+        plt.grid(axis='y', linestyle=':', alpha=0.6, color='#E2E8F0')
+        plt.tight_layout()
+        st.pyplot(fig_rep, use_container_width=True)
+        plt.close(fig_rep)
+    else:
+        st.warning("Data `metrik_evaluasi_knn.csv` belum ditemukan.")
+
+with col_rep_desc:
+    st.markdown("""<div class="psd-card" style="font-size:0.8rem; color:#334155; line-height:1.55; height:100%;">
+<b style="color:#C2410C; font-size:0.85rem;">Analisis Fisis Penginderaan Jauh: Mengapa Nilainya Seperti Itu?</b>
+<div style="margin-top:0.4rem;">
+<p style="margin:0 0 0.5rem 0;">
+<b>🟢 Hutan Mangrove (Precision 100%, Recall 93%, F1 97%):</b><br>
+<span style="color:#475569;">Precision 100% (sempurna) karena profil gabungan NDVI tinggi & MNDWI basah estuari sangat khas di pesisir Jawa Timur, sehingga tidak ada kelas daratan lain yang tertukar menjadi mangrove (<i>zero false positives</i>).</span>
+</p>
+<p style="margin:0 0 0.5rem 0;">
+<b>🌲 Hutan Non-Mangrove (Precision 88%, Recall 100%, F1 94%):</b><br>
+<span style="color:#475569;">Recall 100% (sempurna) karena kanopi tebal cagar alam & pegunungan memantulkan NIR (B08) sangat stabil tanpa terlewat satu pun. Sedikit penurunan precision (88%) karena sawah lebat menjelang panen menyerupai vegetasi semak/hutan.</span>
+</p>
+<p style="margin:0 0 0.5rem 0;">
+<b>🔴 Pemukiman (Precision 93%, Recall 93%, F1 93%):</b><br>
+<span style="color:#475569;">Kinerja harmonis sangat tinggi karena nilai NDBI positif & SWIR-1 (B11) membedakan material genteng/aspal/beton secara tajam dari tutupan alam.</span>
+</p>
+<p style="margin:0 0 0.5rem 0;">
+<b>🔵 Air (Precision 70%, Recall 47%, F1 56%):</b><br>
+<span style="color:#475569;">Recall terendah (47%) karena 7 sampel air keliru tertebak Sawah. Hal ini disebabkan perairan tambak & muara dangkal sarat sedimen lumpur/alga mikro (TSS tinggi) yang spektralnya tumpang tindih (<i>spectral overlapping</i>) dengan sawah basah tergenang irigasi.</span>
+</p>
+<p style="margin:0;">
+<b>🟡 Sawah (Precision 53%, Recall 67%, F1 59%):</b><br>
+<span style="color:#475569;">Precision rendah (53%) akibat fenomena <i>over-prediction</i> (19 prediksi vs 15 aktual). Siklus fenologi sawah yang dinamis (lumpur berair &rarr; padi hijau &rarr; bera kering) membuat klusternya menempati ruang transisi di tengah fitur k-NN, menarik poligon perbatasan dari kelas lain.</span>
+</p>
+</div>
+</div>""", unsafe_allow_html=True)
+
+
 # ==============================================================================
 # 10. TABEL EKSPLORASI DATA UJI & EKSPOR CSV
 # ==============================================================================
