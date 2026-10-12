@@ -609,24 +609,25 @@ konten_peta_raster = muat_konten_html(str(file_peta_raster)) if file_peta_raster
 
 
 
-def patch_leaflet_html(html_content: str) -> str:
-    """Memastikan CSS patch Leaflet terpasang agar tidak bertabrakan dengan tombol header."""
-    css_patch = """
+def patch_leaflet_html(html_content: str, opacity_pct: int = 75) -> str:
+    """Memastikan CSS patch Leaflet terpasang dan menyuntikkan kontrol transparansi (opacity) dinamis."""
+    op_val = max(0.0, min(1.0, opacity_pct / 100.0))
+    css_patch = f"""
     <style>
-    .leaflet-top.leaflet-right {
+    .leaflet-top.leaflet-right {{
         top: 72px !important;
         right: 20px !important;
         z-index: 1000 !important;
-    }
-    .leaflet-control-layers {
+    }}
+    .leaflet-control-layers {{
         border: 2px solid #EA580C !important;
         border-radius: 10px !important;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22) !important;
         background: #ffffff !important;
         padding: 8px 12px !important;
-    }
+    }}
     .leaflet-control-layers-base label,
-    .leaflet-control-layers-overlays label {
+    .leaflet-control-layers-overlays label {{
         cursor: pointer !important;
         padding: 3px 0 !important;
         font-size: 13px !important;
@@ -634,20 +635,74 @@ def patch_leaflet_html(html_content: str) -> str:
         color: #1E293B !important;
         display: flex !important;
         align-items: center !important;
-    }
+    }}
     .leaflet-control-layers-base input,
-    .leaflet-control-layers-overlays input {
+    .leaflet-control-layers-overlays input {{
         cursor: pointer !important;
         margin-right: 8px !important;
         transform: scale(1.2) !important;
-    }
+    }}
+    .leaflet-image-layer {{
+        opacity: {op_val:.2f} !important;
+        transition: opacity 0.15s ease-in-out !important;
+    }}
     </style>
     """
-    if "LEAFLET CONTROL FIX FOR STREAMLIT CLOUD" not in html_content:
-        if "</head>" in html_content:
-            return html_content.replace("</head>", f"{css_patch}</head>")
-        return f"{css_patch}{html_content}"
-    return html_content
+    
+    floating_slider = f"""
+    <div id="live-opacity-box" style="
+        position: fixed;
+        bottom: 245px; left: 25px; width: 270px; z-index: 9999;
+        background-color: rgba(255, 255, 255, 0.95);
+        padding: 8px 14px; border-radius: 8px;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px;
+        border: 2px solid #EA580C;
+        display: flex; align-items: center; justify-content: space-between;
+    ">
+        <span style="font-weight: bold; color: #EA580C; display: flex; align-items: center; gap: 5px;">
+            🎚️ Transparansi:
+        </span>
+        <input type="range" id="live-map-slider" min="0" max="100" value="{opacity_pct}" style="width: 105px; accent-color: #EA580C; cursor: pointer;">
+        <span id="live-map-val" style="font-weight: bold; color: #18232F; min-width: 32px; text-align: right;">{opacity_pct}%</span>
+    </div>
+    <script>
+    (function() {{
+        function initSlider() {{
+            var slider = document.getElementById('live-map-slider');
+            var valLabel = document.getElementById('live-map-val');
+            if (!slider) return;
+            slider.addEventListener('input', function(e) {{
+                var v = e.target.value;
+                if (valLabel) valLabel.innerText = v + '%';
+                var op = v / 100.0;
+                var layers = document.querySelectorAll('.leaflet-image-layer');
+                layers.forEach(function(l) {{
+                    l.style.opacity = op;
+                }});
+            }});
+        }}
+        if (document.readyState === 'loading') {{
+            document.addEventListener('DOMContentLoaded', initSlider);
+        }} else {{
+            initSlider();
+        }}
+    }})();
+    </script>
+    """
+
+    res = html_content
+    if "</head>" in res:
+        res = res.replace("</head>", f"{css_patch}</head>")
+    else:
+        res = f"{css_patch}{res}"
+        
+    if "</body>" in res:
+        res = res.replace("</body>", f"{floating_slider}</body>")
+    else:
+        res = f"{res}{floating_slider}"
+        
+    return res
 
 
 st.markdown(f"""<div class="psd-card" style="margin-bottom:0.75rem;">
@@ -689,8 +744,25 @@ with tab_piksel:
     </div>
     </div>""", unsafe_allow_html=True)
 
+    col_trans_sl, col_trans_info = st.columns([1.6, 2.4])
+    with col_trans_sl:
+        opasitas_peta = st.slider(
+            "🎚️ Transparansi Lapisan Raster LULC:",
+            min_value=0,
+            max_value=100,
+            value=75,
+            step=5,
+            format="%d%%",
+            help="Atur tingkat opasitas citra raster LULC. Nilai lebih rendah membuat lapisan lebih transparan sehingga citra satelit Google Hybrid / Esri di bawahnya terlihat jelas."
+        )
+    with col_trans_info:
+        st.markdown(f"""<div style="padding-top:0.6rem; font-size:0.8rem; color:#475569;">
+        <b>Tingkat Transparansi Aktif:</b> <span class="psd-badge-orange">{opasitas_peta}% Opasitas ({100-opasitas_peta}% Transparan)</span><br>
+        <span style="font-size:0.75rem; color:#64748B;">💡 <i>Anda juga dapat menggeser slider transparansi interaktif langsung di dalam jendela peta Leaflet secara real-time.</i></span>
+        </div>""", unsafe_allow_html=True)
+
     if konten_peta_raster:
-        components.html(patch_leaflet_html(konten_peta_raster), height=740, scrolling=False)
+        components.html(patch_leaflet_html(konten_peta_raster, opacity_pct=opasitas_peta), height=740, scrolling=False)
     else:
         st.error("File peta Folium raster `peta_crawling_lulc_jatim.html` tidak ditemukan.")
 
