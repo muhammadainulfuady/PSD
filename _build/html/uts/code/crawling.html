@@ -336,7 +336,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-spektral-multiband-b02-b03-b04-b08-b11-ndvi-ndwi-mndwi-ndbi-per-piksel-poligon">Ekstraksi Spektral Multiband (B02, B03, B04, B08, B11, NDVI, NDWI, MNDWI, NDBI) per Piksel Poligon</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-spektral-multiband-b02-b03-b04-b05-b08-b11-b12-ndvi-ndwi-mndwi-ndbi-remi-ndmi-bsi-per-piksel-poligon">Ekstraksi Spektral Multiband (B02, B03, B04, B05, B08, B11, B12, NDVI, NDWI, MNDWI, NDBI, REMI, NDMI, BSI) per Piksel Poligon</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deskripsi-alur-kerja">Deskripsi Alur Kerja</a></li>
 </ul>
 </li>
@@ -359,8 +359,8 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="pipeline-crawling-data-piksel-sentinel-2a-via-openeo-cdse-jawa-timur">
 <h1>Pipeline Crawling Data Piksel Sentinel-2A via openEO CDSE (Jawa Timur)<a class="headerlink" href="#pipeline-crawling-data-piksel-sentinel-2a-via-openeo-cdse-jawa-timur" title="Link to this heading">#</a></h1>
-<section id="ekstraksi-spektral-multiband-b02-b03-b04-b08-b11-ndvi-ndwi-mndwi-ndbi-per-piksel-poligon">
-<h2>Ekstraksi Spektral Multiband (B02, B03, B04, B08, B11, NDVI, NDWI, MNDWI, NDBI) per Piksel Poligon<a class="headerlink" href="#ekstraksi-spektral-multiband-b02-b03-b04-b08-b11-ndvi-ndwi-mndwi-ndbi-per-piksel-poligon" title="Link to this heading">#</a></h2>
+<section id="ekstraksi-spektral-multiband-b02-b03-b04-b05-b08-b11-b12-ndvi-ndwi-mndwi-ndbi-remi-ndmi-bsi-per-piksel-poligon">
+<h2>Ekstraksi Spektral Multiband (B02, B03, B04, B05, B08, B11, B12, NDVI, NDWI, MNDWI, NDBI, REMI, NDMI, BSI) per Piksel Poligon<a class="headerlink" href="#ekstraksi-spektral-multiband-b02-b03-b04-b05-b08-b11-b12-ndvi-ndwi-mndwi-ndbi-remi-ndmi-bsi-per-piksel-poligon" title="Link to this heading">#</a></h2>
 <hr class="docutils" />
 <section id="deskripsi-alur-kerja">
 <h3>Deskripsi Alur Kerja<a class="headerlink" href="#deskripsi-alur-kerja" title="Link to this heading">#</a></h3>
@@ -373,7 +373,7 @@ document.write(`
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Import Dependensi Utama</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Import Dependensi Utama</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
@@ -398,10 +398,15 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[OK] Semua library dependensi berhasil di-import!
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. Konfigurasi Parameter &amp; Deteksi Path Otomatis</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 2. Konfigurasi Parameter &amp; Deteksi Path Otomatis</span>
 <span class="c1"># (Mendeteksi direktori dengan aman baik dijalankan dari folder 'uts/code' maupun root workspace)</span>
 <span class="n">cwd</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">cwd</span> <span class="o">/</span> <span class="s2">"uts"</span> <span class="o">/</span> <span class="s2">"data"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -438,10 +443,10 @@ document.write(`
         <span class="n">SUMBER</span><span class="p">[</span><span class="n">nama_kelas</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">zip_path</span><span class="p">),</span> <span class="n">kode_label</span><span class="p">)</span>
 
 <span class="c1"># Parameter Grid Tiling &amp; Satelit</span>
-<span class="n">TILE_DEG</span> <span class="o">=</span> <span class="mf">0.20</span>          <span class="c1"># Ukuran grid tile ~22 km x 22 km (~2200x2200 piksel @10m)</span>
-<span class="n">BUFFER_DEG</span> <span class="o">=</span> <span class="mf">0.005</span>       <span class="c1"># Buffer margin ~500 meter di sekeliling batas poligon</span>
+<span class="n">TILE_DEG</span> <span class="o">=</span> <span class="mf">0.05</span>          <span class="c1"># Ukuran grid tile lebih kecil ~5.5 km x 5.5 km (~550x550 piksel @10m)</span>
+<span class="n">BUFFER_DEG</span> <span class="o">=</span> <span class="mf">0.002</span>       <span class="c1"># Buffer margin ~200 meter di sekeliling batas poligon</span>
 <span class="n">TANGGAL</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"2024-08-01"</span><span class="p">,</span> <span class="s2">"2024-08-31"</span><span class="p">]</span>   <span class="c1"># Rentang waktu observasi musim kemarau (minim awan)</span>
-<span class="n">BANDS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"B02"</span><span class="p">,</span> <span class="s2">"B03"</span><span class="p">,</span> <span class="s2">"B04"</span><span class="p">,</span> <span class="s2">"B08"</span><span class="p">,</span> <span class="s2">"B11"</span><span class="p">]</span>  <span class="c1"># Band spektral yang diunduh</span>
+<span class="n">BANDS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"B01"</span><span class="p">,</span> <span class="s2">"B02"</span><span class="p">,</span> <span class="s2">"B03"</span><span class="p">,</span> <span class="s2">"B04"</span><span class="p">,</span> <span class="s2">"B05"</span><span class="p">,</span> <span class="s2">"B06"</span><span class="p">,</span> <span class="s2">"B07"</span><span class="p">,</span> <span class="s2">"B08"</span><span class="p">,</span> <span class="s2">"B8A"</span><span class="p">,</span> <span class="s2">"B09"</span><span class="p">,</span> <span class="s2">"B11"</span><span class="p">,</span> <span class="s2">"B12"</span><span class="p">]</span>  <span class="c1"># Seluruh 12 Band Spektral Sentinel-2 L2A</span>
 <span class="n">PAKAI_MASK_SCL</span> <span class="o">=</span> <span class="kc">True</span>    <span class="c1"># Masking awan/bayangan per piksel via band SCL</span>
 <span class="n">MAX_CLOUD</span> <span class="o">=</span> <span class="mi">30</span>           <span class="c1"># Batas toleransi tutupan awan scene (%)</span>
 <span class="n">PARALEL</span> <span class="o">=</span> <span class="mi">2</span>              <span class="c1"># Jumlah job konkuren (akun CDSE gratis max 2)</span>
@@ -461,6 +466,13 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Direktori GeoJSON : d:\SEMESTER 5 TIF 2026\PSD\mynewbook\uts\data\geojson
+Direktori Output  : d:\SEMESTER 5 TIF 2026\PSD\mynewbook\uts\data\csv\hasil_s2_piksel
+Target Output CSV : d:\SEMESTER 5 TIF 2026\PSD\mynewbook\uts\data\csv\hasil_s2_piksel\piksel_s2.csv
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>
@@ -469,7 +481,7 @@ document.write(`
 <h2>Step 1: Memuat &amp; Menggabungkan Poligon Sampel 5 Kelas Tutupan Lahan<a class="headerlink" href="#step-1-memuat-menggabungkan-poligon-sampel-5-kelas-tutupan-lahan" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">baca_semua</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">baca_semua</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Membaca semua file poligon sampel dan menggabungkannya ke dalam GeoDataFrame WGS84."""</span>
     <span class="n">bagian</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">nama</span><span class="p">,</span> <span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="n">SUMBER</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -497,6 +509,69 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Kelas: Sawah              | Jumlah:  50 poligon | Bounds: [np.float64(112.55), np.float64(-7.07), np.float64(112.59), np.float64(-7.06)]
+Kelas: Pemukiman          | Jumlah:  50 poligon | Bounds: [np.float64(112.55), np.float64(-7.06), np.float64(112.59), np.float64(-7.04)]
+Kelas: Hutan Non-Mangrove | Jumlah:  50 poligon | Bounds: [np.float64(111.21), np.float64(-8.19), np.float64(112.52), np.float64(-7.62)]
+Kelas: Air                | Jumlah:  50 poligon | Bounds: [np.float64(111.21), np.float64(-7.68), np.float64(112.78), np.float64(-6.65)]
+Kelas: Hutan Mangrove     | Jumlah:  50 poligon | Bounds: [np.float64(112.69), np.float64(-7.39), np.float64(113.53), np.float64(-7.14)]
+------------------------------------------------------------
+Total Keseluruhan Sampel: 250 Poligon
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>poligon_id</th>
+      <th>poligon_no</th>
+      <th>label</th>
+      <th>label_teks</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Sawah_0000</td>
+      <td>0</td>
+      <td>1</td>
+      <td>Sawah</td>
+      <td>POLYGON ((112.5461 -7.0686, 112.54624 -7.0686,...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Sawah_0001</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Sawah</td>
+      <td>POLYGON ((112.58605 -7.07168, 112.58617 -7.071...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Sawah_0002</td>
+      <td>2</td>
+      <td>1</td>
+      <td>Sawah</td>
+      <td>POLYGON ((112.58179 -7.0716, 112.5819 -7.07168...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </section>
 <hr class="docutils" />
@@ -505,7 +580,7 @@ document.write(`
 <p>Poligon sampel dipecah dan dipetakan ke dalam grid tile <code class="docutils literal notranslate"><span class="pre">x{gx}_y{gy}</span></code> berukuran 0.20° (~22 km) agar openEO memproses tiap area secara modular tanpa memicu <em>memory limit</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">buat_tile</span><span class="p">(</span><span class="n">gdf</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">buat_tile</span><span class="p">(</span><span class="n">gdf</span><span class="p">:</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">):</span>
     <span class="n">T</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="n">TILE_DEG</span><span class="p">,</span> <span class="n">BUFFER_DEG</span>
     <span class="n">peta</span><span class="p">,</span> <span class="n">batas</span><span class="p">,</span> <span class="n">sel_xy</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">{},</span> <span class="p">{}</span>
 
@@ -556,6 +631,77 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total Grid Tile (Job)   : 97 Tile
+Ukuran Tile Terbesar    : 6.0 km x 6.0 km
+Total Estimasi Area     : 1,429 km²
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tile_id</th>
+      <th>gx</th>
+      <th>gy</th>
+      <th>west</th>
+      <th>south</th>
+      <th>east</th>
+      <th>north</th>
+      <th>n_sampel</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>x2250_y-142</td>
+      <td>2250</td>
+      <td>-142</td>
+      <td>112.544038</td>
+      <td>-7.071343</td>
+      <td>112.552000</td>
+      <td>-7.0480</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>x2251_y-142</td>
+      <td>2251</td>
+      <td>-142</td>
+      <td>112.548000</td>
+      <td>-7.075640</td>
+      <td>112.589210</td>
+      <td>-7.0480</td>
+      <td>88</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>x2251_y-141</td>
+      <td>2251</td>
+      <td>-141</td>
+      <td>112.548000</td>
+      <td>-7.052000</td>
+      <td>112.581202</td>
+      <td>-7.0166</td>
+      <td>29</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 </section>
 <hr class="docutils" />
@@ -564,7 +710,7 @@ document.write(`
 <p>Koneksi otomatis ke <code class="docutils literal notranslate"><span class="pre">https://openeo.dataspace.copernicus.eu</span></code> menggunakan protokol OIDC. Status progres tiap job disimpan ke <code class="docutils literal notranslate"><span class="pre">daftar_job.csv</span></code> sehingga jika terjadi interupsi, job yang sudah selesai tidak akan diulang kembali.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_jam</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_jam</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%H:%M:%S"</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">start_job</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">connection</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -662,7 +808,7 @@ document.write(`
 <p>Membaca GeoTIFF tiap tile hasil unduhan, mengekstraksi piksel yang beririsan dengan poligon sampel, menghitung nilai <code class="docutils literal notranslate"><span class="pre">NDVI</span></code>, <code class="docutils literal notranslate"><span class="pre">NDWI</span></code>, <code class="docutils literal notranslate"><span class="pre">MNDWI</span></code>, <code class="docutils literal notranslate"><span class="pre">NDBI</span></code>, dan menyimpan dataset final ke <code class="docutils literal notranslate"><span class="pre">piksel_s2.csv</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_nama_band</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_nama_band</span><span class="p">(</span><span class="n">src</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="n">desc</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">src</span><span class="o">.</span><span class="n">descriptions</span> <span class="ow">or</span> <span class="p">[])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span> <span class="o">==</span> <span class="n">src</span><span class="o">.</span><span class="n">count</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">desc</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">BANDS</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="nb">set</span><span class="p">(</span><span class="n">desc</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">desc</span>
@@ -711,10 +857,28 @@ document.write(`
 
 <span class="k">def</span><span class="w"> </span><span class="nf">tambah_indeks</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
     <span class="n">e</span> <span class="o">=</span> <span class="mf">1e-9</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">"NDVI"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B04"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B04"</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">"NDWI"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B03"</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B03"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">"MNDWI"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B03"</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B03"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">"NDBI"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+    <span class="c1"># 1. Indeks Vegetasi Dasar</span>
+    <span class="k">if</span> <span class="s2">"B08"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="s2">"B04"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"NDVI"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B04"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B04"</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+    <span class="c1"># 2. Indeks Air</span>
+    <span class="k">if</span> <span class="s2">"B03"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="s2">"B08"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"NDWI"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B03"</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B03"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">"B03"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="s2">"B11"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"MNDWI"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B03"</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B03"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+    <span class="c1"># 3. Indeks Kawasan Terbangun</span>
+    <span class="k">if</span> <span class="s2">"B11"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="s2">"B08"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"NDBI"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+    <span class="c1"># 4. REMI (Red-Edge Mangrove Index - Chen et al., 2023) Menggunakan B05 Asli</span>
+    <span class="k">if</span> <span class="s2">"B05"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="s2">"B04"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="s2">"B11"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="s2">"B03"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">remi_den</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B03"</span><span class="p">]</span>
+        <span class="n">remi_den_safe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">remi_den</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">remi_den</span> <span class="o">+</span> <span class="mf">1e-9</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">remi_den</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"REMI"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="s2">"B05"</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B04"</span><span class="p">])</span> <span class="o">/</span> <span class="n">remi_den_safe</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
+    <span class="c1"># 5. NDMI / LSWI (Kelembapan Kanopi &amp; Sawah Irigasi)</span>
+    <span class="k">if</span> <span class="s2">"B08"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="ow">and</span> <span class="s2">"B11"</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"NDMI"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">]</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+    <span class="c1"># 6. BSI (Bare Soil Index - Lahan Sawah Kering vs Pemukiman)</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">b</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"B11"</span><span class="p">,</span> <span class="s2">"B04"</span><span class="p">,</span> <span class="s2">"B08"</span><span class="p">,</span> <span class="s2">"B02"</span><span class="p">]):</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">"BSI"</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B04"</span><span class="p">])</span> <span class="o">-</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B02"</span><span class="p">]))</span> <span class="o">/</span> <span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="s2">"B11"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B04"</span><span class="p">])</span> <span class="o">+</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"B08"</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">"B02"</span><span class="p">])</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_tif_tile</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
@@ -811,7 +975,7 @@ document.write(`
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">jalankan</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ekstrak</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ulangi_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">jalankan</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ekstrak</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ulangi_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     <span class="n">gdf</span> <span class="o">=</span> <span class="n">baca_semua</span><span class="p">()</span>
     <span class="n">tiles</span><span class="p">,</span> <span class="n">peta</span> <span class="o">=</span> <span class="n">buat_tile</span><span class="p">(</span><span class="n">gdf</span><span class="p">)</span>
 
@@ -831,7 +995,1164 @@ document.write(`
     <span class="k">return</span> <span class="n">hasil</span> <span class="k">if</span> <span class="n">hasil</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">db</span>
 
 <span class="c1"># EKSEKUSI PIPELINE (Ubah jalankan=True jika ingin memulai request openEO baru)</span>
-<span class="c1"># df_piksel = main(jalankan=True, ekstrak=True)</span>
+<span class="n">df_piksel</span> <span class="o">=</span> <span class="n">main</span><span class="p">(</span><span class="n">jalankan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ekstrak</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ulangi_error</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Kelas: Sawah              | Jumlah:  50 poligon | Bounds: [np.float64(112.55), np.float64(-7.07), np.float64(112.59), np.float64(-7.06)]
+Kelas: Pemukiman          | Jumlah:  50 poligon | Bounds: [np.float64(112.55), np.float64(-7.06), np.float64(112.59), np.float64(-7.04)]
+Kelas: Hutan Non-Mangrove | Jumlah:  50 poligon | Bounds: [np.float64(111.21), np.float64(-8.19), np.float64(112.52), np.float64(-7.62)]
+Kelas: Air                | Jumlah:  50 poligon | Bounds: [np.float64(111.21), np.float64(-7.68), np.float64(112.78), np.float64(-6.65)]
+Kelas: Hutan Mangrove     | Jumlah:  50 poligon | Bounds: [np.float64(112.69), np.float64(-7.39), np.float64(113.53), np.float64(-7.14)]
+------------------------------------------------------------
+Total Keseluruhan Sampel: 250 Poligon
+Total Grid Tile (Job)   : 97 Tile
+Ukuran Tile Terbesar    : 6.0 km x 6.0 km
+Total Estimasi Area     : 1,429 km²
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ASUS\AppData\Local\Temp\ipykernel_21444\1697055212.py:8: UserWarning: Geometry is in a geographic CRS. Results from 'area' are likely incorrect. Use 'GeoSeries.to_crs()' to re-project geometries to a projected CRS before this operation.
+
+  gdf.drop(columns="geometry").assign(luas_derajat2=gdf.geometry.area).to_csv(OUT_DIR / "daftar_poligon.csv", index_label="sampel_id")
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Authenticated using refresh token.
+[10:50:48] &gt;&gt; Mengirim job tile x2250_y-142 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[10:50:55] &gt;&gt; Mengirim job tile x2251_y-142 (88 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[10:51:18] Progres: 0/97 (0%) | Berjalan/Antre: 0 | Belum: 95 | Gagal: 0 | 0.5 mnt
+[10:51:48] Progres: 0/97 (0%) | Berjalan/Antre: 2 | Belum: 95 | Gagal: 0 | 1.0 mnt
+[10:52:18] Progres: 0/97 (0%) | Berjalan/Antre: 2 | Belum: 95 | Gagal: 0 | 1.5 mnt
+[10:52:48] Progres: 0/97 (0%) | Berjalan/Antre: 2 | Belum: 95 | Gagal: 0 | 2.0 mnt
+[10:53:18] Progres: 0/97 (0%) | Berjalan/Antre: 2 | Belum: 95 | Gagal: 0 | 2.5 mnt
+[10:53:36] &gt;&gt; Mengirim job tile x2251_y-141 (29 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[10:53:43] &gt;&gt; Mengirim job tile x2250_y-141 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[10:53:48] Progres: 2/97 (2%) | Berjalan/Antre: 0 | Belum: 94 | Gagal: 0 | 3.0 mnt
+[10:53:48] [OK] Tile x2250_y-142 selesai (job j-26101903505443ff90cacc8974ffae18), mengunduh hasil...
+[10:53:48] [OK] Tile x2250_y-142 berhasil terunduh.
+[10:53:48] [OK] Tile x2251_y-142 selesai (job j-261019035101484c8ac17ab2ed6c1884), mengunduh hasil...
+[10:53:48] [OK] Tile x2251_y-142 berhasil terunduh.
+[10:54:18] Progres: 2/97 (2%) | Berjalan/Antre: 1 | Belum: 93 | Gagal: 0 | 3.5 mnt
+[10:54:48] Progres: 2/97 (2%) | Berjalan/Antre: 2 | Belum: 93 | Gagal: 0 | 4.0 mnt
+[10:55:18] Progres: 2/97 (2%) | Berjalan/Antre: 2 | Belum: 93 | Gagal: 0 | 4.5 mnt
+[10:55:48] Progres: 2/97 (2%) | Berjalan/Antre: 2 | Belum: 93 | Gagal: 0 | 5.0 mnt
+[10:56:18] Progres: 2/97 (2%) | Berjalan/Antre: 2 | Belum: 93 | Gagal: 0 | 5.5 mnt
+[10:56:23] &gt;&gt; Mengirim job tile x2249_y-159 (13 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[10:56:31] &gt;&gt; Mengirim job tile x2249_y-158 (9 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[10:56:38] [OK] Tile x2251_y-141 selesai (job j-26101903534040d296ad76a0ed8de13a), mengunduh hasil...
+[10:56:38] [OK] Tile x2251_y-141 berhasil terunduh.
+[10:56:38] [OK] Tile x2250_y-141 selesai (job j-261019035348404186561f26181a5980), mengunduh hasil...
+[10:56:38] [OK] Tile x2250_y-141 berhasil terunduh.
+[10:56:48] Progres: 4/97 (4%) | Berjalan/Antre: 1 | Belum: 91 | Gagal: 0 | 6.0 mnt
+[10:57:18] Progres: 4/97 (4%) | Berjalan/Antre: 2 | Belum: 91 | Gagal: 0 | 6.5 mnt
+[10:57:48] Progres: 4/97 (4%) | Berjalan/Antre: 2 | Belum: 91 | Gagal: 0 | 7.0 mnt
+[10:58:18] Progres: 4/97 (4%) | Berjalan/Antre: 2 | Belum: 91 | Gagal: 0 | 7.5 mnt
+[10:58:48] Progres: 4/97 (4%) | Berjalan/Antre: 2 | Belum: 91 | Gagal: 0 | 8.0 mnt
+[10:59:18] Progres: 4/97 (4%) | Berjalan/Antre: 2 | Belum: 91 | Gagal: 0 | 8.5 mnt
+[10:59:43] &gt;&gt; Mengirim job tile x2248_y-159 (9 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[10:59:48] Progres: 6/97 (6%) | Berjalan/Antre: 0 | Belum: 91 | Gagal: 0 | 9.0 mnt
+[10:59:49] &gt;&gt; Mengirim job tile x2248_y-158 (5 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[10:59:53] [OK] Tile x2249_y-159 selesai (job j-2610190356284e2f8e58218d42460416), mengunduh hasil...
+[10:59:53] [OK] Tile x2249_y-159 berhasil terunduh.
+[10:59:53] [OK] Tile x2249_y-158 selesai (job j-2610190356374820bc96e0e928e465b9), mengunduh hasil...
+[10:59:53] [OK] Tile x2249_y-158 berhasil terunduh.
+[11:00:18] Progres: 6/97 (6%) | Berjalan/Antre: 0 | Belum: 89 | Gagal: 0 | 9.5 mnt
+[11:00:48] Progres: 6/97 (6%) | Berjalan/Antre: 2 | Belum: 89 | Gagal: 0 | 10.0 mnt
+[11:01:18] Progres: 6/97 (6%) | Berjalan/Antre: 2 | Belum: 89 | Gagal: 0 | 10.5 mnt
+[11:01:48] Progres: 6/97 (6%) | Berjalan/Antre: 2 | Belum: 89 | Gagal: 0 | 11.0 mnt
+[11:02:18] Progres: 6/97 (6%) | Berjalan/Antre: 2 | Belum: 89 | Gagal: 0 | 11.5 mnt
+[11:02:28] &gt;&gt; Mengirim job tile x2250_y-159 (3 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:02:36] &gt;&gt; Mengirim job tile x2249_y-157 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:02:42] [OK] Tile x2248_y-159 selesai (job j-2610190359474ef891fcacbb0158deab), mengunduh hasil...
+[11:02:42] [OK] Tile x2248_y-159 berhasil terunduh.
+[11:02:42] [OK] Tile x2248_y-158 selesai (job j-261019035953441583f8cb56627f6771), mengunduh hasil...
+[11:02:42] [OK] Tile x2248_y-158 berhasil terunduh.
+[11:02:48] Progres: 8/97 (8%) | Berjalan/Antre: 0 | Belum: 87 | Gagal: 0 | 12.0 mnt
+[11:03:18] Progres: 8/97 (8%) | Berjalan/Antre: 2 | Belum: 87 | Gagal: 0 | 12.5 mnt
+[11:03:48] Progres: 8/97 (8%) | Berjalan/Antre: 2 | Belum: 87 | Gagal: 0 | 13.0 mnt
+[11:04:18] Progres: 8/97 (8%) | Berjalan/Antre: 2 | Belum: 87 | Gagal: 0 | 13.5 mnt
+[11:04:48] Progres: 8/97 (8%) | Berjalan/Antre: 2 | Belum: 87 | Gagal: 0 | 14.0 mnt
+[11:05:17] &gt;&gt; Mengirim job tile x2250_y-158 (3 poligon)...
+[11:05:18] Progres: 9/97 (9%) | Berjalan/Antre: 1 | Belum: 87 | Gagal: 0 | 14.5 mnt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:05:23] [OK] Tile x2249_y-157 selesai (job j-261019040241424a8175ece3297bb330), mengunduh hasil...
+[11:05:23] [OK] Tile x2249_y-157 berhasil terunduh.
+[11:05:48] Progres: 9/97 (9%) | Berjalan/Antre: 1 | Belum: 86 | Gagal: 0 | 15.0 mnt
+[11:05:54] &gt;&gt; Mengirim job tile x2250_y-157 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:05:59] [OK] Tile x2250_y-159 selesai (job j-2610190402344a69ac447fc5d61cbb97), mengunduh hasil...
+[11:05:59] [OK] Tile x2250_y-159 berhasil terunduh.
+[11:06:18] Progres: 10/97 (10%) | Berjalan/Antre: 1 | Belum: 85 | Gagal: 0 | 15.5 mnt
+[11:06:48] Progres: 10/97 (10%) | Berjalan/Antre: 2 | Belum: 85 | Gagal: 0 | 16.0 mnt
+[11:07:18] Progres: 10/97 (10%) | Berjalan/Antre: 2 | Belum: 85 | Gagal: 0 | 16.5 mnt
+[11:07:32] &gt;&gt; Mengirim job tile x2249_y-156 (5 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:07:38] [OK] Tile x2250_y-158 selesai (job j-261019040521464d82a0ceaff3d5a257), mengunduh hasil...
+[11:07:38] [OK] Tile x2250_y-158 berhasil terunduh.
+[11:07:48] Progres: 11/97 (11%) | Berjalan/Antre: 1 | Belum: 84 | Gagal: 0 | 17.0 mnt
+[11:08:18] Progres: 11/97 (11%) | Berjalan/Antre: 2 | Belum: 84 | Gagal: 0 | 17.5 mnt
+[11:08:40] &gt;&gt; Mengirim job tile x2250_y-156 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:08:48] Progres: 12/97 (12%) | Berjalan/Antre: 1 | Belum: 84 | Gagal: 0 | 18.0 mnt
+[11:08:49] [OK] Tile x2250_y-157 selesai (job j-2610190405594bfe819571dc1e2ceadf), mengunduh hasil...
+[11:08:49] [OK] Tile x2250_y-157 berhasil terunduh.
+[11:09:18] Progres: 12/97 (12%) | Berjalan/Antre: 1 | Belum: 83 | Gagal: 0 | 18.5 mnt
+[11:09:48] Progres: 12/97 (12%) | Berjalan/Antre: 2 | Belum: 83 | Gagal: 0 | 19.0 mnt
+[11:10:18] Progres: 12/97 (12%) | Berjalan/Antre: 2 | Belum: 83 | Gagal: 0 | 19.5 mnt
+[11:10:22] &gt;&gt; Mengirim job tile x2250_y-155 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:10:28] [OK] Tile x2249_y-156 selesai (job j-2610190407354d4e8d44936d71124887), mengunduh hasil...
+[11:10:28] [OK] Tile x2249_y-156 berhasil terunduh.
+[11:10:48] Progres: 13/97 (13%) | Berjalan/Antre: 1 | Belum: 82 | Gagal: 0 | 20.0 mnt
+[11:11:18] Progres: 13/97 (13%) | Berjalan/Antre: 2 | Belum: 82 | Gagal: 0 | 20.5 mnt
+[11:11:32] &gt;&gt; Mengirim job tile x2249_y-155 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:11:37] [OK] Tile x2250_y-156 selesai (job j-2610190408464f3a811fb5ec3274a8b1), mengunduh hasil...
+[11:11:37] [OK] Tile x2250_y-156 berhasil terunduh.
+[11:11:48] Progres: 14/97 (14%) | Berjalan/Antre: 1 | Belum: 81 | Gagal: 0 | 21.0 mnt
+[11:12:18] Progres: 14/97 (14%) | Berjalan/Antre: 2 | Belum: 81 | Gagal: 0 | 21.5 mnt
+[11:12:40] &gt;&gt; Mengirim job tile x2247_y-158 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:12:46] [OK] Tile x2250_y-155 selesai (job j-2610190410264210bccc03e77fb37301), mengunduh hasil...
+[11:12:46] [OK] Tile x2250_y-155 berhasil terunduh.
+[11:12:48] Progres: 15/97 (15%) | Berjalan/Antre: 1 | Belum: 80 | Gagal: 0 | 22.0 mnt
+[11:13:18] Progres: 15/97 (15%) | Berjalan/Antre: 2 | Belum: 80 | Gagal: 0 | 22.5 mnt
+[11:13:48] Progres: 15/97 (15%) | Berjalan/Antre: 2 | Belum: 80 | Gagal: 0 | 23.0 mnt
+[11:14:18] Progres: 15/97 (15%) | Berjalan/Antre: 2 | Belum: 80 | Gagal: 0 | 23.5 mnt
+[11:14:19] &gt;&gt; Mengirim job tile x2247_y-157 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:14:25] [OK] Tile x2249_y-155 selesai (job j-261019041136431582237dda31e0139f), mengunduh hasil...
+[11:14:25] [OK] Tile x2249_y-155 berhasil terunduh.
+[11:14:48] Progres: 16/97 (16%) | Berjalan/Antre: 1 | Belum: 79 | Gagal: 0 | 24.0 mnt
+[11:15:18] Progres: 16/97 (16%) | Berjalan/Antre: 2 | Belum: 79 | Gagal: 0 | 24.5 mnt
+[11:15:27] &gt;&gt; Mengirim job tile x2248_y-157 (3 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:15:35] [OK] Tile x2247_y-158 selesai (job j-26101904124540569cc3b12b689957e4), mengunduh hasil...
+[11:15:35] [OK] Tile x2247_y-158 berhasil terunduh.
+[11:15:48] Progres: 17/97 (18%) | Berjalan/Antre: 1 | Belum: 78 | Gagal: 0 | 25.0 mnt
+[11:16:18] Progres: 17/97 (18%) | Berjalan/Antre: 2 | Belum: 78 | Gagal: 0 | 25.5 mnt
+[11:16:37] &gt;&gt; Mengirim job tile x2248_y-160 (5 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:16:44] [OK] Tile x2247_y-157 selesai (job j-2610190414244efc8b35542211007639), mengunduh hasil...
+[11:16:44] [OK] Tile x2247_y-157 berhasil terunduh.
+[11:16:48] Progres: 18/97 (19%) | Berjalan/Antre: 1 | Belum: 77 | Gagal: 0 | 26.0 mnt
+[11:17:15] &gt;&gt; Mengirim job tile x2249_y-160 (4 poligon)...
+[11:17:18] Progres: 19/97 (20%) | Berjalan/Antre: 1 | Belum: 77 | Gagal: 0 | 26.5 mnt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:17:21] [OK] Tile x2248_y-157 selesai (job j-261019041533434fac0c7750cb4411da), mengunduh hasil...
+[11:17:21] [OK] Tile x2248_y-157 berhasil terunduh.
+[11:17:48] Progres: 19/97 (20%) | Berjalan/Antre: 1 | Belum: 76 | Gagal: 0 | 27.0 mnt
+[11:18:18] Progres: 19/97 (20%) | Berjalan/Antre: 2 | Belum: 76 | Gagal: 0 | 27.5 mnt
+[11:18:48] Progres: 19/97 (20%) | Berjalan/Antre: 2 | Belum: 76 | Gagal: 0 | 28.0 mnt
+[11:19:18] Progres: 19/97 (20%) | Berjalan/Antre: 2 | Belum: 76 | Gagal: 0 | 28.5 mnt
+[11:19:26] &gt;&gt; Mengirim job tile x2250_y-160 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:19:34] &gt;&gt; Mengirim job tile x2245_y-159 (3 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:19:39] [OK] Tile x2248_y-160 selesai (job j-26101904164341a68f5e0b86474657c2), mengunduh hasil...
+[11:19:39] [OK] Tile x2248_y-160 berhasil terunduh.
+[11:19:39] [OK] Tile x2249_y-160 selesai (job j-261019041721416b8fadaa061a8bd3f2), mengunduh hasil...
+[11:19:39] [OK] Tile x2249_y-160 berhasil terunduh.
+[11:19:48] Progres: 21/97 (22%) | Berjalan/Antre: 0 | Belum: 74 | Gagal: 0 | 29.0 mnt
+[11:20:18] Progres: 21/97 (22%) | Berjalan/Antre: 2 | Belum: 74 | Gagal: 0 | 29.5 mnt
+[11:20:49] Progres: 21/97 (22%) | Berjalan/Antre: 2 | Belum: 74 | Gagal: 0 | 30.0 mnt
+[11:21:19] Progres: 21/97 (22%) | Berjalan/Antre: 2 | Belum: 74 | Gagal: 0 | 30.5 mnt
+[11:21:43] &gt;&gt; Mengirim job tile x2245_y-158 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:21:49] Progres: 22/97 (23%) | Berjalan/Antre: 1 | Belum: 74 | Gagal: 0 | 31.0 mnt
+[11:21:49] [OK] Tile x2250_y-160 selesai (job j-2610190419324a8d82c4845d8e96717a), mengunduh hasil...
+[11:21:49] [OK] Tile x2250_y-160 berhasil terunduh.
+[11:22:19] Progres: 22/97 (23%) | Berjalan/Antre: 1 | Belum: 73 | Gagal: 0 | 31.5 mnt
+[11:22:20] &gt;&gt; Mengirim job tile x2246_y-159 (3 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:22:26] [OK] Tile x2245_y-159 selesai (job j-26101904193948cda592054ee914a19b), mengunduh hasil...
+[11:22:26] [OK] Tile x2245_y-159 berhasil terunduh.
+[11:22:49] Progres: 23/97 (24%) | Berjalan/Antre: 1 | Belum: 72 | Gagal: 0 | 32.0 mnt
+[11:23:19] Progres: 23/97 (24%) | Berjalan/Antre: 2 | Belum: 72 | Gagal: 0 | 32.5 mnt
+[11:23:49] Progres: 23/97 (24%) | Berjalan/Antre: 2 | Belum: 72 | Gagal: 0 | 33.0 mnt
+[11:24:19] Progres: 23/97 (24%) | Berjalan/Antre: 2 | Belum: 72 | Gagal: 0 | 33.5 mnt
+[11:24:30] &gt;&gt; Mengirim job tile x2246_y-158 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:24:37] &gt;&gt; Mengirim job tile x2245_y-160 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:24:43] [OK] Tile x2245_y-158 selesai (job j-26101904214846f18889ed7861135162), mengunduh hasil...
+[11:24:43] [OK] Tile x2245_y-158 berhasil terunduh.
+[11:24:43] [OK] Tile x2246_y-159 selesai (job j-2610190422254df8a88d115a962a1995), mengunduh hasil...
+[11:24:43] [OK] Tile x2246_y-159 berhasil terunduh.
+[11:24:49] Progres: 25/97 (26%) | Berjalan/Antre: 1 | Belum: 70 | Gagal: 0 | 34.0 mnt
+[11:25:19] Progres: 25/97 (26%) | Berjalan/Antre: 2 | Belum: 70 | Gagal: 0 | 34.5 mnt
+[11:25:49] Progres: 25/97 (26%) | Berjalan/Antre: 2 | Belum: 70 | Gagal: 0 | 35.0 mnt
+[11:26:19] Progres: 25/97 (26%) | Berjalan/Antre: 2 | Belum: 70 | Gagal: 0 | 35.5 mnt
+[11:26:49] Progres: 25/97 (26%) | Berjalan/Antre: 2 | Belum: 70 | Gagal: 0 | 36.0 mnt
+[11:27:18] &gt;&gt; Mengirim job tile x2246_y-160 (1 poligon)...
+[11:27:19] Progres: 27/97 (28%) | Berjalan/Antre: 0 | Belum: 70 | Gagal: 0 | 36.5 mnt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:27:24] &gt;&gt; Mengirim job tile x2238_y-164 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:27:29] [OK] Tile x2246_y-158 selesai (job j-26101904243543eda51802d9c56c2778), mengunduh hasil...
+[11:27:29] [OK] Tile x2246_y-158 berhasil terunduh.
+[11:27:29] [OK] Tile x2245_y-160 selesai (job j-2610190424434ce08ad47ada96cc8294), mengunduh hasil...
+[11:27:29] [OK] Tile x2245_y-160 berhasil terunduh.
+[11:27:49] Progres: 27/97 (28%) | Berjalan/Antre: 0 | Belum: 68 | Gagal: 0 | 37.0 mnt
+[11:28:19] Progres: 27/97 (28%) | Berjalan/Antre: 2 | Belum: 68 | Gagal: 0 | 37.5 mnt
+[11:28:49] Progres: 27/97 (28%) | Berjalan/Antre: 2 | Belum: 68 | Gagal: 0 | 38.0 mnt
+[11:29:19] Progres: 27/97 (28%) | Berjalan/Antre: 2 | Belum: 68 | Gagal: 0 | 38.5 mnt
+[11:29:33] &gt;&gt; Mengirim job tile x2239_y-164 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:29:39] [OK] Tile x2246_y-160 selesai (job j-261019042722421f9749f3d5ebd2d5e9), mengunduh hasil...
+[11:29:39] [OK] Tile x2246_y-160 berhasil terunduh.
+[11:29:49] Progres: 28/97 (29%) | Berjalan/Antre: 1 | Belum: 67 | Gagal: 0 | 39.0 mnt
+[11:30:19] Progres: 28/97 (29%) | Berjalan/Antre: 2 | Belum: 67 | Gagal: 0 | 39.5 mnt
+[11:30:41] &gt;&gt; Mengirim job tile x2235_y-158 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:30:47] [OK] Tile x2238_y-164 selesai (job j-261019042729413b9ae53e005431e818), mengunduh hasil...
+[11:30:47] [OK] Tile x2238_y-164 berhasil terunduh.
+[11:30:49] Progres: 29/97 (30%) | Berjalan/Antre: 1 | Belum: 66 | Gagal: 0 | 40.0 mnt
+[11:31:19] Progres: 29/97 (30%) | Berjalan/Antre: 2 | Belum: 66 | Gagal: 0 | 40.5 mnt
+[11:31:49] Progres: 29/97 (30%) | Berjalan/Antre: 2 | Belum: 66 | Gagal: 0 | 41.0 mnt
+[11:32:19] Progres: 29/97 (30%) | Berjalan/Antre: 2 | Belum: 66 | Gagal: 0 | 41.5 mnt
+[11:32:20] &gt;&gt; Mengirim job tile x2235_y-157 (3 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:32:27] [OK] Tile x2239_y-164 selesai (job j-2610190429374b6c8a51b85f5f5fd78c), mengunduh hasil...
+[11:32:27] [OK] Tile x2239_y-164 berhasil terunduh.
+[11:32:49] Progres: 30/97 (31%) | Berjalan/Antre: 1 | Belum: 65 | Gagal: 0 | 42.0 mnt
+[11:33:19] Progres: 30/97 (31%) | Berjalan/Antre: 2 | Belum: 65 | Gagal: 0 | 42.5 mnt
+[11:33:29] &gt;&gt; Mengirim job tile x2236_y-158 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:33:35] [OK] Tile x2235_y-158 selesai (job j-2610190430464573a1f434729b8d648f), mengunduh hasil...
+[11:33:35] [OK] Tile x2235_y-158 berhasil terunduh.
+[11:33:49] Progres: 31/97 (32%) | Berjalan/Antre: 1 | Belum: 64 | Gagal: 0 | 43.0 mnt
+[11:34:19] Progres: 31/97 (32%) | Berjalan/Antre: 2 | Belum: 64 | Gagal: 0 | 43.5 mnt
+[11:34:37] &gt;&gt; Mengirim job tile x2236_y-157 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:34:45] [OK] Tile x2235_y-157 selesai (job j-26101904322548b6a53b8281713aa2f9), mengunduh hasil...
+[11:34:45] [OK] Tile x2235_y-157 berhasil terunduh.
+[11:34:49] Progres: 32/97 (33%) | Berjalan/Antre: 1 | Belum: 63 | Gagal: 0 | 44.0 mnt
+[11:35:19] Progres: 32/97 (33%) | Berjalan/Antre: 2 | Belum: 63 | Gagal: 0 | 44.5 mnt
+[11:35:49] Progres: 32/97 (33%) | Berjalan/Antre: 2 | Belum: 63 | Gagal: 0 | 45.0 mnt
+[11:36:18] &gt;&gt; Mengirim job tile x2233_y-156 (2 poligon)...
+[11:36:19] Progres: 33/97 (34%) | Berjalan/Antre: 1 | Belum: 63 | Gagal: 0 | 45.5 mnt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:36:25] [OK] Tile x2236_y-158 selesai (job j-26101904333445c2820648b7318d7bac), mengunduh hasil...
+[11:36:25] [OK] Tile x2236_y-158 berhasil terunduh.
+[11:36:49] Progres: 33/97 (34%) | Berjalan/Antre: 1 | Belum: 62 | Gagal: 0 | 46.0 mnt
+[11:37:19] Progres: 33/97 (34%) | Berjalan/Antre: 2 | Belum: 62 | Gagal: 0 | 46.5 mnt
+[11:37:26] &gt;&gt; Mengirim job tile x2234_y-157 (3 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:37:33] [OK] Tile x2236_y-157 selesai (job j-261019043443464a945e20bc2acff5fe), mengunduh hasil...
+[11:37:33] [OK] Tile x2236_y-157 berhasil terunduh.
+[11:37:49] Progres: 34/97 (35%) | Berjalan/Antre: 1 | Belum: 61 | Gagal: 0 | 47.0 mnt
+[11:38:19] Progres: 34/97 (35%) | Berjalan/Antre: 2 | Belum: 61 | Gagal: 0 | 47.5 mnt
+[11:38:35] &gt;&gt; Mengirim job tile x2234_y-156 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:38:42] [OK] Tile x2233_y-156 selesai (job j-2610190436234f30bd3c8684ee82370c), mengunduh hasil...
+[11:38:42] [OK] Tile x2233_y-156 berhasil terunduh.
+[11:38:49] Progres: 35/97 (36%) | Berjalan/Antre: 1 | Belum: 60 | Gagal: 0 | 48.0 mnt
+[11:39:19] Progres: 35/97 (36%) | Berjalan/Antre: 2 | Belum: 60 | Gagal: 0 | 48.5 mnt
+[11:39:49] Progres: 35/97 (36%) | Berjalan/Antre: 2 | Belum: 60 | Gagal: 0 | 49.0 mnt
+[11:40:19] Progres: 35/97 (36%) | Berjalan/Antre: 2 | Belum: 60 | Gagal: 0 | 49.5 mnt
+[11:40:46] &gt;&gt; Mengirim job tile x2235_y-156 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:40:49] Progres: 37/97 (38%) | Berjalan/Antre: 0 | Belum: 60 | Gagal: 0 | 50.0 mnt
+[11:40:52] &gt;&gt; Mengirim job tile x2236_y-156 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:40:57] [OK] Tile x2234_y-157 selesai (job j-2610190437324399bfbf50e0aafcfe29), mengunduh hasil...
+[11:40:57] [OK] Tile x2234_y-157 berhasil terunduh.
+[11:40:57] [OK] Tile x2234_y-156 selesai (job j-261019043840462d924e682215dfb1af), mengunduh hasil...
+[11:40:57] [OK] Tile x2234_y-156 berhasil terunduh.
+[11:41:19] Progres: 37/97 (38%) | Berjalan/Antre: 0 | Belum: 58 | Gagal: 0 | 50.5 mnt
+[11:41:49] Progres: 37/97 (38%) | Berjalan/Antre: 2 | Belum: 58 | Gagal: 0 | 51.0 mnt
+[11:42:19] Progres: 37/97 (38%) | Berjalan/Antre: 2 | Belum: 58 | Gagal: 0 | 51.5 mnt
+[11:42:49] Progres: 37/97 (38%) | Berjalan/Antre: 2 | Belum: 58 | Gagal: 0 | 52.0 mnt
+[11:43:19] Progres: 37/97 (38%) | Berjalan/Antre: 2 | Belum: 58 | Gagal: 0 | 52.5 mnt
+[11:43:33] &gt;&gt; Mengirim job tile x2232_y-156 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:43:40] &gt;&gt; Mengirim job tile x2233_y-157 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:43:45] [OK] Tile x2235_y-156 selesai (job j-26101904405040dba2c7d696fc40136a), mengunduh hasil...
+[11:43:45] [OK] Tile x2235_y-156 berhasil terunduh.
+[11:43:45] [OK] Tile x2236_y-156 selesai (job j-261019044057477194b26100733bca49), mengunduh hasil...
+[11:43:45] [OK] Tile x2236_y-156 berhasil terunduh.
+[11:43:49] Progres: 39/97 (40%) | Berjalan/Antre: 0 | Belum: 56 | Gagal: 0 | 53.0 mnt
+[11:44:19] Progres: 39/97 (40%) | Berjalan/Antre: 2 | Belum: 56 | Gagal: 0 | 53.5 mnt
+[11:44:49] Progres: 39/97 (40%) | Berjalan/Antre: 2 | Belum: 56 | Gagal: 0 | 54.0 mnt
+[11:45:18] &gt;&gt; Mengirim job tile x2233_y-155 (1 poligon)...
+[11:45:19] Progres: 40/97 (41%) | Berjalan/Antre: 1 | Belum: 56 | Gagal: 0 | 54.5 mnt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[11:45:24] [OK] Tile x2232_y-156 selesai (job j-26101904433843a3bfc68652201ef0d1), mengunduh hasil...
+[11:45:24] [OK] Tile x2232_y-156 berhasil terunduh.
+[11:45:49] Progres: 40/97 (41%) | Berjalan/Antre: 1 | Belum: 55 | Gagal: 0 | 55.0 mnt
+[12:05:27] Progres: 40/97 (41%) | Berjalan/Antre: 2 | Belum: 55 | Gagal: 0 | 74.7 mnt
+[12:05:57] Progres: 40/97 (41%) | Berjalan/Antre: 2 | Belum: 55 | Gagal: 0 | 75.2 mnt
+[12:06:19] &gt;&gt; Mengirim job tile x2234_y-158 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:06:27] &gt;&gt; Mengirim job tile x2224_y-154 (2 poligon)...
+[12:06:27] Progres: 42/97 (43%) | Berjalan/Antre: 0 | Belum: 54 | Gagal: 0 | 75.7 mnt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:06:32] [OK] Tile x2233_y-157 selesai (job j-2610190443454103a646d11210cf9304), mengunduh hasil...
+[12:06:32] [OK] Tile x2233_y-157 berhasil terunduh.
+[12:06:32] [OK] Tile x2233_y-155 selesai (job j-26101904452243de9542c11dc1935c4c), mengunduh hasil...
+[12:06:32] [OK] Tile x2233_y-155 berhasil terunduh.
+[12:06:57] Progres: 42/97 (43%) | Berjalan/Antre: 0 | Belum: 53 | Gagal: 0 | 76.2 mnt
+[12:07:27] Progres: 42/97 (43%) | Berjalan/Antre: 2 | Belum: 53 | Gagal: 0 | 76.7 mnt
+[12:07:57] Progres: 42/97 (43%) | Berjalan/Antre: 2 | Belum: 53 | Gagal: 0 | 77.2 mnt
+[12:08:27] Progres: 42/97 (43%) | Berjalan/Antre: 2 | Belum: 53 | Gagal: 0 | 77.7 mnt
+[12:08:36] &gt;&gt; Mengirim job tile x2224_y-153 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:08:42] &gt;&gt; Mengirim job tile x2231_y-149 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:08:47] [OK] Tile x2234_y-158 selesai (job j-26101905062446eba8561aea1e86dc9f), mengunduh hasil...
+[12:08:47] [OK] Tile x2234_y-158 berhasil terunduh.
+[12:08:47] [OK] Tile x2224_y-154 selesai (job j-26101905063240f6bbd8243b398b612f), mengunduh hasil...
+[12:08:47] [OK] Tile x2224_y-154 berhasil terunduh.
+[12:08:57] Progres: 44/97 (45%) | Berjalan/Antre: 0 | Belum: 51 | Gagal: 0 | 78.2 mnt
+[12:09:27] Progres: 44/97 (45%) | Berjalan/Antre: 2 | Belum: 51 | Gagal: 0 | 78.7 mnt
+[12:09:57] Progres: 44/97 (45%) | Berjalan/Antre: 2 | Belum: 51 | Gagal: 0 | 79.2 mnt
+[12:10:20] &gt;&gt; Mengirim job tile x2248_y-140 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:10:26] &gt;&gt; Mengirim job tile x2249_y-145 (5 poligon)...
+[12:10:27] Progres: 46/97 (47%) | Berjalan/Antre: 0 | Belum: 50 | Gagal: 0 | 79.7 mnt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:10:32] [OK] Tile x2224_y-153 selesai (job j-26101905084042b8991a998105b81f2a), mengunduh hasil...
+[12:10:32] [OK] Tile x2224_y-153 berhasil terunduh.
+[12:10:32] [OK] Tile x2231_y-149 selesai (job j-2610190508474d35b30f1578da590aa5), mengunduh hasil...
+[12:10:32] [OK] Tile x2231_y-149 berhasil terunduh.
+[12:10:57] Progres: 46/97 (47%) | Berjalan/Antre: 0 | Belum: 49 | Gagal: 0 | 80.2 mnt
+[12:11:27] Progres: 46/97 (47%) | Berjalan/Antre: 2 | Belum: 49 | Gagal: 0 | 80.7 mnt
+[12:11:57] Progres: 46/97 (47%) | Berjalan/Antre: 2 | Belum: 49 | Gagal: 0 | 81.2 mnt
+[12:12:27] Progres: 46/97 (47%) | Berjalan/Antre: 2 | Belum: 49 | Gagal: 0 | 81.7 mnt
+[12:12:37] &gt;&gt; Mengirim job tile x2248_y-145 (7 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:12:43] &gt;&gt; Mengirim job tile x2248_y-146 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:12:48] [OK] Tile x2248_y-140 selesai (job j-2610190510244d38a78c0559df674254), mengunduh hasil...
+[12:12:48] [OK] Tile x2248_y-140 berhasil terunduh.
+[12:12:48] [OK] Tile x2249_y-145 selesai (job j-26101905103241d3aca8aaa30a2d11ab), mengunduh hasil...
+[12:12:48] [OK] Tile x2249_y-145 berhasil terunduh.
+[12:12:58] Progres: 48/97 (49%) | Berjalan/Antre: 0 | Belum: 47 | Gagal: 0 | 82.2 mnt
+[12:13:28] Progres: 48/97 (49%) | Berjalan/Antre: 2 | Belum: 47 | Gagal: 0 | 82.7 mnt
+[12:13:58] Progres: 48/97 (49%) | Berjalan/Antre: 2 | Belum: 47 | Gagal: 0 | 83.2 mnt
+[12:14:21] &gt;&gt; Mengirim job tile x2252_y-144 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:14:27] [OK] Tile x2248_y-145 selesai (job j-2610190512414ccd8bb998583f61f8c3), mengunduh hasil...
+[12:14:27] [OK] Tile x2248_y-145 berhasil terunduh.
+[12:14:28] Progres: 49/97 (51%) | Berjalan/Antre: 1 | Belum: 46 | Gagal: 0 | 83.7 mnt
+[12:14:58] Progres: 49/97 (51%) | Berjalan/Antre: 1 | Belum: 46 | Gagal: 0 | 84.2 mnt
+[12:15:28] Progres: 49/97 (51%) | Berjalan/Antre: 2 | Belum: 46 | Gagal: 0 | 84.7 mnt
+[12:15:29] &gt;&gt; Mengirim job tile x2251_y-143 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:15:35] [OK] Tile x2248_y-146 selesai (job j-26101905124849d4b35f9ab69ffb3903), mengunduh hasil...
+[12:15:35] [OK] Tile x2248_y-146 berhasil terunduh.
+[12:15:58] Progres: 50/97 (52%) | Berjalan/Antre: 1 | Belum: 45 | Gagal: 0 | 85.2 mnt
+[12:16:28] Progres: 50/97 (52%) | Berjalan/Antre: 2 | Belum: 45 | Gagal: 0 | 85.7 mnt
+[12:16:37] &gt;&gt; Mengirim job tile x2245_y-145 (3 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:16:43] [OK] Tile x2252_y-144 selesai (job j-2610190514254cfd8a9be28ad21862e9), mengunduh hasil...
+[12:16:43] [OK] Tile x2252_y-144 berhasil terunduh.
+[12:16:58] Progres: 51/97 (53%) | Berjalan/Antre: 1 | Belum: 44 | Gagal: 0 | 86.2 mnt
+[12:17:14] &gt;&gt; Mengirim job tile x2255_y-146 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:17:19] [OK] Tile x2251_y-143 selesai (job j-2610190515334789b86069c70d1c084d), mengunduh hasil...
+[12:17:19] [OK] Tile x2251_y-143 berhasil terunduh.
+[12:17:28] Progres: 52/97 (54%) | Berjalan/Antre: 1 | Belum: 43 | Gagal: 0 | 86.7 mnt
+[12:17:58] Progres: 52/97 (54%) | Berjalan/Antre: 2 | Belum: 43 | Gagal: 0 | 87.2 mnt
+[12:18:28] Progres: 52/97 (54%) | Berjalan/Antre: 2 | Belum: 43 | Gagal: 0 | 87.7 mnt
+[12:18:58] Progres: 52/97 (54%) | Berjalan/Antre: 2 | Belum: 43 | Gagal: 0 | 88.2 mnt
+[12:19:23] &gt;&gt; Mengirim job tile x2248_y-137 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:19:28] Progres: 54/97 (56%) | Berjalan/Antre: 0 | Belum: 43 | Gagal: 0 | 88.7 mnt
+[12:19:30] &gt;&gt; Mengirim job tile x2248_y-136 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:19:35] [OK] Tile x2245_y-145 selesai (job j-26101905164247b0bc3745e17d554799), mengunduh hasil...
+[12:19:35] [OK] Tile x2245_y-145 berhasil terunduh.
+[12:19:35] [OK] Tile x2255_y-146 selesai (job j-2610190517194cf687047b2d927b018d), mengunduh hasil...
+[12:19:35] [OK] Tile x2255_y-146 berhasil terunduh.
+[12:19:58] Progres: 54/97 (56%) | Berjalan/Antre: 0 | Belum: 41 | Gagal: 0 | 89.2 mnt
+[12:20:28] Progres: 54/97 (56%) | Berjalan/Antre: 2 | Belum: 41 | Gagal: 0 | 89.7 mnt
+[12:20:58] Progres: 54/97 (56%) | Berjalan/Antre: 2 | Belum: 41 | Gagal: 0 | 90.2 mnt
+[12:21:28] Progres: 54/97 (56%) | Berjalan/Antre: 2 | Belum: 41 | Gagal: 0 | 90.7 mnt
+[12:21:58] Progres: 54/97 (56%) | Berjalan/Antre: 2 | Belum: 41 | Gagal: 0 | 91.2 mnt
+[12:22:28] Progres: 54/97 (56%) | Berjalan/Antre: 2 | Belum: 41 | Gagal: 0 | 91.7 mnt
+[12:22:41] &gt;&gt; Mengirim job tile x2248_y-135 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:22:46] &gt;&gt; Mengirim job tile x2249_y-137 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:22:52] [OK] Tile x2248_y-137 selesai (job j-2610190519284bf4b4f6db172e693aea), mengunduh hasil...
+[12:22:52] [OK] Tile x2248_y-137 berhasil terunduh.
+[12:22:52] [OK] Tile x2248_y-136 selesai (job j-26101905193542da889aca288d1177c3), mengunduh hasil...
+[12:22:52] [OK] Tile x2248_y-136 berhasil terunduh.
+[12:22:58] Progres: 56/97 (58%) | Berjalan/Antre: 0 | Belum: 39 | Gagal: 0 | 92.2 mnt
+[12:23:28] Progres: 56/97 (58%) | Berjalan/Antre: 2 | Belum: 39 | Gagal: 0 | 92.7 mnt
+[12:23:58] Progres: 56/97 (58%) | Berjalan/Antre: 2 | Belum: 39 | Gagal: 0 | 93.2 mnt
+[12:24:25] &gt;&gt; Mengirim job tile x2249_y-136 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:24:28] Progres: 57/97 (59%) | Berjalan/Antre: 1 | Belum: 39 | Gagal: 0 | 93.7 mnt
+[12:24:31] [OK] Tile x2248_y-135 selesai (job j-261019052244405aa69a2a5d7b207b8b), mengunduh hasil...
+[12:24:31] [OK] Tile x2248_y-135 berhasil terunduh.
+[12:24:58] Progres: 57/97 (59%) | Berjalan/Antre: 1 | Belum: 38 | Gagal: 0 | 94.2 mnt
+[12:25:28] Progres: 57/97 (59%) | Berjalan/Antre: 2 | Belum: 38 | Gagal: 0 | 94.7 mnt
+[12:25:33] &gt;&gt; Mengirim job tile x2250_y-137 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:25:39] [OK] Tile x2249_y-137 selesai (job j-26101905225248d0a80684bf3337412d), mengunduh hasil...
+[12:25:39] [OK] Tile x2249_y-137 berhasil terunduh.
+[12:25:58] Progres: 58/97 (60%) | Berjalan/Antre: 1 | Belum: 37 | Gagal: 0 | 95.2 mnt
+[12:26:28] Progres: 58/97 (60%) | Berjalan/Antre: 2 | Belum: 37 | Gagal: 0 | 95.7 mnt
+[12:26:58] Progres: 58/97 (60%) | Berjalan/Antre: 2 | Belum: 37 | Gagal: 0 | 96.2 mnt
+[12:27:12] &gt;&gt; Mengirim job tile x2250_y-136 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:27:19] [OK] Tile x2249_y-136 selesai (job j-26101905242940239bbd3ef287772c0c), mengunduh hasil...
+[12:27:19] [OK] Tile x2249_y-136 berhasil terunduh.
+[12:27:28] Progres: 59/97 (61%) | Berjalan/Antre: 1 | Belum: 36 | Gagal: 0 | 96.7 mnt
+[12:27:58] Progres: 59/97 (61%) | Berjalan/Antre: 2 | Belum: 36 | Gagal: 0 | 97.2 mnt
+[12:28:21] &gt;&gt; Mengirim job tile x2251_y-137 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:28:27] [OK] Tile x2250_y-137 selesai (job j-261019052537448aafe8e0a886f1e1b5), mengunduh hasil...
+[12:28:27] [OK] Tile x2250_y-137 berhasil terunduh.
+[12:28:28] Progres: 60/97 (62%) | Berjalan/Antre: 1 | Belum: 35 | Gagal: 0 | 97.7 mnt
+[12:28:58] Progres: 60/97 (62%) | Berjalan/Antre: 2 | Belum: 35 | Gagal: 0 | 98.2 mnt
+[12:29:28] Progres: 60/97 (62%) | Berjalan/Antre: 2 | Belum: 35 | Gagal: 0 | 98.7 mnt
+[12:29:30] &gt;&gt; Mengirim job tile x2251_y-136 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:29:37] [OK] Tile x2250_y-136 selesai (job j-26101905271742919dd15a44884e976b), mengunduh hasil...
+[12:29:37] [OK] Tile x2250_y-136 berhasil terunduh.
+[12:29:58] Progres: 61/97 (63%) | Berjalan/Antre: 1 | Belum: 34 | Gagal: 0 | 99.2 mnt
+[12:30:28] Progres: 61/97 (63%) | Berjalan/Antre: 2 | Belum: 34 | Gagal: 0 | 99.7 mnt
+[12:30:39] &gt;&gt; Mengirim job tile x2243_y-137 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:30:45] [OK] Tile x2251_y-137 selesai (job j-26101905282647428c71c54b09098983), mengunduh hasil...
+[12:30:45] [OK] Tile x2251_y-137 berhasil terunduh.
+[12:30:58] Progres: 62/97 (64%) | Berjalan/Antre: 1 | Belum: 33 | Gagal: 0 | 100.2 mnt
+[12:31:16] &gt;&gt; Mengirim job tile x2243_y-136 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:31:21] [OK] Tile x2251_y-136 selesai (job j-2610190529354e0dbcbd87a77795df0b), mengunduh hasil...
+[12:31:21] [OK] Tile x2251_y-136 berhasil terunduh.
+[12:31:28] Progres: 63/97 (65%) | Berjalan/Antre: 1 | Belum: 32 | Gagal: 0 | 100.7 mnt
+[12:31:58] Progres: 63/97 (65%) | Berjalan/Antre: 2 | Belum: 32 | Gagal: 0 | 101.2 mnt
+[12:32:28] Progres: 63/97 (65%) | Berjalan/Antre: 2 | Belum: 32 | Gagal: 0 | 101.7 mnt
+[12:32:58] Progres: 63/97 (65%) | Berjalan/Antre: 2 | Belum: 32 | Gagal: 0 | 102.2 mnt
+[12:33:25] &gt;&gt; Mengirim job tile x2243_y-135 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:33:28] Progres: 65/97 (67%) | Berjalan/Antre: 0 | Belum: 32 | Gagal: 0 | 102.7 mnt
+[12:33:31] &gt;&gt; Mengirim job tile x2243_y-134 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:33:36] [OK] Tile x2243_y-137 selesai (job j-261019053044438388056b1fea7f5ca8), mengunduh hasil...
+[12:33:36] [OK] Tile x2243_y-137 berhasil terunduh.
+[12:33:36] [OK] Tile x2243_y-136 selesai (job j-2610190531214456b9187071fb21bc32), mengunduh hasil...
+[12:33:36] [OK] Tile x2243_y-136 berhasil terunduh.
+[12:33:58] Progres: 65/97 (67%) | Berjalan/Antre: 0 | Belum: 30 | Gagal: 0 | 103.2 mnt
+[12:34:28] Progres: 65/97 (67%) | Berjalan/Antre: 2 | Belum: 30 | Gagal: 0 | 103.7 mnt
+[12:34:58] Progres: 65/97 (67%) | Berjalan/Antre: 2 | Belum: 30 | Gagal: 0 | 104.2 mnt
+[12:35:28] Progres: 65/97 (67%) | Berjalan/Antre: 2 | Belum: 30 | Gagal: 0 | 104.7 mnt
+[12:35:40] &gt;&gt; Mengirim job tile x2243_y-133 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:35:46] &gt;&gt; Mengirim job tile x2244_y-137 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:35:51] [OK] Tile x2243_y-135 selesai (job j-2610190533304dad831049e6d6f4c46d), mengunduh hasil...
+[12:35:51] [OK] Tile x2243_y-135 berhasil terunduh.
+[12:35:51] [OK] Tile x2243_y-134 selesai (job j-26101905333645f3bb2d1f2f9ebf957f), mengunduh hasil...
+[12:35:51] [OK] Tile x2243_y-134 berhasil terunduh.
+[12:35:58] Progres: 67/97 (69%) | Berjalan/Antre: 1 | Belum: 28 | Gagal: 0 | 105.2 mnt
+[12:36:28] Progres: 67/97 (69%) | Berjalan/Antre: 2 | Belum: 28 | Gagal: 0 | 105.7 mnt
+[12:36:58] Progres: 67/97 (69%) | Berjalan/Antre: 2 | Belum: 28 | Gagal: 0 | 106.2 mnt
+[12:37:24] &gt;&gt; Mengirim job tile x2244_y-136 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:37:29] Progres: 68/97 (70%) | Berjalan/Antre: 1 | Belum: 28 | Gagal: 0 | 106.7 mnt
+[12:37:29] [OK] Tile x2243_y-133 selesai (job j-26101905354449a487845edb66d02c0f), mengunduh hasil...
+[12:37:29] [OK] Tile x2243_y-133 berhasil terunduh.
+[12:37:59] Progres: 68/97 (70%) | Berjalan/Antre: 1 | Belum: 27 | Gagal: 0 | 107.2 mnt
+[12:38:29] Progres: 68/97 (70%) | Berjalan/Antre: 2 | Belum: 27 | Gagal: 0 | 107.7 mnt
+[12:38:31] &gt;&gt; Mengirim job tile x2244_y-135 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:38:38] [OK] Tile x2244_y-137 selesai (job j-2610190535514e7f966e0cbfcc1347b8), mengunduh hasil...
+[12:38:38] [OK] Tile x2244_y-137 berhasil terunduh.
+[12:38:59] Progres: 69/97 (71%) | Berjalan/Antre: 1 | Belum: 26 | Gagal: 0 | 108.2 mnt
+[12:39:29] Progres: 69/97 (71%) | Berjalan/Antre: 2 | Belum: 26 | Gagal: 0 | 108.7 mnt
+[12:39:40] &gt;&gt; Mengirim job tile x2244_y-134 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:39:46] [OK] Tile x2244_y-136 selesai (job j-26101905372840e3a351bbde98780cf1), mengunduh hasil...
+[12:39:46] [OK] Tile x2244_y-136 berhasil terunduh.
+[12:39:59] Progres: 70/97 (72%) | Berjalan/Antre: 1 | Belum: 25 | Gagal: 0 | 109.2 mnt
+[12:40:18] &gt;&gt; Mengirim job tile x2245_y-137 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:40:22] [OK] Tile x2244_y-135 selesai (job j-2610190538364f4fbc278c557f31e598), mengunduh hasil...
+[12:40:22] [OK] Tile x2244_y-135 berhasil terunduh.
+[12:40:29] Progres: 71/97 (73%) | Berjalan/Antre: 1 | Belum: 24 | Gagal: 0 | 109.7 mnt
+[12:40:59] Progres: 71/97 (73%) | Berjalan/Antre: 2 | Belum: 24 | Gagal: 0 | 110.2 mnt
+[12:41:29] Progres: 71/97 (73%) | Berjalan/Antre: 2 | Belum: 24 | Gagal: 0 | 110.7 mnt
+[12:41:59] Progres: 71/97 (73%) | Berjalan/Antre: 2 | Belum: 24 | Gagal: 0 | 111.2 mnt
+[12:42:26] &gt;&gt; Mengirim job tile x2245_y-136 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:42:29] Progres: 73/97 (75%) | Berjalan/Antre: 0 | Belum: 24 | Gagal: 0 | 111.7 mnt
+[12:42:33] &gt;&gt; Mengirim job tile x2245_y-135 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:42:38] [OK] Tile x2244_y-134 selesai (job j-2610190539454504b0de274ecaa4ca33), mengunduh hasil...
+[12:42:38] [OK] Tile x2244_y-134 berhasil terunduh.
+[12:42:38] [OK] Tile x2245_y-137 selesai (job j-26101905402349a3a6f8b71b0215626f), mengunduh hasil...
+[12:42:38] [OK] Tile x2245_y-137 berhasil terunduh.
+[12:42:59] Progres: 73/97 (75%) | Berjalan/Antre: 0 | Belum: 22 | Gagal: 0 | 112.2 mnt
+[12:43:29] Progres: 73/97 (75%) | Berjalan/Antre: 2 | Belum: 22 | Gagal: 0 | 112.7 mnt
+[12:43:59] Progres: 73/97 (75%) | Berjalan/Antre: 2 | Belum: 22 | Gagal: 0 | 113.2 mnt
+[12:44:29] Progres: 73/97 (75%) | Berjalan/Antre: 2 | Belum: 22 | Gagal: 0 | 113.7 mnt
+[12:44:41] &gt;&gt; Mengirim job tile x2245_y-134 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:44:47] [OK] Tile x2245_y-135 selesai (job j-2610190542374acdac6235bb6b03bafd), mengunduh hasil...
+[12:44:47] [OK] Tile x2245_y-135 berhasil terunduh.
+[12:44:59] Progres: 74/97 (76%) | Berjalan/Antre: 1 | Belum: 21 | Gagal: 0 | 114.2 mnt
+[12:45:19] &gt;&gt; Mengirim job tile x2246_y-137 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:45:23] [OK] Tile x2245_y-136 selesai (job j-2610190542304c70a431f3328b9197e0), mengunduh hasil...
+[12:45:23] [OK] Tile x2245_y-136 berhasil terunduh.
+[12:45:29] Progres: 75/97 (77%) | Berjalan/Antre: 1 | Belum: 20 | Gagal: 0 | 114.7 mnt
+[12:45:59] Progres: 75/97 (77%) | Berjalan/Antre: 2 | Belum: 20 | Gagal: 0 | 115.2 mnt
+[12:46:29] Progres: 75/97 (77%) | Berjalan/Antre: 2 | Belum: 20 | Gagal: 0 | 115.7 mnt
+[12:46:59] Progres: 75/97 (77%) | Berjalan/Antre: 2 | Belum: 20 | Gagal: 0 | 116.2 mnt
+[12:47:27] &gt;&gt; Mengirim job tile x2246_y-136 (1 poligon)...
+[12:47:29] Progres: 77/97 (79%) | Berjalan/Antre: 0 | Belum: 20 | Gagal: 0 | 116.7 mnt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:47:33] &gt;&gt; Mengirim job tile x2246_y-135 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:47:39] [OK] Tile x2245_y-134 selesai (job j-2610190544454250a4acaff8bc78ab89), mengunduh hasil...
+[12:47:39] [OK] Tile x2245_y-134 berhasil terunduh.
+[12:47:39] [OK] Tile x2246_y-137 selesai (job j-26101905452448cda7789325910c4e6a), mengunduh hasil...
+[12:47:39] [OK] Tile x2246_y-137 berhasil terunduh.
+[12:47:59] Progres: 77/97 (79%) | Berjalan/Antre: 1 | Belum: 18 | Gagal: 0 | 117.2 mnt
+[12:48:29] Progres: 77/97 (79%) | Berjalan/Antre: 2 | Belum: 18 | Gagal: 0 | 117.7 mnt
+[12:48:59] Progres: 77/97 (79%) | Berjalan/Antre: 2 | Belum: 18 | Gagal: 0 | 118.2 mnt
+[12:49:11] &gt;&gt; Mengirim job tile x2247_y-137 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:49:17] [OK] Tile x2246_y-135 selesai (job j-26101905473849f788d75deaf59b5c85), mengunduh hasil...
+[12:49:17] [OK] Tile x2246_y-135 berhasil terunduh.
+[12:49:29] Progres: 78/97 (80%) | Berjalan/Antre: 1 | Belum: 17 | Gagal: 0 | 118.7 mnt
+[12:49:48] &gt;&gt; Mengirim job tile x2247_y-136 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:49:53] [OK] Tile x2246_y-136 selesai (job j-2610190547314775b29f6a2f32aedf08), mengunduh hasil...
+[12:49:53] [OK] Tile x2246_y-136 berhasil terunduh.
+[12:49:59] Progres: 79/97 (81%) | Berjalan/Antre: 1 | Belum: 16 | Gagal: 0 | 119.2 mnt
+[12:50:29] Progres: 79/97 (81%) | Berjalan/Antre: 2 | Belum: 16 | Gagal: 0 | 119.7 mnt
+[12:50:59] Progres: 79/97 (81%) | Berjalan/Antre: 2 | Belum: 16 | Gagal: 0 | 120.2 mnt
+[12:51:26] &gt;&gt; Mengirim job tile x2247_y-135 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:51:29] Progres: 80/97 (82%) | Berjalan/Antre: 1 | Belum: 16 | Gagal: 0 | 120.7 mnt
+[12:51:32] [OK] Tile x2247_y-137 selesai (job j-2610190549154c2fa66b6917509c6851), mengunduh hasil...
+[12:51:32] [OK] Tile x2247_y-137 berhasil terunduh.
+[12:51:59] Progres: 80/97 (82%) | Berjalan/Antre: 1 | Belum: 15 | Gagal: 0 | 121.2 mnt
+[12:52:29] Progres: 80/97 (82%) | Berjalan/Antre: 2 | Belum: 15 | Gagal: 0 | 121.7 mnt
+[12:52:34] &gt;&gt; Mengirim job tile x2251_y-145 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:52:41] [OK] Tile x2247_y-136 selesai (job j-26101905495343b2b81d50af5537e2db), mengunduh hasil...
+[12:52:41] [OK] Tile x2247_y-136 berhasil terunduh.
+[12:52:59] Progres: 81/97 (84%) | Berjalan/Antre: 1 | Belum: 14 | Gagal: 0 | 122.2 mnt
+[12:53:29] Progres: 81/97 (84%) | Berjalan/Antre: 2 | Belum: 14 | Gagal: 0 | 122.7 mnt
+[12:53:43] &gt;&gt; Mengirim job tile x2252_y-145 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:53:50] [OK] Tile x2247_y-135 selesai (job j-26101905513049d1b60f4d78827c6497), mengunduh hasil...
+[12:53:50] [OK] Tile x2247_y-135 berhasil terunduh.
+[12:53:59] Progres: 82/97 (85%) | Berjalan/Antre: 1 | Belum: 13 | Gagal: 0 | 123.2 mnt
+[12:54:29] Progres: 82/97 (85%) | Berjalan/Antre: 2 | Belum: 13 | Gagal: 0 | 123.7 mnt
+[12:54:59] Progres: 82/97 (85%) | Berjalan/Antre: 2 | Belum: 13 | Gagal: 0 | 124.2 mnt
+[12:55:23] &gt;&gt; Mengirim job tile x2252_y-146 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:55:29] [OK] Tile x2251_y-145 selesai (job j-2610190552394ab081e0066e88f64e2c), mengunduh hasil...
+[12:55:29] [OK] Tile x2251_y-145 berhasil terunduh.
+[12:55:29] Progres: 83/97 (86%) | Berjalan/Antre: 1 | Belum: 12 | Gagal: 0 | 124.7 mnt
+[12:55:59] Progres: 83/97 (86%) | Berjalan/Antre: 1 | Belum: 12 | Gagal: 0 | 125.2 mnt
+[12:56:29] Progres: 83/97 (86%) | Berjalan/Antre: 2 | Belum: 12 | Gagal: 0 | 125.7 mnt
+[12:56:30] &gt;&gt; Mengirim job tile x2250_y-139 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:56:37] [OK] Tile x2252_y-145 selesai (job j-2610190553484cefa4597c4c4d3d4183), mengunduh hasil...
+[12:56:37] [OK] Tile x2252_y-145 berhasil terunduh.
+[12:56:59] Progres: 84/97 (87%) | Berjalan/Antre: 1 | Belum: 11 | Gagal: 0 | 126.2 mnt
+[12:57:29] Progres: 84/97 (87%) | Berjalan/Antre: 2 | Belum: 11 | Gagal: 0 | 126.7 mnt
+[12:57:59] Progres: 84/97 (87%) | Berjalan/Antre: 2 | Belum: 11 | Gagal: 0 | 127.2 mnt
+[12:58:29] Progres: 84/97 (87%) | Berjalan/Antre: 2 | Belum: 11 | Gagal: 0 | 127.7 mnt
+[12:58:41] &gt;&gt; Mengirim job tile x2252_y-138 (4 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:58:50] &gt;&gt; Mengirim job tile x2251_y-139 (2 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[12:58:55] [OK] Tile x2252_y-146 selesai (job j-26101905552745e99c97b0cf89a54d9e), mengunduh hasil...
+[12:58:55] [OK] Tile x2252_y-146 berhasil terunduh.
+[12:58:55] [OK] Tile x2250_y-139 selesai (job j-26101905563648d599db55a2ddb83b4f), mengunduh hasil...
+[12:58:55] [OK] Tile x2250_y-139 berhasil terunduh.
+[12:58:59] Progres: 86/97 (89%) | Berjalan/Antre: 1 | Belum: 9 | Gagal: 0 | 128.2 mnt
+[12:59:29] Progres: 86/97 (89%) | Berjalan/Antre: 2 | Belum: 9 | Gagal: 0 | 128.7 mnt
+[12:59:59] Progres: 86/97 (89%) | Berjalan/Antre: 2 | Belum: 9 | Gagal: 0 | 129.2 mnt
+[13:00:29] Progres: 86/97 (89%) | Berjalan/Antre: 2 | Belum: 9 | Gagal: 0 | 129.7 mnt
+[13:00:59] Progres: 86/97 (89%) | Berjalan/Antre: 2 | Belum: 9 | Gagal: 0 | 130.2 mnt
+[13:01:29] Progres: 86/97 (89%) | Berjalan/Antre: 2 | Belum: 9 | Gagal: 0 | 130.7 mnt
+[13:01:29] &gt;&gt; Mengirim job tile x2249_y-140 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[13:01:35] [OK] Tile x2251_y-139 selesai (job j-2610190558554090b1c687d46fe6b064), mengunduh hasil...
+[13:01:35] [OK] Tile x2251_y-139 berhasil terunduh.
+[13:01:59] Progres: 87/97 (90%) | Berjalan/Antre: 1 | Belum: 8 | Gagal: 0 | 131.2 mnt
+[13:02:06] &gt;&gt; Mengirim job tile x2252_y-139 (3 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[13:02:11] [OK] Tile x2252_y-138 selesai (job j-261019055846423680ab2c54855051ae), mengunduh hasil...
+[13:02:11] [OK] Tile x2252_y-138 berhasil terunduh.
+[13:02:29] Progres: 88/97 (91%) | Berjalan/Antre: 1 | Belum: 7 | Gagal: 0 | 131.7 mnt
+[13:02:59] Progres: 88/97 (91%) | Berjalan/Antre: 2 | Belum: 7 | Gagal: 0 | 132.2 mnt
+[13:03:29] Progres: 88/97 (91%) | Berjalan/Antre: 2 | Belum: 7 | Gagal: 0 | 132.7 mnt
+[13:03:43] &gt;&gt; Mengirim job tile x2252_y-140 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[13:03:49] [OK] Tile x2249_y-140 selesai (job j-26101906013342b2909a5a9a343862d0), mengunduh hasil...
+[13:03:49] [OK] Tile x2249_y-140 berhasil terunduh.
+[13:03:59] Progres: 89/97 (92%) | Berjalan/Antre: 1 | Belum: 6 | Gagal: 0 | 133.2 mnt
+[13:04:20] &gt;&gt; Mengirim job tile x2253_y-140 (1 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[13:04:25] [OK] Tile x2252_y-139 selesai (job j-261019060211422780369134f072cc66), mengunduh hasil...
+[13:04:25] [OK] Tile x2252_y-139 berhasil terunduh.
+[13:04:29] Progres: 90/97 (93%) | Berjalan/Antre: 1 | Belum: 5 | Gagal: 0 | 133.7 mnt
+[13:04:59] Progres: 90/97 (93%) | Berjalan/Antre: 2 | Belum: 5 | Gagal: 0 | 134.2 mnt
+[13:05:29] Progres: 90/97 (93%) | Berjalan/Antre: 2 | Belum: 5 | Gagal: 0 | 134.7 mnt
+[13:05:59] Progres: 90/97 (93%) | Berjalan/Antre: 2 | Belum: 5 | Gagal: 0 | 135.2 mnt
+[13:06:29] &gt;&gt; Mengirim job tile x2270_y-145 (4 poligon)...
+[13:06:29] Progres: 92/97 (95%) | Berjalan/Antre: 0 | Belum: 5 | Gagal: 0 | 135.7 mnt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[13:06:37] &gt;&gt; Mengirim job tile x2256_y-147 (18 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[13:06:41] [OK] Tile x2252_y-140 selesai (job j-2610190603484ac1b7dde350c3dada20), mengunduh hasil...
+[13:06:41] [OK] Tile x2252_y-140 berhasil terunduh.
+[13:06:41] [OK] Tile x2253_y-140 selesai (job j-26101906042644b19d14d1f277e9ec09), mengunduh hasil...
+[13:06:41] [OK] Tile x2253_y-140 berhasil terunduh.
+[13:06:59] Progres: 92/97 (95%) | Berjalan/Antre: 0 | Belum: 3 | Gagal: 0 | 136.2 mnt
+[13:07:29] Progres: 92/97 (95%) | Berjalan/Antre: 2 | Belum: 3 | Gagal: 0 | 136.7 mnt
+[13:07:59] Progres: 92/97 (95%) | Berjalan/Antre: 2 | Belum: 3 | Gagal: 0 | 137.2 mnt
+[13:08:14] &gt;&gt; Mengirim job tile x2256_y-148 (19 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[13:08:20] &gt;&gt; Mengirim job tile x2253_y-143 (10 poligon)...
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[13:08:25] [OK] Tile x2270_y-145 selesai (job j-261019060635425d85b0e4b9bd406b89), mengunduh hasil...
+[13:08:25] [OK] Tile x2270_y-145 berhasil terunduh.
+[13:08:25] [OK] Tile x2256_y-147 selesai (job j-2610190606424d6585b3637626195b85), mengunduh hasil...
+[13:08:25] [OK] Tile x2256_y-147 berhasil terunduh.
+[13:08:29] Progres: 94/97 (97%) | Berjalan/Antre: 0 | Belum: 1 | Gagal: 0 | 137.7 mnt
+[13:08:59] Progres: 94/97 (97%) | Berjalan/Antre: 2 | Belum: 1 | Gagal: 0 | 138.2 mnt
+[13:09:29] Progres: 94/97 (97%) | Berjalan/Antre: 2 | Belum: 1 | Gagal: 0 | 138.7 mnt
+[13:09:59] Progres: 94/97 (97%) | Berjalan/Antre: 2 | Belum: 1 | Gagal: 0 | 139.2 mnt
+[13:10:29] &gt;&gt; Mengirim job tile x2253_y-144 (2 poligon)...
+[13:10:29] Progres: 96/97 (99%) | Berjalan/Antre: 0 | Belum: 1 | Gagal: 0 | 139.7 mnt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Failed to get/parse queryables of from /collections/SENTINEL2_L2A/queryables: JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[13:10:35] [OK] Tile x2256_y-148 selesai (job j-2610190608184d23b3b8eb27b6bce50b), mengunduh hasil...
+[13:10:35] [OK] Tile x2256_y-148 berhasil terunduh.
+[13:10:35] [OK] Tile x2253_y-143 selesai (job j-2610190608254504a23d05bb90135646), mengunduh hasil...
+[13:10:35] [OK] Tile x2253_y-143 berhasil terunduh.
+[13:10:59] Progres: 96/97 (99%) | Berjalan/Antre: 0 | Belum: 0 | Gagal: 0 | 140.2 mnt
+[13:11:29] Progres: 96/97 (99%) | Berjalan/Antre: 1 | Belum: 0 | Gagal: 0 | 140.7 mnt
+[13:11:59] Progres: 96/97 (99%) | Berjalan/Antre: 1 | Belum: 0 | Gagal: 0 | 141.2 mnt
+[13:12:29] Progres: 96/97 (99%) | Berjalan/Antre: 1 | Belum: 0 | Gagal: 0 | 141.7 mnt
+[13:12:37] [OK] Tile x2253_y-144 selesai (job j-261019061033451b8d7f90bf07c002be), mengunduh hasil...
+[13:12:38] [OK] Tile x2253_y-144 berhasil terunduh.
+[13:12:59] Progres: 97/97 (100%) | Berjalan/Antre: 0 | Belum: 0 | Gagal: 0 | 142.2 mnt
+[13:13:29] Progres: 97/97 (100%) | Berjalan/Antre: 0 | Belum: 0 | Gagal: 0 | 142.7 mnt
+
+=== RINGKASAN STATUS JOB OPENEO ===
+status
+finished    97
+
+Mengekstrak piksel dari 97 tile yang telah selesai...
+[13:13:38] Tile 1/97 (x2250_y-142): 168 piksel diekstrak
+[13:13:39] Tile 2/97 (x2251_y-142): 7,372 piksel diekstrak
+[13:13:39] Tile 3/97 (x2251_y-141): 3,744 piksel diekstrak
+[13:13:39] Tile 4/97 (x2250_y-141): 1,242 piksel diekstrak
+[13:13:40] Tile 5/97 (x2249_y-159): 20,038 piksel diekstrak
+[13:13:40] Tile 6/97 (x2249_y-158): 15,106 piksel diekstrak
+[13:13:40] Tile 7/97 (x2248_y-159): 18,000 piksel diekstrak
+[13:13:41] Tile 8/97 (x2248_y-158): 8,613 piksel diekstrak
+[13:13:41] Tile 9/97 (x2250_y-159): 6,000 piksel diekstrak
+[13:13:41] Tile 10/97 (x2249_y-157): 2,026 piksel diekstrak
+[13:13:41] Tile 11/97 (x2250_y-158): 4,040 piksel diekstrak
+[13:13:41] Tile 12/97 (x2250_y-157): 6 piksel diekstrak
+[13:13:42] Tile 13/97 (x2249_y-156): 6,686 piksel diekstrak
+[13:13:42] Tile 14/97 (x2250_y-156): 4,000 piksel diekstrak
+[13:13:42] Tile 15/97 (x2250_y-155): 2,000 piksel diekstrak
+[13:13:42] Tile 16/97 (x2249_y-155): 4,000 piksel diekstrak
+[13:13:42] Tile 17/97 (x2247_y-158): 4,000 piksel diekstrak
+[13:13:42] Tile 18/97 (x2247_y-157): 2,000 piksel diekstrak
+[13:13:43] Tile 19/97 (x2248_y-157): 5,687 piksel diekstrak
+[13:13:43] Tile 20/97 (x2248_y-160): 10,000 piksel diekstrak
+[13:13:43] Tile 21/97 (x2249_y-160): 8,000 piksel diekstrak
+[13:13:43] Tile 22/97 (x2250_y-160): 2,000 piksel diekstrak
+[13:13:44] Tile 23/97 (x2245_y-159): 6,000 piksel diekstrak
+[13:13:44] Tile 24/97 (x2245_y-158): 2,000 piksel diekstrak
+[13:13:44] Tile 25/97 (x2246_y-159): 6,000 piksel diekstrak
+[13:13:44] Tile 26/97 (x2246_y-158): 4,000 piksel diekstrak
+[13:13:44] Tile 27/97 (x2245_y-160): 397 piksel diekstrak
+[13:13:44] Tile 28/97 (x2246_y-160): 2,000 piksel diekstrak
+[13:13:44] Tile 29/97 (x2238_y-164): 2,000 piksel diekstrak
+[13:13:44] Tile 30/97 (x2239_y-164): 719 piksel diekstrak
+[13:13:45] Tile 31/97 (x2235_y-158): 2,049 piksel diekstrak
+[13:13:45] Tile 32/97 (x2235_y-157): 6,000 piksel diekstrak
+[13:13:46] Tile 33/97 (x2236_y-158): 2,000 piksel diekstrak
+[13:13:46] Tile 34/97 (x2236_y-157): 4,000 piksel diekstrak
+[13:13:46] Tile 35/97 (x2233_y-156): 4,000 piksel diekstrak
+[13:13:47] Tile 36/97 (x2234_y-157): 4,328 piksel diekstrak
+[13:13:47] Tile 37/97 (x2234_y-156): 2,000 piksel diekstrak
+[13:13:48] Tile 38/97 (x2235_y-156): 2,000 piksel diekstrak
+[13:13:48] Tile 39/97 (x2236_y-156): 2,000 piksel diekstrak
+[13:13:48] Tile 40/97 (x2232_y-156): 2,000 piksel diekstrak
+[13:13:48] Tile 41/97 (x2233_y-157): 4,000 piksel diekstrak
+[13:13:48] Tile 42/97 (x2233_y-155): 2,000 piksel diekstrak
+[13:13:48] Tile 43/97 (x2234_y-158): 2,000 piksel diekstrak
+[13:13:48] Tile 44/97 (x2224_y-154): 686 piksel diekstrak
+[13:13:49] Tile 45/97 (x2224_y-153): 2,000 piksel diekstrak
+[13:13:49] Tile 46/97 (x2231_y-149): 364 piksel diekstrak
+[13:13:49] Tile 47/97 (x2248_y-140): 2,000 piksel diekstrak
+[13:13:49] Tile 48/97 (x2249_y-145): 1,280 piksel diekstrak
+[13:13:49] Tile 49/97 (x2248_y-145): 1,476 piksel diekstrak
+[13:13:49] Tile 50/97 (x2248_y-146): 1,668 piksel diekstrak
+[13:13:49] Tile 51/97 (x2252_y-144): 3,231 piksel diekstrak
+[13:13:49] Tile 52/97 (x2251_y-143): 170 piksel diekstrak
+[13:13:49] Tile 53/97 (x2245_y-145): 1,903 piksel diekstrak
+[13:13:49] Tile 54/97 (x2255_y-146): 70 piksel diekstrak
+[13:13:49] Tile 55/97 (x2248_y-137): 2,000 piksel diekstrak
+[13:13:50] Tile 56/97 (x2248_y-136): 2,000 piksel diekstrak
+[13:13:50] Tile 57/97 (x2248_y-135): 683 piksel diekstrak
+[13:13:50] Tile 58/97 (x2249_y-137): 2,000 piksel diekstrak
+[13:13:50] Tile 59/97 (x2249_y-136): 2,000 piksel diekstrak
+[13:13:51] Tile 60/97 (x2250_y-137): 2,000 piksel diekstrak
+[13:13:51] Tile 61/97 (x2250_y-136): 2,000 piksel diekstrak
+[13:13:51] Tile 62/97 (x2251_y-137): 780 piksel diekstrak
+[13:13:51] Tile 63/97 (x2251_y-136): 2,000 piksel diekstrak
+[13:13:51] Tile 64/97 (x2243_y-137): 51 piksel diekstrak
+[13:13:52] Tile 65/97 (x2243_y-136): 2,000 piksel diekstrak
+[13:13:52] Tile 66/97 (x2243_y-135): 2,000 piksel diekstrak
+[13:13:52] Tile 67/97 (x2243_y-134): 2,000 piksel diekstrak
+[13:13:52] Tile 68/97 (x2243_y-133): 249 piksel diekstrak
+[13:13:52] Tile 69/97 (x2244_y-137): 2,000 piksel diekstrak
+[13:13:53] Tile 70/97 (x2244_y-136): 2,000 piksel diekstrak
+[13:13:53] Tile 71/97 (x2244_y-135): 2,000 piksel diekstrak
+[13:13:54] Tile 72/97 (x2244_y-134): 2,000 piksel diekstrak
+[13:13:54] Tile 73/97 (x2245_y-137): 2,000 piksel diekstrak
+[13:13:54] Tile 74/97 (x2245_y-136): 2,000 piksel diekstrak
+[13:13:55] Tile 75/97 (x2245_y-135): 2,000 piksel diekstrak
+[13:13:55] Tile 76/97 (x2245_y-134): 2,000 piksel diekstrak
+[13:13:55] Tile 77/97 (x2246_y-137): 2,000 piksel diekstrak
+[13:13:55] Tile 78/97 (x2246_y-136): 2,000 piksel diekstrak
+[13:13:56] Tile 79/97 (x2246_y-135): 2,000 piksel diekstrak
+[13:13:56] Tile 80/97 (x2247_y-137): 2,000 piksel diekstrak
+[13:13:56] Tile 81/97 (x2247_y-136): 2,000 piksel diekstrak
+[13:13:56] Tile 82/97 (x2247_y-135): 2,000 piksel diekstrak
+[13:13:56] Tile 83/97 (x2251_y-145): 204 piksel diekstrak
+[13:13:56] Tile 84/97 (x2252_y-145): 328 piksel diekstrak
+[13:13:56] Tile 85/97 (x2252_y-146): 28 piksel diekstrak
+[13:13:56] Tile 86/97 (x2250_y-139): 172 piksel diekstrak
+[13:13:56] Tile 87/97 (x2252_y-138): 5,518 piksel diekstrak
+[13:13:56] Tile 88/97 (x2251_y-139): 1,648 piksel diekstrak
+[13:13:56] Tile 89/97 (x2249_y-140): 88 piksel diekstrak
+[13:13:56] Tile 90/97 (x2252_y-139): 6,000 piksel diekstrak
+[13:13:57] Tile 91/97 (x2252_y-140): 2,000 piksel diekstrak
+[13:13:57] Tile 92/97 (x2253_y-140): 519 piksel diekstrak
+[13:13:57] Tile 93/97 (x2270_y-145): 1,006 piksel diekstrak
+[13:13:57] Tile 94/97 (x2256_y-147): 6,766 piksel diekstrak
+[13:13:57] Tile 95/97 (x2256_y-148): 6,311 piksel diekstrak
+[13:13:57] Tile 96/97 (x2253_y-143): 1,923 piksel diekstrak
+[13:13:57] Tile 97/97 (x2253_y-144): 269 piksel diekstrak
+
+[SUKSES] Dataset piksel tersimpan ke: d:\SEMESTER 5 TIF 2026\PSD\mynewbook\uts\data\csv\hasil_s2_piksel\piksel_s2.csv
+Total Piksel Berlabel: 293,612
+label_teks
+Air                    81754
+Hutan Mangrove         16275
+Hutan Non-Mangrove    185815
+Pemukiman               8606
+Sawah                   1162
 </pre></div>
 </div>
 </div>
@@ -842,7 +2163,7 @@ document.write(`
 <h2>Step 6: Pratinjau &amp; Validasi Data Piksel yang Berhasil Disimpan<a class="headerlink" href="#step-6-pratinjau-validasi-data-piksel-yang-berhasil-disimpan" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">PIKSEL_OUT</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">PIKSEL_OUT</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
     <span class="n">df_hasil</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">PIKSEL_OUT</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"File: </span><span class="si">{</span><span class="n">PIKSEL_OUT</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dimensi Data: </span><span class="si">{</span><span class="n">df_hasil</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> baris x </span><span class="si">{</span><span class="n">df_hasil</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> kolom"</span><span class="p">)</span>
@@ -854,6 +2175,186 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>File: d:\SEMESTER 5 TIF 2026\PSD\mynewbook\uts\data\csv\hasil_s2_piksel\piksel_s2.csv
+Dimensi Data: 293,612 baris x 29 kolom
+
+Distribusi Piksel per Kelas Tutupan Lahan:
+label_teks
+Hutan Non-Mangrove    185815
+Air                    81754
+Hutan Mangrove         16275
+Pemukiman               8606
+Sawah                   1162
+Name: count, dtype: int64
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>poligon_id</th>
+      <th>poligon_no</th>
+      <th>sampel_id</th>
+      <th>tile_id</th>
+      <th>label</th>
+      <th>label_teks</th>
+      <th>px_row</th>
+      <th>px_col</th>
+      <th>lon</th>
+      <th>lat</th>
+      <th>...</th>
+      <th>B09</th>
+      <th>B11</th>
+      <th>B12</th>
+      <th>NDVI</th>
+      <th>NDWI</th>
+      <th>MNDWI</th>
+      <th>NDBI</th>
+      <th>REMI</th>
+      <th>NDMI</th>
+      <th>BSI</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Sawah_0000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>x2250_y-142</td>
+      <td>1</td>
+      <td>Sawah</td>
+      <td>229</td>
+      <td>25</td>
+      <td>112.546295</td>
+      <td>-7.068681</td>
+      <td>...</td>
+      <td>869.0</td>
+      <td>484.0</td>
+      <td>351.0</td>
+      <td>0.068259</td>
+      <td>0.045732</td>
+      <td>0.172650</td>
+      <td>-0.127928</td>
+      <td>-1.945545</td>
+      <td>0.127928</td>
+      <td>-0.005792</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Sawah_0000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>x2250_y-142</td>
+      <td>1</td>
+      <td>Sawah</td>
+      <td>229</td>
+      <td>26</td>
+      <td>112.546385</td>
+      <td>-7.068681</td>
+      <td>...</td>
+      <td>869.0</td>
+      <td>484.0</td>
+      <td>351.0</td>
+      <td>0.080808</td>
+      <td>0.047478</td>
+      <td>0.186555</td>
+      <td>-0.140320</td>
+      <td>-1.770270</td>
+      <td>0.140320</td>
+      <td>-0.004831</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Sawah_0000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>x2250_y-142</td>
+      <td>1</td>
+      <td>Sawah</td>
+      <td>229</td>
+      <td>27</td>
+      <td>112.546476</td>
+      <td>-7.068681</td>
+      <td>...</td>
+      <td>419.0</td>
+      <td>409.0</td>
+      <td>271.0</td>
+      <td>0.089860</td>
+      <td>0.012696</td>
+      <td>0.247470</td>
+      <td>-0.235514</td>
+      <td>-1.174721</td>
+      <td>0.235514</td>
+      <td>-0.041874</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Sawah_0000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>x2250_y-142</td>
+      <td>1</td>
+      <td>Sawah</td>
+      <td>229</td>
+      <td>28</td>
+      <td>112.546566</td>
+      <td>-7.068680</td>
+      <td>...</td>
+      <td>419.0</td>
+      <td>409.0</td>
+      <td>271.0</td>
+      <td>0.092437</td>
+      <td>0.000769</td>
+      <td>0.228302</td>
+      <td>-0.227573</td>
+      <td>-1.355372</td>
+      <td>0.227573</td>
+      <td>-0.048622</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Sawah_0000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>x2250_y-142</td>
+      <td>1</td>
+      <td>Sawah</td>
+      <td>229</td>
+      <td>29</td>
+      <td>112.546657</td>
+      <td>-7.068680</td>
+      <td>...</td>
+      <td>419.0</td>
+      <td>396.0</td>
+      <td>293.0</td>
+      <td>0.108878</td>
+      <td>0.008240</td>
+      <td>0.259121</td>
+      <td>-0.251418</td>
+      <td>-1.083032</td>
+      <td>0.251418</td>
+      <td>-0.069208</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 29 columns</p>
+</div></div></div>
 </div>
 </section>
 </section>
@@ -905,7 +2406,7 @@ document.write(`
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-spektral-multiband-b02-b03-b04-b08-b11-ndvi-ndwi-mndwi-ndbi-per-piksel-poligon">Ekstraksi Spektral Multiband (B02, B03, B04, B08, B11, NDVI, NDWI, MNDWI, NDBI) per Piksel Poligon</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ekstraksi-spektral-multiband-b02-b03-b04-b05-b08-b11-b12-ndvi-ndwi-mndwi-ndbi-remi-ndmi-bsi-per-piksel-poligon">Ekstraksi Spektral Multiband (B02, B03, B04, B05, B08, B11, B12, NDVI, NDWI, MNDWI, NDBI, REMI, NDMI, BSI) per Piksel Poligon</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deskripsi-alur-kerja">Deskripsi Alur Kerja</a></li>
 </ul>
 </li>
