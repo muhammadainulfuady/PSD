@@ -545,10 +545,10 @@ with col_m1:
 <span style="background:#FFF7ED; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-draw-polygon", size_rem=1.0, color="#EA580C")}</span>
 </div>
 <div class="metric-val-row">
-<span class="metric-num">{akurasi_test:.1f}%</span>
+<span class="metric-num">{akurasi_test:.2f}%</span>
 <span class="psd-badge-orange">{n_benar}/{n_uji} Uji</span>
 </div>
-<div class="metric-sub">Evaluasi 75 Poligon Testing (k-NN, k=5)</div>
+<div class="metric-sub">Evaluasi {n_uji} Poligon Testing (k-NN, k=5)</div>
 </div>""", unsafe_allow_html=True)
 
 with col_m2:
@@ -558,8 +558,8 @@ with col_m2:
 <span style="background:#FFF7ED; border-radius:50%; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center;">{fa_icon("fa-solid fa-border-all", size_rem=1.0, color="#EA580C")}</span>
 </div>
 <div class="metric-val-row">
-<span class="metric-num">91.0%</span>
-<span class="psd-badge-orange">49.336/54.164 Px</span>
+<span class="metric-num">{akurasi_pixel:.2f}%</span>
+<span class="psd-badge-orange">{benar_pixel_uji:,}/{total_pixel_uji:,} Px</span>
 </div>
 <div class="metric-sub">Evaluasi Testing Set Piksel Seimbang</div>
 </div>""", unsafe_allow_html=True)
@@ -572,12 +572,13 @@ with col_m3:
 </div>
 <div class="metric-val-row">
 <span class="metric-num">250</span>
-<span class="psd-badge-slate">180.544 Px</span>
+<span class="psd-badge-slate">{total_pixel_uji + 181650:,} Px</span>
 </div>
 <div class="metric-sub">50 Poligon Acuan per Kelas LULC</div>
 </div>""", unsafe_allow_html=True)
 
 with col_m4:
+    tot_px_valid_str = f"{int(df_raster_rekap['Jumlah Piksel'].sum()):,} Piksel Valid Se-Jawa Timur" if (df_raster_rekap is not None and 'Jumlah Piksel' in df_raster_rekap.columns) else "10.206.960 Piksel Valid Se-Jawa Timur"
     st.markdown(f"""<div class="metric-box">
 <div class="metric-box-top">
 <span class="metric-label">Inferensi Full Scene</span>
@@ -587,7 +588,7 @@ with col_m4:
 <span class="metric-num">10,2 M</span>
 <span class="psd-badge-amber">GeoTIFF 9.8MB</span>
 </div>
-<div class="metric-sub">10.206.960 Piksel Valid Se-Jawa Timur</div>
+<div class="metric-sub">{tot_px_valid_str}</div>
 </div>""", unsafe_allow_html=True)
 
 st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
