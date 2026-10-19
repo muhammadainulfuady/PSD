@@ -1,6 +1,6 @@
 Kelas Tutupan Lahan,Precision,Recall,F1-Score,Support (Piksel)
-Air,0.96,0.87,0.91,14821
-Hutan Mangrove,0.78,0.94,0.85,2923
-Hutan Non-Mangrove,0.99,0.93,0.96,33742
-Pemukiman,0.81,0.85,0.83,2215
-Sawah,0.22,0.39,0.28,363
+Air,1.0,0.92,0.96,43832
+Hutan Mangrove,0.7,0.96,0.81,3741
+Hutan Non-Mangrove,1.0,0.97,0.98,61917
+Pemukiman,0.59,0.92,0.72,2145
+Sawah,0.11,0.94,0.2,327

@@ -402,21 +402,29 @@ if df_ringkasan is not None:
         except Exception:
             return default
 
-    akurasi_test = float(get_metric('Overall Accuracy Testing', 80.0))
-    akurasi_train = float(get_metric('Accuracy Training', 86.3))
+    akurasi_test = float(get_metric('Overall Accuracy Testing', 85.33))
+    akurasi_train = float(get_metric('Accuracy Training', 100.0))
     total_poligon = int(get_metric('Total Sampel Poligon', 250))
     n_uji = int(get_metric('Jumlah Data Uji (30%)', 75))
-    n_benar = int(get_metric('Jumlah Prediksi Benar', 60))
-    n_salah = int(get_metric('Jumlah Prediksi Salah', 15))
+    n_benar = int(get_metric('Jumlah Prediksi Benar', 64))
+    n_salah = int(get_metric('Jumlah Prediksi Salah', 11))
 elif df_pred is not None:
     n_uji = len(df_pred)
     n_benar = int(df_pred["benar"].sum())
     n_salah = n_uji - n_benar
     akurasi_test = (n_benar / n_uji) * 100
-    akurasi_train = 86.3
+    akurasi_train = 100.0
     total_poligon = 250
 else:
-    n_uji, n_benar, n_salah, akurasi_test, akurasi_train, total_poligon = 75, 60, 15, 80.0, 86.3, 250
+    n_uji, n_benar, n_salah, akurasi_test, akurasi_train, total_poligon = 75, 64, 11, 85.33, 100.0, 250
+
+# Ekstraksi Metrik Piksel Dinamis dari Confusion Matrix Piksel
+if df_cm_pixel is not None:
+    total_pixel_uji = int(df_cm_pixel.values.sum())
+    benar_pixel_uji = int(np.trace(df_cm_pixel.values))
+    akurasi_pixel = (benar_pixel_uji / total_pixel_uji) * 100 if total_pixel_uji > 0 else 94.91
+else:
+    total_pixel_uji, benar_pixel_uji, akurasi_pixel = 111962, 106261, 94.91
 
 
 # ==============================================================================
@@ -479,11 +487,11 @@ with st.sidebar:
         </div>
         <div style="display:flex; align-items:center; gap:0.5rem; margin-top:2px;">
             <span style="background:#22c55e; color:#fff; font-size:9px; font-weight:700; padding:1px 6px; border-radius:6px;">TEST ✓</span>
-            <span>60 Uji Benar (Akurat 80%)</span>
+            <span>{n_benar} Uji Benar (Akurat {akurasi_test:.1f}%)</span>
         </div>
         <div style="display:flex; align-items:center; gap:0.5rem; margin-top:2px;">
             <span style="background:#ff7f0e; color:#7f1d1d; font-size:9px; font-weight:700; padding:1px 6px; border-radius:6px; border:1px solid #ea580c;">⚠️ SALAH</span>
-            <span style="color:#c2410c; font-weight:600;">15 Uji Mismatch (Error 20%)</span>
+            <span style="color:#c2410c; font-weight:600;">{n_salah} Uji Mismatch (Error {100-akurasi_test:.1f}%)</span>
         </div>
         <div style="display:flex; align-items:center; gap:0.5rem; margin-top:2px;">
             <span style="border-bottom:2px dashed #c026d3; width:18px; display:inline-block;"></span>
@@ -876,7 +884,7 @@ with tab_piksel:
 
     with col_px_fi:
         st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
-        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">3. Permutation Feature Importance Piksel (9 Fitur Spektral)</h3>
+        <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">3. Permutation Feature Importance Piksel (Fitur Terseleksi: REMI, MNDWI, NDVI, NDMI, BSI, B08)</h3>
         <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihasilkan langsung dari <code>kepentingan_fitur_pixel.csv</code>.</p>
         </div>""", unsafe_allow_html=True)
 
@@ -1107,7 +1115,7 @@ with tab_poligon:
     with col_cm:
         st.markdown("""<div class="psd-card" style="margin-bottom:0.75rem;">
         <h3 style="font-size:0.95rem; font-weight:600; color:#18232F; margin:0 0 0.35rem 0;">1. Confusion Matrix Poligon (75 Poligon Data Testing)</h3>
-        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihitung dari data <code>confusion_matrix.csv</code> (Akurasi: <b>80.0%</b>).</p>
+        <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Dihitung dari data <code>confusion_matrix.csv</code> (Akurasi: <b>{akurasi_test:.2f}%</b>).</p>
         </div>""", unsafe_allow_html=True)
 
         if df_cm is not None:
@@ -1242,7 +1250,7 @@ with tab_poligon:
             fig_k, ax_k = plt.subplots(figsize=(7.2, 4.6), facecolor='white')
             ax_k.plot(df_k['k'], df_k['Akurasi_Testing'], marker='o', markersize=6.5, color='#EA580C',
                       linestyle='-', linewidth=2.3, label='Akurasi Testing (%)')
-            ax_k.axvline(x=5, color='#B45309', linestyle='--', linewidth=1.5, label='k=5 Terpilih (80.0%)')
+            ax_k.axvline(x=5, color='#B45309', linestyle='--', linewidth=1.5, label=f'k=5 Terpilih ({akurasi_test:.1f}%)')
 
             ax_k.set_title('Kurva Validasi Pemilihan Nilai Hyperparameter k (k-NN)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
             ax_k.set_xlabel('Jumlah Tetangga Terdekat (k)', fontsize=9.5, fontweight='bold', color='#18232F')
@@ -1448,13 +1456,13 @@ with tab_komparasi:
             </tr>
             <tr style="border-bottom:1px solid #E2E8F0;">
                 <td style="padding:0.6rem 0.8rem; font-weight:600;">Data Testing Model</td>
-                <td style="padding:0.6rem 0.8rem;">75 Poligon (15 per kelas, seimbang)</td>
-                <td style="padding:0.6rem 0.8rem;">54.164 Piksel testing ground truth</td>
+                <td style="padding:0.6rem 0.8rem;">{n_uji} Poligon ({n_uji//5} per kelas, seimbang)</td>
+                <td style="padding:0.6rem 0.8rem;">{total_pixel_uji:,} Piksel testing ground truth</td>
             </tr>
             <tr style="border-bottom:1px solid #E2E8F0;">
                 <td style="padding:0.6rem 0.8rem; font-weight:600;">Akurasi Testing (k-NN)</td>
-                <td style="padding:0.6rem 0.8rem; color:#C2410C; font-weight:700;">80.0% (60 / 75 poligon benar)</td>
-                <td style="padding:0.6rem 0.8rem; color:#16A34A; font-weight:700;">91.0% (49.055 / 54.164 piksel benar)</td>
+                <td style="padding:0.6rem 0.8rem; color:#C2410C; font-weight:700;">{akurasi_test:.2f}% ({n_benar} / {n_uji} poligon benar)</td>
+                <td style="padding:0.6rem 0.8rem; color:#16A34A; font-weight:700;">{akurasi_pixel:.2f}% ({benar_pixel_uji:,} / {total_pixel_uji:,} piksel benar)</td>
             </tr>
             <tr style="border-bottom:1px solid #E2E8F0;">
                 <td style="padding:0.6rem 0.8rem; font-weight:600;">Output Geospasial</td>
@@ -1481,10 +1489,29 @@ with tab_komparasi:
         <p style="font-size:0.8rem; color:#64748B; margin:0 0 0.75rem 0;">Perbandingan daya pisah model pada masing-masing kelas tutupan lahan.</p>
         </div>""", unsafe_allow_html=True)
 
+        # Ambil nilai F1-score secara dinamis jika tersedia
+        kelas_order = ['Air', 'Hutan Mangrove', 'Hutan Non-Mangrove', 'Pemukiman', 'Sawah']
+        f1_poly_dict = {'Air': 0.55, 'Hutan Mangrove': 1.00, 'Hutan Non-Mangrove': 0.97, 'Pemukiman': 0.90, 'Sawah': 0.78}
+        f1_px_dict = {'Air': 0.91, 'Hutan Mangrove': 0.85, 'Hutan Non-Mangrove': 0.97, 'Pemukiman': 0.83, 'Sawah': 0.35}
+        
+        if df_met is not None and 'F1-Score' in df_met.columns and 'Kelas' in df_met.columns:
+            for _, r in df_met.iterrows():
+                if r['Kelas'] in f1_poly_dict:
+                    f1_poly_dict[r['Kelas']] = float(r['F1-Score'])
+        elif df_met is not None and 'f1-score' in df_met.columns and 'Kelas' in df_met.columns:
+            for _, r in df_met.iterrows():
+                if r['Kelas'] in f1_poly_dict:
+                    f1_poly_dict[r['Kelas']] = float(r['f1-score'])
+
+        if df_met_pixel is not None and 'F1-Score' in df_met_pixel.columns and 'Kelas Tutupan Lahan' in df_met_pixel.columns:
+            for _, r in df_met_pixel.iterrows():
+                if r['Kelas Tutupan Lahan'] in f1_px_dict:
+                    f1_px_dict[r['Kelas Tutupan Lahan']] = float(r['F1-Score'])
+
         df_comp_f1 = pd.DataFrame({
-            'Kelas': ['Air', 'Hutan Mangrove', 'Hutan Non-Mangrove', 'Pemukiman', 'Sawah'],
-            'Versi Poligon (Centroid)': [0.56, 0.97, 0.94, 0.93, 0.59],
-            'Versi Piksel (Raster)': [0.91, 0.85, 0.96, 0.83, 0.28]
+            'Kelas': kelas_order,
+            'Versi Poligon (Centroid)': [f1_poly_dict[c] for c in kelas_order],
+            'Versi Piksel (Raster)': [f1_px_dict[c] for c in kelas_order]
         })
         df_comp_f1_melt = df_comp_f1.melt(id_vars='Kelas', var_name='Versi Model', value_name='F1-Score')
 
@@ -1515,14 +1542,14 @@ with tab_komparasi:
 
         fig_acc, ax_acc = plt.subplots(figsize=(7.5, 4.6), facecolor='white')
         versi_names = ['Versi 1 (Poligon)', 'Versi 2 (Piksel)']
-        akurasi_vals = [80.0, 91.0]
+        akurasi_vals = [akurasi_test, akurasi_pixel]
         bars = ax_acc.bar(versi_names, akurasi_vals, color=['#EA580C', '#0284C7'], width=0.45)
         for bar in bars:
             y = bar.get_height()
             ax_acc.annotate(f'{y:.1f}%', (bar.get_x() + bar.get_width() / 2., y + 1.5),
                             ha='center', va='bottom', fontsize=11, fontweight='bold', color='#18232F')
 
-        ax_acc.set_title('Overall Accuracy Testing: Poligon (80.0%) vs Piksel (91.0%)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
+        ax_acc.set_title(f'Overall Accuracy Testing: Poligon ({akurasi_test:.1f}%) vs Piksel ({akurasi_pixel:.1f}%)', fontsize=11, fontweight='bold', pad=10, color='#18232F')
         ax_acc.set_ylabel('Akurasi (%)', fontsize=9.5, fontweight='bold', color='#18232F')
         ax_acc.set_ylim(0, 110)
         plt.grid(axis='y', linestyle=':', alpha=0.6, color='#CBD5E1')
